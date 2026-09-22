@@ -1,0 +1,17 @@
+{
+  "name": "sls-website-preview",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "preview": "node qa/server.mjs",
+    "qa": "QA_INCLUDE_TABLET=true playwright test",
+    "qa:static": "node qa/static-check.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
