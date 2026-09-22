@@ -411,3 +411,16 @@ textarea { min-height: 132px; resize: vertical; }
  .valuation-form { padding:24px; }
  .form-two { grid-template-columns:1fr; gap:0; }
 }
+
+
+/* Premium buyer, property search and locations */
+.buy-journey { display:grid; grid-template-columns:.45fr 1.55fr; gap:60px; align-items:start; }
+.property-search-panel { margin-top:32px; padding:30px 34px; display:flex; align-items:center; justify-content:space-between; gap:30px; background:#f3f6f6; border-left:4px solid var(--sky); }
+.property-search-panel h3 { margin:5px 0 8px; }
+.property-search-panel p { margin:0; color:var(--muted); }
+.location-cards-premium { grid-template-columns:repeat(4,1fr); }
+.location-link { color:inherit; text-decoration:none; transition:transform .2s ease,box-shadow .2s ease,background .2s ease; }
+.location-link:hover { transform:translateY(-3px); box-shadow:0 16px 38px rgba(11,17,18,.09); background:var(--white); }
+.location-kicker { display:block; margin-bottom:18px; color:var(--sky); font-size:10px; font-weight:850; text-transform:uppercase; letter-spacing:.12em; }
+@media(max-width:980px){.buy-journey{grid-template-columns:1fr}.location-cards-premium{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.property-search-panel{align-items:flex-start;flex-direction:column}.location-cards-premium{grid-template-columns:1fr}}
