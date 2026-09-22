@@ -2,7 +2,9 @@
 
 Die drei Bilddateien unter `assets/images/` wurden fuer diese Design-Preview mit dem eingebauten Bildgenerator erstellt. Sie enthalten keine Kundendaten oder Logos und sind noch keine freigegebenen SLS-Markenassets.
 
-Vor einem Livegang muessen die Motive durch SLS freigegeben oder gegen die final bereitgestellten Originalfotos ausgetauscht werden. Das bestehende SLS-Logo wurde nicht veraendert; in der Preview wird bis zur Bereitstellung der Originaldatei eine reine Textdarstellung des Firmennamens verwendet.
+Vor einem Livegang muessen die Motive durch SLS freigegeben oder gegen die final bereitgestellten Originalfotos ausgetauscht werden.
+
+Das gelieferte SLS-Logo V2 wurde unveraendert als Vektorasset unter `assets/logo-sls.svg` eingebunden. Die gelieferten Schriftvorgaben Playfair Display und Raleway sind lokal unter `assets/fonts/` hinterlegt; die zugehoerigen OFL-Lizenztexte liegen im selben Verzeichnis.
 
 ## Verwendete Prompts
 
