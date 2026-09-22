@@ -38,33 +38,50 @@ const icon = (name) => {
   return `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name]}</svg>`;
 };
 
-const current = window.location.pathname.replace(/index\.html$/, "");
+const current = window.location.pathname.replace(/index\\.html$/, "");
 const isActive = (href) => href === current || (href !== "/" && current.startsWith(href));
-const navLinks = navGroups.map((group, index) => {
-  const active = isActive(group.href) || group.items?.some(([, href]) => isActive(href));
-  const submenu = group.items.map(([label, href, desc]) => `<a class="mega-link" href="${href}"${isActive(href) ? ' aria-current="page"' : ""}><strong>${label}</strong><span>${desc}</span></a>`).join("");
-  return `<div class="nav-group${active ? " is-current" : ""}">
-    <div class="nav-group-row">
-      <a class="nav-link" href="${group.href}">${group.label}</a>
-      <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="submenu-${index}" aria-label="${group.label} Untermenü öffnen">${icon("chevron")}</button>
-    </div>
-    <div class="submenu mega-menu" id="submenu-${index}">
-      <div class="mega-menu-intro"><span>${group.kicker}</span><strong>${group.label}</strong></div>
-      <div class="mega-menu-links">${submenu}</div>
-    </div>
-  </div>`;
+
+const primaryLinks = navGroups.map((group) =>
+  `<a class="floating-nav-link" href="${group.href}"${isActive(group.href) ? ' aria-current="page"' : ""}>${group.label}</a>`
+).join("");
+
+const overlaySections = navGroups.map((group, index) => {
+  const links = group.items.map(([label, href, desc]) =>
+    `<a class="overlay-sub-link" href="${href}"><strong>${label}</strong><span>${desc}</span></a>`
+  ).join("");
+  return `<section class="overlay-nav-section">
+    <a class="overlay-main-link" href="${group.href}"><span>0${index + 1}</span>${group.label}</a>
+    <div class="overlay-subgrid">${links}</div>
+  </section>`;
 }).join("");
 
 document.querySelector("[data-site-header]").innerHTML = `
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
-  <div class="header-inner">
-    <a class="brand" href="/" aria-label="SLS Immobilienpartner Startseite">
-      <img class="brand-logo" src="/assets/logo-sls.svg" alt="SLS Immobilienpartner" width="267" height="170">
+  <div class="floating-header-shell">
+    <a class="floating-brand" href="/" aria-label="SLS Immobilienpartner Startseite">
+      <img src="/assets/logo-sls.svg" alt="SLS Immobilienpartner" width="267" height="170">
     </a>
-    <nav id="site-nav" class="site-nav" aria-label="Hauptnavigation">${navLinks}<a class="nav-mobile-cta" href="/immobilienbewertung/">Immobilie bewerten ${icon("arrow")}</a></nav>
-    <a class="header-cta" href="/immobilienbewertung/">Immobilie bewerten</a>
-    <button class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menü öffnen">${icon("menu")}</button>
-  </div>`;
+    <nav class="floating-primary" aria-label="Hauptnavigation">${primaryLinks}</nav>
+    <div class="floating-actions">
+      <a class="floating-valuation" href="/immobilienbewertung/">Bewertung <span aria-hidden="true">↗</span></a>
+      <button class="menu-toggle floating-menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menü öffnen">
+        <span class="menu-label">Menü</span>${icon("menu")}
+      </button>
+    </div>
+  </div>
+  <nav id="site-nav" class="fullscreen-nav" aria-label="Erweiterte Navigation" aria-hidden="true" inert>
+    <div class="fullscreen-nav-inner">
+      <div class="fullscreen-nav-top">
+        <span class="fullscreen-kicker">SLS Immobilienpartner</span>
+        <a class="fullscreen-contact" href="/kontakt/">Kontakt ↗</a>
+      </div>
+      <div class="fullscreen-nav-grid">${overlaySections}</div>
+      <div class="fullscreen-nav-bottom">
+        <a href="/team/">Team</a><a href="/referenzen/">Referenzen</a><a href="/blog/">Magazin</a><a href="/karriere/">Karriere</a><a href="/presse/">Presse</a>
+        <span>Ruhrgebiet · Rheinland · NRW</span>
+      </div>
+    </div>
+  </nav>`;
 
 document.querySelector("[data-site-footer]").innerHTML = `
   <section class="trust-strip" aria-label="Vertrauen und Mitgliedschaften">
@@ -89,61 +106,40 @@ document.querySelector("[data-site-footer]").innerHTML = `
 
 const toggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector("#site-nav");
-const mobileMenu = window.matchMedia("(max-width: 980px)");
-
-const closeSubmenus = () => document.querySelectorAll(".submenu-toggle").forEach((button) => {
-  button.setAttribute("aria-expanded", "false");
-  button.closest(".nav-group")?.classList.remove("is-open");
-});
+const header = document.querySelector("[data-site-header]");
 
 const setMenu = (open, returnFocus = false) => {
-  const shouldOpen = mobileMenu.matches && open;
-  toggle.setAttribute("aria-expanded", String(shouldOpen));
-  toggle.setAttribute("aria-label", shouldOpen ? "Menü schließen" : "Menü öffnen");
-  toggle.innerHTML = icon(shouldOpen ? "close" : "menu");
-  nav.classList.toggle("is-open", shouldOpen);
-  document.body.classList.toggle("menu-open", shouldOpen);
+  toggle.setAttribute("aria-expanded", String(open));
+  toggle.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen");
+  toggle.innerHTML = `<span class="menu-label">${open ? "Schließen" : "Menü"}</span>${icon(open ? "close" : "menu")}`;
+  nav.classList.toggle("is-open", open);
+  document.body.classList.toggle("menu-open", open);
+  header.classList.toggle("menu-active", open);
 
-  if (!mobileMenu.matches) {
+  if (open) {
     nav.removeAttribute("aria-hidden");
     nav.removeAttribute("inert");
-  } else if (!shouldOpen) {
+  } else {
     nav.setAttribute("aria-hidden", "true");
     nav.setAttribute("inert", "");
-    closeSubmenus();
     if (returnFocus) toggle.focus();
-  } else {
-    nav.removeAttribute("aria-hidden");
-    nav.removeAttribute("inert");
   }
 };
 
 toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
 
-document.querySelectorAll(".submenu-toggle").forEach((button) => {
-  button.addEventListener("click", () => {
-    const group = button.closest(".nav-group");
-    const open = button.getAttribute("aria-expanded") === "true";
-    document.querySelectorAll(".nav-group.is-open").forEach((other) => {
-      if (other !== group) {
-        other.classList.remove("is-open");
-        other.querySelector(".submenu-toggle")?.setAttribute("aria-expanded", "false");
-      }
-    });
-    button.setAttribute("aria-expanded", String(!open));
-    group.classList.toggle("is-open", !open);
-  });
-});
-
 nav.addEventListener("click", (event) => {
-  if (event.target.closest("a") && mobileMenu.matches) setMenu(false);
+  if (event.target.closest("a")) setMenu(false);
 });
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") setMenu(false, true);
 });
 
-mobileMenu.addEventListener("change", () => setMenu(false));
+window.addEventListener("scroll", () => {
+  header.classList.toggle("is-scrolled", window.scrollY > 28);
+}, { passive: true });
+
 setMenu(false);
 
 document.querySelectorAll(".reveal").forEach((element) => {
