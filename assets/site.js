@@ -59,7 +59,7 @@ document.querySelector("[data-site-header]").innerHTML = `
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
   <div class="floating-header-shell">
     <a class="floating-brand" href="/" aria-label="SLS Immobilienpartner Startseite">
-      <img src="/assets/logo-sls-horizontal.png" alt="SLS Immobilienpartner">
+      <img src="/assets/logo-sls-horizontal-transparent.png" alt="SLS Immobilienpartner">
     </a>
     <nav class="floating-primary" aria-label="Hauptnavigation">${primaryLinks}</nav>
     <div class="floating-actions">
