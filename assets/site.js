@@ -63,7 +63,6 @@ document.querySelector("[data-site-header]").innerHTML = `
     </a>
     <nav class="floating-primary" aria-label="Hauptnavigation">${primaryLinks}</nav>
     <div class="floating-actions">
-      <a class="floating-valuation" href="/immobilienbewertung/">Bewertung <span aria-hidden="true">↗</span></a>
       <button class="menu-toggle floating-menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menü öffnen">
         <span class="menu-label">Menü</span>${icon("menu")}
       </button>
