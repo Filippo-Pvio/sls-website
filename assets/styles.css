@@ -751,3 +751,14 @@ textarea { min-height: 132px; resize: vertical; }
     margin-top:6px;
   }
 }
+
+
+/* Supplied wide SLS wordmark: menu only */
+.offcanvas-brand { flex:1 1 auto; min-width:0; max-width:calc(100% - 58px); }
+.offcanvas-brand img { width:min(100%,360px); height:auto; max-height:48px; object-fit:contain; object-position:left center; }
+@media(max-width:980px){
+  .offcanvas-brand img { width:min(100%,310px); max-height:44px; }
+}
+@media(max-width:480px){
+  .offcanvas-brand img { width:min(100%,260px); max-height:40px; }
+}
