@@ -1062,3 +1062,8 @@ textarea { min-height: 132px; resize: vertical; }
     transform-origin:left center;
   }
 }
+
+
+/* Test override: mobile logo scale 1.4 */
+@media(max-width:980px){.floating-brand img{transform:scale(1.4);transform-origin:left center}}
+@media(max-width:480px){.floating-brand img{transform:scale(1.4);transform-origin:left center}}
