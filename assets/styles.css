@@ -799,3 +799,17 @@ textarea { min-height: 132px; resize: vertical; }
   .floating-brand { flex:1 1 auto; max-width:calc(100% - 58px); }
   .floating-brand img { width:min(100%,300px); max-height:38px; }
 }
+
+
+/* Larger transparent header logo — mobile */
+@media(max-width:980px){
+  .floating-header-shell{min-height:64px;padding-top:6px;padding-bottom:6px}
+  .floating-brand{min-height:50px;max-width:calc(100% - 56px)}
+  .floating-brand img{width:min(100%,330px);max-height:50px}
+  .floating-actions{min-height:50px}
+  .floating-menu-toggle{width:42px;height:42px}
+  .site-header.is-scrolled .floating-header-shell{min-height:60px}
+}
+@media(max-width:480px){
+  .floating-brand img{width:min(100%,315px);max-height:48px}
+}
