@@ -45,12 +45,12 @@ const primaryLinks = navGroups.map((group) =>
   `<a class="floating-nav-link" href="${group.href}"${isActive(group.href) ? ' aria-current="page"' : ""}>${group.label}</a>`
 ).join("");
 
-const overlaySections = navGroups.map((group, index) => {
-  const links = group.items.map(([label, href, desc]) =>
-    `<a class="overlay-sub-link" href="${href}"><strong>${label}</strong><span>${desc}</span></a>`
+const overlaySections = navGroups.map((group) => {
+  const links = group.items.slice(0, 4).map(([label, href]) =>
+    `<a class="overlay-sub-link" href="${href}">${label}</a>`
   ).join("");
   return `<section class="overlay-nav-section">
-    <a class="overlay-main-link" href="${group.href}"><span>0${index + 1}</span>${group.label}</a>
+    <a class="overlay-main-link" href="${group.href}">${group.label}</a>
     <div class="overlay-subgrid">${links}</div>
   </section>`;
 }).join("");
@@ -69,16 +69,17 @@ document.querySelector("[data-site-header]").innerHTML = `
       </button>
     </div>
   </div>
+  <div class="nav-backdrop" data-nav-close></div>
   <nav id="site-nav" class="fullscreen-nav" aria-label="Erweiterte Navigation" aria-hidden="true" inert>
     <div class="fullscreen-nav-inner">
       <div class="fullscreen-nav-top">
-        <span class="fullscreen-kicker">SLS Immobilienpartner</span>
-        <a class="fullscreen-contact" href="/kontakt/">Kontakt ↗</a>
+        <a class="offcanvas-brand" href="/" aria-label="SLS Startseite"><img src="/assets/logo-sls.svg" alt="SLS Immobilienpartner"></a>
+        <button class="offcanvas-close" type="button" data-nav-close aria-label="Menü schließen">${icon("close")}</button>
       </div>
+      <p class="offcanvas-intro">Womit können wir Ihnen helfen?</p>
       <div class="fullscreen-nav-grid">${overlaySections}</div>
       <div class="fullscreen-nav-bottom">
-        <a href="/team/">Team</a><a href="/referenzen/">Referenzen</a><a href="/blog/">Magazin</a><a href="/karriere/">Karriere</a><a href="/presse/">Presse</a>
-        <span>Ruhrgebiet · Rheinland · NRW</span>
+        <a href="/team/">Team</a><a href="/referenzen/">Referenzen</a><a href="/finanzierung/">Finanzierung</a><a href="/blog/">Magazin</a><a href="/karriere/">Karriere</a><a href="/presse/">Presse</a><a href="/kontakt/">Kontakt</a>
       </div>
     </div>
   </nav>`;
@@ -131,6 +132,7 @@ toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expande
 nav.addEventListener("click", (event) => {
   if (event.target.closest("a")) setMenu(false);
 });
+document.querySelectorAll("[data-nav-close]").forEach((el) => el.addEventListener("click", () => setMenu(false, true)));
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") setMenu(false, true);
