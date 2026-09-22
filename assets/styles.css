@@ -942,3 +942,56 @@ textarea { min-height: 132px; resize: vertical; }
     transform-origin:left center;
   }
 }
+
+
+/* Compact capsule; large but fully contained transparent wordmark */
+@media(max-width:980px){
+  .floating-header-shell{
+    min-height:58px;
+    padding:4px 6px 4px 10px;
+    gap:6px;
+  }
+  .floating-brand{
+    flex:1 1 auto;
+    width:auto;
+    max-width:calc(100% - 50px);
+    min-height:48px;
+    padding:0;
+    overflow:visible;
+    display:flex;
+    align-items:center;
+  }
+  .floating-brand img{
+    display:block;
+    width:100%;
+    max-width:100%;
+    height:auto;
+    max-height:44px;
+    transform:none;
+    object-fit:contain;
+    object-position:left center;
+  }
+  .floating-actions{
+    flex:0 0 42px;
+    min-height:48px;
+    padding:0;
+  }
+  .floating-menu-toggle{
+    width:40px;
+    height:40px;
+    margin-left:0;
+  }
+  .site-header.is-scrolled .floating-header-shell{
+    min-height:56px;
+    padding-top:3px;
+    padding-bottom:3px;
+  }
+}
+@media(max-width:480px){
+  .floating-brand img{
+    width:100%;
+    max-width:100%;
+    max-height:44px;
+    transform:none;
+  }
+}
