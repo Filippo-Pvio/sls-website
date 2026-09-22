@@ -1,28 +1,31 @@
 const navGroups = [
-  { label: "Verkaufen", href: "/verkaufen/", items: [
-    ["Immobilie verkaufen", "/verkaufen/"],
-    ["Immobilienbewertung", "/immobilienbewertung/"],
-    ["Service", "/service/"],
-    ["Referenzen", "/referenzen/"]
+  { label: "Immobilien", href: "/immobilien/", kicker: "Finden", items: [
+    ["Aktuelle Immobilien", "/immobilien/", "Häuser, Wohnungen & besondere Objekte"],
+    ["Immobilie kaufen", "/kaufen/", "Vom Suchprofil bis zum Notartermin"],
+    ["Finanzierung", "/finanzierung/", "Budget frühzeitig realistisch einordnen"],
+    ["Suchprofil anlegen", "/kontakt/", "Passende Angebote früher erhalten"]
   ]},
-  { label: "Kaufen", href: "/kaufen/", items: [
-    ["Immobilien kaufen", "/kaufen/"],
-    ["Finanzierung", "/finanzierung/"],
-    ["Immobilien", "/immobilien/"]
+  { label: "Verkaufen", href: "/verkaufen/", kicker: "Für Eigentümer", items: [
+    ["Immobilie verkaufen", "/verkaufen/", "Unser Prozess von Bewertung bis Übergabe"],
+    ["Immobilienbewertung", "/immobilienbewertung/", "Kostenlos und unverbindlich starten"],
+    ["Referenzen", "/referenzen/", "Erfolgreich vermittelte Immobilien"],
+    ["Ratgeber", "/downloads/", "Wissen für Ihre Verkaufsentscheidung"]
   ]},
-  { label: "Über uns", href: "/ueber-uns/", items: [
-    ["Über SLS", "/ueber-uns/"],
-    ["Unsere Werte", "/werte/"],
-    ["Team", "/team/"],
-    ["Karriere", "/karriere/"],
-    ["Presse", "/presse/"]
+  { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
+    ["Alle Standorte", "/standorte/", "Ruhrgebiet & Rheinland"],
+    ["Dorsten", "/immobilienmakler-dorsten/", "SLS im nördlichen Ruhrgebiet"],
+    ["Herten", "/immobilienmakler-herten/", "Lokale Immobilienberatung"],
+    ["Düsseldorf", "/immobilienmakler-dusseldorf/", "SLS im Rheinland"]
   ]},
-  { label: "Standorte", href: "/standorte/" },
-  { label: "Magazin", href: "/blog/", items: [
-    ["Blog & News", "/blog/"],
-    ["Ratgeber & Downloads", "/downloads/"]
-  ]},
-  { label: "Kontakt", href: "/kontakt/" }
+  { label: "Über SLS", href: "/ueber-uns/", kicker: "Unternehmen", items: [
+    ["Über uns", "/ueber-uns/", "Wer wir sind und wie wir arbeiten"],
+    ["Team", "/team/", "Ihre Ansprechpartner bei SLS"],
+    ["Werte", "/werte/", "Wofür SLS steht"],
+    ["Karriere", "/karriere/", "Gemeinsam Immobilien neu denken"],
+    ["Magazin", "/blog/", "News & Immobilienwissen"],
+    ["Presse", "/presse/", "Medien & Ansprechpartner"],
+    ["Kontakt", "/kontakt/", "Direkt mit uns sprechen"]
+  ]}
 ];
 
 const icon = (name) => {
@@ -39,14 +42,16 @@ const current = window.location.pathname.replace(/index\.html$/, "");
 const isActive = (href) => href === current || (href !== "/" && current.startsWith(href));
 const navLinks = navGroups.map((group, index) => {
   const active = isActive(group.href) || group.items?.some(([, href]) => isActive(href));
-  if (!group.items) return `<a class="nav-link" href="${group.href}"${active ? ' aria-current="page"' : ""}>${group.label}</a>`;
-  const submenu = group.items.map(([label, href]) => `<a href="${href}"${isActive(href) ? ' aria-current="page"' : ""}>${label}</a>`).join("");
+  const submenu = group.items.map(([label, href, desc]) => `<a class="mega-link" href="${href}"${isActive(href) ? ' aria-current="page"' : ""}><strong>${label}</strong><span>${desc}</span></a>`).join("");
   return `<div class="nav-group${active ? " is-current" : ""}">
     <div class="nav-group-row">
       <a class="nav-link" href="${group.href}">${group.label}</a>
       <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="submenu-${index}" aria-label="${group.label} Untermenü öffnen">${icon("chevron")}</button>
     </div>
-    <div class="submenu" id="submenu-${index}">${submenu}</div>
+    <div class="submenu mega-menu" id="submenu-${index}">
+      <div class="mega-menu-intro"><span>${group.kicker}</span><strong>${group.label}</strong></div>
+      <div class="mega-menu-links">${submenu}</div>
+    </div>
   </div>`;
 }).join("");
 
@@ -57,7 +62,7 @@ document.querySelector("[data-site-header]").innerHTML = `
       <img class="brand-logo" src="/assets/logo-sls.svg" alt="SLS Immobilienpartner" width="267" height="170">
     </a>
     <nav id="site-nav" class="site-nav" aria-label="Hauptnavigation">${navLinks}<a class="nav-mobile-cta" href="/immobilienbewertung/">Immobilie bewerten ${icon("arrow")}</a></nav>
-    <a class="header-cta" href="/immobilienbewertung/">Immobilie bewerten ${icon("arrow")}</a>
+    <a class="header-cta" href="/immobilienbewertung/">Immobilie bewerten</a>
     <button class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menü öffnen">${icon("menu")}</button>
   </div>`;
 
