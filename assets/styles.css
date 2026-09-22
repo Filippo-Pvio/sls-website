@@ -1025,3 +1025,40 @@ textarea { min-height: 132px; resize: vertical; }
     transform:none;
   }
 }
+
+
+/* Logo-only correction: compensate transparent canvas without changing capsule */
+@media(max-width:980px){
+  .floating-brand{
+    flex:1 1 0;
+    min-width:0;
+    overflow:hidden;
+    justify-content:flex-start;
+  }
+  .floating-brand img{
+    width:100%;
+    height:auto;
+    max-width:none;
+    max-height:none;
+    margin:0;
+    transform:scale(2.05);
+    transform-origin:left center;
+    object-fit:contain;
+    object-position:left center;
+  }
+  .floating-actions{
+    flex:0 0 42px;
+    position:relative;
+    z-index:5;
+  }
+}
+@media(max-width:480px){
+  .floating-brand img{
+    width:100%;
+    height:auto;
+    max-width:none;
+    max-height:none;
+    transform:scale(2.12);
+    transform-origin:left center;
+  }
+}
