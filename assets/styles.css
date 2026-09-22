@@ -785,3 +785,17 @@ textarea { min-height: 132px; resize: vertical; }
 @media(max-width:480px){
   .floating-brand img { width:min(100%,255px); max-height:36px; }
 }
+
+
+/* Exact uploaded horizontal wordmark — preserve existing navigation geometry */
+.floating-brand img {
+  width:min(100%,300px);
+  height:auto;
+  max-height:40px;
+  object-fit:contain;
+  object-position:left center;
+}
+@media(max-width:980px){
+  .floating-brand { flex:1 1 auto; max-width:calc(100% - 58px); }
+  .floating-brand img { width:min(100%,300px); max-height:38px; }
+}
