@@ -4,7 +4,16 @@ import { extname, join, normalize } from "node:path";
 
 const root = normalize(join(import.meta.dirname, ".."));
 const port = Number(process.env.QA_PORT || 4173);
-const types = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".webp": "image/webp", ".xml": "application/xml", ".txt": "text/plain" };
+const types = {
+  ".html": "text/html; charset=utf-8",
+  ".css": "text/css",
+  ".js": "text/javascript",
+  ".svg": "image/svg+xml",
+  ".ttf": "font/ttf",
+  ".webp": "image/webp",
+  ".xml": "application/xml",
+  ".txt": "text/plain"
+};
 
 createServer((request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);

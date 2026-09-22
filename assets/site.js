@@ -26,17 +26,17 @@ document.querySelector("[data-site-header]").innerHTML = `
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
   <div class="header-inner">
     <a class="brand" href="/" aria-label="SLS Immobilienpartner Startseite">
-      <span class="brand-mark">SLS</span><span class="brand-name">Immobilienpartner</span>
+      <img class="brand-logo" src="/assets/logo-sls.svg" alt="" width="267" height="170">
     </a>
-    <nav id="site-nav" class="site-nav" aria-label="Hauptnavigation">${navLinks}</nav>
+    <nav id="site-nav" class="site-nav" aria-label="Hauptnavigation">${navLinks}<a class="nav-mobile-cta" href="/kontakt/#bewertung">Immobilie bewerten ${icon("arrow")}</a></nav>
     <a class="header-cta" href="/kontakt/#bewertung">Immobilie bewerten ${icon("arrow")}</a>
-    <button class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menue oeffnen">${icon("menu")}</button>
+    <button class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menü öffnen">${icon("menu")}</button>
   </div>`;
 
 document.querySelector("[data-site-footer]").innerHTML = `
   <div class="footer-inner">
     <div class="footer-lead">
-      <a class="brand brand-light" href="/" aria-label="SLS Immobilienpartner Startseite"><span class="brand-mark">SLS</span><span class="brand-name">Immobilienpartner</span></a>
+      <a class="brand" href="/" aria-label="SLS Immobilienpartner Startseite"><img class="brand-logo" src="/assets/logo-sls.svg" alt="" width="267" height="170"></a>
       <p>Wir verkaufen Ihre Immobilie, als w&auml;re sie unsere eigene.</p>
     </div>
     <div><h2>Kontakt</h2><a href="tel:+4923697428020">02369 742 80 20</a><a href="mailto:service@sls.de">service@sls.de</a></div>
@@ -47,14 +47,42 @@ document.querySelector("[data-site-footer]").innerHTML = `
 
 const toggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector("#site-nav");
+const mobileMenu = window.matchMedia("(max-width: 980px)");
+
+const setMenu = (open, returnFocus = false) => {
+  const shouldOpen = mobileMenu.matches && open;
+  toggle.setAttribute("aria-expanded", String(shouldOpen));
+  toggle.setAttribute("aria-label", shouldOpen ? "Menü schließen" : "Menü öffnen");
+  toggle.innerHTML = icon(shouldOpen ? "close" : "menu");
+  nav.classList.toggle("is-open", shouldOpen);
+  document.body.classList.toggle("menu-open", shouldOpen);
+  nav.toggleAttribute("inert", mobileMenu.matches && !shouldOpen);
+  nav.setAttribute("aria-hidden", String(mobileMenu.matches && !shouldOpen));
+
+  if (!mobileMenu.matches) {
+    nav.removeAttribute("aria-hidden");
+    nav.removeAttribute("inert");
+  } else if (shouldOpen) {
+    nav.querySelector("a")?.focus();
+  } else if (returnFocus) {
+    toggle.focus();
+  }
+};
+
 toggle.addEventListener("click", () => {
-  const open = toggle.getAttribute("aria-expanded") === "true";
-  toggle.setAttribute("aria-expanded", String(!open));
-  toggle.setAttribute("aria-label", open ? "Menue oeffnen" : "Menue schliessen");
-  toggle.innerHTML = icon(open ? "menu" : "close");
-  nav.classList.toggle("is-open", !open);
-  document.body.classList.toggle("menu-open", !open);
+  setMenu(toggle.getAttribute("aria-expanded") !== "true");
 });
+
+nav.addEventListener("click", (event) => {
+  if (event.target.closest("a") && mobileMenu.matches) setMenu(false);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") setMenu(false, true);
+});
+
+mobileMenu.addEventListener("change", () => setMenu(false));
+setMenu(false);
 
 document.querySelectorAll(".reveal").forEach((element) => {
   const observer = new IntersectionObserver(([entry], obs) => {

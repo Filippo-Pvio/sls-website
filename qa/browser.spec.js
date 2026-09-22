@@ -20,13 +20,33 @@ for (const [index, route] of routes.entries()) {
   });
 }
 
-test("mobile navigation opens", async ({ page }, testInfo) => {
+test("mobile navigation opens, closes and survives viewport changes", async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.includes("mobile"), "Mobile-only interaction");
   await page.goto("/");
   const toggle = page.locator(".menu-toggle");
+  const nav = page.locator("#site-nav");
+
+  await expect(toggle).toBeVisible();
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(nav).toHaveAttribute("aria-hidden", "true");
+
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
-  await expect(page.locator("#site-nav")).toHaveClass(/is-open/);
+  await expect(toggle).toHaveAttribute("aria-label", "Menü schließen");
+  await expect(nav).toHaveClass(/is-open/);
+  await expect(nav).toHaveAttribute("aria-hidden", "false");
+  await expect(page.locator("body")).toHaveClass(/menu-open/);
+
+  await page.keyboard.press("Escape");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(nav).not.toHaveClass(/is-open/);
+  await expect(toggle).toBeFocused();
+
+  await toggle.click();
+  await page.setViewportSize({ width: 1100, height: 900 });
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(nav).not.toHaveAttribute("aria-hidden");
+  await expect(nav).not.toHaveAttribute("inert");
 });
 
 test("contact form is operable but does not claim delivery", async ({ page }) => {

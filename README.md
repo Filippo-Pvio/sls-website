@@ -20,4 +20,4 @@ npm run qa
 
 Das Kontaktformular ist bewusst als Preview gekennzeichnet und sendet noch keine Daten. Rechtstexte verweisen bis zur Kundenfreigabe auf die bestehende Live-Seite.
 
-Die verwendeten Preview-Bilder und der offene Logo-Austausch sind in `ASSET-NOTES.md` dokumentiert.
+Die verwendeten Preview-Bilder sowie die eingebundenen Markenassets sind in `ASSET-NOTES.md` dokumentiert.

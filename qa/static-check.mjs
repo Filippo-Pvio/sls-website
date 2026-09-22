@@ -34,7 +34,18 @@ for (const route of routes) {
   }
 }
 
-for (const asset of ["assets/styles.css", "assets/site.js", "assets/images/hero.webp", "assets/images/interior.webp", "assets/images/consultation.webp", "robots.txt", "sitemap.xml"]) {
+for (const asset of [
+  "assets/styles.css",
+  "assets/site.js",
+  "assets/logo-sls.svg",
+  "assets/fonts/PlayfairDisplay-Variable.ttf",
+  "assets/fonts/Raleway-Variable.ttf",
+  "assets/images/hero.webp",
+  "assets/images/interior.webp",
+  "assets/images/consultation.webp",
+  "robots.txt",
+  "sitemap.xml"
+]) {
   const info = await stat(join(root, asset));
   check(info.size > 0, `${asset}: vorhanden und nicht leer`);
 }
