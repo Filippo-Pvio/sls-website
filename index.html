@@ -192,6 +192,44 @@
   </section>
 </main>
 <footer class="site-footer" data-site-footer></footer>
+<script>
+(() => {
+  const section = document.querySelector('.trust-section-prominent');
+  const logos = section?.querySelector('.trust-motion-left');
+  const google = section?.querySelector('.trust-motion-right');
+  if (!section || !logos || !google || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  section.classList.add('trust-motion-active');
+  let logosShown = false;
+  let googleShown = false;
+  let timer;
+
+  const checkPosition = () => {
+    const height = window.innerHeight || document.documentElement.clientHeight;
+    if (!logosShown && section.getBoundingClientRect().top <= height * 0.4) {
+      logosShown = true;
+      logos.classList.add('is-visible');
+    }
+    if (!googleShown && google.getBoundingClientRect().top <= height * 0.75) {
+      googleShown = true;
+      google.classList.add('is-visible');
+    }
+    if (logosShown && googleShown) {
+      window.clearInterval(timer);
+      window.removeEventListener('scroll', checkPosition);
+      window.removeEventListener('resize', checkPosition);
+    }
+  };
+
+  window.addEventListener('scroll', checkPosition, { passive: true });
+  window.addEventListener('resize', checkPosition);
+  timer = window.setInterval(checkPosition, 180);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    section.classList.add('trust-motion-ready');
+    checkPosition();
+  }));
+})();
+</script>
 <script src="/assets/site.js" defer></script>
 <script>
 (async()=>{
