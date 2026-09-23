@@ -52,7 +52,9 @@ export default async function handler(req, res) {
         photoUri: review.authorAttribution?.photoUri || '',
         rating: review.rating || 0,
         text: review.text?.text || review.originalText?.text || '',
-        published: review.relativePublishTimeDescription || review.publishTime || ''
+        published: review.relativePublishTimeDescription || '',
+        publishTime: review.publishTime || '',
+        googleMapsUri: review.googleMapsUri || ''
       }))
     });
   } catch (error) {
