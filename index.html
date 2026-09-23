@@ -206,11 +206,11 @@
 
   const checkPosition = () => {
     const height = window.innerHeight || document.documentElement.clientHeight;
-    if (!logosShown && section.getBoundingClientRect().top <= height * 0.4) {
+    if (!logosShown && logos.getBoundingClientRect().top <= height * 0.28) {
       logosShown = true;
       logos.classList.add('is-visible');
     }
-    if (!googleShown && google.getBoundingClientRect().top <= height * 0.75) {
+    if (!googleShown && google.getBoundingClientRect().top <= height * 0.65) {
       googleShown = true;
       google.classList.add('is-visible');
     }
@@ -224,10 +224,7 @@
   window.addEventListener('scroll', checkPosition, { passive: true });
   window.addEventListener('resize', checkPosition);
   timer = window.setInterval(checkPosition, 180);
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    section.classList.add('trust-motion-ready');
-    checkPosition();
-  }));
+  checkPosition();
 })();
 </script>
 <script src="/assets/site.js" defer></script>
