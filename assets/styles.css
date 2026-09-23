@@ -1848,15 +1848,15 @@ a.google-review-card .google-review-more{
 }
 
 
-/* Subtle one-time trust motion */
+/* Deliberate directional trust motion */
 .home-editorial .trust-motion-left,
 .home-editorial .trust-motion-right{
-  opacity:0;
-  transition:opacity .58s ease, transform .58s cubic-bezier(.22,.61,.36,1);
+  opacity:.25;
+  transition:opacity 2.8s ease, transform 2.8s cubic-bezier(.16,1,.3,1);
   will-change:transform,opacity;
 }
-.home-editorial .trust-motion-left{transform:translateX(-20px)}
-.home-editorial .trust-motion-right{transform:translateX(20px)}
+.home-editorial .trust-motion-left{transform:translateX(-220px)}
+.home-editorial .trust-motion-right{transform:translateX(220px)}
 .home-editorial .trust-motion-left.is-visible,
 .home-editorial .trust-motion-right.is-visible{
   opacity:1;
@@ -1865,10 +1865,10 @@ a.google-review-card .google-review-more{
 @media(max-width:800px){
   .home-editorial .trust-motion-left,
   .home-editorial .trust-motion-right{
-    transition-duration:.48s;
+    transition-duration:2.2s;
   }
-  .home-editorial .trust-motion-left{transform:translateX(-14px)}
-  .home-editorial .trust-motion-right{transform:translateX(14px)}
+  .home-editorial .trust-motion-left{transform:translateX(-140px)}
+  .home-editorial .trust-motion-right{transform:translateX(140px)}
 }
 @media(prefers-reduced-motion:reduce){
   .home-editorial .trust-motion-left,
