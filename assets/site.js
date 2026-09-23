@@ -176,37 +176,42 @@ const trustMotionElements = document.querySelectorAll('.trust-motion-left, .trus
 if (trustMotionElements.length) {
   const revealTrust = () => trustMotionElements.forEach((el) => el.classList.add('is-visible'));
 
-  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    let revealed = false;
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    revealTrust();
+  } else {
     const trustSection = document.querySelector('.trust-section-prominent');
 
-    const trustObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (!revealed && entry.isIntersecting) {
-          revealed = true;
-          revealTrust();
-          observer.disconnect();
-        }
-      });
-    }, {
-      threshold: 0.12,
-      rootMargin: '-32% 0px -32% 0px'
-    });
-
-    if (trustSection) {
-      trustObserver.observe(trustSection);
-    } else {
+    if (!trustSection) {
       revealTrust();
-    }
-
-    window.setTimeout(() => {
-      if (!revealed) {
+    } else {
+      let revealed = false;
+      let trustObserver;
+      const isAtRevealPoint = () => {
+        const rect = trustSection.getBoundingClientRect();
+        return rect.top <= window.innerHeight * 0.4 && rect.bottom > 0;
+      };
+      const revealWhenReady = () => {
+        if (revealed || !isAtRevealPoint()) return;
         revealed = true;
         revealTrust();
         trustObserver.disconnect();
-      }
-    }, 2500);
-  } else {
-    revealTrust();
+        window.removeEventListener('scroll', revealWhenReady);
+        window.removeEventListener('resize', revealWhenReady);
+      };
+
+      // Observe the stationary section, not the elements moving in from outside the viewport.
+      trustObserver = new IntersectionObserver(revealWhenReady, {
+        threshold: 0,
+        rootMargin: '-25% 0px -60% 0px'
+      });
+      trustObserver.observe(trustSection);
+
+      // Scroll/resize and the timer cover cases where an observer callback is missed.
+      // The fallback only reveals after the section reaches the scroll position.
+      window.addEventListener('scroll', revealWhenReady, { passive: true });
+      window.addEventListener('resize', revealWhenReady);
+      window.setTimeout(revealWhenReady, 2500);
+      revealWhenReady();
+    }
   }
 }
