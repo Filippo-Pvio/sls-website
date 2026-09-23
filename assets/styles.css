@@ -1849,7 +1849,7 @@ a.google-review-card .google-review-more{
 
 
 /* Trust motion is enabled only by the homepage script; content stays visible if it cannot run. */
-.home-editorial .trust-section-prominent{overflow-x:clip}
+.home-editorial .trust-section-prominent{overflow:hidden}
 .home-editorial .trust-section-prominent.trust-motion-active .trust-motion-left,
 .home-editorial .trust-section-prominent.trust-motion-active .trust-motion-right{
   opacity:.25;
