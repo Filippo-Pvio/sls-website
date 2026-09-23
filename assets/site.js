@@ -174,17 +174,39 @@ if (form) {
 
 const trustMotionElements = document.querySelectorAll('.trust-motion-left, .trust-motion-right');
 if (trustMotionElements.length) {
+  const revealTrust = () => trustMotionElements.forEach((el) => el.classList.add('is-visible'));
+
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let revealed = false;
+    const trustSection = document.querySelector('.trust-section-prominent');
+
     const trustObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
+        if (!revealed && entry.isIntersecting) {
+          revealed = true;
+          revealTrust();
+          observer.disconnect();
         }
       });
-    }, { threshold: 0.8, rootMargin: '0px 0px -18% 0px' });
-    trustMotionElements.forEach((el) => trustObserver.observe(el));
+    }, {
+      threshold: 0.12,
+      rootMargin: '-32% 0px -32% 0px'
+    });
+
+    if (trustSection) {
+      trustObserver.observe(trustSection);
+    } else {
+      revealTrust();
+    }
+
+    window.setTimeout(() => {
+      if (!revealed) {
+        revealed = true;
+        revealTrust();
+        trustObserver.disconnect();
+      }
+    }, 2500);
   } else {
-    trustMotionElements.forEach((el) => el.classList.add('is-visible'));
+    revealTrust();
   }
 }
