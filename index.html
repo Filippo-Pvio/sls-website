@@ -217,32 +217,70 @@
       const next=slider.querySelector('[data-google-review-next]');
 
       reviews.forEach((review,index)=>{
-        const card=document.createElement('article');
+        const card=document.createElement(review.googleMapsUri ? 'a' : 'article');
         card.className='google-review-card';
+        if(review.googleMapsUri){
+          card.href=review.googleMapsUri;
+          card.target='_blank';
+          card.rel='noopener';
+          card.setAttribute('aria-label',`Google Rezension von ${review.author || 'Google-Nutzer'} vollständig ansehen`);
+        }
 
         const top=document.createElement('div');
         top.className='google-review-card-top';
+
+        const identity=document.createElement('div');
+        identity.className='google-review-identity';
+
+        if(review.photoUri){
+          const avatar=document.createElement('img');
+          avatar.className='google-review-avatar';
+          avatar.src=review.photoUri;
+          avatar.alt='';
+          avatar.loading='lazy';
+          identity.appendChild(avatar);
+        }else{
+          const avatar=document.createElement('span');
+          avatar.className='google-review-avatar google-review-avatar-fallback';
+          avatar.textContent=(review.author || 'G').trim().charAt(0).toUpperCase();
+          identity.appendChild(avatar);
+        }
 
         const author=document.createElement('div');
         author.className='google-review-author';
         const name=document.createElement('strong');
         name.textContent=review.author || 'Google-Nutzer';
-        const source=document.createElement('span');
-        source.textContent=review.published ? `Google · ${review.published}` : 'Google Rezension';
-        author.append(name,source);
+        const meta=document.createElement('span');
+        let dateLabel=review.published || 'Google Rezension';
+        if(review.publishTime){
+          const d=new Date(review.publishTime);
+          if(!Number.isNaN(d.getTime())) dateLabel=d.toLocaleDateString('de-DE');
+        }
+        meta.textContent=dateLabel;
+        author.append(name,meta);
+        identity.appendChild(author);
+
+        const googleMark=document.createElement('span');
+        googleMark.className='google-review-google-mark';
+        googleMark.textContent='G';
+        googleMark.setAttribute('aria-label','Google');
+
+        top.append(identity,googleMark);
 
         const stars=document.createElement('div');
         stars.className='google-review-card-stars';
         stars.setAttribute('aria-label',`${review.rating || 5} von 5 Sternen`);
         stars.textContent='★'.repeat(Math.max(1,Math.min(5,Math.round(Number(review.rating)||5))));
 
-        top.append(author,stars);
-
         const quote=document.createElement('p');
         quote.className='google-review-text';
         quote.textContent=review.text;
 
-        card.append(top,quote);
+        const more=document.createElement('span');
+        more.className='google-review-more';
+        more.textContent=review.googleMapsUri ? 'Bewertung ganz lesen' : 'Google Rezension';
+
+        card.append(top,stars,quote,more);
         track.appendChild(card);
 
         const dot=document.createElement('span');
