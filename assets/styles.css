@@ -1299,3 +1299,23 @@ body > main > .section-dark .eyebrow{
 body > main > .section-dark .text-link{
   color:var(--paper);
 }
+
+
+/* Homepage dark sections: use true white for reliable contrast */
+body > main > .section-dark,
+body > main > .section-dark h1,
+body > main > .section-dark h2,
+body > main > .section-dark h3,
+body > main > .section-dark strong{
+  color:#ffffff;
+}
+body > main > .section-dark .section-head > p,
+body > main > .section-dark .step p,
+body > main > .section-dark .copy > p,
+body > main > .section-dark .lead,
+body > main > .section-dark p{
+  color:#e8edef;
+}
+body > main > .section-dark .text-link{
+  color:#ffffff;
+}
