@@ -182,7 +182,7 @@ if (trustMotionElements.length) {
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.22 });
+    }, { threshold: 0.8, rootMargin: '0px 0px -18% 0px' });
     trustMotionElements.forEach((el) => trustObserver.observe(el));
   } else {
     trustMotionElements.forEach((el) => el.classList.add('is-visible'));
