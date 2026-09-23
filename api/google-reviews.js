@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
         'X-Goog-Api-Key': apiKey,
-        'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri'
+        'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri,places.reviews'
       },
       body: JSON.stringify({
         textQuery: 'SLS Immobilienpartner GmbH Dorsten',
@@ -45,7 +45,15 @@ export default async function handler(req, res) {
       address: place.formattedAddress || '',
       rating: place.rating,
       userRatingCount: place.userRatingCount || 0,
-      googleMapsUri: place.googleMapsUri || 'https://share.google/qbk6kf2K0Cemc8Zeq'
+      googleMapsUri: place.googleMapsUri || 'https://share.google/qbk6kf2K0Cemc8Zeq',
+      reviews: (place.reviews || []).slice(0, 5).map((review) => ({
+        author: review.authorAttribution?.displayName || 'Google-Nutzer',
+        authorUri: review.authorAttribution?.uri || '',
+        photoUri: review.authorAttribution?.photoUri || '',
+        rating: review.rating || 0,
+        text: review.text?.text || review.originalText?.text || '',
+        published: review.relativePublishTimeDescription || review.publishTime || ''
+      }))
     });
   } catch (error) {
     res.status(500).json({ error: 'Unable to load Google rating' });

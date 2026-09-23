@@ -130,10 +130,19 @@
         </article>
       </div>
 
-      <div class="review-grid review-grid-premium review-grid-integrated reveal">
-        <blockquote class="review"><div class="review-stars">★★★★★</div><p>„Der Verkauf unserer Immobilie war von Anfang an in den besten Händen. Besonders beeindruckt hat uns die Erreichbarkeit und die ehrliche, transparente Begleitung.“</p><cite>Nena · 05/04/2026</cite></blockquote>
-        <blockquote class="review"><div class="review-stars">★★★★★</div><p>„Wir haben unser Haus mit SLS Immobilienpartner verkauft und würden es jederzeit wieder tun. Ein sehr kompetentes und erfahrenes Maklerteam.“</p><cite>Thomas G. · 03/12/2025</cite></blockquote>
-        <blockquote class="review"><div class="review-stars">★★★★★</div><p>„Nur zu empfehlen. Herr Livera ist sehr kompetent und arbeitet zügig, zuverlässig und lösungsorientiert.“</p><cite>Vivi W. · 01/07/2025</cite></blockquote>
+      <div class="google-review-slider reveal" data-google-review-slider hidden>
+        <div class="google-review-slider-head">
+          <div>
+            <span class="google-review-kicker">Echte Google Rezensionen</span>
+            <h3>Was Kundinnen und Kunden über SLS sagen.</h3>
+          </div>
+          <div class="google-review-controls" aria-label="Google Rezensionen steuern">
+            <button type="button" class="google-review-arrow" data-google-review-prev aria-label="Vorherige Rezension">←</button>
+            <button type="button" class="google-review-arrow" data-google-review-next aria-label="Nächste Rezension">→</button>
+          </div>
+        </div>
+        <div class="google-review-track" data-google-review-track tabindex="0"></div>
+        <div class="google-review-dots" data-google-review-dots aria-hidden="true"></div>
       </div>
     </div>
   </section>
@@ -187,22 +196,89 @@
 <script>
 (async()=>{
   const box=document.querySelector('[data-google-rating]');
-  if(!box) return;
+  const slider=document.querySelector('[data-google-review-slider]');
   try{
     const res=await fetch('/api/google-reviews');
     if(!res.ok) throw new Error('Google rating unavailable');
     const data=await res.json();
-    const score=box.querySelector('.google-rating-score');
-    const count=box.querySelector('.google-rating-count');
-    if(score) score.textContent=Number(data.rating).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1});
-    if(count) count.textContent=`${Number(data.userRatingCount).toLocaleString('de-DE')} Bewertungen`;
-    if(data.googleMapsUri){
-      const link=box.querySelector('a');
-      if(link) link.href=data.googleMapsUri;
+
+    if(box){
+      const score=box.querySelector('.google-rating-score');
+      const count=box.querySelector('.google-rating-count');
+      if(score) score.textContent=Number(data.rating).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1});
+      if(count) count.textContent=`${Number(data.userRatingCount).toLocaleString('de-DE')} Bewertungen`;
+    }
+
+    const reviews=Array.isArray(data.reviews) ? data.reviews.filter(r=>r && r.text) : [];
+    if(slider && reviews.length){
+      const track=slider.querySelector('[data-google-review-track]');
+      const dots=slider.querySelector('[data-google-review-dots]');
+      const prev=slider.querySelector('[data-google-review-prev]');
+      const next=slider.querySelector('[data-google-review-next]');
+
+      reviews.forEach((review,index)=>{
+        const card=document.createElement('article');
+        card.className='google-review-card';
+
+        const top=document.createElement('div');
+        top.className='google-review-card-top';
+
+        const author=document.createElement('div');
+        author.className='google-review-author';
+        const name=document.createElement('strong');
+        name.textContent=review.author || 'Google-Nutzer';
+        const source=document.createElement('span');
+        source.textContent=review.published ? `Google · ${review.published}` : 'Google Rezension';
+        author.append(name,source);
+
+        const stars=document.createElement('div');
+        stars.className='google-review-card-stars';
+        stars.setAttribute('aria-label',`${review.rating || 5} von 5 Sternen`);
+        stars.textContent='★'.repeat(Math.max(1,Math.min(5,Math.round(Number(review.rating)||5))));
+
+        top.append(author,stars);
+
+        const quote=document.createElement('p');
+        quote.className='google-review-text';
+        quote.textContent=review.text;
+
+        card.append(top,quote);
+        track.appendChild(card);
+
+        const dot=document.createElement('span');
+        dot.className='google-review-dot'+(index===0?' is-active':'');
+        dots.appendChild(dot);
+      });
+
+      const cards=[...track.children];
+      const dotEls=[...dots.children];
+      const update=()=>{
+        if(!cards.length) return;
+        const center=track.scrollLeft + track.clientWidth/2;
+        let best=0,dist=Infinity;
+        cards.forEach((card,i)=>{
+          const c=card.offsetLeft+card.offsetWidth/2;
+          const d=Math.abs(c-center);
+          if(d<dist){dist=d;best=i;}
+        });
+        dotEls.forEach((dot,i)=>dot.classList.toggle('is-active',i===best));
+      };
+      const step=(dir)=>{
+        const card=cards[0];
+        if(!card) return;
+        track.scrollBy({left:dir*(card.getBoundingClientRect().width+16),behavior:'smooth'});
+      };
+      prev?.addEventListener('click',()=>step(-1));
+      next?.addEventListener('click',()=>step(1));
+      track.addEventListener('scroll',()=>requestAnimationFrame(update),{passive:true});
+      slider.hidden=false;
+      requestAnimationFrame(update);
     }
   }catch(e){
-    const count=box.querySelector('.google-rating-count');
-    if(count) count.textContent='Google-Bewertungen ansehen';
+    if(box){
+      const count=box.querySelector('.google-rating-count');
+      if(count) count.textContent='Google-Bewertungen';
+    }
   }
 })();
 </script>
