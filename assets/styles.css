@@ -1848,30 +1848,33 @@ a.google-review-card .google-review-more{
 }
 
 
-/* Deliberate directional trust motion */
+/* Trust motion is enabled only by the homepage script; content stays visible if it cannot run. */
 .home-editorial .trust-section-prominent{overflow-x:clip}
-.home-editorial .trust-motion-left,
-.home-editorial .trust-motion-right{
+.home-editorial .trust-section-prominent.trust-motion-active .trust-motion-left,
+.home-editorial .trust-section-prominent.trust-motion-active .trust-motion-right{
   opacity:.25;
-  transition:opacity 2.8s ease, transform 2.8s cubic-bezier(.22,.61,.36,1);
   will-change:transform,opacity;
 }
-.home-editorial .trust-motion-left{transform:translateX(calc(-100vw - 16px))}
-.home-editorial .trust-motion-right{transform:translateX(calc(100vw + 16px))}
-.home-editorial .trust-motion-left.is-visible,
-.home-editorial .trust-motion-right.is-visible{
+.home-editorial .trust-section-prominent.trust-motion-active .trust-motion-left{transform:translateX(calc(-100vw - 16px))}
+.home-editorial .trust-section-prominent.trust-motion-active .trust-motion-right{transform:translateX(calc(100vw + 16px))}
+.home-editorial .trust-section-prominent.trust-motion-active .trust-motion-left.is-visible,
+.home-editorial .trust-section-prominent.trust-motion-active .trust-motion-right.is-visible{
   opacity:1;
   transform:translateX(0);
 }
+.home-editorial .trust-section-prominent.trust-motion-ready .trust-motion-left,
+.home-editorial .trust-section-prominent.trust-motion-ready .trust-motion-right{
+  transition:opacity 2.8s ease, transform 2.8s cubic-bezier(.22,.61,.36,1);
+}
 @media(max-width:800px){
-  .home-editorial .trust-motion-left,
-  .home-editorial .trust-motion-right{
+  .home-editorial .trust-section-prominent.trust-motion-ready .trust-motion-left,
+  .home-editorial .trust-section-prominent.trust-motion-ready .trust-motion-right{
     transition-duration:2.2s;
   }
 }
 @media(prefers-reduced-motion:reduce){
-  .home-editorial .trust-motion-left,
-  .home-editorial .trust-motion-right{
+  .home-editorial .trust-section-prominent.trust-motion-active .trust-motion-left,
+  .home-editorial .trust-section-prominent.trust-motion-active .trust-motion-right{
     opacity:1;
     transform:none;
     transition:none;
