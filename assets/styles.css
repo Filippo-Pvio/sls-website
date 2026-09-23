@@ -1120,3 +1120,11 @@ textarea { min-height: 132px; resize: vertical; }
 .floating-actions{min-height:50px}
 .site-header.is-scrolled .floating-header-shell{height:58px;min-height:58px;padding-top:2px;padding-bottom:2px}
 }
+
+
+/* Cleaner mobile off-canvas menu */
+.fullscreen-nav-top{display:flex;justify-content:flex-end;align-items:center;padding:0 0 12px;border-bottom:0}
+.offcanvas-intro{margin:0 0 12px;white-space:nowrap}
+.fullscreen-nav-grid{padding-top:0}
+.fullscreen-nav-bottom{margin-top:16px;padding-top:16px;border-top:1px solid rgba(108,151,171,.5)}
+@media(max-width:480px){.offcanvas-intro{font-size:22px;white-space:nowrap}}
