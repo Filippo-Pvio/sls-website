@@ -1751,16 +1751,19 @@ a.google-review-card .google-review-more{
     background:linear-gradient(180deg,#223943 0%,#223943 46%,rgba(34,57,67,.96) 60%,rgba(34,57,67,.28) 77%,transparent 92%);
   }
   .home-editorial .hero-premium .hero-content{
-    width:calc(100% - 40px);
+    width:calc(100% - 32px);
     max-width:560px;
     padding:142px 0 clamp(230px,68vw,350px);
   }
   .home-editorial .hero-premium h1{
     max-width:100%;
     margin-bottom:20px;
-    font-size:clamp(39px,10.5vw,48px);
-    line-height:1.08;
+    font-size:clamp(27px,8.5vw,38px);
+    letter-spacing:-.025em;
+    line-height:1.12;
   }
+  .home-editorial .hero-mobile-line,
+  .home-editorial .hero-region-line{display:block;white-space:nowrap}
   .home-editorial .hero-owner-emphasis{color:var(--coral)}
   .home-editorial .hero-intro-default{display:none}
   .home-editorial .hero-intro-mobile{
