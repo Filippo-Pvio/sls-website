@@ -1209,7 +1209,7 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
 
 
 /* Keep tall partner badges visible instead of forcing them into a square */
-.trust-section-prominent .trust-badge-card img[src$="immobilie1-partner.png"]{
+.trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{
   width:auto;
   height:138px;
   max-width:100%;
@@ -1222,7 +1222,7 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
   object-fit:contain;
 }
 @media(max-width:800px){
-  .trust-section-prominent .trust-badge-card img[src$="immobilie1-partner.png"]{
+  .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{
     width:auto;
     height:102px;
   }
