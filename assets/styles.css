@@ -1158,3 +1158,24 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
 .home .hero::before{
   background:linear-gradient(180deg,rgba(11,17,18,.40),rgba(11,17,18,.58));
 }
+
+
+/* Prominent trust badges near homepage hero */
+.trust-section-prominent{padding-top:34px;padding-bottom:42px;background:var(--paper)}
+.trust-section-prominent .trust-logo-section{display:grid;grid-template-columns:minmax(220px,.8fr) 1.8fr;gap:36px;align-items:center}
+.trust-section-prominent .trust-logo-section>.eyebrow,.trust-section-prominent .trust-logo-section>h2{grid-column:1}
+.trust-section-prominent .trust-logo-section>h2{margin:0;font-size:clamp(28px,3.3vw,48px)}
+.trust-section-prominent .trust-badge-grid{grid-column:2;grid-row:1/span 2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.trust-section-prominent .trust-badge-card{min-height:180px;padding:18px 14px;gap:10px;border-radius:18px}
+.trust-section-prominent .trust-badge-card img{width:112px;height:112px}
+.trust-section-prominent .trust-badge-card:nth-child(2) img{width:106px;height:126px}
+@media(max-width:800px){
+.trust-section-prominent{padding:24px 0 30px}
+.trust-section-prominent .trust-logo-section{display:block}
+.trust-section-prominent .trust-logo-section>h2{margin-bottom:18px;font-size:30px}
+.trust-section-prominent .trust-badge-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.trust-section-prominent .trust-badge-card{min-height:138px;padding:12px 8px;border-radius:14px}
+.trust-section-prominent .trust-badge-card img{width:76px;height:76px}
+.trust-section-prominent .trust-badge-card:nth-child(2) img{width:72px;height:86px}
+.trust-section-prominent .trust-badge-card span{font-size:9px;line-height:1.25}
+}
