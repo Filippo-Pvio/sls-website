@@ -130,26 +130,26 @@
       <div class="section-head">
         <div>
           <p class="eyebrow">Extern bewertet</p>
-          <h2>Unsere Bewertungen auf Google, ImmoScout24 und Immowelt.</h2>
+          <h2>Unsere Bewertung.</h2>
         </div>
-        <p>Unabhängige Plattformen geben einen direkten Einblick in die Erfahrungen unserer Kundinnen und Kunden.</p>
       </div>
       <div class="review-platform-grid reveal">
         <article class="review-platform-card review-platform-google">
           <div class="review-platform-head">
             <span class="review-platform-name">Google</span>
-            <span class="review-platform-location">SLS Immobilienpartner · Dorsten</span>
           </div>
-          <div class="review-platform-google-body">
-            <strong>Google Bewertungen</strong>
-            <p>Aktuelle Kundenstimmen direkt beim Google-Unternehmensprofil ansehen.</p>
-            <a class="button button-small" href="https://share.google/qbk6kf2K0Cemc8Zeq" target="_blank" rel="noopener">Google Bewertungen öffnen</a>
+          <div class="review-platform-google-body" data-google-rating>
+            <div class="google-rating-live" aria-live="polite">
+              <strong class="google-rating-score">–</strong>
+              <span class="google-rating-stars" aria-hidden="true">★★★★★</span>
+              <span class="google-rating-count">Google-Bewertung wird geladen …</span>
+            </div>
+            <a class="button button-small" href="https://share.google/qbk6kf2K0Cemc8Zeq" target="_blank" rel="noopener">Bei Google ansehen</a>
           </div>
         </article>
         <article class="review-platform-card">
           <div class="review-platform-head">
             <span class="review-platform-name">ImmoScout24</span>
-            <span class="review-platform-location">Anbieterbewertung</span>
           </div>
           <div class="review-widget-frame review-widget-scout">
             <iframe title="ImmoScout24 Anbieterbewertung SLS Immobilienpartner" height="160" width="190" src="https://widget.immobilienscout24.de/anbieter/bewertung/3fe6d968f63ae12b23a28f0fb169f286" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" loading="lazy"></iframe>
@@ -158,7 +158,6 @@
         <article class="review-platform-card">
           <div class="review-platform-head">
             <span class="review-platform-name">Immowelt</span>
-            <span class="review-platform-location">Bewertungsbadge</span>
           </div>
           <div class="review-widget-frame review-widget-immowelt">
             <iframe title="Immowelt Bewertungsbadge SLS Immobilienpartner" src="https://homepagemodul.immowelt.de/ratingbadge/0367AE00368D4614B34B4DBE5DA71EEF?whg=wid_mbw" loading="lazy"></iframe>
@@ -225,5 +224,27 @@
 </main>
 <footer class="site-footer" data-site-footer></footer>
 <script src="/assets/site.js" defer></script>
+<script>
+(async()=>{
+  const box=document.querySelector('[data-google-rating]');
+  if(!box) return;
+  try{
+    const res=await fetch('/api/google-reviews');
+    if(!res.ok) throw new Error('Google rating unavailable');
+    const data=await res.json();
+    const score=box.querySelector('.google-rating-score');
+    const count=box.querySelector('.google-rating-count');
+    if(score) score.textContent=Number(data.rating).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1});
+    if(count) count.textContent=`${Number(data.userRatingCount).toLocaleString('de-DE')} Bewertungen`;
+    if(data.googleMapsUri){
+      const link=box.querySelector('a');
+      if(link) link.href=data.googleMapsUri;
+    }
+  }catch(e){
+    const count=box.querySelector('.google-rating-count');
+    if(count) count.textContent='Google-Bewertungen ansehen';
+  }
+})();
+</script>
 </body>
 </html>

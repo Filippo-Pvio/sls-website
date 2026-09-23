@@ -1197,3 +1197,12 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
 .review-platform-google-body p{margin:0;color:var(--muted)}
 .button-small{min-height:40px;padding:0 15px;font-size:11px}
 @media(max-width:900px){.review-platform-grid{grid-template-columns:1fr}.review-platform-card{min-height:220px}.review-platform-head{align-items:center}.review-platform-google-body{align-items:center;text-align:center}}
+
+
+/* Review cards: simplified labels + live Google rating */
+.review-platform-head{justify-content:flex-start}
+.review-platform-google-body{align-items:center;text-align:center}
+.google-rating-live{display:flex;flex-direction:column;align-items:center;gap:6px}
+.google-rating-score{font:600 46px/1 "Playfair Display",Georgia,serif;color:var(--ink)}
+.google-rating-stars{font-size:22px;letter-spacing:2px;color:#f4b400}
+.google-rating-count{font-size:12px;font-weight:750;color:var(--muted)}
