@@ -1262,3 +1262,40 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
   .premium-grid-focused{grid-template-columns:1fr}
   .review-grid-integrated{margin-top:16px;padding-top:16px}
 }
+
+
+/* Homepage contrast audit: explicit readable text colors by surface */
+body > main > .section:not(.section-dark),
+body > main > .section-white{
+  color:var(--ink);
+}
+body > main > .section:not(.section-dark) h2,
+body > main > .section:not(.section-dark) h3,
+body > main > .section-white h2,
+body > main > .section-white h3{
+  color:var(--ink);
+}
+body > main > .section:not(.section-dark) .lead,
+body > main > .section:not(.section-dark) .section-head > p,
+body > main > .section:not(.section-dark) .copy > p,
+body > main > .section-white .lead,
+body > main > .section-white .section-head > p{
+  color:#5f6262;
+}
+body > main > .section-dark,
+body > main > .section-dark h2,
+body > main > .section-dark h3{
+  color:var(--paper);
+}
+body > main > .section-dark .section-head > p,
+body > main > .section-dark .step p,
+body > main > .section-dark .copy > p,
+body > main > .section-dark .lead{
+  color:#d8d3ce;
+}
+body > main > .section-dark .eyebrow{
+  color:#8fb9cc;
+}
+body > main > .section-dark .text-link{
+  color:var(--paper);
+}
