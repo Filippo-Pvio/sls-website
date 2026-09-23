@@ -1252,3 +1252,13 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
     font-size:11px;
   }
 }
+
+
+/* Homepage conversion pass */
+.premium-grid-focused{grid-template-columns:repeat(2,minmax(0,1fr))}
+.review-grid-integrated{margin-top:22px;padding-top:22px;border-top:1px solid var(--line)}
+.regional-competence .split{align-items:center}
+@media(max-width:800px){
+  .premium-grid-focused{grid-template-columns:1fr}
+  .review-grid-integrated{margin-top:16px;padding-top:16px}
+}
