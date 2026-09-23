@@ -1846,3 +1846,35 @@ a.google-review-card .google-review-more{
 .home-editorial .home-google-trust{width:100%;margin-top:24px;padding-top:18px;flex-wrap:wrap;gap:6px 8px;white-space:normal}
 .home-editorial .home-google-trust-count{flex-basis:100%;text-align:center}
 }
+
+
+/* Subtle one-time trust motion */
+.home-editorial .trust-motion-left,
+.home-editorial .trust-motion-right{
+  opacity:0;
+  transition:opacity .58s ease, transform .58s cubic-bezier(.22,.61,.36,1);
+  will-change:transform,opacity;
+}
+.home-editorial .trust-motion-left{transform:translateX(-20px)}
+.home-editorial .trust-motion-right{transform:translateX(20px)}
+.home-editorial .trust-motion-left.is-visible,
+.home-editorial .trust-motion-right.is-visible{
+  opacity:1;
+  transform:translateX(0);
+}
+@media(max-width:800px){
+  .home-editorial .trust-motion-left,
+  .home-editorial .trust-motion-right{
+    transition-duration:.48s;
+  }
+  .home-editorial .trust-motion-left{transform:translateX(-14px)}
+  .home-editorial .trust-motion-right{transform:translateX(14px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .home-editorial .trust-motion-left,
+  .home-editorial .trust-motion-right{
+    opacity:1;
+    transform:none;
+    transition:none;
+  }
+}
