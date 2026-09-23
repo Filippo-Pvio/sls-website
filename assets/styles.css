@@ -1319,3 +1319,26 @@ body > main > .section-dark p{
 body > main > .section-dark .text-link{
   color:#ffffff;
 }
+
+
+/* Homepage: lock dark-section background and text together */
+body > main > section.section.section-dark{
+  background:#152126 !important;
+  color:#ffffff !important;
+}
+body > main > section.section.section-dark h1,
+body > main > section.section.section-dark h2,
+body > main > section.section.section-dark h3,
+body > main > section.section.section-dark strong,
+body > main > section.section.section-dark .text-link{
+  color:#ffffff !important;
+}
+body > main > section.section.section-dark p,
+body > main > section.section.section-dark .lead,
+body > main > section.section.section-dark .section-head > p,
+body > main > section.section.section-dark .step p{
+  color:#e5eaec !important;
+}
+body > main > section.section.section-dark .eyebrow{
+  color:#8fb9cc !important;
+}
