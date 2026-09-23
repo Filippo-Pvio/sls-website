@@ -1534,3 +1534,198 @@ a.google-review-card .google-review-more{
     -webkit-line-clamp:4;
   }
 }
+
+
+/* Homepage-only SLS signature system — intentionally less templated */
+.home-editorial .home-kicker{
+  margin:0 0 14px;
+  color:#47758b;
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.home-editorial .trust-logo-section{
+  display:block;
+}
+.home-editorial .trust-intro{
+  margin:0 0 24px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+.home-editorial .home-value{
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);
+  gap:clamp(50px,8vw,120px);
+  align-items:end;
+}
+.home-editorial .home-value-main h2{
+  max-width:880px;
+  margin-bottom:24px;
+  font-size:clamp(48px,6vw,88px);
+  line-height:.97;
+}
+.home-editorial .home-value-main .lead{
+  max-width:720px;
+}
+.home-editorial .home-value-aside{
+  padding:28px 0 8px;
+  border-top:3px solid var(--ink);
+}
+.home-editorial .home-value-aside p{
+  margin:0 0 10px;
+  color:#47758b;
+  font-size:13px;
+  font-weight:800;
+}
+.home-editorial .home-value-aside strong{
+  display:block;
+  max-width:420px;
+  font:550 28px/1.18 "Playfair Display",Georgia,serif;
+  color:var(--ink);
+}
+.home-editorial .home-belief-section{
+  padding-top:110px;
+  padding-bottom:110px;
+}
+.home-editorial .home-belief{
+  display:grid;
+  grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+  gap:clamp(50px,9vw,140px);
+  align-items:start;
+}
+.home-editorial .home-belief-title{
+  position:sticky;
+  top:120px;
+}
+.home-editorial .home-belief-title h2{
+  max-width:560px;
+  font-size:clamp(48px,5vw,76px);
+  line-height:.98;
+}
+.home-editorial .home-belief-lead{
+  margin:0 0 38px;
+  max-width:680px;
+  color:var(--ink);
+  font:500 29px/1.35 "Playfair Display",Georgia,serif;
+}
+.home-editorial .home-belief-lines{
+  border-top:1px solid var(--line);
+}
+.home-editorial .home-belief-lines p{
+  margin:0;
+  padding:24px 0;
+  border-bottom:1px solid var(--line);
+  color:var(--muted);
+  font-size:16px;
+}
+.home-editorial .home-belief-lines strong{
+  display:inline;
+  color:var(--ink);
+}
+.home-editorial .home-team-head{
+  align-items:flex-start;
+}
+.home-editorial .home-process{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+}
+.home-editorial .home-process-intro{
+  max-width:980px;
+}
+.home-editorial .home-process-intro h2{
+  max-width:900px;
+  font-size:clamp(46px,5vw,76px);
+  line-height:1;
+}
+.home-editorial .home-process-intro>p:last-child{
+  max-width:680px;
+  color:#dfe5e7!important;
+  font-size:18px;
+}
+.home-editorial .home-process-flow{
+  margin:54px 0 18px;
+  padding:28px 0;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:16px 22px;
+  border-top:1px solid rgba(255,255,255,.28);
+  border-bottom:1px solid rgba(255,255,255,.28);
+}
+.home-editorial .home-process-flow span{
+  color:#fff;
+  font:550 clamp(25px,3.5vw,48px)/1 "Playfair Display",Georgia,serif;
+}
+.home-editorial .home-process-flow i{
+  color:#8fb9cc;
+  font-style:normal;
+  font-size:22px;
+}
+.home-editorial .regional-competence .copy h2{
+  max-width:620px;
+  font-size:clamp(44px,4.5vw,70px);
+  line-height:1;
+}
+.home-editorial .premium-final-cta .cta-band{
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:end;
+}
+.home-editorial .premium-final-cta h2{
+  max-width:880px;
+  font-size:clamp(46px,5vw,74px);
+  line-height:1;
+}
+.home-editorial .home-final-actions{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:10px;
+}
+.home-editorial .premium-final-cta .home-final-actions .text-link{
+  color:#fff!important;
+}
+
+@media(max-width:900px){
+  .home-editorial .home-value,
+  .home-editorial .home-belief{
+    grid-template-columns:1fr;
+    gap:42px;
+  }
+  .home-editorial .home-belief-title{position:static}
+  .home-editorial .home-value-main h2,
+  .home-editorial .home-belief-title h2,
+  .home-editorial .home-process-intro h2,
+  .home-editorial .regional-competence .copy h2,
+  .home-editorial .premium-final-cta h2{
+    font-size:clamp(38px,10vw,56px);
+  }
+  .home-editorial .home-belief-section{
+    padding-top:76px;
+    padding-bottom:76px;
+  }
+  .home-editorial .home-belief-lead{font-size:24px}
+  .home-editorial .home-process-flow{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:0;
+    margin-top:36px;
+    padding:0;
+  }
+  .home-editorial .home-process-flow span{
+    padding:18px 0;
+    border-bottom:1px solid rgba(255,255,255,.2);
+    font-size:32px;
+  }
+  .home-editorial .home-process-flow i{display:none}
+  .home-editorial .premium-final-cta .cta-band{
+    grid-template-columns:1fr;
+  }
+  .home-editorial .home-final-actions{
+    width:100%;
+  }
+  .home-editorial .home-final-actions .button{
+    width:100%;
+  }
+}
