@@ -1342,3 +1342,104 @@ body > main > section.section.section-dark .step p{
 body > main > section.section.section-dark .eyebrow{
   color:#8fb9cc !important;
 }
+
+
+/* Live Google review slider */
+.google-review-slider{
+  margin-top:28px;
+  padding:28px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:#f3f6f6;
+}
+.google-review-slider[hidden]{display:none}
+.google-review-slider-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:24px;
+  margin-bottom:20px;
+}
+.google-review-kicker{
+  display:block;
+  margin-bottom:8px;
+  color:#47758b;
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.google-review-slider-head h3{
+  margin:0;
+  max-width:720px;
+  font-size:clamp(25px,3vw,36px);
+}
+.google-review-controls{display:flex;gap:8px}
+.google-review-arrow{
+  width:42px;height:42px;
+  border:1px solid rgba(11,17,18,.14);
+  border-radius:50%;
+  background:var(--white);
+  color:var(--ink);
+  font-size:20px;
+  cursor:pointer;
+}
+.google-review-track{
+  display:grid;
+  grid-auto-flow:column;
+  grid-auto-columns:minmax(340px,calc(50% - 8px));
+  gap:16px;
+  overflow-x:auto;
+  overscroll-behavior-inline:contain;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+  padding-bottom:2px;
+}
+.google-review-track::-webkit-scrollbar{display:none}
+.google-review-card{
+  min-height:245px;
+  padding:24px;
+  scroll-snap-align:start;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:18px;
+}
+.google-review-card-top{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+  margin-bottom:24px;
+}
+.google-review-author{display:flex;flex-direction:column;gap:3px}
+.google-review-author strong{color:var(--ink);font-size:14px}
+.google-review-author span{color:var(--muted);font-size:10px}
+.google-review-card-stars{color:#f4b400;letter-spacing:.06em;white-space:nowrap}
+.google-review-text{
+  margin:0;
+  color:var(--ink)!important;
+  font:500 20px/1.5 "Playfair Display",Georgia,serif;
+}
+.google-review-dots{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  margin-top:18px;
+}
+.google-review-dot{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:#c8d0d1;
+}
+.google-review-dot.is-active{background:#47758b}
+@media(max-width:800px){
+  .google-review-slider{margin-top:18px;padding:18px 14px}
+  .google-review-slider-head{align-items:flex-start;margin-bottom:16px}
+  .google-review-slider-head h3{font-size:26px}
+  .google-review-controls{display:none}
+  .google-review-track{grid-auto-columns:88%;gap:12px}
+  .google-review-card{min-height:230px;padding:20px}
+  .google-review-card-top{display:block;margin-bottom:18px}
+  .google-review-card-stars{margin-top:10px}
+  .google-review-text{font-size:18px}
+}
