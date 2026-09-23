@@ -30,6 +30,7 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--ink); background: var(--paper); font-family: "Raleway", Arial, sans-serif; line-height: 1.58; }
+html:has(> body.home-editorial), body.home-editorial { overflow-x: hidden; overscroll-behavior-x: none; }
 body.menu-open { overflow: hidden; }
 img { display: block; width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
