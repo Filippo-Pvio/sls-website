@@ -1179,3 +1179,21 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
 .trust-section-prominent .trust-badge-card:nth-child(2) img{width:72px;height:86px}
 .trust-section-prominent .trust-badge-card span{font-size:9px;line-height:1.25}
 }
+
+
+/* External review platforms */
+.review-platforms-section{background:var(--paper)}
+.review-platform-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.review-platform-card{min-height:280px;padding:22px;background:var(--white);border:1px solid var(--line);border-radius:20px;display:flex;flex-direction:column;box-shadow:0 10px 32px rgba(11,17,18,.05)}
+.review-platform-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.review-platform-name{font-weight:800;font-size:14px;color:var(--ink)}
+.review-platform-location{font-size:11px;font-weight:700;color:var(--muted);text-align:right}
+.review-widget-frame{flex:1;display:grid;place-items:center;padding:18px 0 0;overflow:hidden}
+.review-widget-frame iframe{display:block;border:0;max-width:100%;background:transparent}
+.review-widget-scout iframe{width:190px;height:160px}
+.review-widget-immowelt iframe{width:220px;height:220px}
+.review-platform-google-body{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:12px;padding-top:20px}
+.review-platform-google-body strong{font:550 28px/1.1 "Playfair Display",Georgia,serif;color:var(--ink)}
+.review-platform-google-body p{margin:0;color:var(--muted)}
+.button-small{min-height:40px;padding:0 15px;font-size:11px}
+@media(max-width:900px){.review-platform-grid{grid-template-columns:1fr}.review-platform-card{min-height:220px}.review-platform-head{align-items:center}.review-platform-google-body{align-items:center;text-align:center}}
