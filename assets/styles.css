@@ -1206,3 +1206,28 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
 .google-rating-score{font:600 46px/1 "Playfair Display",Georgia,serif;color:var(--ink)}
 .google-rating-stars{font-size:22px;letter-spacing:2px;color:#f4b400}
 .google-rating-count{font-size:12px;font-weight:750;color:var(--muted)}
+
+
+/* Keep tall partner badges visible instead of forcing them into a square */
+.trust-section-prominent .trust-badge-card img[src$="immobilie1-partner.png"]{
+  width:auto;
+  height:138px;
+  max-width:100%;
+  object-fit:contain;
+}
+.trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{
+  width:auto;
+  height:118px;
+  max-width:100%;
+  object-fit:contain;
+}
+@media(max-width:800px){
+  .trust-section-prominent .trust-badge-card img[src$="immobilie1-partner.png"]{
+    width:auto;
+    height:102px;
+  }
+  .trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{
+    width:auto;
+    height:88px;
+  }
+}
