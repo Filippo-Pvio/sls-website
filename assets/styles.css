@@ -1111,3 +1111,12 @@ textarea { min-height: 132px; resize: vertical; }
 .floating-actions{min-height:44px}
 .site-header.is-scrolled .floating-header-shell{min-height:46px;padding-top:0;padding-bottom:0}
 }
+
+
+/* Tighten capsule around unchanged 1.0 logo */
+@media(max-width:980px){
+.floating-header-shell{height:58px;min-height:58px;padding-top:2px;padding-bottom:2px}
+.floating-brand{min-height:50px}
+.floating-actions{min-height:50px}
+.site-header.is-scrolled .floating-header-shell{height:58px;min-height:58px;padding-top:2px;padding-bottom:2px}
+}
