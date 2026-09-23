@@ -1231,3 +1231,24 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
     height:88px;
   }
 }
+
+
+/* Partner logo strip: logos only, one shared descriptor */
+.trust-section-prominent .trust-badge-card{
+  text-decoration:none;
+}
+.trust-section-prominent .trust-badge-note{
+  grid-column:2;
+  margin:4px 0 0;
+  font-size:12px;
+  line-height:1.5;
+  color:var(--muted);
+}
+@media(max-width:800px){
+  .trust-section-prominent .trust-badge-note{
+    grid-column:auto;
+    margin-top:12px;
+    text-align:center;
+    font-size:11px;
+  }
+}
