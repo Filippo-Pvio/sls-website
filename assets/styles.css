@@ -1128,3 +1128,33 @@ textarea { min-height: 132px; resize: vertical; }
 .fullscreen-nav-grid{padding-top:0}
 .fullscreen-nav-bottom{margin-top:16px;padding-top:16px;border-top:1px solid rgba(108,151,171,.5)}
 @media(max-width:480px){.offcanvas-intro{font-size:22px;white-space:nowrap}}
+
+
+/* Lighter SLS subpage system: keep homepage identity, reduce dark-page repetition */
+body:not(.home) .page-hero,
+body:not(.home) .profile-hero,
+body:not(.home) .standard-hero{
+  background:var(--paper);
+  color:var(--ink);
+}
+body:not(.home) .page-hero h1,
+body:not(.home) .profile-hero h1,
+body:not(.home) .standard-hero h1{
+  color:var(--ink);
+}
+body:not(.home) .page-hero p,
+body:not(.home) .profile-hero p,
+body:not(.home) .standard-hero p{
+  color:rgba(11,17,18,.72);
+}
+body:not(.home) main > section:nth-of-type(even):not(.dark-section):not(.ink-section){
+  background:#fff;
+}
+body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-section){
+  background:var(--paper);
+}
+
+/* Homepage: retain the new composition, but let the team read more clearly */
+.home .hero::before{
+  background:linear-gradient(180deg,rgba(11,17,18,.40),rgba(11,17,18,.58));
+}
