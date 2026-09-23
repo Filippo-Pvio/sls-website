@@ -37,6 +37,12 @@
         <a class="trust-badge-card" href="https://www.immowelt.de/" target="_blank" rel="noopener"><img src="/assets/images/immowelt-partner.png" alt="Immowelt Partner"></a>
         <a class="trust-badge-card" href="https://www.immobilie1.de/" target="_blank" rel="noopener"><img src="/assets/images/immobilie1-siegel-version-partner.png" alt="Immobilie1 Partner"></a>
       </div>
+      <a class="home-google-trust" href="https://share.google/qbk6kf2K0Cemc8Zeq" target="_blank" rel="noopener" data-home-google-trust>
+        <span class="home-google-trust-label">Google</span>
+        <strong class="home-google-trust-score">–</strong>
+        <span class="home-google-trust-stars" aria-hidden="true">★★★★★</span>
+        <span class="home-google-trust-count">Bewertungen werden geladen …</span>
+      </a>
     </div>
   </section>
 
@@ -190,6 +196,7 @@
 <script>
 (async()=>{
   const box=document.querySelector('[data-google-rating]');
+  const trust=document.querySelector('[data-home-google-trust]');
   const slider=document.querySelector('[data-google-review-slider]');
   try{
     const res=await fetch('/api/google-reviews');
@@ -201,6 +208,13 @@
       const count=box.querySelector('.google-rating-count');
       if(score) score.textContent=Number(data.rating).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1});
       if(count) count.textContent=`${Number(data.userRatingCount).toLocaleString('de-DE')} Bewertungen`;
+    }
+    if(trust){
+      const score=trust.querySelector('.home-google-trust-score');
+      const count=trust.querySelector('.home-google-trust-count');
+      if(score) score.textContent=Number(data.rating).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1});
+      if(count) count.textContent=`${Number(data.userRatingCount).toLocaleString('de-DE')} Google-Bewertungen`;
+      if(data.googleMapsUri) trust.href=data.googleMapsUri;
     }
 
     const reviews=Array.isArray(data.reviews) ? data.reviews.filter(r=>r && r.text) : [];
