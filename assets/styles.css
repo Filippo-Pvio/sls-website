@@ -1809,6 +1809,20 @@ a.google-review-card .google-review-more{
 .home-editorial .home-value-proof>strong{display:block;margin-bottom:26px;color:var(--ink);font:500 28px/1.25 "Playfair Display",Georgia,serif}
 .home-editorial .home-value-proof ul{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
 .home-editorial .home-value-proof li{padding:14px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:14px}
+.home-editorial .home-value-interview{margin-top:24px}
+.home-editorial .home-value-interview-kicker{margin:0 0 10px;color:#47758b;font-size:11px;font-weight:750;letter-spacing:.04em}
+.home-editorial .home-value-interview-media{position:relative;aspect-ratio:16/9;overflow:hidden;background:#223943}
+.home-editorial .home-value-interview-play,
+.home-editorial .home-value-interview-frame{position:absolute;inset:0;width:100%;height:100%;border:0}
+.home-editorial .home-value-interview-play{padding:0;overflow:hidden;background:#223943;color:#fff;text-align:left;cursor:pointer}
+.home-editorial .home-value-interview-play img{width:100%;height:100%;object-fit:cover;object-position:center 32%}
+.home-editorial .home-value-interview-play::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,17,18,.08) 20%,rgba(11,17,18,.78) 100%)}
+.home-editorial .home-value-interview-icon{position:absolute;z-index:1;left:50%;top:45%;width:56px;height:56px;display:grid;place-items:center;padding-left:4px;border-radius:50%;background:var(--coral);color:var(--ink);font-size:21px;transform:translate(-50%,-50%);transition:transform .2s ease}
+.home-editorial .home-value-interview-play:hover .home-value-interview-icon{transform:translate(-50%,-50%) scale(1.07)}
+.home-editorial .home-value-interview-caption{position:absolute;z-index:1;right:18px;bottom:17px;left:18px;font-weight:750;font-size:16px;line-height:1.3}
+.home-editorial .home-value-interview-caption small{display:block;margin-top:3px;font-weight:500;font-size:12px}
+.home-editorial .home-value-interview-note{margin:9px 0 4px;color:var(--muted);font-size:11px}
+.home-editorial .home-value-interview-link{color:var(--ink);font-size:12px;font-weight:700;text-decoration:underline;text-decoration-color:var(--sky);text-underline-offset:4px}
 .home-editorial .home-marketing-section{padding-top:0;padding-bottom:110px}
 .home-editorial .home-marketing{display:grid;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);gap:clamp(42px,7vw,100px);align-items:stretch}
 .home-editorial .home-marketing-lead{padding:72px 0 38px}

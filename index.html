@@ -59,6 +59,19 @@
         <span>Die Bewertung ist der Startpunkt.</span>
         <strong>Entscheidend ist, was wir daraus für Ihren Verkauf machen.</strong>
         <ul><li>Markt & Mikrolage einordnen</li><li>Preisstrategie festlegen</li><li>Zielgruppe & Vermarktung abstimmen</li></ul>
+        <div class="home-value-interview">
+          <p class="home-value-interview-kicker">Im Gespräch bei STILPUNKTE · 17:48 Min.</p>
+          <div class="home-value-interview-media" data-home-interview>
+            <button class="home-value-interview-play" type="button" data-home-interview-play aria-label="Videointerview mit Mischa Stratmann von STILPUNKTE abspielen">
+              <img src="https://sls.de/wp-content/uploads/2025/06/Mischa-Stratmann-768x768.jpg" width="768" height="768" alt="" loading="lazy">
+              <span class="home-value-interview-icon" aria-hidden="true">▶</span>
+              <span class="home-value-interview-caption">Mischa Stratmann <small>Von der Bewertung bis zum Verkauf</small></span>
+            </button>
+          </div>
+          <p class="home-value-interview-note">Beim Abspielen wird YouTube geladen.</p>
+          <a class="home-value-interview-link" href="https://www.stilpunkte.de/experteninterviews/immobilienbewertung-richtig-vornehmen-die-passende-bewertung-beruecksichtigt-mehr-als-die-immobilie-interview-mit-mischa-stratmann/" target="_blank" rel="noopener noreferrer">Interview bei STILPUNKTE lesen (Advertorial) ↗</a>
+          <noscript><a href="https://www.youtube.com/watch?v=o0hvSO41MOI" target="_blank" rel="noopener noreferrer">Videointerview auf YouTube ansehen ↗</a></noscript>
+        </div>
       </aside>
     </div>
   </section>
@@ -226,6 +239,19 @@
   window.addEventListener('resize', checkPosition);
   timer = window.setInterval(checkPosition, 180);
   checkPosition();
+})();
+(() => {
+  const play = document.querySelector('[data-home-interview-play]');
+  play?.addEventListener('click', () => {
+    const frame = document.createElement('iframe');
+    frame.className = 'home-value-interview-frame';
+    frame.src = 'https://www.youtube-nocookie.com/embed/o0hvSO41MOI?autoplay=1&rel=0';
+    frame.title = 'Von der Bewertung bis zum Verkauf – Mischa Stratmann im Interview mit STILPUNKTE';
+    frame.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share';
+    frame.allowFullscreen = true;
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    play.replaceWith(frame);
+  }, { once: true });
 })();
 </script>
 <script src="/assets/site.js" defer></script>
