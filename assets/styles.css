@@ -796,6 +796,10 @@ textarea { min-height: 132px; resize: vertical; }
   object-fit:contain;
   object-position:left center;
 }
+@media(min-width:981px){
+  .floating-brand{position:relative;width:190px}
+  .floating-brand img{position:absolute;left:7px;top:50%;width:174px;height:58px;max-height:none;transform:translateY(-50%)}
+}
 @media(max-width:980px){
   .floating-brand { flex:1 1 auto; max-width:calc(100% - 58px); }
   .floating-brand img { width:min(100%,300px); max-height:38px; }
