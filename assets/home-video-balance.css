@@ -1,9 +1,37 @@
-/* Only the homepage interview thumbnail changes on narrow screens.
-   The marketing roomtour keeps the shared, full-width video treatment. */
+/* Both videos explain the YouTube load before playback. */
+.home-editorial .home-video-load-hint {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  left: 12px;
+  padding: 6px 9px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  background: rgba(11, 17, 18, .76);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+/* On phones the interview is a compact editorial proof point.
+   The roomtour keeps the shared full-width video treatment. */
 @media (max-width: 600px) {
+  .home-editorial .home-value-section {
+    padding-bottom: 54px;
+  }
+
+  .home-editorial .home-value-proof-intro {
+    font-size: 19px;
+    line-height: 1.35;
+  }
+
   .home-editorial .home-value-proof .home-value-interview {
     width: min(100%, 280px);
-    margin-top: 18px;
+    margin-top: 16px;
+  }
+
+  .home-editorial .home-value-proof .home-video-load-hint {
+    font-size: 10px;
   }
 
   .home-editorial .home-value-proof .home-value-interview-icon {
