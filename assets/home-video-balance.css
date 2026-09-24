@@ -13,8 +13,8 @@
   line-height: 1.3;
 }
 
-/* On phones the interview is a compact editorial proof point.
-   The roomtour keeps the shared full-width video treatment. */
+/* On phones both video windows share the same frame and controls.
+   The editorial interview remains quieter through its surrounding layout. */
 @media (max-width: 600px) {
   .home-editorial .home-value-section {
     padding-bottom: 54px;
@@ -26,29 +26,7 @@
   }
 
   .home-editorial .home-value-proof .home-value-interview {
-    width: min(100%, 280px);
-    margin-top: 16px;
-  }
-
-  .home-editorial .home-value-proof .home-video-load-hint {
-    font-size: 10px;
-  }
-
-  .home-editorial .home-value-proof .home-value-interview-icon {
-    width: 44px;
-    height: 44px;
-    top: 42%;
-    font-size: 17px;
-  }
-
-  .home-editorial .home-value-proof .home-value-interview-caption {
-    right: 12px;
-    bottom: 11px;
-    left: 12px;
-    font-size: 13px;
-  }
-
-  .home-editorial .home-value-proof .home-value-interview-caption small {
-    font-size: 10px;
+    width: calc(100% - 48px);
+    margin: 16px 0 0 24px;
   }
 }
