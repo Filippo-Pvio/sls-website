@@ -18,7 +18,10 @@ document.querySelectorAll("[data-sls-inquiry]").forEach((form) => {
       if (availability) availability.hidden = true;
     })
     .catch(() => {
-      if (availability) availability.hidden = false;
+      if (availability) {
+        availability.hidden = false;
+        availability.firstChild.textContent = "Online-Anfrage derzeit nicht verfügbar. Sie erreichen uns auch unter ";
+      }
     });
 
   form.addEventListener("submit", async (event) => {
