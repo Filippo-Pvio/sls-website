@@ -130,15 +130,14 @@ export default async function handler(req, res) {
       }
     }
 
-    // Propstack's website integration links the source to the inquiry note.
+    // Record the website source in the note without changing an existing contact's source.
     const note = await propstack('/tasks', {
       method: 'POST',
       body: JSON.stringify({ task: {
         title: input.kind === 'valuation' ? 'Website: Immobilienbewertung' : 'Website: Kontaktanfrage',
         note_type_id: settings.noteTypeId,
         client_ids: [contactId],
-        client_source_id: settings.sourceId,
-        body: noteBody(input)
+        body: '<p><strong>Quelle:</strong> SLS Website (ID ' + settings.sourceId + ')</p>' + noteBody(input)
       } })
     }, settings.apiKey);
     if (!note.id) throw new Error('Propstack returned no inquiry ID');
