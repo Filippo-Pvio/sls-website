@@ -1739,13 +1739,13 @@ a.google-review-card .google-review-more{
 .home-editorial .hero-premium .hero-media{animation:home-hero-image-settle 6s cubic-bezier(.22,.61,.36,1) both}
 .home-editorial .hero-premium h1,
 .home-editorial .hero-premium .hero-intro-mobile,
-.home-editorial .hero-premium .hero-actions .button{animation:home-hero-copy-enter .78s cubic-bezier(.22,.61,.36,1) backwards}
-.home-editorial .hero-premium h1{animation-delay:.08s}
-.home-editorial .hero-premium .hero-intro-mobile{animation-delay:.28s}
-.home-editorial .hero-premium .hero-actions .button-light{animation-delay:.48s}
-.home-editorial .hero-premium .hero-actions .button-ghost{animation-delay:.62s}
+.home-editorial .hero-premium .hero-actions .button{animation:home-hero-copy-enter 1.15s cubic-bezier(.22,.61,.36,1) backwards}
+.home-editorial .hero-premium h1{animation-delay:.05s}
+.home-editorial .hero-premium .hero-intro-mobile{animation-delay:.30s}
+.home-editorial .hero-premium .hero-actions .button-light{animation-delay:.55s}
+.home-editorial .hero-premium .hero-actions .button-ghost{animation-delay:.75s}
 @keyframes home-hero-copy-enter{
-  from{opacity:0;transform:translate3d(0,20px,0)}
+  from{opacity:.08;transform:translate3d(0,36px,0)}
   to{opacity:1;transform:none}
 }
 @keyframes home-hero-image-settle{
@@ -1974,12 +1974,12 @@ a.google-review-card .google-review-more{
 .home-editorial .trust-section-prominent.trust-motion-active .trust-motion-left.is-visible{
   opacity:1;
   transform:translateX(0);
-  animation:trust-enter-left 2.8s cubic-bezier(.22,.61,.36,1) both;
+  animation:trust-enter-left 1.75s cubic-bezier(.22,.61,.36,1) both;
 }
 .home-editorial .trust-section-prominent.trust-motion-active .trust-motion-right.is-visible{
   opacity:1;
   transform:translateX(0);
-  animation:trust-enter-right 2.8s cubic-bezier(.22,.61,.36,1) both;
+  animation:trust-enter-right 1.75s cubic-bezier(.22,.61,.36,1) both;
 }
 @keyframes trust-enter-left{
   from{opacity:.25;transform:translateX(calc(-100vw - 16px))}
@@ -1992,7 +1992,7 @@ a.google-review-card .google-review-more{
 @media(max-width:800px){
   .home-editorial .trust-section-prominent.trust-motion-active .trust-motion-left.is-visible,
   .home-editorial .trust-section-prominent.trust-motion-active .trust-motion-right.is-visible{
-    animation-duration:2.2s;
+    animation-duration:1.6s;
   }
 }
 @media(prefers-reduced-motion:reduce){
