@@ -1,0 +1,26 @@
+/* Only the homepage interview thumbnail changes on narrow screens.
+   The marketing roomtour keeps the shared, full-width video treatment. */
+@media (max-width: 600px) {
+  .home-editorial .home-value-proof .home-value-interview {
+    width: min(100%, 280px);
+    margin-top: 18px;
+  }
+
+  .home-editorial .home-value-proof .home-value-interview-icon {
+    width: 44px;
+    height: 44px;
+    top: 42%;
+    font-size: 17px;
+  }
+
+  .home-editorial .home-value-proof .home-value-interview-caption {
+    right: 12px;
+    bottom: 11px;
+    left: 12px;
+    font-size: 13px;
+  }
+
+  .home-editorial .home-value-proof .home-value-interview-caption small {
+    font-size: 10px;
+  }
+}
