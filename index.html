@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://sls.de">
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/home-video-balance.css">
+  <link rel="stylesheet" href="/assets/home-team-carousel.css">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"RealEstateAgent","name":"SLS Immobilienpartner GmbH","url":"https://sls.de/","telephone":"+49 2369 7428020","email":"service@sls.de","address":{"@type":"PostalAddress","streetAddress":"Ubierweg 2","postalCode":"46286","addressLocality":"Dorsten","addressCountry":"DE"},"areaServed":["Ruhrgebiet","Rheinland","Nordrhein-Westfalen"]}</script>
 </head>
 <body class="home-editorial">
@@ -104,7 +105,15 @@
   <section class="section">
     <div class="wrap">
       <div class="section-head home-team-head"><div><p class="home-kicker">Persönlich statt anonym</p><h2>Sie geben uns nicht irgendeine Immobilie.</h2></div><p>Für viele Eigentümer geht es um einen erheblichen Teil ihres Vermögens. Deshalb zeigen wir, wer Ihren Verkauf begleitet und Verantwortung übernimmt.</p></div>
-      <div class="team-grid team-grid-visual reveal">
+      <div class="home-team-controls" data-team-controls hidden>
+        <span class="home-team-swipe-hint">Wischen Sie durch unser Team</span>
+        <div class="home-team-navigation">
+          <button class="home-team-arrow" type="button" data-team-prev aria-controls="home-team-track" aria-label="Vorheriges Teammitglied" disabled>←</button>
+          <span class="home-team-progress" data-team-progress aria-live="polite">1 / 4</span>
+          <button class="home-team-arrow" type="button" data-team-next aria-controls="home-team-track" aria-label="Nächstes Teammitglied">→</button>
+        </div>
+      </div>
+      <div class="team-grid team-grid-visual" id="home-team-track" data-team-track role="group" aria-label="Team von SLS Immobilienpartner">
         <a class="person-card person-card-visual" href="/team/dennis-sahlmen/"><img src="https://sls.de/wp-content/uploads/2025/06/Dennis-Sahlmen-768x768.jpg" alt="Dennis Sahlmen, Geschäftsführer SLS Immobilienpartner" loading="lazy"><div><h3>Dennis Sahlmen</h3><p>Geschäftsführer · Immobilienmakler (IHK)</p><span class="text-link">Profil ansehen</span></div></a>
         <a class="person-card person-card-visual" href="/team/filippo-livera/"><img src="https://sls.de/wp-content/uploads/2025/02/Filippo-Livera-768x768.jpg" alt="Filippo Livera, Geschäftsführer SLS Immobilienpartner" loading="lazy"><div><h3>Filippo Livera</h3><p>Geschäftsführer · Immobilienmakler</p><span class="text-link">Profil ansehen</span></div></a>
         <a class="person-card person-card-visual" href="/team/mischa-stratmann/"><img src="https://sls.de/wp-content/uploads/2025/06/Mischa-Stratmann-768x768.jpg" alt="Mischa Stratmann, Geschäftsführer SLS Immobilienpartner" loading="lazy"><div><h3>Mischa Stratmann</h3><p>Geschäftsführer · Immobilienkaufmann & Sachverständiger</p><span class="text-link">Profil ansehen</span></div></a>
@@ -276,6 +285,7 @@
 })();
 </script>
 <script src="/assets/site.js" defer></script>
+<script src="/assets/home-team-carousel.js" defer></script>
 <script>
 (async()=>{
   const box=document.querySelector('[data-google-rating]');
