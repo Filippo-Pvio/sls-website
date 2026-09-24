@@ -41,7 +41,7 @@
     const index = Math.max(0, Math.min(cards.length - 1, activeIndex() + direction));
     track.scrollTo({
       left: cards[index].offsetLeft - cards[0].offsetLeft,
-      behavior: reducedMotion.matches ? "instant" : "smooth"
+      behavior: reducedMotion.matches ? "auto" : "smooth"
     });
   }
 
