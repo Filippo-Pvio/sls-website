@@ -1903,6 +1903,8 @@ a.google-review-card .google-review-more{
 .home-editorial .home-marketing-example .home-value-interview-media{background:#1a3037}
 .home-editorial .home-marketing-example .home-value-interview-play img{object-position:center}
 .home-editorial .home-marketing-example noscript a{color:#fff}
+.home-editorial .home-roomtour-instagram{display:flex;align-items:center;gap:7px;width:max-content;max-width:100%;margin-top:12px;padding-bottom:3px;border-bottom:1px solid rgba(255,255,255,.55);color:#fff;font-size:12px;font-weight:650;text-decoration:none}
+.home-editorial .home-roomtour-instagram:hover{border-bottom-color:#fff}
 .home-editorial .home-team-head h2{max-width:720px;font-size:clamp(45px,4.7vw,72px);line-height:1}
 .home-editorial .home-process-magnet{display:grid;grid-template-columns:1fr}
 .home-editorial .home-process-intro{max-width:980px}
