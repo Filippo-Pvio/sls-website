@@ -8,10 +8,6 @@
 }
 
 @media (max-width: 640px) {
-  .home-editorial #home-team-track + .page-actions {
-    display: none;
-  }
-
   .home-editorial .home-team-controls:not([hidden]) {
     display: flex;
     align-items: center;
@@ -88,5 +84,75 @@
     width: 82%;
     max-width: 82%;
     scroll-snap-align: start;
+  }
+}
+
+/* Desktop team strip: all profiles, readable cards, manual controls and autoplay. */
+@media (min-width: 641px) {
+  .home-editorial .home-team-controls:not([hidden]) {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 20px;
+  }
+  .home-editorial .home-team-swipe-hint { display: none; }
+  .home-editorial .home-team-navigation {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .home-editorial .home-team-progress {
+    min-width: 42px;
+    color: var(--muted);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+  .home-editorial .home-team-arrow {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--sky);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .home-editorial .home-team-arrow:disabled {
+    border-color: var(--line);
+    color: var(--stone);
+    opacity: .45;
+    cursor: default;
+  }
+  .home-editorial #home-team-track {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+  }
+  .home-editorial #home-team-track > .home-team-mobile-only { display: flex; }
+  .home-editorial #home-team-track > .person-card {
+    flex: 0 0 clamp(240px, 28vw, 340px);
+    display: flex;
+    flex-direction: column;
+    width: clamp(240px, 28vw, 340px);
+    scroll-snap-align: start;
+  }
+  .home-editorial #home-team-track > .person-card > div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .home-editorial #home-team-track > .person-card .text-link {
+    align-self: flex-start;
+    margin-top: auto;
+    padding-top: 18px;
   }
 }
