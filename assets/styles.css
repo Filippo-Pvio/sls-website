@@ -524,7 +524,7 @@ textarea { min-height: 132px; resize: vertical; }
 .floating-menu-toggle svg { width:17px; height:17px; }
 .menu-label { font-size:10px; font-weight:780; }
 .site-header.is-scrolled .floating-header-shell { width:min(calc(100% - 96px),1180px); margin-top:10px; }
-.site-header.is-scrolled .floating-brand,.site-header.is-scrolled .floating-primary,.site-header.is-scrolled .floating-actions { min-height:50px; box-shadow:0 10px 34px rgba(11,17,18,.10); }
+.site-header.is-scrolled .floating-brand,.site-header.is-scrolled .floating-primary,.site-header.is-scrolled .floating-actions { min-height:50px; }
 
 .fullscreen-nav { position:fixed; inset:0; display:block; padding:110px 32px 32px; overflow:auto; background:var(--ink); color:var(--paper); opacity:0; visibility:hidden; transform:translateY(-12px); transition:opacity .28s ease,visibility .28s ease,transform .28s ease; pointer-events:auto; }
 .fullscreen-nav.is-open { opacity:1; visibility:visible; transform:none; }
