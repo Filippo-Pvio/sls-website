@@ -38,7 +38,7 @@
   }
 
   .home-editorial .home-value-proof .home-value-interview {
-    width: calc(100% - 48px);
-    margin: 16px 0 0 24px;
+    width: calc(100% - 12px);
+    margin: 16px 0 0 6px;
   }
 }

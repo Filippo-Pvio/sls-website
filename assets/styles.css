@@ -1918,12 +1918,19 @@ a.google-review-card .google-review-more{
 .home-editorial .home-trust-intro{display:flex;justify-content:space-between;gap:24px;align-items:baseline;margin-bottom:22px}
 .home-editorial .home-trust-intro strong{color:var(--ink);font:550 clamp(24px,2.7vw,36px)/1.1 "Playfair Display",Georgia,serif}
 .home-editorial .home-trust-intro span{color:var(--muted);font-size:12px;font-weight:650}
+/* Give the first conversion section a distinct SLS blue surface. */
+body.home-editorial > main > section.section.home-value-section.section-white{background:#345b6e;color:var(--paper)}
+body.home-editorial > main > .home-value-section.section-white h2{color:var(--paper)}
+body.home-editorial > main > .home-value-section.section-white .home-kicker{color:#d3e6ed}
+body.home-editorial > main > .home-value-section.section-white .lead{color:#edf3f4}
+.home-editorial .home-value-section .home-primary-cta{background:var(--coral);border-color:var(--coral);color:var(--ink)}
+.home-editorial .home-value-section .home-primary-cta:hover{background:var(--paper);border-color:var(--paper)}
 .home-editorial .home-value-magnet{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:clamp(50px,8vw,120px);align-items:center}
 .home-editorial .home-value-copy h2{max-width:860px;margin-bottom:24px;font-size:clamp(48px,5.7vw,84px);line-height:.97}
 .home-editorial .home-value-copy .lead{max-width:760px}
 .home-editorial .home-value-actions{display:flex;flex-wrap:wrap;gap:18px 22px;align-items:center;margin-top:30px}
 .home-editorial .home-primary-cta{min-height:58px;padding:0 28px;font-size:14px}
-.home-editorial .home-value-proof{padding:28px 0 0;border-top:2px solid var(--sky);background:transparent;color:var(--ink);border-radius:0;box-shadow:none}
+.home-editorial .home-value-proof{padding:clamp(22px,3vw,36px);border-top:2px solid #a6c4d0;background:var(--paper);color:var(--ink);border-radius:0;box-shadow:none}
 .home-editorial .home-value-proof>span{display:block;margin-bottom:12px;color:#47758b;font-size:10px;font-weight:850;letter-spacing:.11em;text-transform:uppercase}
 .home-editorial .home-value-proof-intro{margin:0;color:var(--ink);font:500 24px/1.3 "Playfair Display",Georgia,serif}
 .home-editorial .home-value-interview{margin-top:22px}
@@ -1973,7 +1980,7 @@ a.google-review-card .google-review-more{
 .home-editorial .home-trust-intro{display:block}.home-editorial .home-trust-intro span{display:block;margin-top:8px}
 .home-editorial .home-value-magnet,.home-editorial .home-marketing{grid-template-columns:1fr;gap:34px}
 .home-editorial .home-value-copy h2,.home-editorial .home-marketing-lead h2,.home-editorial .home-team-head h2,.home-editorial .home-process-intro h2{font-size:clamp(38px,10vw,56px)}
-.home-editorial .home-value-proof{padding:24px 0 0}.home-editorial .home-value-proof-intro{font-size:22px}
+.home-editorial .home-value-proof{padding:24px}.home-editorial .home-value-proof-intro{font-size:22px}
 .home-editorial .home-marketing-section{padding-bottom:76px}.home-editorial .home-marketing-lead{padding:34px 0 0}
 .home-editorial .home-marketing-stage{min-height:390px;padding:30px 24px}.home-editorial .home-marketing-statement{font-size:clamp(28px,7.2vw,36px)}
 .home-editorial .home-process-route{grid-template-columns:1fr;margin-top:34px}.home-editorial .home-process-route>div{min-height:0;padding:18px 0;border-right:0;border-bottom:1px solid rgba(255,255,255,.18)}
