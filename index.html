@@ -163,7 +163,7 @@
         <div class="google-review-dots" data-google-review-dots aria-hidden="true"></div>
       </div>
 
-      <div class="review-platform-grid reveal">
+      <div class="review-platform-grid">
         <article class="review-platform-card">
           <div class="review-widget-frame review-widget-scout">
             <iframe title="ImmoScout24 Anbieterbewertung SLS Immobilienpartner" height="160" width="190" src="https://widget.immobilienscout24.de/anbieter/bewertung/3fe6d968f63ae12b23a28f0fb169f286" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" loading="lazy"></iframe>
@@ -253,6 +253,35 @@
     }
   };
 
+  window.addEventListener('scroll', checkPosition, { passive: true });
+  window.addEventListener('resize', checkPosition);
+  timer = window.setInterval(checkPosition, 180);
+  checkPosition();
+})();
+(() => {
+  const section = document.querySelector('.review-platforms-section');
+  const cards = [...(section?.querySelectorAll('.review-platform-card') ?? [])];
+  const frames = cards.map(card => card.querySelector('.review-widget-frame'));
+  if (cards.length !== 2 || frames.some(frame => !frame) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Keep the stationary cards as scroll anchors while their widget frames move.
+  section.classList.add('review-motion-active');
+  const shown = new Set();
+  let timer;
+  const checkPosition = () => {
+    const height = window.innerHeight || document.documentElement.clientHeight;
+    cards.forEach((card, index) => {
+      if (shown.has(index) || card.getBoundingClientRect().top > height * 0.72) return;
+      shown.add(index);
+      frames[index].classList.add('is-visible');
+    });
+    if (shown.size === cards.length) {
+      window.clearInterval(timer);
+      window.removeEventListener('scroll', checkPosition);
+      window.removeEventListener('resize', checkPosition);
+    }
+  };
   window.addEventListener('scroll', checkPosition, { passive: true });
   window.addEventListener('resize', checkPosition);
   timer = window.setInterval(checkPosition, 180);
