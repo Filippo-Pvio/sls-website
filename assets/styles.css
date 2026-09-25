@@ -750,6 +750,7 @@ textarea { min-height: 132px; resize: vertical; }
     width:calc(100% - 24px);
     min-height:52px;
     margin-top:6px;
+    background:var(--paper);
   }
 }
 
