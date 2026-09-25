@@ -1919,7 +1919,7 @@ a.google-review-card .google-review-more{
 .home-editorial .home-trust-intro strong{color:var(--ink);font:550 clamp(24px,2.7vw,36px)/1.1 "Playfair Display",Georgia,serif}
 .home-editorial .home-trust-intro span{color:var(--muted);font-size:12px;font-weight:650}
 /* Give the first conversion section a distinct SLS blue surface. */
-body.home-editorial > main > .home-value-section.section-white{background:#345b6e;color:var(--paper)}
+body.home-editorial > main > section.section.home-value-section.section-white{background:#345b6e;color:var(--paper)}
 body.home-editorial > main > .home-value-section.section-white h2{color:var(--paper)}
 body.home-editorial > main > .home-value-section.section-white .home-kicker{color:#d3e6ed}
 body.home-editorial > main > .home-value-section.section-white .lead{color:#edf3f4}
