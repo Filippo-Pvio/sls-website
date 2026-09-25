@@ -1206,19 +1206,52 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
 .review-widget-immowelt iframe{width:220px;height:220px}
 @media(max-width:520px){
   .review-platform-grid{
-    grid-template-columns:190px 220px;
-    gap:16px;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
     max-width:100%;
-    overflow-x:auto;
-    overscroll-behavior-x:contain;
-    scroll-snap-type:x proximity;
-    scrollbar-width:none;
-    -webkit-overflow-scrolling:touch;
-    padding-bottom:8px;
   }
-  .review-platform-grid::-webkit-scrollbar{display:none}
-  .review-platform-card{scroll-snap-align:start}
+  .review-widget-frame{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    width:100%;
+    overflow:hidden;
+    padding-top:12px;
+  }
+  .review-widget-frame iframe{
+    flex:none;
+    max-width:none;
+    transform-origin:center top;
+  }
+  .review-widget-scout{height:143px}
+  .review-widget-scout iframe{transform:scale(.82)}
+  .review-widget-immowelt{height:171px}
+  .review-widget-immowelt iframe{transform:scale(.72)}
 }
+@media(min-width:390px) and (max-width:520px){
+  .review-widget-scout{height:155px}
+  .review-widget-scout iframe{transform:scale(.89)}
+  .review-widget-immowelt{height:184px}
+  .review-widget-immowelt iframe{transform:scale(.78)}
+}
+@media(min-width:460px) and (max-width:520px){
+  .review-widget-scout{height:172px}
+  .review-widget-scout iframe{transform:none}
+  .review-widget-immowelt{height:210px}
+  .review-widget-immowelt iframe{transform:scale(.9)}
+}
+@media(max-width:360px){
+  .review-widget-scout{height:130px}
+  .review-widget-scout iframe{transform:scale(.74)}
+  .review-widget-immowelt{height:157px}
+  .review-widget-immowelt iframe{transform:scale(.66)}
+}
+@media(max-width:330px){
+  .review-platform-grid{grid-template-columns:1fr}
+  .review-widget-frame{height:auto;overflow:visible}
+  .review-widget-frame iframe{transform:none}
+}
+
 .button-small{min-height:40px;padding:0 15px;font-size:11px}
 /* Keep tall partner badges visible instead of forcing them into a square */
 .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{
