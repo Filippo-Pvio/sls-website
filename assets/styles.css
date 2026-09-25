@@ -751,6 +751,9 @@ textarea { min-height: 132px; resize: vertical; }
     min-height:52px;
     margin-top:6px;
     background:var(--paper);
+    overflow:hidden;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
   }
 }
 
