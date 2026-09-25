@@ -755,6 +755,10 @@ textarea { min-height: 132px; resize: vertical; }
     backdrop-filter:none;
     -webkit-backdrop-filter:none;
   }
+  .site-header.is-scrolled .floating-brand,
+  .site-header.is-scrolled .floating-actions {
+    box-shadow:none;
+  }
 }
 
 
