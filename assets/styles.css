@@ -1960,7 +1960,8 @@ body.home-editorial > main > .home-value-section.section-white .lead{color:#edf3
 .home-editorial .home-reach-section .home-kicker{color:#d3e6ed}
 .home-editorial .home-reach-detail>p{margin:0;color:#edf3f4;font-size:18px;line-height:1.65}
 .home-editorial .home-reach-platforms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px;margin-top:36px;padding-top:30px;border-top:1px solid rgba(255,255,255,.45)}
-.home-editorial .home-reach-platform{display:flex;align-items:center;gap:10px;color:#fff;font-size:13px;font-weight:700}
+.home-editorial .home-reach-platform{display:flex;align-items:center;gap:10px;min-height:44px;color:#fff;font-size:13px;font-weight:700}
+.home-editorial .home-reach-platform:hover span{text-decoration:underline;text-underline-offset:4px}
 .home-editorial .home-reach-platform svg{width:27px;height:27px;flex:none}
 /* Keep the team and review surfaces when their section order changes. */
 body.home-editorial > main > section.section.home-team-section:not(.section-dark){background:var(--paper)}
