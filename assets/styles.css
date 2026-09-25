@@ -1349,7 +1349,6 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
 /* Homepage conversion pass */
 .premium-grid-focused{grid-template-columns:repeat(2,minmax(0,1fr))}
 .review-grid-integrated{margin-top:22px;padding-top:22px;border-top:1px solid var(--line)}
-.regional-competence .split{align-items:center}
 @media(max-width:800px){
   .premium-grid-focused{grid-template-columns:1fr}
   .review-grid-integrated{margin-top:16px;padding-top:16px}
@@ -1754,11 +1753,6 @@ a.google-review-card .google-review-more{
   font-style:normal;
   font-size:22px;
 }
-.home-editorial .regional-competence .copy h2{
-  max-width:620px;
-  font-size:clamp(44px,4.5vw,70px);
-  line-height:1;
-}
 .home-editorial .premium-final-cta .cta-band{
   grid-template-columns:minmax(0,1fr) auto;
   align-items:end;
@@ -1788,7 +1782,6 @@ a.google-review-card .google-review-more{
   .home-editorial .home-value-main h2,
   .home-editorial .home-belief-title h2,
   .home-editorial .home-process-intro h2,
-  .home-editorial .regional-competence .copy h2,
   .home-editorial .premium-final-cta h2{
     font-size:clamp(38px,10vw,56px);
   }
@@ -1920,7 +1913,7 @@ a.google-review-card .google-review-more{
 .home-editorial .home-trust-intro span{color:var(--muted);font-size:12px;font-weight:650}
 /* Give the first conversion section a distinct SLS blue surface. */
 body.home-editorial > main > section.section.home-value-section.section-white{background:#345b6e;color:var(--paper)}
-body.home-editorial > main > section.section.section-dark:is(.home-process-section,.premium-final-cta){background:#345b6e!important}
+body.home-editorial > main > section.section.section-dark:is(.home-process-section,.home-reach-section,.premium-final-cta){background:#345b6e!important}
 body.home-editorial > main > .home-value-section.section-white h2{color:var(--paper)}
 body.home-editorial > main > .home-value-section.section-white .home-kicker{color:#d3e6ed}
 body.home-editorial > main > .home-value-section.section-white .lead{color:#edf3f4}
@@ -1961,6 +1954,14 @@ body.home-editorial > main > .home-value-section.section-white .lead{color:#edf3
 .home-editorial .home-marketing-example noscript a{color:#fff}
 .home-editorial .home-roomtour-instagram{display:flex;align-items:center;gap:7px;width:max-content;max-width:100%;margin-top:12px;padding-bottom:3px;border-bottom:1px solid rgba(255,255,255,.55);color:#fff;font-size:12px;font-weight:650;text-decoration:none}
 .home-editorial .home-roomtour-instagram:hover{border-bottom-color:#fff}
+/* Social distribution, presented as a statement rather than another set of cards. */
+.home-editorial .home-reach-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:clamp(52px,8vw,120px);align-items:end}
+.home-editorial main .section.home-reach-section h2{max-width:790px;margin:0;font-size:clamp(42px,4vw,58px);line-height:1.08}
+.home-editorial .home-reach-section .home-kicker{color:#d3e6ed}
+.home-editorial .home-reach-detail>p{margin:0;color:#edf3f4;font-size:18px;line-height:1.65}
+.home-editorial .home-reach-platforms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px;margin-top:36px;padding-top:30px;border-top:1px solid rgba(255,255,255,.45)}
+.home-editorial .home-reach-platform{display:flex;align-items:center;gap:10px;color:#fff;font-size:13px;font-weight:700}
+.home-editorial .home-reach-platform svg{width:27px;height:27px;flex:none}
 /* Keep the team and review surfaces when their section order changes. */
 body.home-editorial > main > section.section.home-team-section:not(.section-dark){background:var(--paper)}
 body.home-editorial > main > section.section.review-platforms-section.section-white{background:var(--white)}
@@ -1989,6 +1990,10 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 .home-editorial .home-marketing-stage{min-height:390px;padding:30px 24px}.home-editorial .home-marketing-statement{font-size:clamp(28px,7.2vw,36px)}
 .home-editorial .home-process-route{grid-template-columns:1fr;margin-top:34px}.home-editorial .home-process-route>div{min-height:0;padding:18px 0;border-right:0;border-bottom:1px solid rgba(255,255,255,.18)}
 .home-editorial .home-process-route>div:last-child{border-bottom:0}.home-editorial .home-process-route span{font-size:30px}
+.home-editorial .home-reach-layout{grid-template-columns:1fr;gap:30px}
+.home-editorial main .section.home-reach-section h2{font-size:clamp(36px,8.3vw,48px)}
+.home-editorial .home-reach-detail>p{font-size:16px}
+.home-editorial .home-reach-platforms{margin-top:28px;padding-top:24px}
 }
 
 /* Homepage partner logos: frameless, 2-2-1 on mobile */
