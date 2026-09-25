@@ -670,7 +670,7 @@ textarea { min-height: 132px; resize: vertical; }
   .floating-scroll-cta {
     position:absolute;
     top:50%;
-    right:76px;
+    right:64px;
     z-index:1;
     display:inline-flex;
     min-height:34px;
