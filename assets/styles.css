@@ -1920,6 +1920,7 @@ a.google-review-card .google-review-more{
 .home-editorial .home-trust-intro span{color:var(--muted);font-size:12px;font-weight:650}
 /* Give the first conversion section a distinct SLS blue surface. */
 body.home-editorial > main > section.section.home-value-section.section-white{background:#345b6e;color:var(--paper)}
+body.home-editorial > main > section.section.section-dark:is(.home-process-section,.premium-final-cta){background:#345b6e!important}
 body.home-editorial > main > .home-value-section.section-white h2{color:var(--paper)}
 body.home-editorial > main > .home-value-section.section-white .home-kicker{color:#d3e6ed}
 body.home-editorial > main > .home-value-section.section-white .lead{color:#edf3f4}
@@ -1946,12 +1947,12 @@ body.home-editorial > main > .home-value-section.section-white .lead{color:#edf3
 .home-editorial .home-value-interview-caption small{display:block;margin-top:3px;font-weight:500;font-size:12px}
 .home-editorial .home-value-interview-note{margin:9px 0 4px;color:var(--muted);font-size:11px}
 .home-editorial .home-value-interview-link{color:var(--ink);font-size:12px;font-weight:700;text-decoration:underline;text-decoration-color:var(--sky);text-underline-offset:4px}
-.home-editorial .home-marketing-section{padding-top:0;padding-bottom:110px}
+.home-editorial .home-marketing-section{padding-top:76px;padding-bottom:76px}
 .home-editorial .home-marketing{display:grid;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);gap:clamp(42px,7vw,100px);align-items:stretch}
 .home-editorial .home-marketing-lead{padding:72px 0 38px}
 .home-editorial .home-marketing-lead h2{max-width:600px;margin-bottom:24px;font-size:clamp(48px,5vw,74px);line-height:.98}
 .home-editorial .home-marketing-lead>p:not(.home-kicker){max-width:570px;color:var(--muted);font-size:18px}
-.home-editorial .home-marketing-stage{min-height:500px;display:flex;flex-direction:column;justify-content:space-between;padding:52px;background:#304f5d;color:#fff;box-shadow:none}
+.home-editorial .home-marketing-stage{min-height:500px;display:flex;flex-direction:column;justify-content:space-between;padding:52px;background:#345b6e;color:#fff;box-shadow:none}
 .home-editorial .home-marketing-statement{max-width:650px;color:#fff;font:500 clamp(32px,3.6vw,48px)/1.12 "Playfair Display",Georgia,serif}
 .home-editorial .home-marketing-statement strong{color:#fff;font-weight:600}
 .home-editorial .home-marketing-example{margin:30px 0 0}
