@@ -8,6 +8,10 @@
 }
 
 @media (max-width: 640px) {
+  .home-editorial #home-team-track + .page-actions {
+    display: none;
+  }
+
   .home-editorial .home-team-controls:not([hidden]) {
     display: flex;
     align-items: center;
