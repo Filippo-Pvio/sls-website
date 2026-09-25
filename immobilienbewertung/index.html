@@ -2,21 +2,29 @@
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Immobilienbewertung NRW | SLS Immobilienpartner</title>
 <meta name="description" content="Immobilie kostenlos bewerten: digitale Ersteinschätzung und persönliche Marktwertermittlung durch SLS Immobilienpartner im Ruhrgebiet und Rheinland.">
-<link rel="canonical" href="https://sls.de/immobilienbewertung/"><meta name="theme-color" content="#0b1112"><link rel="stylesheet" href="/assets/styles.css"></head>
+<link rel="canonical" href="https://sls.de/immobilienbewertung/"><meta name="theme-color" content="#0b1112"><link rel="stylesheet" href="/assets/styles.css"><link rel="stylesheet" href="/assets/inquiry-forms.css"></head>
 <body><header class="site-header" data-site-header></header><main id="main">
-<section class="page-hero valuation-hero"><div class="wrap"><p class="eyebrow">Ihre individuelle Immobilienbewertung</p><h1>Was ist Ihre Immobilie heute wert?</h1><p class="lead">Kostenlos starten, eine erste Orientierung erhalten und den Wert anschließend mit regionaler Marktkenntnis persönlich präzisieren.</p><div class="page-actions"><a class="button button-light" href="#bewertung">Bewertung starten</a><a class="button button-ghost" href="/kontakt/">Persönlich beraten lassen</a></div></div></section>
+<section class="page-hero valuation-hero"><div class="wrap"><p class="eyebrow">Ihre individuelle Immobilienbewertung</p><h1>Was ist Ihre Immobilie heute wert?</h1><p class="lead">Kostenlos anfragen und den Wert Ihrer Immobilie mit regionaler Marktkenntnis persönlich einordnen lassen.</p><div class="page-actions"><a class="button button-light" href="#bewertung">Bewertung starten</a><a class="button button-ghost" href="/kontakt/">Persönlich beraten lassen</a></div></div></section>
 
 <section class="trust-ribbon"><div class="wrap trust-ribbon-grid"><span>Kostenlos & unverbindlich</span><span>Lokale Marktkenntnis</span><span>Persönliche Einordnung</span><span>Klare Verkaufsstrategie</span></div></section>
 
-<section class="section section-white" id="bewertung"><div class="wrap valuation-tool reveal"><div class="valuation-tool-copy"><p class="eyebrow">In wenigen Schritten starten</p><h2>Ersteinschätzung Ihrer Immobilie.</h2><p>Für eine fundierte Bewertung brauchen wir zunächst nur die wichtigsten Eckdaten. Die finale Einschätzung entsteht aus digitalen Daten und persönlicher Objektkenntnis.</p><div class="valuation-benefits"><span>✓ Keine Verpflichtung</span><span>✓ Persönlicher Ansprechpartner</span><span>✓ Für Haus, Wohnung und Grundstück</span></div></div>
-<form class="valuation-form" data-preview-form>
-<label>Immobilienart<select required><option value="">Bitte auswählen</option><option>Haus</option><option>Wohnung</option><option>Grundstück</option><option>Mehrfamilienhaus</option><option>Gewerbeimmobilie</option></select></label>
-<div class="form-two"><label>PLZ<input type="text" inputmode="numeric" placeholder="z. B. 45699" required></label><label>Ort<input type="text" placeholder="z. B. Herten" required></label></div>
-<div class="form-two"><label>Wohnfläche ca.<input type="number" placeholder="m²"></label><label>Grundstück ca.<input type="number" placeholder="m²"></label></div>
-<label>Was möchten Sie tun?<select><option>Verkauf prüfen</option><option>Verkauf geplant</option><option>Nur Wert erfahren</option></select></label>
-<button class="button" type="submit">Weiter zur Bewertung</button>
-<p class="form-hint">Die technische CRM-Übermittlung wird im Propstack-Integrationsschritt angeschlossen.</p>
-<p class="form-status" data-form-status tabindex="-1" hidden>Danke. Die Bewertungsstrecke ist vorbereitet; die finale Propstack-Übermittlung wird noch verbunden.</p>
+<section class="section section-white" id="bewertung"><div class="wrap valuation-tool reveal"><div class="valuation-tool-copy"><p class="eyebrow">In wenigen Schritten anfragen</p><h2>Ersteinschätzung Ihrer Immobilie.</h2><p>Nennen Sie uns die wichtigsten Eckdaten. Wir melden uns persönlich und besprechen, wie sich Ihre Immobilie fundiert bewerten lässt.</p><div class="valuation-benefits"><span>✓ Keine Verpflichtung</span><span>✓ Persönlicher Ansprechpartner</span><span>✓ Für Haus, Wohnung und Grundstück</span></div></div>
+<form class="valuation-form" data-sls-inquiry="valuation">
+<p class="valuation-form-heading">1 · Ihre Immobilie</p>
+<label>Immobilienart<select name="propertyType" required><option value="">Bitte auswählen</option><option>Haus</option><option>Wohnung</option><option>Grundstück</option><option>Mehrfamilienhaus</option><option>Gewerbeimmobilie</option></select></label>
+<div class="form-two"><label>PLZ der Immobilie<input name="postalCode" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="z. B. 46286" required></label><label>Ort der Immobilie<input name="city" type="text" autocomplete="address-level2" placeholder="z. B. Dorsten" required></label></div>
+<div class="form-two"><label>Wohnfläche ca.<input name="livingArea" type="number" min="1" placeholder="m²"></label><label>Grundstück ca.<input name="plotArea" type="number" min="1" placeholder="m²"></label></div>
+<label>Was möchten Sie tun?<select name="intention"><option>Verkauf prüfen</option><option>Verkauf geplant</option><option>Nur Wert erfahren</option></select></label>
+<p class="valuation-form-heading">2 · Wie erreichen wir Sie?</p>
+<div class="form-two"><label>Vorname<input name="firstName" autocomplete="given-name" maxlength="70" required></label><label>Nachname<input name="lastName" autocomplete="family-name" maxlength="70" required></label></div>
+<div class="form-two"><label>E-Mail<input name="email" type="email" autocomplete="email" maxlength="254" required></label><label>Telefon<input name="phone" type="tel" autocomplete="tel" maxlength="50" required></label></div>
+<label>Terminwunsch (optional)<input name="appointmentWish" type="text" maxlength="300" placeholder="Wann erreichen wir Sie gut?"></label>
+<label>Was sollten wir noch wissen? (optional)<textarea name="message" rows="3" maxlength="3000"></textarea></label>
+<label class="valuation-consent"><input name="privacy" type="checkbox" required><span>Ich habe die <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener noreferrer">Datenschutzhinweise</a> gelesen und stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu.</span></label>
+<input class="form-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button class="button" type="submit" disabled>Bewertung anfragen</button>
+<p class="form-hint" data-form-availability>Online-Anfrage wird geprüft. Sie erreichen uns auch unter <a href="tel:+4923697428020">02369 742 80 20</a>.</p>
+<p class="form-status" data-form-status role="status" tabindex="-1" hidden></p>
 </form></div></section>
 
 <section class="section"><div class="wrap"><div class="section-head"><div><p class="eyebrow">Mehr als ein Online-Rechner</p><h2>Warum eine Zahl allein nicht reicht.</h2></div><p>Automatisierte Vergleichsdaten sind ein guter Einstieg. Den tatsächlichen Marktwert bestimmen jedoch auch Mikrolage, Modernisierungen, Grundstück, Grundriss, Energiezustand und aktuelle Nachfrage.</p></div>
@@ -43,4 +51,4 @@
 </div></div></section>
 
 <section class="section section-dark premium-final-cta"><div class="wrap cta-band"><div><p class="eyebrow">Jetzt starten</p><h2>Was ist Ihre Immobilie wert?</h2><p class="lead">Die ersten Eckdaten dauern nur wenige Minuten.</p></div><a class="button button-light" href="#bewertung">Kostenlose Bewertung starten</a></div></section>
-</main><footer class="site-footer" data-site-footer></footer><script src="/assets/site.js" defer></script></body></html>
+</main><footer class="site-footer" data-site-footer></footer><script src="/assets/site.js" defer></script><script src="/assets/inquiry-forms.js" defer></script></body></html>

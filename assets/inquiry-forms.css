@@ -1,0 +1,54 @@
+/* Forms only: loaded on the valuation and contact pages after the shared stylesheet. */
+.valuation-form-heading {
+  margin: 0 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--sky);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.valuation-form-heading:not(:first-child) { margin-top: 20px; }
+.valuation-form textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 14px;
+  border: 1px solid #c8d0d1;
+  background: var(--white);
+  color: var(--ink);
+  resize: vertical;
+}
+.valuation-form .valuation-consent {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.valuation-form .valuation-consent input {
+  flex: 0 0 19px;
+  width: 19px;
+  min-height: 19px;
+  margin: 2px 0 0;
+  padding: 0;
+  accent-color: var(--coral);
+}
+.valuation-form .valuation-consent span { min-width: 0; }
+.valuation-form .valuation-consent a,
+[data-sls-inquiry] .form-hint a,
+[data-sls-inquiry] .form-note a,
+[data-sls-inquiry] .check a { text-decoration: underline; text-underline-offset: 3px; }
+[data-sls-inquiry] .form-honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0;
+}
+[data-sls-inquiry] button:disabled { opacity: .55; cursor: not-allowed; }
+[data-sls-inquiry] .form-status.is-error {
+  border-color: var(--coral);
+  background: #fff0f2;
+}

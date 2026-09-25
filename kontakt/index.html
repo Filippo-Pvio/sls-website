@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kontakt & Immobilienbewertung | SLS Immobilienpartner</title>
   <meta name="description" content="Kontaktieren Sie SLS Immobilienpartner in Dorsten und Duesseldorf fuer Immobilienbewertung, Verkauf oder Immobiliensuche.">
-  <link rel="canonical" href="https://sls.de/kontakt/"><meta name="theme-color" content="#0b1112"><link rel="stylesheet" href="/assets/styles.css">
+  <link rel="canonical" href="https://sls.de/kontakt/"><meta name="theme-color" content="#0b1112"><link rel="stylesheet" href="/assets/styles.css"><link rel="stylesheet" href="/assets/inquiry-forms.css">
 </head>
 <body>
   <header class="site-header" data-site-header></header>
@@ -12,21 +12,23 @@
     <section class="page-hero"><div class="wrap"><p class="eyebrow">Kontakt</p><h1>Erz&auml;hlen Sie uns von Ihrer Immobilie.</h1><p class="lead">Ob Verkauf, Bewertung oder Suche: Wir melden uns pers&ouml;nlich und kl&auml;ren gemeinsam den n&auml;chsten sinnvollen Schritt.</p></div></section>
 
     <section id="bewertung" class="section section-white"><div class="wrap contact-grid"><div class="copy"><p class="eyebrow">Direkter Kontakt</p><h2>Wir sind f&uuml;r Sie erreichbar.</h2><div class="contact-lines"><a class="contact-line" href="tel:+4923697428020">02369 742 80 20</a><a class="contact-line" href="mailto:service@sls.de">service@sls.de</a></div><h3 style="margin-top:40px">Dorsten</h3><p>Ubierweg 2<br>46286 Dorsten</p><h3 style="margin-top:30px">D&uuml;sseldorf</h3><p>K&ouml;nigsallee 19<br>40213 D&uuml;sseldorf</p></div>
-      <div><p class="eyebrow">Kostenlose Ersteinsch&auml;tzung</p><h2>Worum geht es?</h2><form data-preview-form><div class="form-grid">
+      <div><p class="eyebrow">Kostenlose Ersteinsch&auml;tzung</p><h2>Worum geht es?</h2><form data-sls-inquiry="contact"><div class="form-grid">
         <div class="field"><label for="request">Anliegen</label><select id="request" name="request" required><option value="">Bitte ausw&auml;hlen</option><option>Immobilie bewerten</option><option>Immobilie verkaufen</option><option>Immobilie suchen</option><option>Allgemeine Anfrage</option></select></div>
         <div class="field"><label for="type">Immobilienart</label><select id="type" name="type"><option>Haus</option><option>Wohnung</option><option>Grundst&uuml;ck</option><option>Gewerbeimmobilie</option><option>Sonstige</option></select></div>
         <div class="field"><label for="name">Vor- und Nachname</label><input id="name" name="name" autocomplete="name" required></div>
         <div class="field"><label for="phone">Telefon</label><input id="phone" name="phone" type="tel" autocomplete="tel" required></div>
         <div class="field"><label for="email">E-Mail</label><input id="email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="place">Ort der Immobilie</label><input id="place" name="place" autocomplete="address-level2"></div>
-        <div class="field field-full"><label for="message">Was sollten wir wissen?</label><textarea id="message" name="message"></textarea></div>
+        <div class="field field-full"><label for="appointment-wish">Terminwunsch (optional)</label><input id="appointment-wish" name="appointmentWish" maxlength="300" placeholder="Wann erreichen wir Sie gut?"></div>
+        <div class="field field-full"><label for="message">Was sollten wir wissen?</label><textarea id="message" name="message" maxlength="3000"></textarea></div>
         <div class="field field-full check"><input id="privacy" name="privacy" type="checkbox" required><label for="privacy">Ich habe die <a class="text-link" href="https://sls.de/datenschutz/">Datenschutzhinweise</a> gelesen und stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu.</label></div>
-        <div class="field field-full"><button class="button" type="submit">Anfrage vorbereiten</button><p class="form-note">Preview: Das Formular pr&uuml;ft Eingaben, versendet aber noch keine Daten.</p><p class="form-status" data-form-status hidden tabindex="-1">Vielen Dank. In dieser Preview wurde nichts versendet. Die technische Zustellung wird vor dem Livegang eingerichtet und separat getestet.</p></div>
+        <input class="form-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="field field-full"><button class="button" type="submit" disabled>Anfrage senden</button><p class="form-note" data-form-availability>Online-Anfrage wird geprüft. Sie erreichen uns auch unter <a href="tel:+4923697428020">02369 742 80 20</a>.</p><p class="form-status" data-form-status role="status" hidden tabindex="-1"></p></div>
       </div></form></div>
     </div></section>
 
     <section class="section"><div class="wrap split reveal"><div class="copy"><p class="eyebrow">Pers&ouml;nliche Beratung</p><h2>Klare Antworten statt Verkaufsdruck.</h2><p>Wir besprechen Ihre Situation, geben eine ehrliche erste Einsch&auml;tzung und sagen transparent, welche n&auml;chsten Schritte sinnvoll sind.</p></div><img class="split-media" src="/assets/images/consultation.webp" alt="Persoenliche und transparente Immobilienberatung" width="1536" height="1024" loading="lazy"></div></section>
   </main>
-  <footer class="site-footer" data-site-footer></footer><script src="/assets/site.js" defer></script>
+  <footer class="site-footer" data-site-footer></footer><script src="/assets/site.js" defer></script><script src="/assets/inquiry-forms.js" defer></script>
 </body>
 </html>
