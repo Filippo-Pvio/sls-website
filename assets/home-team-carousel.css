@@ -1,4 +1,8 @@
 /* Homepage team: a swipeable strip on phones, original grid elsewhere. */
+.home-editorial #home-team-track > .home-team-mobile-only {
+  display: none;
+}
+
 .home-editorial .home-team-controls {
   display: none;
 }
@@ -69,6 +73,10 @@
 
   .home-editorial #home-team-track::-webkit-scrollbar {
     display: none;
+  }
+
+  .home-editorial #home-team-track > .home-team-mobile-only {
+    display: block;
   }
 
   .home-editorial #home-team-track > .person-card {
