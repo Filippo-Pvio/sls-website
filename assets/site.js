@@ -60,8 +60,8 @@ document.querySelector("[data-site-header]").innerHTML = `
     <a class="floating-brand" href="/" aria-label="SLS Immobilienpartner Startseite">
       <img src="/assets/logo-sls-horizontal-transparent.png" alt="SLS Immobilienpartner">
     </a>
-    ${document.body.classList.contains("home-editorial") ? '<a class="floating-scroll-cta" href="/immobilienbewertung/"><span class="floating-scroll-cta-full">Kostenlos bewerten</span><span class="floating-scroll-cta-short">Bewerten</span></a>' : ""}
     <nav class="floating-primary" aria-label="Hauptnavigation">${primaryLinks}</nav>
+    ${document.body.classList.contains("home-editorial") ? '<a class="floating-scroll-cta" href="/immobilienbewertung/"><span class="floating-scroll-cta-full">Kostenlos bewerten</span><span class="floating-scroll-cta-short">Bewerten</span></a>' : ""}
     <div class="floating-actions">
       <button class="menu-toggle floating-menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menü öffnen">
         <span class="menu-label">Menü</span>${icon("menu")}
