@@ -60,6 +60,7 @@ document.querySelector("[data-site-header]").innerHTML = `
     <a class="floating-brand" href="/" aria-label="SLS Immobilienpartner Startseite">
       <img src="/assets/logo-sls-horizontal-transparent.png" alt="SLS Immobilienpartner">
     </a>
+    ${document.body.classList.contains("home-editorial") ? '<a class="floating-scroll-cta" href="/immobilienbewertung/"><span class="floating-scroll-cta-full">Kostenlos bewerten</span><span class="floating-scroll-cta-short">Bewerten</span></a>' : ""}
     <nav class="floating-primary" aria-label="Hauptnavigation">${primaryLinks}</nav>
     <div class="floating-actions">
       <button class="menu-toggle floating-menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menü öffnen">
@@ -140,6 +141,21 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 
 setMenu(false);
+
+const heroValuation = document.querySelector('.hero-actions a[href="/immobilienbewertung/"]');
+if (heroValuation) {
+  const syncValuation = () => {
+    header.classList.toggle("has-scroll-cta", heroValuation.getBoundingClientRect().bottom <= 0);
+  };
+  if ("IntersectionObserver" in window) {
+    const valuationObserver = new IntersectionObserver(syncValuation, { threshold: 0 });
+    valuationObserver.observe(heroValuation);
+  } else {
+    window.addEventListener("scroll", syncValuation, { passive: true });
+    window.addEventListener("resize", syncValuation, { passive: true });
+    syncValuation();
+  }
+}
 
 document.querySelectorAll(".reveal").forEach((element) => {
   const observer = new IntersectionObserver(([entry], obs) => {

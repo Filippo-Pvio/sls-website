@@ -630,6 +630,7 @@ textarea { min-height: 132px; resize: vertical; }
 
 /* Unified floating navigation capsule */
 .floating-header-shell {
+  position:relative;
   width:min(calc(100% - 56px),1180px);
   min-height:58px;
   margin:16px auto 0;
@@ -661,6 +662,51 @@ textarea { min-height: 132px; resize: vertical; }
 .floating-brand img {
   width:58px;
   height:40px;
+}
+
+/* Homepage valuation action stays in the gap between wordmark and navigation. */
+.floating-scroll-cta { display:none; }
+@media (min-width:1050px) {
+  .floating-scroll-cta {
+    position:absolute;
+    top:50%;
+    left:344px;
+    z-index:1;
+    display:inline-flex;
+    min-height:34px;
+    padding:0 13px;
+    align-items:center;
+    justify-content:center;
+    border-radius:999px;
+    background:var(--coral);
+    color:var(--ink);
+    font:750 10px/1.1 "Raleway",Arial,sans-serif;
+    text-decoration:none;
+    white-space:nowrap;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translate(-8px,-50%);
+    transition:opacity .26s ease,transform .26s ease,visibility .26s ease;
+  }
+  .floating-scroll-cta-full { display:none; }
+  .site-header.has-scroll-cta:not(.menu-active) .floating-scroll-cta {
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translate(0,-50%);
+  }
+  .floating-scroll-cta:focus-visible {
+    outline:2px solid var(--ink);
+    outline-offset:3px;
+  }
+}
+@media (min-width:1200px) {
+  .floating-scroll-cta-full { display:inline; }
+  .floating-scroll-cta-short { display:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .floating-scroll-cta { transition:none; }
 }
 .floating-primary {
   justify-self:center;
