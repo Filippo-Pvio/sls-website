@@ -1210,6 +1210,39 @@ body:not(.home) main > section:nth-of-type(odd):not(.dark-section):not(.ink-sect
 .review-widget-frame iframe{display:block;border:0;max-width:100%;background:transparent}
 .review-widget-scout iframe{width:190px;height:160px}
 .review-widget-immowelt iframe{width:220px;height:220px}
+/* Match the existing partner-logo entrance without moving the widget cards. */
+.home-editorial .review-platforms-section.review-motion-active .review-widget-frame{
+  opacity:.25;
+  will-change:transform,opacity;
+}
+.home-editorial .review-platforms-section.review-motion-active .review-widget-scout{
+  transform:translateX(calc(-100vw - 16px));
+}
+.home-editorial .review-platforms-section.review-motion-active .review-widget-immowelt{
+  transform:translateX(calc(100vw + 16px));
+}
+.home-editorial .review-platforms-section.review-motion-active .review-widget-scout.is-visible{
+  opacity:1;
+  transform:translateX(0);
+  animation:trust-enter-left 1.75s cubic-bezier(.22,.61,.36,1) both;
+}
+.home-editorial .review-platforms-section.review-motion-active .review-widget-immowelt.is-visible{
+  opacity:1;
+  transform:translateX(0);
+  animation:trust-enter-right 1.75s cubic-bezier(.22,.61,.36,1) both;
+}
+@media(max-width:800px){
+  .home-editorial .review-platforms-section.review-motion-active .review-widget-frame.is-visible{
+    animation-duration:1.6s;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .home-editorial .review-platforms-section.review-motion-active .review-widget-frame{
+    opacity:1;
+    transform:none;
+    animation:none;
+  }
+}
 @media(max-width:640px){
   .review-platform-grid{
     grid-template-columns:1fr;
