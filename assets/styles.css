@@ -1960,6 +1960,9 @@ body.home-editorial > main > .home-value-section.section-white .lead{color:#edf3
 .home-editorial .home-marketing-example noscript a{color:#fff}
 .home-editorial .home-roomtour-instagram{display:flex;align-items:center;gap:7px;width:max-content;max-width:100%;margin-top:12px;padding-bottom:3px;border-bottom:1px solid rgba(255,255,255,.55);color:#fff;font-size:12px;font-weight:650;text-decoration:none}
 .home-editorial .home-roomtour-instagram:hover{border-bottom-color:#fff}
+/* Keep the team and review surfaces when their section order changes. */
+body.home-editorial > main > section.section.home-team-section:not(.section-dark){background:var(--paper)}
+body.home-editorial > main > section.section.review-platforms-section.section-white{background:var(--white)}
 .home-editorial .home-team-head h2{max-width:720px;font-size:clamp(45px,4.7vw,72px);line-height:1}
 .home-editorial .home-process-magnet{display:grid;grid-template-columns:1fr}
 .home-editorial .home-process-intro{max-width:980px}
