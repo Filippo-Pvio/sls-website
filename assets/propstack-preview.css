@@ -163,8 +163,6 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 .property-preview.pp-is-detail .pp-owner-intro p{margin:0;line-height:1.6}
 .property-preview.pp-is-detail .pp-owner-widget{min-width:0;width:100%;overflow:hidden;background:#fff}
 .property-preview.pp-is-detail #pp-fisher-widget{display:block;width:100%;min-height:540px;border:0}
-.property-preview.pp-is-detail .pp-owner-note{margin:16px 0 0;color:#627984;font-size:13px;line-height:1.55}
-.property-preview.pp-is-detail .pp-owner-note a{color:#346d82;text-underline-offset:2px}
 @media(max-width:600px){.property-preview.pp-is-detail .pp-owner-valuation{margin-top:40px;padding:24px 16px}.property-preview.pp-is-detail .pp-owner-intro{margin-bottom:18px}}
 
 /* Justhome is part of the buyer journey, after the object details and before the mobile inquiry. */
