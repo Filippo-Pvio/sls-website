@@ -46,8 +46,12 @@ export default async function handler(req,res) {
       const publicDetail=publicUnit(combined);
       // The listing is the single source for searchable facts. In the detail response,
       // Propstack can supply a differently shaped price that hides a valid list price.
-      for (const field of ['price','area','rooms','type','city','zip']) {
+      for (const field of ['price','area','rooms','city','zip']) {
         if (publicListing[field] != null && publicListing[field] !== '') publicDetail[field]=publicListing[field];
+      }
+      if (publicListing.type !== 'Immobilie') publicDetail.type=publicListing.type;
+      for (const field of ['bedrooms','baths','year']) {
+        if (publicDetail[field] == null) publicDetail[field]=publicListing[field];
       }
       return res.status(200).json({items:[publicDetail]});
     }

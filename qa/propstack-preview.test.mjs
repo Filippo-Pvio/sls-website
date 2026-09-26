@@ -21,10 +21,14 @@ test('Energieangaben und Merkmale erscheinen nur bei vorhandenen Propstack-Werte
   const empty=publicUnit(unit);
   assert.equal(empty.energy.value,null);
   assert.deepEqual(empty.amenities,[]);
-  const filled=publicUnit({...unit,building_energy_rating_type:{value:'Verbrauchsausweis'},thermal_characteristic:{value:84.4},energy_efficiency_class:{value:'C'},firing_types:{value:'Gas'},number_of_balconies:1,cellar:true});
+  const filled=publicUnit({...unit,building_energy_rating_type:{value:'Verbrauchsausweis'},thermal_characteristic:{value:84.4},energy_efficiency_class:{value:'C'},firing_types:{value:'Gas'},number_of_balconies:1,parking_space_type:{value:'Garage'},cellar:true});
   assert.equal(filled.energy.kind,'Verbrauchsausweis');
   assert.equal(filled.energy.value,84.4);
-  assert.deepEqual(filled.amenities,['Balkon','Keller']);
+  assert.deepEqual(filled.amenities,['Balkon','Garage','Keller']);
+});
+test('Exposé-Felder werden aus dem value-Format des Detailabrufs gelesen',()=>{
+  const result=publicUnit({...unit,rs_type:{value:'APARTMENT'},number_of_bed_rooms:{value:1},number_of_bath_rooms:{value:1},construction_year:{value:2002},number_of_rooms:{value:2}});
+  assert.deepEqual([result.type,result.bedrooms,result.baths,result.year,result.rooms],['Wohnung',1,1,2002,2]);
 });
 test('API verweigert ohne Konfiguration alle Objektangaben',async()=>{
   const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_NAME];
@@ -51,9 +55,9 @@ test('Detailansicht nutzt den freigegebenen Listenstatus auch wenn das Detail-JS
   globalThis.fetch=async url=>({ok:true,json:async()=>String(url).includes('property_statuses')
     ? {data:[{id:2,name:'Vermarktung',nonpublic:null}]}
     : String(url).includes('units/17?new=1')
-      ? {id:17,title:{value:'Detailtitel'},description_note:{value:'Beschreibung'},price:{value:null},number_of_rooms:null,images:unit.images}
+      ? {id:17,title:{value:'Detailtitel'},description_note:{value:'Beschreibung'},price:{value:null},number_of_rooms:null,rs_type:{value:'APARTMENT'},number_of_bed_rooms:{value:1},number_of_bath_rooms:{value:1},construction_year:{value:2002},images:unit.images}
       : {data:[{...unit,title:'Listentitel',price:233000,number_of_rooms:2}]}});
   const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
-  try {await handler({method:'GET',query:{id:'17'}},res);assert.equal(res.code,200);assert.equal(res.data.items[0].title,'Detailtitel');assert.equal(res.data.items[0].description,'Beschreibung');assert.equal(res.data.items[0].price,233000);assert.equal(res.data.items[0].rooms,2);assert.deepEqual(res.data.items[0].images,['https://example.org/public.jpg'])}
+  try {await handler({method:'GET',query:{id:'17'}},res);assert.equal(res.code,200);assert.equal(res.data.items[0].title,'Detailtitel');assert.equal(res.data.items[0].description,'Beschreibung');assert.equal(res.data.items[0].price,233000);assert.equal(res.data.items[0].rooms,2);assert.equal(res.data.items[0].type,'Wohnung');assert.equal(res.data.items[0].bedrooms,1);assert.equal(res.data.items[0].baths,1);assert.equal(res.data.items[0].year,2002);assert.deepEqual(res.data.items[0].images,['https://example.org/public.jpg'])}
   finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i]);globalThis.fetch=previous[3]}
 });
