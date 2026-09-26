@@ -22,12 +22,13 @@ test('Energieangaben und Merkmale erscheinen nur bei vorhandenen Propstack-Werte
   const empty=publicUnit(unit);
   assert.equal(empty.energy.value,null);
   assert.deepEqual(empty.amenities,[]);
-  const filled=publicUnit({...unit,building_energy_rating_type:{value:'Verbrauchsausweis'},thermal_characteristic:{value:84.4},energy_efficiency_class:{value:'C'},firing_types:{value:'Gas'},number_of_balconies:1,parking_space_type:{value:'Garage'},cellar:true});
+  const filled=publicUnit({...unit,building_energy_rating_type:{value:'Verbrauchsausweis'},thermal_characteristic:{value:84.4},energy_efficiency_class:{value:'C'},firing_types:{value:'Gas'},number_of_balconies:1,parking_space_type:{value:'Garage'},cellar:true,bathroom:{value:['Dusche','Wanne','Fenster']}});
   assert.equal(filled.energy.kind,'Verbrauchsausweis');
   assert.equal(filled.energy.value,84.4);
-  assert.deepEqual(filled.amenities,['Balkon','Garage','Keller']);
+  assert.deepEqual(filled.amenities,['Balkon','Garage','Keller','Dusche','Bad mit Badewanne','Bad mit Fenster']);
   const withYear=publicUnit({...unit,construction_year:{value:2002},energy_certificate_construction_year:null,equipment_technology_construction_year:{value:2002},energy_certificate_creation_date:{value:'ab 1. Mai 2014'},energy_certificate_start_date:{value:'2019-09-09'}});
   assert.equal(withYear.energy.buildingYear,2002);
+  assert.equal(withYear.energy.yearFromCertificate,false);
   assert.equal(withYear.energy.equipmentYear,2002);
   assert.equal(withYear.energy.issuedOn,'2019-09-09');
   assert.equal(publicUnit({...unit,energy_certificate_creation_date:{value:'ab 1. Mai 2014'}}).energy.issuedOn,null);
@@ -79,10 +80,11 @@ test('API ermittelt nur einen öffentlichen Status mit exaktem Namen und gibt nu
   process.env.PROPSTACK_API_KEY='test-key';process.env.PROPSTACK_TEST_PROPERTY_IDS='17';process.env.PROPSTACK_PUBLIC_STATUS_NAME='Vermarktung';
   globalThis.fetch=async url=>({ok:true,json:async()=>String(url).includes('property_statuses')
     ? {data:[{id:2,name:'Vermarktung',nonpublic:null},{id:3,name:'Intern',nonpublic:true}]}
+    : String(url).includes('units/17?new=1') ? {id:17,building_energy_rating_type:{value:'Verbrauchsausweis'},thermal_characteristic:{value:84.4},firing_types:{value:'Gas'},construction_year:{value:2002},energy_efficiency_class:{value:'C'}}
     : {data:[{...unit,title:'Testobjekt'},{...unit,id:18,title:'Fremdobjekt'}]}});
   const req={method:'GET',query:{}};
   const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
-  try {await handler(req,res);assert.equal(res.code,200);assert.equal(res.data.items.length,1);assert.equal(res.data.items[0].id,'17')}
+  try {await handler(req,res);assert.equal(res.code,200);assert.equal(res.data.items.length,1);assert.equal(res.data.items[0].id,'17');assert.equal(res.data.items[0].energy.value,84.4)}
   finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i]);globalThis.fetch=previous[3]}
 });
 test('Detailansicht nutzt den freigegebenen Listenstatus auch wenn das Detail-JSON keinen Status enthält',async()=>{

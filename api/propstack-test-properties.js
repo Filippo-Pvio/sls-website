@@ -32,10 +32,6 @@ export default async function handler(req,res) {
       const summary=(listed.data || []).find(u=>String(u.id) === String(id) && mayDisplay(u,ids,statuses));
       if (!summary) return res.status(404).json({error:'Objekt nicht veröffentlicht'});
       const detail=await read(`units/${encodeURIComponent(id)}?new=1`,key);
-      if (process.env.VERCEL_ENV==='preview') {
-        const candidates=Object.keys(detail).filter(k=>/courtage|fee|charge|haus|geld|parking|floorplan|document|energy_certificate|bath|storage/i.test(k));
-        console.info('Preview field audit',JSON.stringify({id,fields:Object.fromEntries(candidates.map(k=>[k,typeof detail[k]==='object' ? (detail[k]?.value ?? (Array.isArray(detail[k]) ? `array(${detail[k].length})` : 'object')) : detail[k]]))}));
-      }
       if (String(detail.id) !== String(id) || detail.archived === true ||
           (detail.marketing_type && detail.marketing_type !== 'BUY') ||
           (detail.status?.id && String(detail.status.id) !== String(summary.status.id)) ||
@@ -86,7 +82,28 @@ export default async function handler(req,res) {
       const result=await read(`units?with_meta=1&property_ids=${allowed.slice(i,i+40).join(',')}&per=100`,key);
       units.push(...(result.data || []));
     }
-    return res.status(200).json({items:units.filter(u=>mayDisplay(u,ids,statuses)).map(publicUnit)});
+    const published=units.filter(u=>mayDisplay(u,ids,statuses));
+    const items=[];
+    for (let i=0;i<published.length;i+=5) {
+      const batch=await Promise.all(published.slice(i,i+5).map(async summary=>{
+        const item=publicUnit(summary);
+        try {
+          const detail=await read(`units/${summary.id}?new=1`,key);
+          if (String(detail.id)!==String(summary.id) || detail.archived===true ||
+              (detail.marketing_type && detail.marketing_type!=='BUY') || detail.status?.nonpublic===true ||
+              (detail.status?.id && String(detail.status.id)!==String(summary.status.id))) return null;
+          const more=publicUnit({...summary,...detail,status:summary.status});
+          item.energy=more.energy;
+          item.courtage=more.courtage||item.courtage;
+          return item;
+        } catch(error) {
+          console.warn('Propstack preview listing detail unavailable:',error.message);
+          return item;
+        }
+      }));
+      items.push(...batch.filter(Boolean));
+    }
+    return res.status(200).json({items});
   } catch(error) {
     console.error('Propstack test fetch failed:',error.message);
     return res.status(502).json({error:'Propstack-Objekte sind momentan nicht abrufbar.'});
