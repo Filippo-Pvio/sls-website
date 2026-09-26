@@ -148,7 +148,8 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 .property-preview.pp-is-detail .pp-agent-card .pp-contact-details{margin:18px 0 16px}
 .property-preview.pp-is-detail .pp-agent-card .pp-call{margin:0}
 @media(max-width:850px){
-  .property-preview.pp-is-detail .pp-detail-main>.pp-contact{margin-bottom:28px}
+  .property-preview.pp-is-detail .pp-detail-main{grid-column:1;grid-row:1}
+  .property-preview.pp-is-detail .pp-detail-columns>.pp-contact{grid-column:1;grid-row:2}
   .property-preview.pp-is-detail .pp-inquiry-shortcut{position:fixed;top:auto;bottom:calc(14px + env(safe-area-inset-bottom));left:14px;right:14px;height:auto}
   .property-preview.pp-is-detail .pp-wrap{padding-bottom:calc(105px + env(safe-area-inset-bottom))}
 }
