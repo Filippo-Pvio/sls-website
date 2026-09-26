@@ -6,11 +6,11 @@ Für die **Preview-Umgebung** des Vercel-Projekts `sls-website` werden serversei
 
 - `PROPSTACK_API_KEY`: Propstack-V1-API-Schlüssel mit **Leserecht für Objekte**, nicht ins Frontend oder Git übernehmen.
 - `PROPSTACK_TEST_PROPERTY_IDS`: kommagetrennte Propstack-IDs der für diesen Test einzeln freigegebenen Kaufobjekte.
-- `PROPSTACK_PUBLIC_STATUS_IDS`: kommagetrennte numerische IDs der in SLS tatsächlich öffentlich darstellbaren Status.
+- `PROPSTACK_PUBLIC_STATUS_NAME`: exakter Name eines öffentlich darstellbaren Status (für den ersten Test: `Vermarktung`). Die ID und `nonpublic: false` werden serverseitig gegen Propstack verifiziert. Bei keinem oder mehreren Treffern werden keine Objekte angezeigt.
 
 Nur wenn alle drei Werte vorliegen, fragt `/api/propstack-test-properties` Daten ab. Andere Objekte, archivierte Objekte, Mietobjekte, nicht freigegebene Status und als privat markierte Bilder werden nicht ausgeliefert. Der Fehlerzustand fällt nicht auf Beispielobjekte zurück.
 
-Der bisherige Frymo-**OpenImmo-Export** verwendet FTP/SFTP und ist kein API-Schlüssel. Falls SLS zusätzlich das Frymo-Suchprofil-Widget verwendet, kann dafür ein Propstack-Schlüssel existieren; dessen dokumentierte Rechte sind Kontakte und Suchprofile. Ob dieser Schlüssel auch **Objekte lesen** darf, ist erst nach Prüfung der tatsächlichen Rechte und einem lesenden API-Test klar. Ein separater nur lesender Schlüssel für diese Vorschau ist vorzuziehen.
+Für diese Vorschau wurde ein separater API-Schlüssel mit Objekte-Leserecht angelegt. Seine tatsächliche Funktion und die Zuordnung des Status werden erst durch den Live-Abruf bestätigt.
 
 Anfragen, Propstack-Exposéversand, Rechtsformular und Suchprofilübermittlung sind noch nicht freigeschaltet. Ihre konkrete Zuordnung und Protokollierung wird vor der Integration mit einem Testkontakt geprüft. Ebenso bleiben URL- und SEO-Migration ein separater Prüfschritt.
 

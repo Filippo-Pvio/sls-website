@@ -13,11 +13,15 @@ export default async function handler(req,res) {
   if (req.method !== 'GET') return res.status(405).json({error:'Methode nicht erlaubt'});
   const key=process.env.PROPSTACK_API_KEY;
   const ids=allowedIds(process.env.PROPSTACK_TEST_PROPERTY_IDS);
-  const statuses=allowedIds(process.env.PROPSTACK_PUBLIC_STATUS_IDS);
-  if (!key || !ids.size || !statuses.size) return res.status(503).json({error:'Propstack-Testzugang noch nicht vollständig konfiguriert.'});
+  const statusName=process.env.PROPSTACK_PUBLIC_STATUS_NAME?.trim();
+  if (!key || !ids.size || !statusName) return res.status(503).json({error:'Propstack-Testzugang noch nicht vollständig konfiguriert.'});
   const id=req.query.id;
   if (id && (!/^\d+$/.test(String(id)) || !ids.has(String(id)))) return res.status(404).json({error:'Objekt nicht freigegeben'});
   try {
+    const statusResult=await read('property_statuses',key);
+    const matches=(statusResult.data || []).filter(s=>s.name === statusName && s.nonpublic === false);
+    if (matches.length !== 1) return res.status(503).json({error:'Öffentlicher Objektstatus nicht eindeutig gefunden.'});
+    const statuses=new Set([String(matches[0].id)]);
     if (id) {
       const unit=await read(`units/${encodeURIComponent(id)}?new=1`,key);
       return mayDisplay(unit,ids,statuses) ? res.status(200).json({items:[publicUnit(unit)]}) : res.status(404).json({error:'Objekt nicht veröffentlicht'});

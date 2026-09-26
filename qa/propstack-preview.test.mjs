@@ -18,10 +18,21 @@ test('Antwort enthält keine privaten Fotos oder Rohdatenfelder',()=>{
   assert.equal('internal_note' in result,false);
 });
 test('API verweigert ohne Konfiguration alle Objektangaben',async()=>{
-  const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_IDS];
-  delete process.env.PROPSTACK_API_KEY; delete process.env.PROPSTACK_TEST_PROPERTY_IDS; delete process.env.PROPSTACK_PUBLIC_STATUS_IDS;
+  const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_NAME];
+  delete process.env.PROPSTACK_API_KEY; delete process.env.PROPSTACK_TEST_PROPERTY_IDS; delete process.env.PROPSTACK_PUBLIC_STATUS_NAME;
   const req={method:'GET',query:{}};
   const res={headers:{},setHeader(k,v){this.headers[k]=v},status(code){this.code=code;return this},json(data){this.data=data;return this}};
   try {await handler(req,res);assert.equal(res.code,503);assert.equal(res.headers['Cache-Control'],'no-store')}
-  finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_IDS'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i])}
+  finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i])}
+});
+test('API ermittelt nur einen öffentlichen Status mit exaktem Namen und gibt nur freigegebene Objekte aus',async()=>{
+  const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_NAME,globalThis.fetch];
+  process.env.PROPSTACK_API_KEY='test-key';process.env.PROPSTACK_TEST_PROPERTY_IDS='17';process.env.PROPSTACK_PUBLIC_STATUS_NAME='Vermarktung';
+  globalThis.fetch=async url=>({ok:true,json:async()=>String(url).includes('property_statuses')
+    ? {data:[{id:2,name:'Vermarktung',nonpublic:false},{id:3,name:'Intern',nonpublic:true}]}
+    : {data:[{...unit,title:'Testobjekt'},{...unit,id:18,title:'Fremdobjekt'}]}});
+  const req={method:'GET',query:{}};
+  const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
+  try {await handler(req,res);assert.equal(res.code,200);assert.equal(res.data.items.length,1);assert.equal(res.data.items[0].id,'17')}
+  finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i]);globalThis.fetch=previous[3]}
 });
