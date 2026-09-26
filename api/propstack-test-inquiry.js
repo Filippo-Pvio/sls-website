@@ -35,8 +35,7 @@ export default async function handler(req,res) {
     const list=await propstack(`units?with_meta=1&property_ids=${id}&per=100`,readKey);
     const unit=(list.data||[]).find(u=>String(u.id)===id && mayDisplay(u,new Set([id]),new Set([String(matches[0].id)])));
     if (!unit) return res.status(404).json({error:'Objekt nicht verfügbar.'});
-    const optional={street:text(body.street),house_number:text(body.houseNumber,20),zip_code:text(body.zip,20),city:text(body.city,100)};
-    const client=await propstack('contacts',writeKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({client:{first_name:firstName,last_name:lastName,email,phone,...Object.fromEntries(Object.entries(optional).filter(([,value])=>value))}})});
+    const client=await propstack('contacts',writeKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({client:{first_name:firstName,last_name:lastName,email,phone}})});
     const contactId=Number(client.id);
     if (!Number.isSafeInteger(contactId) || contactId<=0) throw new Error('Propstack contact response missing ID');
     await propstack('tasks',writeKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:{title:'Anfrage über die Webseite',client_ids:[contactId],property_ids:[Number(id)],broker_id:unit.broker_id||unit.broker?.id||undefined,client_source_id:Number(source),body:`Anfrage zu Objekt ${html(id)}<br>Name: ${html(firstName)} ${html(lastName)}<br>E-Mail: ${html(email)}<br>Telefon: ${html(phone)}`}})});
