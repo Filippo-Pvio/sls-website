@@ -17,6 +17,15 @@ test('Antwort enthält keine privaten Fotos oder Rohdatenfelder',()=>{
   assert.deepEqual(result.images,['https://example.org/public.jpg']);
   assert.equal('internal_note' in result,false);
 });
+test('Energieangaben und Merkmale erscheinen nur bei vorhandenen Propstack-Werten',()=>{
+  const empty=publicUnit(unit);
+  assert.equal(empty.energy.value,null);
+  assert.deepEqual(empty.amenities,[]);
+  const filled=publicUnit({...unit,building_energy_rating_type:{value:'Verbrauchsausweis'},thermal_characteristic:{value:84.4},energy_efficiency_class:{value:'C'},firing_types:{value:'Gas'},number_of_balconies:1,cellar:true});
+  assert.equal(filled.energy.kind,'Verbrauchsausweis');
+  assert.equal(filled.energy.value,84.4);
+  assert.deepEqual(filled.amenities,['Balkon','Keller']);
+});
 test('API verweigert ohne Konfiguration alle Objektangaben',async()=>{
   const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_NAME];
   delete process.env.PROPSTACK_API_KEY; delete process.env.PROPSTACK_TEST_PROPERTY_IDS; delete process.env.PROPSTACK_PUBLIC_STATUS_NAME;
