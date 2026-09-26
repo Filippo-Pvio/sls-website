@@ -158,7 +158,10 @@ if (heroValuation) {
   }
 }
 
-document.querySelectorAll(".reveal").forEach((element) => {
+if (document.body.classList.contains("home-editorial") && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  document.body.classList.add("home-copy-motion-ready");
+}
+document.querySelectorAll(".reveal, .home-copy-motion-ready .home-copy-reveal").forEach((element) => {
   const observer = new IntersectionObserver(([entry], obs) => {
     if (entry.isIntersecting) {
       element.classList.add("is-visible");
