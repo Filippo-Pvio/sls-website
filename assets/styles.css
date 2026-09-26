@@ -2230,9 +2230,10 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
     z-index:990;
     display:inline-flex;
     align-items:center;
-    gap:9px;
-    min-height:48px;
-    padding:10px 16px;
+    justify-content:center;
+    width:52px;
+    height:52px;
+    padding:0;
     border:1px solid rgba(255,255,255,.3);
     border-radius:999px;
     background:#345b6e;
@@ -2243,7 +2244,8 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
     white-space:nowrap;
     animation:mobile-call-enter .24s ease-out both;
   }
-  .home-editorial .mobile-call-cta svg { width:18px; height:18px; flex:none; }
+  .home-editorial .mobile-call-cta svg { width:22px; height:22px; flex:none; }
+  .home-editorial .mobile-call-cta span { display:none; }
   .home-editorial .mobile-call-cta:focus-visible { outline:3px solid var(--coral); outline-offset:3px; }
   body.menu-open .mobile-call-cta { display:none!important; }
 }
