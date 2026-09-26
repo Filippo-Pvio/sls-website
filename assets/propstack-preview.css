@@ -34,8 +34,11 @@ html:has(> body.property-preview),body.property-preview{overflow-x:clip;overscro
 .property-preview.pp-is-detail .pp-facts-data{grid-template-columns:repeat(3,minmax(0,1fr))}
 .property-preview.pp-is-detail .pp-text{color:#5d7582;line-height:1.8}
 .property-preview.pp-is-detail .pp-data-note{padding:15px 17px;background:#f3f7f8;border-left:3px solid #688da0;color:#415f6c;line-height:1.55}
-.property-preview.pp-is-detail .pp-amenities{display:flex;flex-wrap:wrap;gap:12px}
-.property-preview.pp-is-detail .pp-amenities span{display:inline-flex;gap:9px;align-items:center;border:1px solid #dce6e9;padding:10px 13px;color:#4c6876;border-radius:4px}
+.property-preview.pp-is-detail .pp-amenities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 20px}
+.property-preview.pp-is-detail .pp-amenities span{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start;min-width:0;padding:4px 0;color:#4c6876;font-size:15px;line-height:1.45;overflow-wrap:anywhere}
+.property-preview.pp-is-detail .pp-amenities svg{margin-top:2px;flex-shrink:0}
+@media(max-width:600px){.property-preview.pp-is-detail .pp-amenities{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}.property-preview.pp-is-detail .pp-amenities span{gap:8px;font-size:14px}}
+@media(max-width:350px){.property-preview.pp-is-detail .pp-amenities{grid-template-columns:1fr}}
 .property-preview.pp-is-detail .pp-contact{top:110px;text-align:center}
 .property-preview.pp-is-detail .pp-agent-photo{width:100%;max-height:340px;object-fit:cover;object-position:top center;border-radius:5px;margin-bottom:20px}
 .property-preview.pp-is-detail .pp-contact h2{font-size:20px;margin-bottom:5px}
