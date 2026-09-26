@@ -33,6 +33,13 @@ export default async function handler(req,res) {
       const summary=(listed.data || []).find(u=>String(u.id) === String(id) && mayDisplay(u,ids,statuses));
       if (!summary) return res.status(404).json({error:'Objekt nicht veröffentlicht'});
       const detail=await read(`units/${encodeURIComponent(id)}?new=1`,key);
+      if (String(id)==='3528391') {
+        const houseFeeFields=object=>Object.fromEntries(Object.entries(object||{}).filter(([name])=>/hausgeld|wohngeld|house.?money|condominium|maintenance.?fee/i.test(name)).map(([name,raw])=>{
+          const value=raw && typeof raw==='object' && 'value' in raw ? raw.value : raw;
+          return [name,typeof value==='number' && Number.isFinite(value) ? value : typeof value==='string' && /^\d+(?:[.,]\d{1,2})?$/.test(value.trim()) ? value.trim() : null];
+        }));
+        console.info('Propstack house fee audit 3528391',JSON.stringify({list:houseFeeFields(summary),detail:houseFeeFields(detail),customList:houseFeeFields(summary.custom_fields),customDetail:houseFeeFields(detail.custom_fields)}));
+      }
       if (String(detail.id) !== String(id) || detail.archived === true ||
           (detail.marketing_type && detail.marketing_type !== 'BUY') ||
           (detail.status?.id && String(detail.status.id) !== String(summary.status.id)) ||
