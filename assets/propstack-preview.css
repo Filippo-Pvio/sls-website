@@ -22,7 +22,6 @@ html:has(> body.property-preview),body.property-preview{overflow-x:clip;overscro
 .property-preview.pp-is-detail .pp-detail-header .pp-chip{position:static;display:inline-block;color:white;background:#688da0;padding:7px 14px;margin-bottom:14px}
 .property-preview.pp-is-detail .pp-detail-header .pp-city{margin:0 0 6px;color:#597888;font-weight:600}
 .property-preview.pp-is-detail .pp-detail-header h1{max-width:1040px;margin:0;color:#4e6878;font-size:clamp(28px,3vw,42px);line-height:1.18}
-.property-preview.pp-is-detail .pp-header-cta{display:inline-block;margin-top:15px;color:#356c80;font-weight:750;text-underline-offset:4px}
 .property-preview.pp-is-detail #pp-inquiry{scroll-margin-top:110px}
 .property-preview.pp-is-detail .pp-detail-columns{grid-template-columns:minmax(0,2.1fr) minmax(285px,1fr);gap:30px;align-items:start}
 .property-preview.pp-is-detail .pp-panel{border:0;background:#fff;border-radius:3px;padding:30px;margin-bottom:28px;box-shadow:0 12px 24px #1d303021}
