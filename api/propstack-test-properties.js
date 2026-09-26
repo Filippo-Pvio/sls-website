@@ -95,6 +95,7 @@ export default async function handler(req,res) {
           const more=publicUnit({...summary,...detail,status:summary.status});
           item.energy=more.energy;
           item.courtage=more.courtage||item.courtage;
+          if (item.type==='Immobilie' && more.type!=='Immobilie') item.type=more.type;
           return item;
         } catch(error) {
           console.warn('Propstack preview listing detail unavailable:',error.message);

@@ -80,11 +80,11 @@ test('API ermittelt nur einen öffentlichen Status mit exaktem Namen und gibt nu
   process.env.PROPSTACK_API_KEY='test-key';process.env.PROPSTACK_TEST_PROPERTY_IDS='17';process.env.PROPSTACK_PUBLIC_STATUS_NAME='Vermarktung';
   globalThis.fetch=async url=>({ok:true,json:async()=>String(url).includes('property_statuses')
     ? {data:[{id:2,name:'Vermarktung',nonpublic:null},{id:3,name:'Intern',nonpublic:true}]}
-    : String(url).includes('units/17?new=1') ? {id:17,building_energy_rating_type:{value:'Verbrauchsausweis'},thermal_characteristic:{value:84.4},firing_types:{value:'Gas'},construction_year:{value:2002},energy_efficiency_class:{value:'C'}}
+    : String(url).includes('units/17?new=1') ? {id:17,rs_type:{value:'APARTMENT'},building_energy_rating_type:{value:'Verbrauchsausweis'},thermal_characteristic:{value:84.4},firing_types:{value:'Gas'},construction_year:{value:2002},energy_efficiency_class:{value:'C'}}
     : {data:[{...unit,title:'Testobjekt'},{...unit,id:18,title:'Fremdobjekt'}]}});
   const req={method:'GET',query:{}};
   const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
-  try {await handler(req,res);assert.equal(res.code,200);assert.equal(res.data.items.length,1);assert.equal(res.data.items[0].id,'17');assert.equal(res.data.items[0].energy.value,84.4)}
+  try {await handler(req,res);assert.equal(res.code,200);assert.equal(res.data.items.length,1);assert.equal(res.data.items[0].id,'17');assert.equal(res.data.items[0].energy.value,84.4);assert.equal(res.data.items[0].type,'Wohnung')}
   finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i]);globalThis.fetch=previous[3]}
 });
 test('Detailansicht nutzt den freigegebenen Listenstatus auch wenn das Detail-JSON keinen Status enthält',async()=>{
