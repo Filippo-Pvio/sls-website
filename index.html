@@ -347,6 +347,7 @@
     const first = steps[0].getBoundingClientRect().top + 13;
     const last = steps[steps.length - 1].getBoundingClientRect().top + 13;
     const progress = Math.max(0, Math.min(1, (focus - first) / Math.max(1, last - first)));
+    route.style.setProperty('--process-line-length', `${Math.max(0, last - first).toFixed(1)}px`);
     route.style.setProperty('--process-progress', progress.toFixed(3));
 
     let current = -1;

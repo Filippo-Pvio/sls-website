@@ -2059,10 +2059,11 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 .home-editorial .home-process-intro{max-width:650px}
 .home-editorial .home-process-intro h2{font-size:clamp(46px,5.2vw,78px);line-height:.99}
 .home-editorial .home-process-intro>p:last-child{max-width:590px;color:#dfe5e7!important;font-size:18px}
-.home-editorial .home-process-route{position:relative;display:grid;grid-template-columns:1fr;gap:0;margin:8px 0 0;padding:0 0 0 26px;border:0;border-left:1px solid rgba(255,255,255,.36);list-style:none}
+.home-editorial .home-process-route{position:relative;display:grid;grid-template-columns:1fr;gap:0;margin:8px 0 0;padding:0 0 0 26px;border:0;border-left:1px solid transparent;list-style:none}
 .home-editorial .home-process-route>li{position:relative;min-height:105px;display:grid;grid-template-columns:52px 1fr;gap:12px;padding:0 0 20px;border:0}
 .home-editorial .home-process-route>li:last-child{min-height:0;padding-bottom:0}
-.home-editorial .home-process-route>li::before{content:"";position:absolute;left:-32px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 5px #345b6e}
+.home-editorial .home-process-route>li::before{content:"";position:absolute;left:-32px;top:7px;z-index:2;width:11px;height:11px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 5px #345b6e}
+.home-editorial .home-process-route>li:not(:last-child)::after{content:"";position:absolute;left:-27px;top:12.5px;z-index:0;width:1px;height:100%;background:rgba(255,255,255,.36);pointer-events:none}
 .home-editorial .home-process-number{color:var(--coral);font:750 13px/1.5 "Raleway",Arial,sans-serif;letter-spacing:.08em}
 .home-editorial .home-process-route strong{display:block;color:#fff;font:550 clamp(27px,2.5vw,35px)/1.05 "Playfair Display",Georgia,serif}
 .home-editorial .home-process-route p{margin:9px 0 0;color:#dfe5e7;font-size:14px;line-height:1.45}
@@ -2299,12 +2300,12 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 
 /* Homepage selling process: a quiet, scroll-led timeline. */
 .home-editorial .home-process-route.is-scroll-timeline::before{
-  content:"";position:absolute;z-index:0;left:-2px;top:12px;width:3px;
-  height:calc(100% - 30px);border-radius:3px;background:var(--coral);
+  content:"";position:absolute;z-index:1;left:-2px;top:12.5px;width:3px;
+  height:var(--process-line-length,0px);border-radius:3px;background:var(--coral);
   transform:scaleY(var(--process-progress,0));transform-origin:top;pointer-events:none
 }
 .home-editorial .home-process-route.is-scroll-timeline>li::before{
-  z-index:1;transition:transform .32s ease,box-shadow .32s ease
+  z-index:2;transition:transform .32s ease,box-shadow .32s ease
 }
 .home-editorial .home-process-route.is-scroll-timeline>li>div{
   opacity:.9;transform:translateY(6px);
