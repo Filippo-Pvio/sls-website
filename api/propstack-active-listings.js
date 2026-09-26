@@ -152,6 +152,7 @@ export default async function handler(req, res) {
       .map(status => String(status.id)));
 
     if (!activeStatusIds.size) {
+      console.error('Propstack active status candidates:', statuses.map(status => ({ id: status.id, name: status.name, nonpublic: status.nonpublic })));
       res.setHeader('Cache-Control', 'no-store');
       return res.status(503).json({ error: 'Aktiver Vermarktungsstatus in Propstack nicht gefunden' });
     }
