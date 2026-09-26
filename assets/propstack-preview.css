@@ -155,3 +155,14 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
   .property-preview.pp-is-detail .pp-inquiry-shortcut{position:fixed;top:auto;bottom:calc(14px + env(safe-area-inset-bottom));left:14px;right:14px;height:auto}
   .property-preview.pp-is-detail .pp-wrap{padding-bottom:calc(105px + env(safe-area-inset-bottom))}
 }
+
+/* A distinct, quiet owner section follows the complete buyer journey. */
+.property-preview.pp-is-detail .pp-owner-valuation{clear:both;min-width:0;max-width:100%;margin:70px 0 0;padding:34px;background:#fff;border-top:4px solid #6c97ab;box-shadow:0 8px 32px #29394313;color:#4e6878}
+.property-preview.pp-is-detail .pp-owner-intro{max-width:760px;margin:0 0 24px}
+.property-preview.pp-is-detail .pp-owner-intro h2{font-size:clamp(27px,3.2vw,39px);line-height:1.16;margin:10px 0 14px;color:#4e6878}
+.property-preview.pp-is-detail .pp-owner-intro p{margin:0;line-height:1.6}
+.property-preview.pp-is-detail .pp-owner-widget{min-width:0;width:100%;overflow:hidden;background:#fff}
+.property-preview.pp-is-detail #pp-fisher-widget{display:block;width:100%;min-height:540px;border:0}
+.property-preview.pp-is-detail .pp-owner-note{margin:16px 0 0;color:#627984;font-size:13px;line-height:1.55}
+.property-preview.pp-is-detail .pp-owner-note a{color:#346d82;text-underline-offset:2px}
+@media(max-width:600px){.property-preview.pp-is-detail .pp-owner-valuation{margin-top:40px;padding:24px 16px}.property-preview.pp-is-detail .pp-owner-intro{margin-bottom:18px}}
