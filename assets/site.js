@@ -40,9 +40,17 @@ const icon = (name) => {
 const current = window.location.pathname.replace(/index\\.html$/, "");
 const isActive = (href) => href === current || (href !== "/" && current.startsWith(href));
 
-const primaryLinks = navGroups.map((group) =>
-  `<a class="floating-nav-link" href="${group.href}"${isActive(group.href) ? ' aria-current="page"' : ""}>${group.label}</a>`
-).join("");
+const primaryLinks = navGroups.map((group, index) => {
+  const submenuId = `desktop-submenu-${index}`;
+  const submenuLinks = group.items.map(([label, href, description]) =>
+    `<a class="floating-dropdown-link" href="${href}"><strong>${label}</strong><span>${description}</span></a>`
+  ).join("");
+  return `<div class="floating-nav-group">
+    <a class="floating-nav-link" href="${group.href}"${isActive(group.href) ? ' aria-current="page"' : ""}>${group.label}</a>
+    <button class="floating-nav-trigger" type="button" aria-label="Untermenü ${group.label} öffnen" aria-controls="${submenuId}" aria-expanded="false">${icon("chevron")}</button>
+    <div class="floating-nav-dropdown" id="${submenuId}" hidden>${submenuLinks}</div>
+  </div>`;
+}).join("");
 
 const overlaySections = navGroups.map((group) => {
   const links = group.items.slice(0, 4).map(([label, href]) =>
@@ -107,6 +115,53 @@ document.querySelector("[data-site-footer]").innerHTML = `
 const toggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector("#site-nav");
 const header = document.querySelector("[data-site-header]");
+
+const desktopNav = document.querySelector(".floating-primary");
+const desktopGroups = [...desktopNav.querySelectorAll(".floating-nav-group")];
+const desktopBreakpoint = window.matchMedia("(min-width: 981px)");
+
+const closeDesktopMenus = (except) => {
+  desktopGroups.forEach((group) => {
+    if (group === except) return;
+    const trigger = group.querySelector(".floating-nav-trigger");
+    group.querySelector(".floating-nav-dropdown").hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.setAttribute("aria-label", `Untermenü ${group.querySelector(".floating-nav-link").textContent} öffnen`);
+  });
+};
+const openDesktopMenu = (group) => {
+  if (!desktopBreakpoint.matches) return;
+  closeDesktopMenus(group);
+  const trigger = group.querySelector(".floating-nav-trigger");
+  group.querySelector(".floating-nav-dropdown").hidden = false;
+  trigger.setAttribute("aria-expanded", "true");
+  trigger.setAttribute("aria-label", `Untermenü ${group.querySelector(".floating-nav-link").textContent} schließen`);
+};
+desktopGroups.forEach((group) => {
+  group.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "mouse") openDesktopMenu(group);
+  });
+  group.addEventListener("pointerleave", () => {
+    if (!group.contains(document.activeElement)) closeDesktopMenus();
+  });
+  group.addEventListener("focusin", () => openDesktopMenu(group));
+  group.addEventListener("focusout", (event) => {
+    if (!group.contains(event.relatedTarget)) closeDesktopMenus();
+  });
+  group.querySelector(".floating-nav-trigger").addEventListener("click", () => openDesktopMenu(group));
+  group.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      group.querySelector(".floating-nav-trigger").focus();
+      closeDesktopMenus();
+    }
+  });
+});
+document.addEventListener("pointerdown", (event) => {
+  if (!desktopNav.contains(event.target)) closeDesktopMenus();
+});
+window.addEventListener("resize", () => closeDesktopMenus());
 
 const setMenu = (open, returnFocus = false) => {
   toggle.setAttribute("aria-expanded", String(open));
