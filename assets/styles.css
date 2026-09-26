@@ -425,6 +425,12 @@ textarea { min-height: 132px; resize: vertical; }
 .valuation-tool { display:grid; grid-template-columns:.85fr 1.15fr; gap:70px; align-items:start; }
 .valuation-tool-copy { position:sticky; top:120px; }
 .valuation-benefits { display:flex; flex-direction:column; gap:9px; margin-top:28px; font-size:13px; font-weight:750; }
+.valuation-widget-shell { min-width:0; padding:24px; background:#f3f6f6; border-top:4px solid var(--sky); }
+.valuation-widget-shell iframe { display:block; width:100%; min-height:540px; border:0; background:#fff; }
+.valuation-widget-shell iframe[hidden] { display:none; }
+.valuation-widget-note,.valuation-widget-fallback { margin:14px 0 0; color:var(--muted); font-size:12px; line-height:1.5; }
+.valuation-widget-fallback[hidden] { display:none; }
+.valuation-widget-fallback a { color:var(--ink); text-decoration:underline; text-decoration-color:var(--sky); }
 .valuation-form { padding:38px; background:#f3f6f6; border-top:4px solid var(--sky); }
 .valuation-form label { display:flex; flex-direction:column; gap:8px; margin-bottom:18px; font-size:12px; font-weight:800; }
 .valuation-form input,.valuation-form select { width:100%; min-height:50px; padding:0 14px; border:1px solid #c8d0d1; background:var(--white); color:var(--ink); font:500 15px/1.2 "Raleway",Arial,sans-serif; }
@@ -450,6 +456,7 @@ textarea { min-height: 132px; resize: vertical; }
  .partner-card,.partner-card:nth-child(3),.partner-card:nth-child(4) { border-left:0; border-top:1px solid var(--line); }
  .partner-card:first-child { border-top:0; }
  .valuation-form { padding:24px; }
+ .valuation-widget-shell { padding:12px; }
  .form-two { grid-template-columns:1fr; gap:0; }
 }
 
@@ -2033,15 +2040,18 @@ body.home-editorial > main > .home-value-section.section-white .lead{color:#edf3
 body.home-editorial > main > section.section.home-team-section:not(.section-dark){background:var(--paper)}
 body.home-editorial > main > section.section.review-platforms-section.section-white{background:var(--white)}
 .home-editorial .home-team-head h2{max-width:720px;font-size:clamp(45px,4.7vw,72px);line-height:1}
-.home-editorial .home-process-magnet{display:grid;grid-template-columns:1fr}
-.home-editorial .home-process-intro{max-width:980px}
-.home-editorial .home-process-intro h2{max-width:980px;font-size:clamp(46px,5.2vw,78px);line-height:.99}
-.home-editorial .home-process-intro>p:last-child{max-width:700px;color:#dfe5e7!important;font-size:18px}
-.home-editorial .home-process-route{display:grid;grid-template-columns:repeat(5,1fr);margin:52px 0 24px;border-top:1px solid rgba(255,255,255,.28);border-bottom:1px solid rgba(255,255,255,.28)}
-.home-editorial .home-process-route>div{min-height:150px;padding:26px 22px;display:flex;flex-direction:column;justify-content:flex-end;border-right:1px solid rgba(255,255,255,.22)}
-.home-editorial .home-process-route>div:last-child{border-right:0}
-.home-editorial .home-process-route span{color:#fff;font:550 clamp(24px,2.4vw,36px)/1.05 "Playfair Display",Georgia,serif}
-.home-editorial .home-process-route small{margin-top:8px;color:#8fb9cc;font-size:10px;font-weight:750;letter-spacing:.05em}
+.home-editorial .home-process-magnet{display:grid;grid-template-columns:minmax(0,.98fr) minmax(0,1.02fr);gap:clamp(36px,6vw,96px);align-items:start}
+.home-editorial .home-process-intro{max-width:650px}
+.home-editorial .home-process-intro h2{font-size:clamp(46px,5.2vw,78px);line-height:.99}
+.home-editorial .home-process-intro>p:last-child{max-width:590px;color:#dfe5e7!important;font-size:18px}
+.home-editorial .home-process-route{position:relative;display:grid;grid-template-columns:1fr;gap:0;margin:8px 0 0;padding:0 0 0 26px;border:0;border-left:1px solid rgba(255,255,255,.36);list-style:none}
+.home-editorial .home-process-route>li{position:relative;min-height:105px;display:grid;grid-template-columns:52px 1fr;gap:12px;padding:0 0 20px;border:0}
+.home-editorial .home-process-route>li:last-child{min-height:0;padding-bottom:0}
+.home-editorial .home-process-route>li::before{content:"";position:absolute;left:-32px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 5px #345b6e}
+.home-editorial .home-process-number{color:var(--coral);font:750 13px/1.5 "Raleway",Arial,sans-serif;letter-spacing:.08em}
+.home-editorial .home-process-route strong{display:block;color:#fff;font:550 clamp(27px,2.5vw,35px)/1.05 "Playfair Display",Georgia,serif}
+.home-editorial .home-process-route p{margin:9px 0 0;color:#dfe5e7;font-size:14px;line-height:1.45}
+.home-editorial .home-process-magnet>.text-link{grid-column:1/-1;justify-self:start;margin-top:4px}
 /* A consistent headline scale lets the opening statement remain the visual lead. */
 .home-editorial main .section h2{font-size:clamp(42px,4.8vw,64px);font-weight:500;letter-spacing:-.012em;line-height:1.08}
 .home-editorial .review-platform-card{border-radius:8px;box-shadow:none}
@@ -2055,8 +2065,10 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 .home-editorial .home-value-proof{padding:24px}.home-editorial .home-value-proof-intro{font-size:22px}
 .home-editorial .home-marketing-section{padding-bottom:76px}.home-editorial .home-marketing-lead{padding:34px 0 0}
 .home-editorial .home-marketing-stage{min-height:390px;padding:30px 24px}.home-editorial .home-marketing-statement{font-size:clamp(28px,7.2vw,36px)}
-.home-editorial .home-process-route{grid-template-columns:1fr;margin-top:34px}.home-editorial .home-process-route>div{min-height:0;padding:18px 0;border-right:0;border-bottom:1px solid rgba(255,255,255,.18)}
-.home-editorial .home-process-route>div:last-child{border-bottom:0}.home-editorial .home-process-route span{font-size:30px}
+.home-editorial .home-process-magnet{grid-template-columns:1fr;gap:34px}
+.home-editorial .home-process-route{margin-top:0}
+.home-editorial .home-process-route>li{min-height:102px}
+.home-editorial .home-process-magnet>.text-link{margin-top:0}
 .home-editorial .home-reach-layout{grid-template-columns:1fr;gap:30px}
 .home-editorial main .section.home-reach-section h2{font-size:clamp(36px,8.3vw,48px)}
 .home-editorial .home-reach-detail>p{font-size:16px}
