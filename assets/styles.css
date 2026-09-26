@@ -2093,7 +2093,7 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 /* Homepage partner logos: frameless, 2-2-1 on mobile */
 .home-editorial .trust-section-prominent{
   background:var(--paper);
-  padding:36px 0 46px;
+padding:24px 0 30px;
 }
 .home-editorial .trust-section-prominent .trust-logo-section{display:block}
 .home-editorial .trust-section-prominent .trust-badge-grid{
@@ -2104,8 +2104,8 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
   align-items:center;
 }
 .home-editorial .trust-section-prominent .trust-badge-card{
-  min-height:145px;
-  padding:8px;
+min-height:128px;
+  padding:6px;
   background:transparent;
   border:0;
   border-radius:0;
@@ -2114,33 +2114,33 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 .home-editorial .trust-section-prominent .trust-badge-card:hover{transform:translateY(-2px);box-shadow:none}
 .home-editorial .trust-section-prominent .trust-badge-card img{
   width:auto;
-  height:110px;
+height:100px;
   max-width:100%;
   object-fit:contain;
 }
-.home-editorial .trust-section-prominent .trust-badge-card:nth-child(2) img{width:auto;height:124px}
-.home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{width:auto;height:108px}
-.home-editorial .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{width:auto;height:128px}
+.home-editorial .trust-section-prominent .trust-badge-card:nth-child(2) img{width:auto;height:112px}
+.home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{width:auto;height:100px}
+.home-editorial .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{width:auto;height:116px}
 @media(max-width:800px){
-  .home-editorial .trust-section-prominent{padding:28px 0 38px}
+.home-editorial .trust-section-prominent{padding:22px 0 28px}
   .home-editorial .trust-section-prominent .trust-badge-grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:24px 22px;
+    gap:18px 18px;
     max-width:560px;
     margin:0 auto;
   }
   .home-editorial .trust-section-prominent .trust-badge-card{
-    min-height:150px;
-    padding:8px 10px;
+min-height:128px;
+    padding:6px 8px;
   }
   .home-editorial .trust-section-prominent .trust-badge-card img{
     width:auto;
-    height:116px;
+height:104px;
     max-width:92%;
   }
-  .home-editorial .trust-section-prominent .trust-badge-card:nth-child(2) img{width:auto;height:132px}
-  .home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{width:auto;height:116px}
-  .home-editorial .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{width:auto;height:136px}
+  .home-editorial .trust-section-prominent .trust-badge-card:nth-child(2) img{width:auto;height:116px}
+  .home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{width:auto;height:104px}
+  .home-editorial .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{width:auto;height:116px}
   .home-editorial .trust-section-prominent .trust-badge-card:nth-child(5){
     grid-column:1 / -1;
     justify-self:center;
@@ -2150,14 +2150,14 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 }
 
 /* Compact live Google trust row below partner logos */
-.home-editorial .home-google-trust{width:max-content;max-width:100%;margin:28px auto 0;padding-top:20px;display:flex;align-items:center;justify-content:center;gap:10px;border-top:1px solid rgba(11,17,18,.12);color:var(--ink);text-decoration:none;white-space:nowrap}
+.home-editorial .home-google-trust{width:max-content;max-width:100%;margin:18px auto 0;padding-top:14px;display:flex;align-items:center;justify-content:center;gap:10px;border-top:1px solid rgba(11,17,18,.12);color:var(--ink);text-decoration:none;white-space:nowrap}
 .home-editorial .home-google-trust-label{font-size:12px;font-weight:800}
 .home-editorial .home-google-trust-score{font-size:18px;font-weight:850}
 .home-editorial .home-google-trust-stars{color:#f4b400;font-size:17px;letter-spacing:.04em}
 .home-editorial .home-google-trust-count{color:var(--muted);font-size:12px;font-weight:650}
 .home-editorial .home-google-trust:hover .home-google-trust-count{color:var(--ink)}
 @media(max-width:800px){
-.home-editorial .home-google-trust{width:100%;margin-top:24px;padding-top:18px;flex-wrap:wrap;gap:6px 8px;white-space:normal}
+.home-editorial .home-google-trust{width:100%;margin-top:18px;padding-top:14px;flex-wrap:wrap;gap:6px 8px;white-space:normal}
 .home-editorial .home-google-trust-count{flex-basis:100%;text-align:center}
 }
 
@@ -2279,4 +2279,17 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 @media (min-width:1050px) {
   .floating-scroll-cta { position:static; top:auto; right:auto; justify-self:end; min-height:38px; font-size:12px; transform:translateY(6px); }
   .site-header.has-scroll-cta:not(.menu-active) .floating-scroll-cta { transform:none; }
+}
+
+/* Keep homepage trust content readable while reducing the space between decisions. */
+.home-editorial .home-team-section{padding-top:88px;padding-bottom:96px}
+.home-editorial .review-platforms-section{padding-top:82px;padding-bottom:92px}
+.home-editorial .review-platforms-section .review-platform-grid{margin-top:32px;padding-top:18px}
+@media(max-width:800px){
+  .home-editorial .home-team-section{padding-top:58px;padding-bottom:68px}
+  .home-editorial .review-platforms-section{padding-top:60px;padding-bottom:68px}
+  .home-editorial .review-platforms-section .review-platform-grid{margin-top:24px;padding-top:18px}
+}
+@media(max-width:640px){
+  .home-editorial .review-platforms-section .review-platform-grid{gap:18px}
 }
