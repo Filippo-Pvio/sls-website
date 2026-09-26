@@ -9,25 +9,26 @@
   const dwell = 7000;
   const fade = 1600;
   const path = (scene) => `/assets/images/hero-scenes/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
+  let active = current;
+  let standby = incoming;
   let index = 0;
   let timer;
   let generation = 0;
   let visible = true;
   let scheduled = false;
 
-  const resetIncoming = () => {
-    // Do not load the next motif into a layer that is still fading out.
-    incoming.classList.add('is-resetting');
-    incoming.classList.remove('is-visible');
-    void incoming.offsetWidth;
-    incoming.classList.remove('is-resetting');
+  const hideStandby = () => {
+    standby.classList.add('is-resetting');
+    standby.classList.remove('is-visible');
+    void standby.offsetWidth;
+    standby.classList.remove('is-resetting');
   };
 
   const stop = () => {
     generation++;
     scheduled = false;
     window.clearTimeout(timer);
-    resetIncoming();
+    hideStandby();
   };
 
   const schedule = () => {
@@ -37,19 +38,28 @@
     const next = (index + 1) % scenes.length;
     const image = new Image();
     image.src = path(scenes[next]);
-    const ready = () => {
+    const ready = async () => {
       if (token !== generation || !visible || document.hidden) return;
-      incoming.src = image.src;
-      incoming.dataset.scene = scenes[next];
+      try { await image.decode(); } catch { /* The load event already verified the image. */ }
+      if (token !== generation) return;
+      standby.srcset = '';
+      standby.src = image.src;
+      standby.dataset.scene = scenes[next];
+      try { await standby.decode(); } catch { /* Keep the loaded image as a fallback. */ }
+      if (token !== generation || !visible || document.hidden) return;
       timer = window.setTimeout(() => {
         if (token !== generation || !visible || document.hidden || reducedMotion.matches) return;
-        incoming.classList.add('is-visible');
+        standby.style.zIndex = '2';
+        active.style.zIndex = '1';
+        standby.classList.add('is-visible');
         timer = window.setTimeout(() => {
           if (token !== generation) return;
-          current.srcset = '';
-          current.src = image.src;
-          current.dataset.scene = scenes[next];
-          resetIncoming();
+          // Keep the new image visible while retiring the old layer underneath it.
+          active.classList.add('is-resetting');
+          active.classList.remove('is-visible');
+          void active.offsetWidth;
+          active.classList.remove('is-resetting');
+          [active, standby] = [standby, active];
           index = next;
           scheduled = false;
           schedule();
