@@ -36,3 +36,15 @@ test('API ermittelt nur einen öffentlichen Status mit exaktem Namen und gibt nu
   try {await handler(req,res);assert.equal(res.code,200);assert.equal(res.data.items.length,1);assert.equal(res.data.items[0].id,'17')}
   finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i]);globalThis.fetch=previous[3]}
 });
+test('Detailansicht nutzt den freigegebenen Listenstatus auch wenn das Detail-JSON keinen Status enthält',async()=>{
+  const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_NAME,globalThis.fetch];
+  process.env.PROPSTACK_API_KEY='test-key';process.env.PROPSTACK_TEST_PROPERTY_IDS='17';process.env.PROPSTACK_PUBLIC_STATUS_NAME='Vermarktung';
+  globalThis.fetch=async url=>({ok:true,json:async()=>String(url).includes('property_statuses')
+    ? {data:[{id:2,name:'Vermarktung',nonpublic:null}]}
+    : String(url).includes('units/17?new=1')
+      ? {id:17,title:{value:'Detailtitel'},description_note:{value:'Beschreibung'},images:unit.images}
+      : {data:[{...unit,title:'Listentitel'}]}});
+  const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
+  try {await handler({method:'GET',query:{id:'17'}},res);assert.equal(res.code,200);assert.equal(res.data.items[0].title,'Detailtitel');assert.equal(res.data.items[0].description,'Beschreibung');assert.deepEqual(res.data.items[0].images,['https://example.org/public.jpg'])}
+  finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i]);globalThis.fetch=previous[3]}
+});

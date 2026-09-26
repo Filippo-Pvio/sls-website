@@ -28,8 +28,16 @@ export default async function handler(req,res) {
     }
     const statuses=new Set([String(matches[0].id)]);
     if (id) {
-      const unit=await read(`units/${encodeURIComponent(id)}?new=1`,key);
-      return mayDisplay(unit,ids,statuses) ? res.status(200).json({items:[publicUnit(unit)]}) : res.status(404).json({error:'Objekt nicht veröffentlicht'});
+      const listed=await read(`units?with_meta=1&property_ids=${encodeURIComponent(id)}&per=100`,key);
+      const summary=(listed.data || []).find(u=>String(u.id) === String(id) && mayDisplay(u,ids,statuses));
+      if (!summary) return res.status(404).json({error:'Objekt nicht veröffentlicht'});
+      const detail=await read(`units/${encodeURIComponent(id)}?new=1`,key);
+      if (String(detail.id) !== String(id) || detail.archived === true ||
+          (detail.marketing_type && detail.marketing_type !== 'BUY') ||
+          (detail.status?.id && String(detail.status.id) !== String(summary.status.id)) ||
+          detail.status?.nonpublic === true) return res.status(404).json({error:'Objekt nicht veröffentlicht'});
+      const combined={...summary,...detail,status:summary.status,images:detail.images?.length ? detail.images : summary.images};
+      return res.status(200).json({items:[publicUnit(combined)]});
     }
     const units=[];
     const allowed=[...ids];
