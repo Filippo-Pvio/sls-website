@@ -1,9 +1,6 @@
-import { createHash } from 'node:crypto';
-
 const API_BASE = 'https://api.propstack.de/v1/';
 const PAGE_SIZE = 100;
 const MAX_PAGES = 40;
-const MAX_REFERENCES = 10;
 // Match completed sales only. Never interpret "in Vermarktung" or "reserviert" as sold.
 const SOLD_NAMES = new Set(['verkauft', 'erfolgreich vermarktet']);
 
@@ -70,14 +67,6 @@ async function soldListings(key, statusIds) {
   throw new Error('Too many Propstack result pages for a complete selection');
 }
 
-function dailySelection(references, today) {
-  return references.map(reference => ({
-    reference,
-    rank: createHash('sha256').update(`${today}:${reference.id}`).digest('hex')
-  })).sort((a, b) => a.rank.localeCompare(b.rank))
-    .slice(0, MAX_REFERENCES).map(entry => entry.reference);
-}
-
 export default async function handler(req, res) {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
   if (req.method !== 'GET') {
@@ -103,8 +92,7 @@ export default async function handler(req, res) {
 
     const listings = await soldListings(key, soldStatusIds);
     const publicListings = listings.map(unit => publicReference(unit, soldStatusIds)).filter(Boolean);
-    const today = new Date().toISOString().slice(0, 10);
-    const references = dailySelection(publicListings, today);
+    const references = publicListings;
     res.setHeader('Cache-Control', 'public, s-maxage=900, stale-while-revalidate=1800');
     return res.status(200).json({ references });
   } catch (error) {
