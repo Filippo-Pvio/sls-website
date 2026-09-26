@@ -2394,7 +2394,7 @@ body:not(.home-editorial) > main > section.section h2{
 .home-editorial .home-reach-platform:hover svg,
 .home-editorial .home-reach-platform:focus-visible svg{color:var(--coral)}
 .home-editorial .home-reach-platforms.is-spotlit .home-reach-platform svg{
-  animation:home-social-accent .8s ease-in-out 1 both;
+  animation:home-social-accent .8s ease-in-out 1 backwards;
   animation-delay:var(--social-delay,.22s)
 }
 .home-editorial .home-reach-platform:nth-child(2){--social-delay:.60s}
