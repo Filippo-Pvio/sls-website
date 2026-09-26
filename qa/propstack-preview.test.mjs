@@ -26,10 +26,17 @@ test('Energieangaben und Merkmale erscheinen nur bei vorhandenen Propstack-Werte
   assert.equal(filled.energy.kind,'Verbrauchsausweis');
   assert.equal(filled.energy.value,84.4);
   assert.deepEqual(filled.amenities,['Balkon','Garage','Keller']);
-  const withYear=publicUnit({...unit,construction_year:{value:2002},energy_certificate_construction_year:null,equipment_technology_construction_year:{value:2002},energy_certificate_creation_date:{value:'2019-09-09'}});
+  const withYear=publicUnit({...unit,construction_year:{value:2002},energy_certificate_construction_year:null,equipment_technology_construction_year:{value:2002},energy_certificate_creation_date:{value:'ab 1. Mai 2014'},energy_certificate_start_date:{value:'2019-09-09'}});
   assert.equal(withYear.energy.buildingYear,2002);
   assert.equal(withYear.energy.equipmentYear,2002);
   assert.equal(withYear.energy.issuedOn,'2019-09-09');
+  assert.equal(publicUnit({...unit,energy_certificate_creation_date:{value:'ab 1. Mai 2014'}}).energy.issuedOn,null);
+});
+test('Provisionshinweis, öffentliche Grundrisse und Rundgang stammen aus Propstack',()=>{
+  const result=publicUnit({...unit,courtage:{value:'3,57 %'},courtage_note:{value:'Bei Abschluss fällig.'},has_courtage:true,links:[{title:'360° Rundgang',url:'https://tour.example.org/1',on_landing_page:true},{title:'Interner Link',url:'https://example.org/secret',is_private:true}],floorplans:[{title:'Grundriss EG',url:'https://example.org/eg.pdf'},{title:'Interner Plan',url:'https://example.org/secret.pdf',is_private:true}]});
+  assert.equal(result.courtageNote,'Bei Abschluss fällig.');
+  assert.equal(result.tour,'https://tour.example.org/1');
+  assert.deepEqual(result.floorplans,[{title:'Grundriss EG',url:'https://example.org/eg.pdf'}]);
 });
 test('Exposé-Felder werden aus dem value-Format des Detailabrufs gelesen',()=>{
   const result=publicUnit({...unit,rs_type:{value:'APARTMENT'},number_of_bed_rooms:{value:1},number_of_bath_rooms:{value:1},construction_year:{value:2002},number_of_rooms:{value:2}});
