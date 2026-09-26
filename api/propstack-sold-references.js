@@ -1,10 +1,11 @@
-const API_BASE = 'https://api.propstack.de/v1/';
-const MAX_REFERENCES = 10;
+import { createHash } from 'node:crypto';
 
-function approvedIds(raw = '') {
-  const ids = raw.split(',').map(value => value.trim());
-  return [...new Set(ids.filter(value => /^\d+$/.test(value)))].slice(0, MAX_REFERENCES);
-}
+const API_BASE = 'https://api.propstack.de/v1/';
+const PAGE_SIZE = 100;
+const MAX_PAGES = 40;
+const MAX_REFERENCES = 10;
+// Match completed sales only. Never interpret "in Vermarktung" or "reserviert" as sold.
+const SOLD_NAMES = new Set(['verkauft', 'erfolgreich vermarktet']);
 
 async function propstack(path, key) {
   const response = await fetch(new URL(path, API_BASE), {
@@ -23,22 +24,58 @@ function safeImage(images) {
       const url = new URL(value);
       if (url.protocol === 'https:') return url.href;
     } catch {
-      // Ignore unavailable or relative image URLs.
+      // Ignore invalid or relative image URLs.
     }
   }
   return null;
 }
 
-function publicReference(unit, expectedId, expectedStatusId) {
-  if (String(unit?.id) !== expectedId ||
-      String(unit?.status?.id) !== expectedStatusId ||
+function publicReference(unit, soldStatusIds) {
+  if (!/^\d+$/.test(String(unit?.id)) ||
+      !soldStatusIds.has(String(unit?.status?.id)) ||
       unit.marketing_type !== 'BUY') return null;
   const image = safeImage(unit.images);
   if (!image) return null;
   const title = String(unit.title?.value ?? unit.title ?? '').trim().slice(0, 130);
   const city = String(unit.city ?? '').trim().slice(0, 70);
   if (!title || !city) return null;
-  return { id: expectedId, title, city, image };
+  return { id: String(unit.id), title, city, image };
+}
+
+async function soldListings(key, statusIds) {
+  const units = [];
+  const seen = new Set();
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const query = new URLSearchParams({
+      with_meta: '1', status: [...statusIds].join(','),
+      marketing_type: 'BUY', archived: '-1',
+      per: String(PAGE_SIZE), page: String(page)
+    });
+    const response = await propstack(`units?${query}`, key);
+    if (!Array.isArray(response.data)) throw new Error('Propstack listing format changed');
+    for (const unit of response.data) {
+      if (seen.has(String(unit.id))) throw new Error('Propstack pagination repeated a property');
+      seen.add(String(unit.id));
+      units.push(unit);
+    }
+    const total = Number(response.meta?.total_count);
+    if (Number.isFinite(total) && total >= 0 && units.length >= total) return units;
+    if (response.data.length === 0) {
+      if (Number.isFinite(total) && units.length < total) throw new Error('Incomplete Propstack results');
+      return units;
+    }
+    // Without reliable total_count, keep reading until Propstack returns the final page.
+    if (!Number.isFinite(total) && response.data.length < PAGE_SIZE) return units;
+  }
+  throw new Error('Too many Propstack result pages for a complete selection');
+}
+
+function dailySelection(references, today) {
+  return references.map(reference => ({
+    reference,
+    rank: createHash('sha256').update(`${today}:${reference.id}`).digest('hex')
+  })).sort((a, b) => a.rank.localeCompare(b.rank))
+    .slice(0, MAX_REFERENCES).map(entry => entry.reference);
 }
 
 export default async function handler(req, res) {
@@ -48,51 +85,28 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Methode nicht erlaubt' });
   }
   const key = process.env.PROPSTACK_API_KEY;
-  const ids = approvedIds(process.env.PROPSTACK_REFERENCE_PROPERTY_IDS);
-  const statusId = process.env.PROPSTACK_REFERENCE_STATUS_ID?.trim();
-  const statusName = process.env.PROPSTACK_REFERENCE_STATUS_NAME?.trim();
-  // IDs represent explicit permission to show both the property and its non-private photos.
-  if (!key || !ids.length || !/^\d+$/.test(statusId || '') || !statusName) {
+  if (!key) {
     res.setHeader('Cache-Control', 'no-store');
-    return res.status(503).json({ error: 'Referenzen noch nicht freigegeben' });
+    return res.status(503).json({ error: 'Referenzen noch nicht verbunden' });
   }
 
   try {
     const result = await propstack('property_statuses', key);
     const statuses = Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : [];
-    const matching = statuses.filter(status =>
-      String(status.id) === statusId && status.name === statusName);
-    if (matching.length !== 1) {
+    const soldStatusIds = new Set(statuses.filter(status =>
+      SOLD_NAMES.has(String(status.name || '').trim().toLocaleLowerCase('de-DE')))
+      .map(status => String(status.id)));
+    if (!soldStatusIds.size) {
       res.setHeader('Cache-Control', 'no-store');
-      return res.status(503).json({ error: 'Referenzstatus nicht eindeutig' });
+      return res.status(503).json({ error: 'Verkaufsstatus in Propstack nicht gefunden' });
     }
 
-    // Explicitly allowed sold records may have a nonpublic status in Propstack.
-    // Never publish a record solely because it has that status.
-    const references = await Promise.all(ids.map(async id => {
-      try {
-        const listing = await propstack(
-          `units?with_meta=1&property_ids=${encodeURIComponent(id)}&archived=-1&per=100`, key);
-        const units = Array.isArray(listing.data) ? listing.data : [];
-        const summary = units.find(unit => String(unit.id) === id &&
-          String(unit.status?.id) === statusId && unit.marketing_type === 'BUY');
-        if (!summary) return null;
-        const detail = await propstack(`units/${encodeURIComponent(id)}?new=1`, key);
-        if (String(detail.id) !== id ||
-            String(detail.status?.id ?? summary.status?.id) !== statusId ||
-            (detail.marketing_type && detail.marketing_type !== 'BUY')) return null;
-        return publicReference({
-          ...summary, ...detail, status: summary.status,
-          images: Array.isArray(detail.images) ? detail.images : summary.images
-        }, id, statusId);
-      } catch (error) {
-        console.warn('Approved Propstack reference unavailable:', id, error.message);
-        return null;
-      }
-    }));
-
+    const listings = await soldListings(key, soldStatusIds);
+    const publicListings = listings.map(unit => publicReference(unit, soldStatusIds)).filter(Boolean);
+    const today = new Date().toISOString().slice(0, 10);
+    const references = dailySelection(publicListings, today);
     res.setHeader('Cache-Control', 'public, s-maxage=900, stale-while-revalidate=1800');
-    return res.status(200).json({ references: references.filter(Boolean) });
+    return res.status(200).json({ references });
   } catch (error) {
     console.error('Propstack references unavailable:', error);
     res.setHeader('Cache-Control', 'no-store');
