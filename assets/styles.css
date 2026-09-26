@@ -140,6 +140,9 @@ textarea { min-height: 132px; resize: vertical; }
 .footer-inner { width: min(calc(100% - 48px), var(--max)); margin: 0 auto; display: grid; grid-template-columns: 1.5fr repeat(3,1fr); gap: 50px; }
 .site-footer .brand-logo { width: 126px; height: 80px; }
 .footer-lead p { max-width: 340px; margin-top: 24px; color: #bdb8b3; }
+.home-editorial .site-footer .brand-logo { filter: brightness(0) invert(1); }
+.home-editorial .site-footer .footer-lead p { color: var(--paper); }
+.home-editorial .site-footer .footer-owner-emphasis { color: var(--coral); }
 .site-footer h2 { margin: 0 0 18px; color: var(--sky); font: 800 11px/1.2 "Raleway", Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
 .site-footer a, .site-footer p { display: block; margin: 0 0 10px; color: #ddd7d2; font-size: 14px; }
 .site-footer .brand { display: inline-flex; }
