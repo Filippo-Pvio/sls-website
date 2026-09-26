@@ -2328,3 +2328,21 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
   46%{transform:scale(1.42);box-shadow:0 0 0 5px #345b6e,0 0 0 15px rgba(255,87,114,.24)}
   100%{transform:scale(1.2);box-shadow:0 0 0 5px #345b6e,0 0 0 19px rgba(255,87,114,0)}
 }
+
+/* Homepage spacing rhythm: preserve breathing room inside content, align section transitions. */
+.home-editorial .home-value-section,
+.home-editorial .home-process-section,
+.home-editorial .home-reach-section,
+.home-editorial .home-faq-section,
+.home-editorial .premium-final-cta{padding-block:80px}
+.home-editorial .home-marketing-section{padding-block:64px}
+.home-editorial .home-process-magnet{row-gap:36px}
+@media(max-width:900px){
+  .home-editorial .home-value-section,
+  .home-editorial .home-process-section,
+  .home-editorial .home-reach-section,
+  .home-editorial .home-faq-section{padding-block:64px}
+  .home-editorial .home-marketing-section{padding-block:56px}
+  .home-editorial .premium-final-cta{padding-block:72px}
+  .home-editorial .home-process-magnet{row-gap:26px}
+}
