@@ -32,12 +32,6 @@ export default async function handler(req,res) {
       const summary=(listed.data || []).find(u=>String(u.id) === String(id) && mayDisplay(u,ids,statuses));
       if (!summary) return res.status(404).json({error:'Objekt nicht veröffentlicht'});
       const detail=await read(`units/${encodeURIComponent(id)}?new=1`,key);
-      if (process.env.VERCEL_ENV === 'preview') {
-        const energyKeys=Object.entries(detail).filter(([name])=>/energy|thermal|firing|heating|construct|certificate|ausweis|baujahr/i.test(name))
-          .map(([name,value])=>({name,present:(value && typeof value === 'object' && 'value' in value ? value.value : value) != null}));
-        const customEnergyKeys=Object.keys(detail.custom_fields || {}).filter(name=>/energy|ausweis|baujahr/i.test(name));
-        console.info('Propstack preview energy field audit:',JSON.stringify({id,energyKeys,customEnergyKeys}));
-      }
       if (String(detail.id) !== String(id) || detail.archived === true ||
           (detail.marketing_type && detail.marketing_type !== 'BUY') ||
           (detail.status?.id && String(detail.status.id) !== String(summary.status.id)) ||
