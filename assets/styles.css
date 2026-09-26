@@ -2296,3 +2296,24 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
   .home-editorial .review-platforms-section .review-widget-scout{height:190px}
   .home-editorial .review-platforms-section .review-widget-immowelt{height:220px}
 }
+
+/* Homepage selling process: a quiet, scroll-led timeline. */
+.home-editorial .home-process-route.is-scroll-timeline::before{
+  content:"";position:absolute;z-index:0;left:-2px;top:12px;width:3px;
+  height:calc(100% - 30px);border-radius:3px;background:var(--coral);
+  transform:scaleY(var(--process-progress,0));transform-origin:top;pointer-events:none
+}
+.home-editorial .home-process-route.is-scroll-timeline>li::before{
+  z-index:1;transition:transform .32s ease,box-shadow .32s ease
+}
+.home-editorial .home-process-route.is-scroll-timeline>li>div{
+  opacity:.9;transform:translateY(6px);
+  transition:opacity .4s ease,transform .4s cubic-bezier(.22,1,.36,1)
+}
+.home-editorial .home-process-route.is-scroll-timeline>li.is-reached>div{
+  opacity:1;transform:none
+}
+.home-editorial .home-process-route.is-scroll-timeline>li.is-current::before{
+  transform:scale(1.2);
+  box-shadow:0 0 0 5px #345b6e,0 0 0 9px rgba(255,87,114,.22)
+}
