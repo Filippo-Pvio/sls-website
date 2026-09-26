@@ -339,6 +339,7 @@
 
   // The line follows reading position; all copy remains available from the start.
   route.classList.add('is-scroll-timeline');
+  let milestoneShown = false;
   let scheduled = false;
   const update = () => {
     scheduled = false;
@@ -357,6 +358,10 @@
     });
     const visible = route.getBoundingClientRect().bottom > 0 && route.getBoundingClientRect().top < window.innerHeight;
     steps.forEach((step, index) => step.classList.toggle('is-current', visible && index === current));
+    if (visible && current === steps.length - 1 && !milestoneShown) {
+      milestoneShown = true;
+      steps[steps.length - 1].classList.add('is-milestone');
+    }
   };
   const schedule = () => {
     if (scheduled) return;
