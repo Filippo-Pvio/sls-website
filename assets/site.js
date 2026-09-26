@@ -161,15 +161,17 @@ if (heroValuation) {
 if (document.body.classList.contains("home-editorial") && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   document.body.classList.add("home-copy-motion-ready");
 }
-document.querySelectorAll(".reveal, .home-copy-motion-ready .home-copy-reveal").forEach((element) => {
+const observeOnce = (selector, options) => document.querySelectorAll(selector).forEach((element) => {
   const observer = new IntersectionObserver(([entry], obs) => {
     if (entry.isIntersecting) {
       element.classList.add("is-visible");
       obs.disconnect();
     }
-  }, { threshold: 0.08 });
+  }, options);
   observer.observe(element);
 });
+observeOnce(".reveal", { threshold: 0.08 });
+observeOnce(".home-copy-motion-ready .home-copy-reveal", { threshold: 0.01, rootMargin: "0px 0px -22% 0px" });
 
 document.querySelectorAll("[data-faq-button]").forEach((button) => {
   button.addEventListener("click", () => {
