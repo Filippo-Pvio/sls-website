@@ -2349,7 +2349,7 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 
 /* Shared SLS editorial system for existing subpages. */
 body:not(.home-editorial) > main > section.page-hero{
-  background:#345b6e;
+  background:#345b6e!important;
   color:#fff;
   padding:108px 0 80px
 }
