@@ -2237,7 +2237,7 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
     border:1px solid var(--coral);
     border-radius:999px;
     background:var(--coral);
-    color:var(--ink);
+    color:#fff;
     box-shadow:0 8px 24px rgba(11,17,18,.24);
     font:750 14px/1 "Raleway",Arial,sans-serif;
     text-decoration:none;
