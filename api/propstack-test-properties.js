@@ -32,6 +32,10 @@ export default async function handler(req,res) {
       const summary=(listed.data || []).find(u=>String(u.id) === String(id) && mayDisplay(u,ids,statuses));
       if (!summary) return res.status(404).json({error:'Objekt nicht veröffentlicht'});
       const detail=await read(`units/${encodeURIComponent(id)}?new=1`,key);
+      if (process.env.VERCEL_ENV==='preview') {
+        const candidates=Object.keys(detail).filter(k=>/courtage|fee|charge|haus|geld|parking|floorplan|document|energy_certificate|bath|storage/i.test(k));
+        console.info('Preview field audit',JSON.stringify({id,fields:Object.fromEntries(candidates.map(k=>[k,typeof detail[k]==='object' ? (detail[k]?.value ?? (Array.isArray(detail[k]) ? `array(${detail[k].length})` : 'object')) : detail[k]]))}));
+      }
       if (String(detail.id) !== String(id) || detail.archived === true ||
           (detail.marketing_type && detail.marketing_type !== 'BUY') ||
           (detail.status?.id && String(detail.status.id) !== String(summary.status.id)) ||
