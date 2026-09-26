@@ -38,5 +38,23 @@
 .property-preview.pp-is-detail .pp-contact-price{border-top:1px solid #e0e8ea;padding-top:17px;text-align:left;font-size:14px}
 .property-preview.pp-is-detail .pp-contact-price strong{display:block;color:#405965;font-size:24px;margin-top:3px}
 .property-preview.pp-is-detail .pp-button{background:#4c7080;color:#fff}
+.property-preview.pp-is-detail .pp-contact{text-align:center}
+.property-preview.pp-is-detail .pp-contact-details{margin:22px 0;text-align:left;border-top:1px solid #e0e8ea;padding-top:16px}
+.property-preview.pp-is-detail .pp-contact-details p{margin:0 0 13px;line-height:1.45;overflow-wrap:anywhere}
+.property-preview.pp-is-detail .pp-contact-details span{display:block;color:#405965;font-weight:750;margin-bottom:3px}
+.property-preview.pp-is-detail .pp-contact-details a{color:#4c7080;text-decoration:none}
+.property-preview.pp-is-detail .pp-call{width:100%;margin:0 0 20px}
+.property-preview.pp-is-detail .pp-inquiry{text-align:left;border-top:1px solid #e0e8ea;padding-top:19px}
+.property-preview.pp-is-detail .pp-inquiry h3{color:#4e6878;font-size:20px;margin:0 0 15px}
+.property-preview.pp-is-detail .pp-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.property-preview.pp-is-detail .pp-form-grid label{min-width:0;display:block;font-size:13px;color:#405965}
+.property-preview.pp-is-detail .pp-form-grid label span{display:block;margin-bottom:3px}
+.property-preview.pp-is-detail .pp-form-grid .pp-full{grid-column:1/-1}
+.property-preview.pp-is-detail .pp-form-grid input{width:100%;min-width:0;border:1px solid #abc0c8;border-radius:2px;background:#fff;font:inherit;font-size:15px;padding:10px;color:#405965}
+.property-preview.pp-is-detail .pp-consent{display:flex;gap:8px;align-items:flex-start;margin:17px 0;font-size:13px;line-height:1.45;color:#405965}
+.property-preview.pp-is-detail .pp-consent input{margin:3px 0 0;flex:none}
+.property-preview.pp-is-detail .pp-inquiry .pp-button{width:100%}
+.property-preview.pp-is-detail .pp-inquiry .pp-button:disabled{opacity:.55;cursor:not-allowed}
+.property-preview.pp-is-detail .pp-inquiry .pp-data-note{font-size:13px;margin:12px 0 0;padding:10px}
 @media(max-width:850px){.property-preview.pp-is-detail .pp-detail-columns{grid-template-columns:1fr}.property-preview.pp-is-detail .pp-contact{position:static}.property-preview.pp-is-detail .pp-agent-photo{max-width:310px}}
 @media(max-width:600px){.property-preview.pp-is-detail .pp-wrap{width:calc(100% - 28px);padding-top:92px}.property-preview .pp-gallery-stage{height:310px}.property-preview .pp-gallery-thumb{flex-basis:105px;height:66px}.property-preview.pp-is-detail .pp-facts,.property-preview.pp-is-detail .pp-facts-data{grid-template-columns:repeat(2,minmax(0,1fr))}.property-preview.pp-is-detail .pp-panel{padding:22px}.property-preview.pp-is-detail .pp-detail-header h1{font-size:28px}}

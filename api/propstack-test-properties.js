@@ -37,6 +37,25 @@ export default async function handler(req,res) {
           (detail.status?.id && String(detail.status.id) !== String(summary.status.id)) ||
           detail.status?.nonpublic === true) return res.status(404).json({error:'Objekt nicht veröffentlicht'});
       const combined={...summary,...detail,status:summary.status,images:detail.images?.length ? detail.images : summary.images};
+      // In some response variants the detailed object omits the broker relation.
+      // Retain the published listing's assigned broker and fill missing contact fields.
+      combined.broker={...(summary.broker || {}),...(detail.broker || {})};
+      if (combined.broker.id || combined.broker.name) {
+        for (const field of ['name','phone','mobile','cell','email','avatar_url','avatar']) {
+          if (!combined.broker[field]) combined.broker[field]=summary.broker?.[field] || '';
+        }
+      }
+      const brokerId=detail.broker_id || summary.broker_id || combined.broker.id;
+      if (brokerId && (!combined.broker.phone || !combined.broker.email)) {
+        try {
+          const brokers=await read('brokers',key);
+          const full=(Array.isArray(brokers) ? brokers : brokers.data || []).find(b=>String(b.id)===String(brokerId));
+          if (full) combined.broker={...full,...Object.fromEntries(Object.entries(combined.broker).filter(([,value])=>value))};
+        } catch(error) {
+          // Broker read permission is optional; never substitute a central number.
+          console.warn('Propstack broker details unavailable:',error.message);
+        }
+      }
       // The detail endpoint can return null for facts that are populated in the public listing.
       // Preserve those listing facts so card and exposé do not contradict each other.
       for (const field of ['price','object_price','living_space','property_space_value','number_of_rooms','number_of_bed_rooms','number_of_bath_rooms','plot_area','construction_year','rs_type','city','zip_code']) {
