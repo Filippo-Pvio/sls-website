@@ -56,7 +56,8 @@ html:has(> body.property-preview),body.property-preview{overflow-x:clip;overscro
 .property-preview.pp-is-detail .pp-form-grid .pp-full{grid-column:1/-1}
 .property-preview.pp-is-detail .pp-form-grid input{width:100%;min-width:0;border:1px solid #abc0c8;border-radius:2px;background:#fff;font:inherit;font-size:15px;padding:10px;color:#405965}
 .property-preview.pp-is-detail .pp-consent{display:flex;gap:8px;align-items:flex-start;margin:17px 0;font-size:13px;line-height:1.45;color:#405965}
-.property-preview.pp-is-detail .pp-consent input{margin:3px 0 0;flex:none}
+.property-preview.pp-is-detail .pp-consent input{width:18px;min-height:18px;margin:3px 0 0;flex:0 0 18px}
+.property-preview.pp-is-detail .pp-consent span{min-width:0;overflow-wrap:anywhere}
 .property-preview.pp-is-detail .pp-inquiry .pp-button{width:100%}
 .property-preview.pp-is-detail .pp-inquiry .pp-button:disabled{opacity:.55;cursor:not-allowed}
 .property-preview.pp-is-detail .pp-inquiry .pp-data-note{font-size:13px;margin:12px 0 0;padding:10px}
