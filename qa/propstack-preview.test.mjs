@@ -42,9 +42,9 @@ test('Detailansicht nutzt den freigegebenen Listenstatus auch wenn das Detail-JS
   globalThis.fetch=async url=>({ok:true,json:async()=>String(url).includes('property_statuses')
     ? {data:[{id:2,name:'Vermarktung',nonpublic:null}]}
     : String(url).includes('units/17?new=1')
-      ? {id:17,title:{value:'Detailtitel'},description_note:{value:'Beschreibung'},images:unit.images}
-      : {data:[{...unit,title:'Listentitel'}]}});
+      ? {id:17,title:{value:'Detailtitel'},description_note:{value:'Beschreibung'},price:null,number_of_rooms:null,images:unit.images}
+      : {data:[{...unit,title:'Listentitel',price:233000,number_of_rooms:2}]}});
   const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
-  try {await handler({method:'GET',query:{id:'17'}},res);assert.equal(res.code,200);assert.equal(res.data.items[0].title,'Detailtitel');assert.equal(res.data.items[0].description,'Beschreibung');assert.deepEqual(res.data.items[0].images,['https://example.org/public.jpg'])}
+  try {await handler({method:'GET',query:{id:'17'}},res);assert.equal(res.code,200);assert.equal(res.data.items[0].title,'Detailtitel');assert.equal(res.data.items[0].description,'Beschreibung');assert.equal(res.data.items[0].price,233000);assert.equal(res.data.items[0].rooms,2);assert.deepEqual(res.data.items[0].images,['https://example.org/public.jpg'])}
   finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i]);globalThis.fetch=previous[3]}
 });

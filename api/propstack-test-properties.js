@@ -37,6 +37,11 @@ export default async function handler(req,res) {
           (detail.status?.id && String(detail.status.id) !== String(summary.status.id)) ||
           detail.status?.nonpublic === true) return res.status(404).json({error:'Objekt nicht veröffentlicht'});
       const combined={...summary,...detail,status:summary.status,images:detail.images?.length ? detail.images : summary.images};
+      // The detail endpoint can return null for facts that are populated in the public listing.
+      // Preserve those listing facts so card and exposé do not contradict each other.
+      for (const field of ['price','object_price','living_space','property_space_value','number_of_rooms','number_of_bed_rooms','number_of_bath_rooms','plot_area','construction_year','rs_type','city','zip_code']) {
+        if (combined[field] == null || combined[field] === '') combined[field]=summary[field];
+      }
       return res.status(200).json({items:[publicUnit(combined)]});
     }
     const units=[];
