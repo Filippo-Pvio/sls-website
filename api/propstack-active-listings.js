@@ -70,9 +70,8 @@ function typeLabel(unit) {
   return 'Immobilie · Kauf';
 }
 
-function publicListing(unit, activeStatusIds) {
+function publicListing(unit) {
   if (!/^\d+$/.test(String(unit?.id)) ||
-      !activeStatusIds.has(String(unit?.status?.id)) ||
       unit.marketing_type !== 'BUY' ||
       unit.archived === true) return null;
 
@@ -91,8 +90,8 @@ function publicListing(unit, activeStatusIds) {
   const price = Number(unit.price?.value ?? unit.price);
   if (!image || !url || !title || !city || !Number.isFinite(price) || price <= 0) return null;
 
-  const livingSpace = Number(unit.living_space);
-  const rooms = Number(unit.number_of_rooms);
+  const livingSpace = Number(unit.living_space?.value ?? unit.living_space);
+  const rooms = Number(unit.number_of_rooms?.value ?? unit.number_of_rooms);
   return {
     id: String(unit.id),
     title,
@@ -129,7 +128,7 @@ async function activeListings(key, statusIds) {
       const id = String(unit?.id ?? '');
       if (!id || seen.has(id)) continue;
       seen.add(id);
-      const listing = publicListing(unit, statusIds);
+      const listing = publicListing(unit);
       if (listing) collected.push(listing);
       if (collected.length >= MAX_RESULTS) break;
     }
@@ -166,12 +165,6 @@ res.setHeader('Cache-Control', 'no-store');
     }
 
     const listings = await activeListings(key, activeStatusIds);
-    if (!listings.length) {
-      const query = new URLSearchParams({ with_meta: '1', expand: '1', status: [...activeStatusIds].join(','), marketing_type: 'BUY', archived: '-1', per: '1', page: '1' });
-      const diagnostic = await propstack(`units?${query}`, key);
-      const unit = diagnostic.data?.[0];
-      console.error('Propstack active filter diagnostic:', unit ? { id: unit.id, status: unit.status, marketing_type: unit.marketing_type, archived: unit.archived, title: unit.title, city: unit.city, price: unit.price, public_expose_url: unit.public_expose_url, image: safeImage(unit.images) } : { empty: true });
-    }
     res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=1200');
     return res.status(200).json({ listings });
   } catch (error) {
