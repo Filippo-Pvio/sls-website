@@ -103,7 +103,7 @@ document.querySelector("[data-site-footer]").innerHTML = `
   <div class="footer-inner">
     <div class="footer-lead">
       <a class="brand" href="/" aria-label="SLS Immobilienpartner Startseite"><img class="brand-logo" src="/assets/logo-sls.svg" alt="SLS Immobilienpartner" width="267" height="170"></a>
-      <p>${isEditorialHome ? 'Wir verkaufen <span class="footer-owner-emphasis">Ihre Immobilie</span>, als wäre sie unsere eigene.' : 'Wir verkaufen Ihre Immobilie, als wäre sie unsere eigene.'}</p>
+      <p>Wir verkaufen <span class="footer-owner-emphasis">Ihre Immobilie</span>, als wäre sie unsere eigene.</p>
     </div>
     <div><h2>Eigentümer</h2><a href="/immobilienbewertung/">Immobilienbewertung</a><a href="/verkaufen/">Verkaufen</a><a href="/service/">Service</a><a href="/faq/">Fragen & Antworten</a><a href="/referenzen/">Referenzen</a></div>
     <div><h2>Interessenten</h2><a href="/kaufen/">Kaufen</a><a href="/finanzierung/">Finanzierung</a><a href="/immobilien/">Immobilien</a><a href="/downloads/">Ratgeber</a></div>
