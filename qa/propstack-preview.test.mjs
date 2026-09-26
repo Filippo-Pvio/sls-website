@@ -25,6 +25,9 @@ test('Energieangaben und Merkmale erscheinen nur bei vorhandenen Propstack-Werte
   assert.equal(filled.energy.kind,'Verbrauchsausweis');
   assert.equal(filled.energy.value,84.4);
   assert.deepEqual(filled.amenities,['Balkon','Garage','Keller']);
+  const withYear=publicUnit({...unit,construction_year:{value:2002},energy_certificate_construction_year:null});
+  assert.equal(withYear.energy.buildingYear,2002);
+  assert.equal(withYear.energy.yearFromCertificate,false);
 });
 test('Exposé-Felder werden aus dem value-Format des Detailabrufs gelesen',()=>{
   const result=publicUnit({...unit,rs_type:{value:'APARTMENT'},number_of_bed_rooms:{value:1},number_of_bath_rooms:{value:1},construction_year:{value:2002},number_of_rooms:{value:2}});
