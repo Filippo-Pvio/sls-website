@@ -106,15 +106,5 @@
   track?.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
   window.addEventListener('resize', update, { passive: true });
 
-  const trigger = section.previousElementSibling || section;
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      if (!entries.some(entry => entry.isIntersecting)) return;
-      observer.disconnect();
-      show();
-    }, { rootMargin: '900px 0px' });
-    observer.observe(trigger);
-  } else {
-    show();
-  }
+  show();
 })();
