@@ -2093,7 +2093,7 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 /* Homepage partner logos: frameless, 2-2-1 on mobile */
 .home-editorial .trust-section-prominent{
   background:var(--paper);
-padding:24px 0 30px;
+  padding:24px 0 30px;
 }
 .home-editorial .trust-section-prominent .trust-logo-section{display:block}
 .home-editorial .trust-section-prominent .trust-badge-grid{
@@ -2104,7 +2104,7 @@ padding:24px 0 30px;
   align-items:center;
 }
 .home-editorial .trust-section-prominent .trust-badge-card{
-min-height:128px;
+  min-height:128px;
   padding:6px;
   background:transparent;
   border:0;
@@ -2114,7 +2114,7 @@ min-height:128px;
 .home-editorial .trust-section-prominent .trust-badge-card:hover{transform:translateY(-2px);box-shadow:none}
 .home-editorial .trust-section-prominent .trust-badge-card img{
   width:auto;
-height:100px;
+  height:100px;
   max-width:100%;
   object-fit:contain;
 }
@@ -2122,7 +2122,7 @@ height:100px;
 .home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{width:auto;height:100px}
 .home-editorial .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{width:auto;height:116px}
 @media(max-width:800px){
-.home-editorial .trust-section-prominent{padding:22px 0 28px}
+  .home-editorial .trust-section-prominent{padding:22px 0 28px}
   .home-editorial .trust-section-prominent .trust-badge-grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:18px 18px;
@@ -2130,12 +2130,12 @@ height:100px;
     margin:0 auto;
   }
   .home-editorial .trust-section-prominent .trust-badge-card{
-min-height:128px;
+    min-height:128px;
     padding:6px 8px;
   }
   .home-editorial .trust-section-prominent .trust-badge-card img{
     width:auto;
-height:104px;
+    height:104px;
     max-width:92%;
   }
   .home-editorial .trust-section-prominent .trust-badge-card:nth-child(2) img{width:auto;height:116px}
@@ -2157,7 +2157,7 @@ height:104px;
 .home-editorial .home-google-trust-count{color:var(--muted);font-size:12px;font-weight:650}
 .home-editorial .home-google-trust:hover .home-google-trust-count{color:var(--ink)}
 @media(max-width:800px){
-.home-editorial .home-google-trust{width:100%;margin-top:18px;padding-top:14px;flex-wrap:wrap;gap:6px 8px;white-space:normal}
+  .home-editorial .home-google-trust{width:100%;margin-top:18px;padding-top:14px;flex-wrap:wrap;gap:6px 8px;white-space:normal}
 .home-editorial .home-google-trust-count{flex-basis:100%;text-align:center}
 }
 
