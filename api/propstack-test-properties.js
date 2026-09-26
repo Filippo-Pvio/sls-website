@@ -42,7 +42,14 @@ export default async function handler(req,res) {
       for (const field of ['price','object_price','living_space','property_space_value','number_of_rooms','number_of_bed_rooms','number_of_bath_rooms','plot_area','construction_year','rs_type','city','zip_code']) {
         if (combined[field] == null || combined[field] === '') combined[field]=summary[field];
       }
-      return res.status(200).json({items:[publicUnit(combined)]});
+      const publicListing=publicUnit(summary);
+      const publicDetail=publicUnit(combined);
+      // The listing is the single source for searchable facts. In the detail response,
+      // Propstack can supply a differently shaped price that hides a valid list price.
+      for (const field of ['price','area','rooms','type','city','zip']) {
+        if (publicListing[field] != null && publicListing[field] !== '') publicDetail[field]=publicListing[field];
+      }
+      return res.status(200).json({items:[publicDetail]});
     }
     const units=[];
     const allowed=[...ids];
