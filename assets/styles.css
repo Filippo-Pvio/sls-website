@@ -2346,3 +2346,45 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
   .home-editorial .premium-final-cta{padding-block:72px}
   .home-editorial .home-process-magnet{row-gap:26px}
 }
+
+/* Shared SLS editorial system for existing subpages. */
+body:not(.home-editorial) > main > section.page-hero{
+  background:#345b6e;
+  color:#fff;
+  padding:108px 0 80px
+}
+body:not(.home-editorial) > main > section.page-hero h1{
+  max-width:1000px;
+  color:#fff;
+  font-size:clamp(46px,5.8vw,80px);
+  line-height:1.04
+}
+body:not(.home-editorial) > main > section.page-hero .lead{
+  max-width:720px;
+  color:#edf3f4
+}
+body:not(.home-editorial) > main > section.page-hero .eyebrow{color:#d3e6ed}
+body:not(.home-editorial) > main > section.section{padding-block:80px}
+body:not(.home-editorial) > main > section.section.section-dark{background:#345b6e!important}
+body:not(.home-editorial) > main > section.section h2{
+  font-size:clamp(40px,4.8vw,64px);
+  line-height:1.08;
+  letter-spacing:-.012em
+}
+/* The navigation and footer are shared; keep the footer's colors shared too. */
+.site-footer{background:var(--paper);color:var(--ink)}
+.site-footer .brand-logo{filter:none}
+.site-footer .footer-lead p,
+.site-footer a,
+.site-footer p{color:var(--ink)}
+.site-footer h2{color:#47758b}
+.site-footer .footer-owner-emphasis{color:var(--coral)}
+.site-footer a:hover,.site-footer a:focus-visible{color:#47758b}
+.site-footer .footer-bottom{border-top-color:rgba(11,17,18,.18);color:var(--muted)}
+@media(max-width:760px){
+  body:not(.home-editorial) > main > section.page-hero{padding:100px 0 64px}
+  body:not(.home-editorial) > main > section.page-hero h1{font-size:clamp(38px,10vw,54px);line-height:1.08}
+  body:not(.home-editorial) > main > section.page-hero .lead{font-size:17px}
+  body:not(.home-editorial) > main > section.section{padding-block:64px}
+  body:not(.home-editorial) > main > section.section h2{font-size:clamp(32px,8vw,44px);line-height:1.12}
+}
