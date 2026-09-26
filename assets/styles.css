@@ -2388,3 +2388,22 @@ body:not(.home-editorial) > main > section.section h2{
   body:not(.home-editorial) > main > section.section{padding-block:64px}
   body:not(.home-editorial) > main > section.section h2{font-size:clamp(32px,8vw,44px);line-height:1.12}
 }
+
+/* A single color-led accent for the social links; no layout movement or looping. */
+.home-editorial .home-reach-platform svg{transition:color .25s ease}
+.home-editorial .home-reach-platform:hover svg,
+.home-editorial .home-reach-platform:focus-visible svg{color:var(--coral)}
+.home-editorial .home-reach-platforms.is-spotlit .home-reach-platform svg{
+  animation:home-social-accent .8s ease-in-out 1 both;
+  animation-delay:calc(.22s + var(--social-order,0) * .38s)
+}
+.home-editorial .home-reach-platform:nth-child(2){--social-order:1}
+.home-editorial .home-reach-platform:nth-child(3){--social-order:2}
+.home-editorial .home-reach-platform:nth-child(4){--social-order:3}
+@keyframes home-social-accent{
+  0%,100%{color:#fff}
+  38%,58%{color:var(--coral)}
+}
+@media(prefers-reduced-motion:reduce){
+  .home-editorial .home-reach-platforms.is-spotlit .home-reach-platform svg{animation:none}
+}
