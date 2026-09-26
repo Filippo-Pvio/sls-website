@@ -41,6 +41,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .skip-link:focus { transform: translateY(0); }
 
 .site-header { position: sticky; z-index: 50; top: 0; height: var(--header); background: rgba(255, 249, 243, .97); border-bottom: 1px solid var(--line); }
+#verkaufsablauf, #vermarktung { scroll-margin-top: calc(var(--header) + 16px); }
 .header-inner { width: min(calc(100% - 48px), var(--max)); height: 100%; margin: 0 auto; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 38px; }
 .brand { display: inline-flex; align-items: center; flex: none; }
 .brand-logo { width: 104px; height: 66px; object-fit: contain; }
