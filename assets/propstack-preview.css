@@ -147,6 +147,9 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 .property-preview.pp-is-detail .pp-agent-card .pp-agent-photo{display:block;width:64px;height:64px;max-height:none;flex:0 0 64px;object-fit:cover;object-position:center top;border-radius:50%;margin:0}
 .property-preview.pp-is-detail .pp-agent-card .pp-contact-details{margin:18px 0 16px}
 .property-preview.pp-is-detail .pp-agent-card .pp-call{margin:0}
+.property-preview.pp-is-detail .pp-gallery-stage{touch-action:pan-y pinch-zoom;user-select:none;-webkit-user-select:none}
+.property-preview.pp-is-detail .pp-gallery-stage img{-webkit-user-drag:none}
+.property-preview.pp-is-detail .pp-gallery-arrow,.property-preview.pp-is-detail .pp-gallery-plan-open,.property-preview.pp-is-detail .pp-gallery-thumb{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 @media(max-width:850px){
   .property-preview.pp-is-detail .pp-detail-main{grid-column:1;grid-row:1}
   .property-preview.pp-is-detail .pp-detail-columns>.pp-contact{grid-column:1;grid-row:2}
