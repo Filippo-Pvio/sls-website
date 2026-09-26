@@ -272,6 +272,17 @@ const observeOnce = (selector, options) => document.querySelectorAll(selector).f
 observeOnce(".reveal", { threshold: 0.08 });
 observeOnce(".home-copy-motion-ready .home-copy-reveal", { threshold: 0.01, rootMargin: "0px 0px -22% 0px" });
 
+const socialPlatforms = document.querySelector(".home-reach-platforms");
+if (socialPlatforms && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const socialObserver = new IntersectionObserver(([entry], observer) => {
+    if (!entry.isIntersecting) return;
+    socialPlatforms.classList.add("is-spotlit");
+    observer.disconnect();
+  }, { threshold: 0.35, rootMargin: "0px 0px -12% 0px" });
+  socialObserver.observe(socialPlatforms);
+}
+
+
 document.querySelectorAll("[data-faq-button]").forEach((button) => {
   button.addEventListener("click", () => {
     const item = button.closest(".faq-item");
