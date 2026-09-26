@@ -98,3 +98,23 @@ html:has(> body.property-preview),body.property-preview{overflow-x:clip;overscro
 @media(max-width:850px){.property-preview.pp-is-detail .pp-detail-columns{grid-template-columns:minmax(0,1fr)}.property-preview.pp-is-detail .pp-contact{position:static}.property-preview.pp-is-detail .pp-agent-photo{max-width:310px}}
 @media(max-width:600px){.property-preview.pp-is-detail .pp-wrap{width:calc(100% - 28px);padding-top:92px}.property-preview .pp-gallery-stage{height:310px}.property-preview .pp-gallery-thumb{flex-basis:105px;height:66px}.property-preview.pp-is-detail .pp-facts,.property-preview.pp-is-detail .pp-facts-data{grid-template-columns:repeat(2,minmax(0,1fr))}.property-preview.pp-is-detail .pp-panel{padding:22px}.property-preview.pp-is-detail .pp-detail-header h1{font-size:28px}.property-preview.pp-is-detail .pp-money .pp-facts{grid-template-columns:1fr}.property-preview.pp-is-detail .pp-energy-scale{gap:2px}.property-preview.pp-is-detail .pp-scale-step{font-size:11px}}
 @media(max-width:600px){.property-preview.pp-is-detail .pp-tour-frame{aspect-ratio:auto;height:clamp(480px,72svh,640px)}}
+
+/* Plans are documents: keep the complete drawing visible in both placements. */
+.property-preview .pp-gallery-stage.is-floorplan{background:#f3f7f8}
+.property-preview .pp-gallery-stage.is-floorplan .pp-gallery-current{object-fit:contain}
+.property-preview .pp-gallery-plan-label,.property-preview .pp-gallery-plan-open{position:absolute;bottom:16px;background:#304e5cd9;color:#fff;border-radius:3px;padding:7px 11px;font-size:13px;font-weight:700}
+.property-preview .pp-gallery-plan-label{left:16px}
+.property-preview .pp-gallery-plan-open{right:16px;text-decoration:none}
+.property-preview .pp-gallery-thumb{position:relative}
+.property-preview .pp-gallery-thumb.is-floorplan img{object-fit:contain;background:#f6f9fa}
+.property-preview .pp-thumb-plan-label{position:absolute;bottom:2px;left:2px;background:#304e5ce6;color:#fff;padding:2px 5px;font-size:10px}
+.property-preview.pp-is-detail .pp-plan-jump{display:inline-block;margin:0 0 18px;color:#346d82;font-size:14px;font-weight:700;text-underline-offset:3px}
+.property-preview.pp-is-detail .pp-floorplans{scroll-margin-top:105px}
+.property-preview.pp-is-detail .pp-floorplan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.property-preview.pp-is-detail .pp-floorplan-card{display:grid;grid-template-rows:minmax(0,1fr) auto;min-width:0;overflow:hidden;border:1px solid #dce7eb;border-radius:4px;text-decoration:none;color:#405965;background:#f6f9fa}
+.property-preview.pp-is-detail .pp-floorplan-card img{display:block;width:100%;height:auto;max-height:440px;aspect-ratio:4/3;object-fit:contain;background:#f6f9fa}
+.property-preview.pp-is-detail .pp-floorplan-card span{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 13px;overflow-wrap:anywhere;font-weight:700;background:white}
+.property-preview.pp-is-detail .pp-floorplan-card small{white-space:nowrap;color:#346d82;font-weight:600}
+.property-preview.pp-is-detail .pp-floorplan-card:hover{border-color:#6b91a2}
+.property-preview.pp-is-detail .pp-floorplan-grid+.pp-file-list{margin-top:14px}
+@media(max-width:600px){.property-preview.pp-is-detail .pp-floorplan-grid{grid-template-columns:1fr}.property-preview .pp-gallery-plan-label,.property-preview .pp-gallery-plan-open{bottom:10px;padding:5px 7px;font-size:11px}.property-preview .pp-gallery-plan-label{left:10px}.property-preview .pp-gallery-plan-open{right:10px}}

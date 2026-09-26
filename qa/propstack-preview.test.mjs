@@ -18,6 +18,20 @@ test('Antwort enthält keine privaten Fotos oder Rohdatenfelder',()=>{
   assert.deepEqual(result.images,['https://example.org/public.jpg']);
   assert.equal('internal_note' in result,false);
 });
+test('Markierte öffentliche Bildgrundrisse bleiben getrennt von Fotos und PDF-Plänen',()=>{
+  const result=publicUnit({...unit,images:[
+    {url:'https://example.org/photo.jpg',is_private:false},
+    {url:'https://example.org/ground.pdf.jpg',big_url:'https://example.org/ground-large.jpg',title:'Erdgeschoss',is_floorplan:true,is_private:false},
+    {url:'https://example.org/upper.jpg',title:'Obergeschoss',is_floorplan:true,is_private:false},
+    {url:'https://example.org/private-plan.jpg',is_floorplan:true,is_private:true}
+  ],floorplans:[{title:'Plan als PDF',url:'https://example.org/plan.pdf'}]});
+  assert.deepEqual(result.images,['https://example.org/photo.jpg']);
+  assert.deepEqual(result.floorplanImages,[
+    {title:'Erdgeschoss',url:'https://example.org/ground.pdf.jpg',preview:'https://example.org/ground-large.jpg'},
+    {title:'Obergeschoss',url:'https://example.org/upper.jpg',preview:'https://example.org/upper.jpg'}
+  ]);
+  assert.deepEqual(result.floorplans,[{title:'Plan als PDF',url:'https://example.org/plan.pdf'}]);
+});
 test('Energieangaben und Merkmale erscheinen nur bei vorhandenen Propstack-Werten',()=>{
   const empty=publicUnit(unit);
   assert.equal(empty.energy.value,null);
