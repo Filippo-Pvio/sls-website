@@ -158,6 +158,50 @@ if (heroValuation) {
   }
 }
 
+// Keep a direct call option within reach on the mobile homepage after the hero.
+if (isEditorialHome) {
+  const hero = document.querySelector(".hero-premium");
+  const finalCall = document.querySelector('.premium-final-cta a[href^="tel:"]');
+  const footer = document.querySelector(".site-footer");
+  if (hero && finalCall && footer) {
+    const mobileCall = document.createElement("a");
+    mobileCall.className = "mobile-call-cta";
+    mobileCall.href = "tel:+4923697428020";
+    mobileCall.setAttribute("aria-label", "SLS telefonisch anrufen");
+    mobileCall.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.91.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg><span>Anrufen</span>';
+    mobileCall.hidden = true;
+    document.body.appendChild(mobileCall);
+
+    let scheduled = false;
+    const syncMobileCall = () => {
+      scheduled = false;
+      const videoPlayingInView = [...document.querySelectorAll(".home-value-interview-media iframe")].some((frame) => {
+        const bounds = frame.getBoundingClientRect();
+        return bounds.top < window.innerHeight && bounds.bottom > 0;
+      });
+      const show = window.matchMedia("(max-width: 760px)").matches
+        && hero.getBoundingClientRect().bottom <= 0
+        && finalCall.getBoundingClientRect().top > window.innerHeight - 80
+        && footer.getBoundingClientRect().top > window.innerHeight
+        && !document.body.classList.contains("menu-open")
+        && !videoPlayingInView;
+      mobileCall.hidden = !show;
+    };
+    const scheduleMobileCall = () => {
+      if (scheduled) return;
+      scheduled = true;
+      window.requestAnimationFrame(syncMobileCall);
+    };
+    window.addEventListener("scroll", scheduleMobileCall, { passive: true });
+    window.addEventListener("resize", scheduleMobileCall, { passive: true });
+    document.querySelectorAll("[data-home-interview-play], [data-home-roomtour-play]").forEach((button) => {
+      button.addEventListener("click", scheduleMobileCall);
+    });
+    new MutationObserver(scheduleMobileCall).observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    scheduleMobileCall();
+  }
+}
+
 if (document.body.classList.contains("home-editorial") && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   document.body.classList.add("home-copy-motion-ready");
 }
