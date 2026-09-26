@@ -2234,10 +2234,10 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
     width:52px;
     height:52px;
     padding:0;
-    border:1px solid rgba(255,255,255,.3);
+    border:1px solid var(--coral);
     border-radius:999px;
-    background:#345b6e;
-    color:#fff;
+    background:var(--coral);
+    color:var(--ink);
     box-shadow:0 8px 24px rgba(11,17,18,.24);
     font:750 14px/1 "Raleway",Arial,sans-serif;
     text-decoration:none;
