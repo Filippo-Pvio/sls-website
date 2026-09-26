@@ -148,6 +148,18 @@ textarea { min-height: 132px; resize: vertical; }
 .site-footer .brand { display: inline-flex; }
 .footer-bottom { width: min(calc(100% - 48px), var(--max)); margin: 56px auto 0; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.2); display: flex; justify-content: space-between; gap: 20px; color: var(--stone); font-size: 12px; }
 .footer-bottom span:last-child { display: flex; gap: 24px; }
+
+/* Homepage footer: calm cream close after the dark valuation call to action. */
+.home-editorial .site-footer { background: var(--paper); color: var(--ink); }
+.home-editorial .site-footer .brand-logo { filter: none; }
+.home-editorial .site-footer .footer-lead p { color: var(--ink); }
+.home-editorial .site-footer h2 { color: #47758b; }
+.home-editorial .site-footer a,
+.home-editorial .site-footer p { color: var(--ink); }
+.home-editorial .site-footer .footer-owner-emphasis { color: var(--coral); }
+.home-editorial .site-footer a:hover,
+.home-editorial .site-footer a:focus-visible { color: #47758b; }
+.home-editorial .site-footer .footer-bottom { border-top-color: rgba(11,17,18,.18); color: var(--muted); }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
 .home-editorial.home-copy-motion-ready .home-copy-reveal { opacity: 0; transform: translateY(28px); transition: opacity .82s ease-out, transform .82s cubic-bezier(.22,1,.36,1); }
