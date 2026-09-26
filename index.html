@@ -333,6 +333,41 @@
   checkPosition();
 })();
 (() => {
+  const route = document.querySelector('.home-process-route');
+  const steps = route ? [...route.children] : [];
+  if (steps.length !== 5 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // The line follows reading position; all copy remains available from the start.
+  route.classList.add('is-scroll-timeline');
+  let scheduled = false;
+  const update = () => {
+    scheduled = false;
+    const focus = window.innerHeight * .64;
+    const first = steps[0].getBoundingClientRect().top + 13;
+    const last = steps[steps.length - 1].getBoundingClientRect().top + 13;
+    const progress = Math.max(0, Math.min(1, (focus - first) / Math.max(1, last - first)));
+    route.style.setProperty('--process-progress', progress.toFixed(3));
+
+    let current = -1;
+    steps.forEach((step, index) => {
+      if (step.getBoundingClientRect().top + 13 <= focus) {
+        current = index;
+      }
+      step.classList.toggle('is-reached', step.getBoundingClientRect().top + 13 <= focus);
+    });
+    const visible = route.getBoundingClientRect().bottom > 0 && route.getBoundingClientRect().top < window.innerHeight;
+    steps.forEach((step, index) => step.classList.toggle('is-current', visible && index === current));
+  };
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(update);
+  };
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  schedule();
+})();
+(() => {
   const play = document.querySelector('[data-home-interview-play]');
   play?.addEventListener('click', () => {
     const frame = document.createElement('iframe');
