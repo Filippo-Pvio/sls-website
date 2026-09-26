@@ -82,19 +82,20 @@ document.querySelector("[data-site-header]").innerHTML = `
     </div>
   </nav>`;
 
+const isEditorialHome = document.body.classList.contains("home-editorial");
 document.querySelector("[data-site-footer]").innerHTML = `
-  <section class="trust-strip" aria-label="Vertrauen und Mitgliedschaften">
+  ${isEditorialHome ? "" : `<section class="trust-strip" aria-label="Vertrauen und Mitgliedschaften">
     <div class="wrap trust-grid">
       <div><strong>Top bewertet</strong><span>Kundenstimmen aus Google</span></div>
       <div><strong>IVD Mitglied</strong><span>Immobilienverband Deutschland</span></div>
       <div><strong>ImmoScout24</strong><span>GoldPartner</span></div>
       <div><strong>30+ Standorte</strong><span>in Nordrhein-Westfalen</span></div>
     </div>
-  </section>
+  </section>`}
   <div class="footer-inner">
     <div class="footer-lead">
       <a class="brand" href="/" aria-label="SLS Immobilienpartner Startseite"><img class="brand-logo" src="/assets/logo-sls.svg" alt="SLS Immobilienpartner" width="267" height="170"></a>
-      <p>Wir verkaufen Ihre Immobilie, als wäre sie unsere eigene.</p>
+      <p>${isEditorialHome ? 'Wir verkaufen <span class="footer-owner-emphasis">Ihre Immobilie</span>, als wäre sie unsere eigene.' : 'Wir verkaufen Ihre Immobilie, als wäre sie unsere eigene.'}</p>
     </div>
     <div><h2>Eigentümer</h2><a href="/immobilienbewertung/">Immobilienbewertung</a><a href="/verkaufen/">Verkaufen</a><a href="/service/">Service</a><a href="/faq/">Fragen & Antworten</a><a href="/referenzen/">Referenzen</a></div>
     <div><h2>Interessenten</h2><a href="/kaufen/">Kaufen</a><a href="/finanzierung/">Finanzierung</a><a href="/immobilien/">Immobilien</a><a href="/downloads/">Ratgeber</a></div>
