@@ -1,0 +1,28 @@
+.home-active-listings[hidden]{display:none!important}
+.home-active-listings{background:var(--paper)}
+.home-active-listings .section-head{align-items:end}
+.home-active-listings .section-head>p{max-width:560px;color:var(--muted)}
+.home-active-controls{display:flex;justify-content:flex-end;gap:10px;margin:0 0 20px}
+.home-active-arrow{display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(11,17,18,.34);border-radius:50%;background:transparent;color:var(--ink);cursor:pointer;transition:background .2s,border-color .2s}
+.home-active-arrow:hover:not(:disabled){background:#fff;border-color:var(--ink)}
+.home-active-arrow:disabled{opacity:.32;cursor:default}
+.home-active-track{display:grid;grid-auto-columns:calc(33.333% - 16px);grid-auto-flow:column;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;padding:0 0 8px}
+.home-active-track::-webkit-scrollbar{display:none}
+.home-active-card{scroll-snap-align:start;min-width:0;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(11,17,18,.12);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.home-active-card:hover{transform:translateY(-3px);border-color:rgba(11,17,18,.24);box-shadow:0 16px 38px rgba(11,17,18,.09)}
+.home-active-card-media{overflow:hidden;background:#d8e0e2}
+.home-active-card-media img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .45s ease}
+.home-active-card:hover .home-active-card-media img{transform:scale(1.025)}
+.home-active-card-content{display:flex;flex:1;flex-direction:column;padding:24px}
+.home-active-card-tag{color:#47758b;font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+.home-active-card h3{font:500 clamp(24px,2.1vw,31px)/1.14 "Playfair Display",Georgia,serif;margin:13px 0 18px}
+.home-active-card-details{margin:0 0 22px;color:var(--muted);font-size:14px}
+.home-active-card-bottom{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.home-active-card-bottom strong{font:650 20px/1.15 "Raleway",Arial,sans-serif}
+.home-active-card-action{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:750;border-bottom:2px solid var(--coral);padding-bottom:3px}
+.home-active-card-action::after{content:"→";transition:transform .2s}
+.home-active-card:hover .home-active-card-action::after{transform:translateX(4px)}
+.home-active-footer{margin-top:28px}
+@media(max-width:900px){.home-active-track{grid-auto-columns:minmax(280px,64%);gap:16px}}
+@media(max-width:600px){.home-active-listings .section-head{margin-bottom:12px}.home-active-controls{margin-top:10px}.home-active-track{grid-auto-columns:85%;gap:14px;margin-right:-16px;padding-right:16px}.home-active-card-content{padding:20px}.home-active-card-bottom{align-items:flex-start;flex-direction:column}.home-active-card-action{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.home-active-card,.home-active-card-media img{transition:none}}
