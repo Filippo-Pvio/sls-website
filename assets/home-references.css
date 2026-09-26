@@ -1,0 +1,23 @@
+.home-references-section[hidden]{display:none!important}
+.home-references-section{background:#345b6e;color:#fff}
+.home-references-section .home-kicker{color:#c6dce5}
+.home-references-section .section-head{align-items:end}
+.home-references-section .section-head h2{color:#fff}
+.home-references-section .section-head>p{color:#e2e9ed}
+.home-references-controls{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin:0 0 20px}
+.home-references-arrow{display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(255,255,255,.55);border-radius:50%;color:#fff;background:transparent;cursor:pointer;transition:background .2s,border-color .2s}
+.home-references-arrow:hover:not(:disabled){background:rgba(255,255,255,.14);border-color:#fff}
+.home-references-arrow:disabled{opacity:.38;cursor:default}
+.home-references-track{display:grid;grid-auto-columns:minmax(280px,calc((100% - 48px)/3));grid-auto-flow:column;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;padding:0 0 8px}
+.home-references-track::-webkit-scrollbar{display:none}
+.home-reference-card{scroll-snap-align:start;background:#fff;color:#0b1112;min-width:0;display:flex;flex-direction:column}
+.home-reference-card img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#d8e0e2}
+.home-reference-card-content{display:flex;flex-direction:column;flex:1;padding:24px}
+.home-reference-card-tag{color:#3c6b80;font-size:12px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
+.home-reference-card h3{font:500 clamp(25px,2.3vw,34px)/1.15 "Playfair Display",Georgia,serif;margin:14px 0 26px}
+.home-reference-card p{margin:auto 0 0;color:#5f5d5b;font-size:15px}
+.home-references-footer{margin-top:28px}
+.home-references-footer .text-link{color:#fff;border-color:rgba(255,255,255,.75)}
+@media(max-width:900px){.home-references-track{grid-auto-columns:minmax(260px,64%);gap:16px}}
+@media(max-width:600px){.home-references-track{grid-auto-columns:85%;gap:14px;margin-right:-20px;padding-right:20px}.home-reference-card-content{padding:20px}.home-references-controls{margin-top:12px}.home-references-section .section-head{margin-bottom:12px}}
+@media(prefers-reduced-motion:reduce){.home-references-track{scroll-behavior:auto}}
