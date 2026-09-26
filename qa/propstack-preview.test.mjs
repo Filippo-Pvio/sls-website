@@ -1,0 +1,27 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {allowedIds,mayDisplay,publicUnit} from '../lib/propstack-preview.mjs';
+import handler from '../api/propstack-test-properties.js';
+const ids=allowedIds('17,18'),statuses=allowedIds('2');
+const unit={id:17,archived:false,marketing_type:'BUY',status:{id:2,nonpublic:false},images:[{url:'https://example.org/private.jpg',is_private:true},{url:'https://example.org/public.jpg',is_private:false}]};
+test('Objektfreigabe verlangt ID, Kauf, öffentlich sichtbaren Status und keine Archivierung',()=>{
+  assert.ok(mayDisplay(unit,ids,statuses));
+  assert.equal(mayDisplay({...unit,id:19},ids,statuses),false);
+  assert.equal(mayDisplay({...unit,archived:true},ids,statuses),false);
+  assert.equal(mayDisplay({...unit,marketing_type:'RENT'},ids,statuses),false);
+  assert.equal(mayDisplay({...unit,status:{id:3}},ids,statuses),false);
+  assert.equal(mayDisplay({...unit,status:{id:2,nonpublic:true}},ids,statuses),false);
+});
+test('Antwort enthält keine privaten Fotos oder Rohdatenfelder',()=>{
+  const result=publicUnit({...unit,internal_note:'Nicht öffentlich'});
+  assert.deepEqual(result.images,['https://example.org/public.jpg']);
+  assert.equal('internal_note' in result,false);
+});
+test('API verweigert ohne Konfiguration alle Objektangaben',async()=>{
+  const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_IDS];
+  delete process.env.PROPSTACK_API_KEY; delete process.env.PROPSTACK_TEST_PROPERTY_IDS; delete process.env.PROPSTACK_PUBLIC_STATUS_IDS;
+  const req={method:'GET',query:{}};
+  const res={headers:{},setHeader(k,v){this.headers[k]=v},status(code){this.code=code;return this},json(data){this.data=data;return this}};
+  try {await handler(req,res);assert.equal(res.code,503);assert.equal(res.headers['Cache-Control'],'no-store')}
+  finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_IDS'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i])}
+});
