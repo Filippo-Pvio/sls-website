@@ -57,6 +57,22 @@ test('Exposé-Felder werden aus dem value-Format des Detailabrufs gelesen',()=>{
   const result=publicUnit({...unit,rs_type:{value:'APARTMENT'},number_of_bed_rooms:{value:1},number_of_bath_rooms:{value:1},construction_year:{value:2002},number_of_rooms:{value:2}});
   assert.deepEqual([result.type,result.bedrooms,result.baths,result.year,result.rooms],['Wohnung',1,1,2002,2]);
 });
+test('Öffentliche Objektdaten erscheinen nur bei passender Objektart und vorhandenem Wert',()=>{
+  const input={...unit,rs_type:{value:'APARTMENT'},condominium_fee:{value:285},number_of_balconies:{value:0},plot_area:{value:450},custom_fields:{internal_memo:{value:'Nicht öffentlich'}},price:{value:233000},courtage:{value:'3,57 %'}};
+  const apartment=publicUnit(input).objectFacts;
+  assert.deepEqual(apartment.find(f=>f.label==='Hausgeld'),{label:'Hausgeld',value:285,kind:'currency'});
+  assert.deepEqual(apartment.find(f=>f.label==='Balkone'),{label:'Balkone',value:0,kind:'number'});
+  assert.ok(!apartment.some(f=>/intern|preis|provision/i.test(f.label)));
+  assert.ok(!publicUnit({...input,rs_type:{value:'HOUSE'}}).objectFacts.some(f=>f.label==='Hausgeld'));
+  assert.ok(!publicUnit({...input,condominium_fee:{value:null}}).objectFacts.some(f=>f.label==='Hausgeld'));
+  const investment=publicUnit({...input,rs_type:{value:'INVESTMENT'},number_of_units:7,number_of_apartments:6,total_floor_space:550}).objectFacts;
+  assert.equal(investment.find(f=>f.label==='Wohneinheiten').value,6);
+  assert.equal(investment.find(f=>f.label==='Gesamtfläche').value,550);
+  assert.ok(!investment.some(f=>f.label==='Hausgeld'));
+  const plot=publicUnit({...input,rs_type:{value:'TRADE_SITE'},grz:0.4,gfz:1.2}).objectFacts;
+  assert.equal(plot.find(f=>f.label==='Grundflächenzahl (GRZ)').value,0.4);
+  assert.ok(!apartment.some(f=>f.label==='Grundflächenzahl (GRZ)'));
+});
 test('Maklerkontaktdaten kommen aus dem zugewiesenen Propstack-Nutzer',()=>{
   const result=publicUnit({...unit,broker:{name:'Testmakler',phone:'+49 123',mobile:'+49 456',email:'makler@example.org',avatar_url:'https://example.org/broker.jpg'}});
   assert.deepEqual(result.broker,{name:'Testmakler',phone:'+49 123',mobile:'+49 456',email:'makler@example.org',photo:'https://example.org/broker.jpg'});
@@ -122,5 +138,16 @@ test('Detailansicht bewahrt Maklerdaten aus der Liste, wenn das Detail sie wegl�
     : {data:[{...unit,broker:{name:'Frau Muster',phone:'+49 123',email:'muster@example.org'}}]}});
   const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
   try {await handler({method:'GET',query:{id:'17'}},res);assert.equal(res.code,200);assert.equal(res.data.items[0].broker.phone,'+49 123');assert.equal(res.data.items[0].broker.email,'muster@example.org')}
+  finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i]);globalThis.fetch=previous[3]}
+});
+test('Detailansicht bewahrt öffentlich freigegebene Fakten bei leerem Detailwert',async()=>{
+  const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_NAME,globalThis.fetch];
+  process.env.PROPSTACK_API_KEY='test-key';process.env.PROPSTACK_TEST_PROPERTY_IDS='17';process.env.PROPSTACK_PUBLIC_STATUS_NAME='Vermarktung';
+  globalThis.fetch=async url=>({ok:true,json:async()=>String(url).includes('property_statuses')
+    ? {data:[{id:2,name:'Vermarktung'}]}
+    : String(url).includes('units/17?new=1') ? {id:17,rs_type:{value:'APARTMENT'},condominium_fee:{value:null},condition:{value:'Renoviert'}}
+    : {data:[{...unit,rs_type:'APARTMENT',condominium_fee:285,condition:'Gepflegt'}]}});
+  const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
+  try {await handler({method:'GET',query:{id:'17'}},res);assert.equal(res.code,200);assert.deepEqual(res.data.items[0].objectFacts.find(f=>f.label==='Hausgeld'),{label:'Hausgeld',value:285,kind:'currency'});assert.equal(res.data.items[0].objectFacts.find(f=>f.label==='Zustand').value,'Renoviert')}
   finally {['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME'].forEach((k,i)=>previous[i]===undefined?delete process.env[k]:process.env[k]=previous[i]);globalThis.fetch=previous[3]}
 });

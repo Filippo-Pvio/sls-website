@@ -1,4 +1,5 @@
 import {allowedIds,mayDisplay,publicUnit} from '../lib/propstack-preview.mjs';
+import {publicPropertyFacts,publicPropertySourceFields} from '../lib/public-property-facts.mjs';
 async function read(path, key) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(),10000);
@@ -58,8 +59,11 @@ export default async function handler(req,res) {
       }
       // The detail endpoint can return null for facts that are populated in the public listing.
       // Preserve those listing facts so card and exposé do not contradict each other.
-      for (const field of ['price','object_price','living_space','property_space_value','number_of_rooms','number_of_bed_rooms','number_of_bath_rooms','plot_area','construction_year','rs_type','city','zip_code']) {
-        if (combined[field] == null || combined[field] === '') combined[field]=summary[field];
+      const unwrapped=value=>value && typeof value==='object' && 'value' in value ? value.value : value;
+      for (const field of new Set(['price','object_price','living_space','property_space_value','number_of_rooms','number_of_bed_rooms','number_of_bath_rooms','plot_area','construction_year','rs_type','city','zip_code',...publicPropertySourceFields])) {
+        const detailValue=unwrapped(combined[field]);
+        const summaryValue=unwrapped(summary[field]);
+        if ((detailValue == null || detailValue === '') && summaryValue != null && summaryValue !== '') combined[field]=summary[field];
       }
       const publicListing=publicUnit(summary);
       const publicDetail=publicUnit(combined);
@@ -72,6 +76,7 @@ export default async function handler(req,res) {
       for (const field of ['bedrooms','baths','year']) {
         if (publicDetail[field] == null) publicDetail[field]=publicListing[field];
       }
+      publicDetail.objectFacts=publicPropertyFacts(combined,publicDetail);
       publicDetail.inquiryEnabled=process.env.PROPSTACK_INQUIRY_ENABLED==='1' &&
         Boolean(process.env.PROPSTACK_INQUIRY_API_KEY) && /^\d+$/.test(process.env.PROPSTACK_INQUIRY_SOURCE_ID||'');
       return res.status(200).json({items:[publicDetail]});
