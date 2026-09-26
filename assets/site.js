@@ -12,9 +12,9 @@ const navGroups = [
     ["Ratgeber", "/downloads/", "Wissen für Ihre Verkaufsentscheidung"]
   ]},
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
-    ["Alle Standorte", "/standorte/", "Ruhrgebiet & Rheinland"],
-    ["Dorsten", "/immobilienmakler-dorsten/", "SLS im nördlichen Ruhrgebiet"],
-    ["Düsseldorf", "/immobilienmakler-dusseldorf/", "SLS im Rheinland"]
+    ["Unsere Marktgebiete", "/standorte/", "Ruhrgebiet & Rheinland"],
+    ["Büro Dorsten", "/immobilienmakler-dorsten/", "Unser Büro im Ruhrgebiet"],
+    ["Büro Düsseldorf", "/immobilienmakler-dusseldorf/", "Unser Büro im Rheinland"]
   ]},
   { label: "Über SLS", href: "/ueber-uns/", kicker: "Unternehmen", items: [
     ["Über uns", "/ueber-uns/", "Wer wir sind und wie wir arbeiten"],
