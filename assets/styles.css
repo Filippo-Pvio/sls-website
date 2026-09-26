@@ -1927,6 +1927,8 @@ a.google-review-card .google-review-more{
 .home-editorial .hero-intro-mobile{display:block}
 .home-editorial .hero-actions .button-ghost{min-height:48px;padding:0 4px;border:0;background:transparent;color:var(--paper);text-decoration:underline;text-underline-offset:5px}
 .home-editorial .hero-actions .button-ghost:hover{border:0;background:transparent;color:var(--paper)}
+.home-editorial .hero-actions .button-ghost::after{content:"\2192";display:inline-block;transition:transform .2s ease}
+.home-editorial .hero-actions .button-ghost:hover::after{transform:translateX(5px)}
 @media(max-width:640px){
   .home-editorial .hero-premium{
     display:block;
