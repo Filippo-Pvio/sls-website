@@ -51,6 +51,12 @@ html:has(> body.property-preview),body.property-preview{overflow-x:clip;overscro
 .property-preview.pp-is-detail .pp-contact-details a{color:#4c7080;text-decoration:none}
 .property-preview.pp-is-detail .pp-call{width:100%;margin:0 0 20px}
 .property-preview.pp-is-detail .pp-inquiry{text-align:left;border-top:1px solid #e0e8ea;padding-top:19px}
+.property-preview.pp-is-detail .pp-inquiry-object{display:grid;grid-template-columns:72px minmax(0,1fr);align-items:center;gap:12px;min-width:0;margin:0 0 21px;padding:0 0 17px;border-bottom:1px solid #e0e8ea;color:#405965}
+.property-preview.pp-is-detail .pp-inquiry-object img,.property-preview.pp-is-detail .pp-inquiry-fallback{width:72px;height:62px;object-fit:cover;border-radius:4px;background:#eaf0f2}
+.property-preview.pp-is-detail .pp-inquiry-fallback{display:grid;place-items:center;color:#4e6878;font-weight:700}
+.property-preview.pp-is-detail .pp-inquiry-object>div{min-width:0}
+.property-preview.pp-is-detail .pp-inquiry-object strong{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14px;line-height:1.35;overflow-wrap:anywhere}
+.property-preview.pp-is-detail .pp-inquiry-object span:not(.pp-inquiry-fallback){display:block;margin-top:4px;color:#6e8490;font-size:12px}
 .property-preview.pp-is-detail .pp-inquiry h3{color:#4e6878;font-size:20px;margin:0 0 15px}
 .property-preview.pp-is-detail .pp-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .property-preview.pp-is-detail .pp-form-grid label{min-width:0;display:block;font-size:13px;color:#405965}
