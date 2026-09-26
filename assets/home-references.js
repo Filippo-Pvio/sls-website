@@ -54,22 +54,18 @@
       if (!items.length) return;
       track.replaceChildren(...items.map(card));
       section.hidden = false;
-      previous.addEventListener('click', () => {
+      const move = direction => {
         const cards = [...track.children];
         const current = Math.max(0, Number(progress.textContent.split('/')[0]) - 1);
-        cards[Math.max(0, current - 1)]?.scrollIntoView({
-          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
-          block: 'nearest', inline: 'start'
+        const target = cards[Math.max(0, Math.min(cards.length - 1, current + direction))];
+        if (!target) return;
+        track.scrollTo({
+          left: target.offsetLeft - track.offsetLeft,
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
         });
-      });
-      next.addEventListener('click', () => {
-        const cards = [...track.children];
-        const current = Math.max(0, Number(progress.textContent.split('/')[0]) - 1);
-        cards[Math.min(cards.length - 1, current + 1)]?.scrollIntoView({
-          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
-          block: 'nearest', inline: 'start'
-        });
-      });
+      };
+      previous.addEventListener('click', () => move(-1));
+      next.addEventListener('click', () => move(1));
       track.addEventListener('scroll', () => window.requestAnimationFrame(update), { passive: true });
       window.addEventListener('resize', update, { passive: true });
       update();
