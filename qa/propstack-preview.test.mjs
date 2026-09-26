@@ -46,6 +46,19 @@ test('Anfrageversand bleibt ohne Schreibkonfiguration gesperrt',async()=>{
   try {await inquiryHandler({method:'POST',body:{},headers:{}},res);assert.equal(res.code,503)}
   finally {if(previous===undefined) delete process.env.PROPSTACK_INQUIRY_ENABLED;else process.env.PROPSTACK_INQUIRY_ENABLED=previous}
 });
+test('Freigeschaltete Anfrage legt Kontakt und objektbezogene Aktivität mit Quelle an',async()=>{
+  const keys=['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME','PROPSTACK_INQUIRY_API_KEY','PROPSTACK_INQUIRY_SOURCE_ID','PROPSTACK_INQUIRY_ENABLED'];
+  const previous=keys.map(key=>process.env[key]),fetchBefore=globalThis.fetch,calls=[];
+  Object.assign(process.env,{PROPSTACK_API_KEY:'read',PROPSTACK_TEST_PROPERTY_IDS:'17',PROPSTACK_PUBLIC_STATUS_NAME:'Vermarktung',PROPSTACK_INQUIRY_API_KEY:'write',PROPSTACK_INQUIRY_SOURCE_ID:'42',PROPSTACK_INQUIRY_ENABLED:'1'});
+  globalThis.fetch=async (url,options)=>{calls.push({url:String(url),options});return {ok:true,json:async()=>String(url).includes('property_statuses')?{data:[{id:2,name:'Vermarktung'}]}:String(url).includes('units?')?{data:[{...unit,broker_id:9}]}:String(url).includes('contacts')?{id:123}:{id:456}}};
+  const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
+  try {
+    await inquiryHandler({method:'POST',headers:{'content-type':'application/json'},body:{propertyId:'17',firstName:'Anna',lastName:'Muster',email:'anna@example.org',phone:'+49 123',privacy:true}},res);
+    assert.equal(res.code,200);assert.equal(calls.length,4);
+    assert.equal(calls[2].options.headers['X-API-KEY'],'write');
+    assert.deepEqual(JSON.parse(calls[3].options.body).task,{title:'Anfrage über die Webseite',client_ids:[123],property_ids:[17],broker_id:9,client_source_id:42,body:'Anfrage zu Objekt 17<br>Name: Anna Muster<br>E-Mail: anna@example.org<br>Telefon: +49 123'});
+  } finally {keys.forEach((key,i)=>previous[i]===undefined?delete process.env[key]:process.env[key]=previous[i]);globalThis.fetch=fetchBefore}
+});
 test('API verweigert ohne Konfiguration alle Objektangaben',async()=>{
   const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_NAME];
   delete process.env.PROPSTACK_API_KEY; delete process.env.PROPSTACK_TEST_PROPERTY_IDS; delete process.env.PROPSTACK_PUBLIC_STATUS_NAME;
