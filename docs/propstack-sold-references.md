@@ -1,20 +1,21 @@
 # Verkaufte Immobilien auf der Startseite
 
-Die Startseiten-Sektion zwischen Team und Rezensionen lädt ihre Daten ausschließlich aus
-`/api/propstack-sold-references`. Ohne ausdrücklich freigegebene Datensätze bleibt sie
-vollständig verborgen. Der bestehende Test unter `/immobilien-test/` wird nicht verändert.
+Die blaue Startseiten-Sektion zwischen Team und Kundenstimmen lädt ihre Daten aus
+`/api/propstack-sold-references`. Für Produktion wird ausschließlich der
+serverseitige `PROPSTACK_API_KEY` mit Leserechten für Objekte und Objektstatus
+benötigt. Ohne funktionierenden API-Zugang bleibt die Sektion verborgen.
 
-Für das Production-Deployment sind vier Umgebungsvariablen nötig:
+Der Endpunkt ermittelt die Propstack-Status-IDs anhand der exakten Namen
+`Verkauft` und `Erfolgreich vermarktet`. Er lädt alle entsprechenden
+Kaufobjekte einschließlich archivierter Objekte, blättert durch die
+vollständige Ergebnismenge und prüft den Status an jedem Datensatz erneut.
+Er zeigt nur Objekte mit Stadt, Titel und mindestens einem Foto mit
+`is_private: false` (keine Grundrisse). Adressen, Kaufpreise und
+Kontaktdaten werden nicht ausgegeben.
 
-- `PROPSTACK_API_KEY`: serverseitiger Propstack-V1-Schlüssel mit Leserecht für Objekte und Objektstatus; niemals im Frontend.
-- `PROPSTACK_REFERENCE_STATUS_ID`: numerische ID des Propstack-Status, der die abgeschlossenen Verkäufe kennzeichnet.
-- `PROPSTACK_REFERENCE_STATUS_NAME`: dessen exakter Name zur Gegenprüfung.
-- `PROPSTACK_REFERENCE_PROPERTY_IDS`: durch SLS einzeln zur Referenznutzung und Veröffentlichung ihrer Bilder freigegebene, kommaseparierte numerische Objekt-IDs (höchstens zehn).
-
-Freigabe bedeutet ausdrücklich, dass die Eigentümer-/Bildrechte für diese Referenznutzung
-geklärt sind. Ein Status „erfolgreich vermarktet“ allein ist keine Freigabe. Es werden nur
-Kaufobjekte mit genau diesem Status und mindestens einem als öffentlich gekennzeichneten
-Foto gezeigt; es werden keine Kaufpreise, Adressen oder Kontaktdaten ausgeliefert.
-Der Endpunkt ist gegen Indexierung markiert, die Sektion wird erst nach einem erfolgreichen
-Datenabruf eingeblendet. Nach der Konfiguration müssen Desktop, Smartphone und die
-inhaltliche Zuordnung jedes Fotos vor der öffentlichen Nutzung geprüft werden.
+Aus den geeigneten Objekten werden täglich bis zu zehn neue Referenzen
+deterministisch zufällig gewählt. Innerhalb des Tages bleibt die Reihenfolge
+stabil; dadurch springt das Karussell nicht bei jedem Seitenaufruf.
+Falls SLS den Verkaufstatus anders benannt hat, muss der Statusname
+gezielt geprüft werden. Die separate Vorschau unter `/immobilien-test/`
+bleibt unabhängig.
