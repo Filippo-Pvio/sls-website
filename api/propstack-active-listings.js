@@ -2,7 +2,7 @@ const API_BASE = 'https://api.propstack.de/v1/';
 const PAGE_SIZE = 100;
 const MAX_PAGES = 3;
 const MAX_RESULTS = 12;
-const ACTIVE_NAMES = new Set(['in vermarktung', 'verfügbar']);
+const ACTIVE_NAMES = new Set(['vermarktung']);
 
 async function propstack(path, key) {
   const response = await fetch(new URL(path, API_BASE), {
@@ -152,8 +152,7 @@ export default async function handler(req, res) {
       .map(status => String(status.id)));
 
     if (!activeStatusIds.size) {
-      console.error('Propstack active status candidates:', statuses.map(status => ({ id: status.id, name: status.name, nonpublic: status.nonpublic })));
-      res.setHeader('Cache-Control', 'no-store');
+res.setHeader('Cache-Control', 'no-store');
       return res.status(503).json({ error: 'Aktiver Vermarktungsstatus in Propstack nicht gefunden' });
     }
 
