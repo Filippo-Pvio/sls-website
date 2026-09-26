@@ -166,6 +166,12 @@ res.setHeader('Cache-Control', 'no-store');
     }
 
     const listings = await activeListings(key, activeStatusIds);
+    if (!listings.length) {
+      const query = new URLSearchParams({ with_meta: '1', expand: '1', status: [...activeStatusIds].join(','), marketing_type: 'BUY', archived: '-1', per: '1', page: '1' });
+      const diagnostic = await propstack(`units?${query}`, key);
+      const unit = diagnostic.data?.[0];
+      console.error('Propstack active filter diagnostic:', unit ? { id: unit.id, status: unit.status, marketing_type: unit.marketing_type, archived: unit.archived, title: unit.title, city: unit.city, price: unit.price, public_expose_url: unit.public_expose_url, image: safeImage(unit.images) } : { empty: true });
+    }
     res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=1200');
     return res.status(200).json({ listings });
   } catch (error) {
