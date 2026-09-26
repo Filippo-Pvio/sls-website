@@ -6,7 +6,7 @@ Für die **Preview-Umgebung** des Vercel-Projekts `sls-website` werden serversei
 
 - `PROPSTACK_API_KEY`: Propstack-V1-API-Schlüssel mit **Leserecht für Objekte**, nicht ins Frontend oder Git übernehmen.
 - `PROPSTACK_TEST_PROPERTY_IDS`: kommagetrennte Propstack-IDs der für diesen Test einzeln freigegebenen Kaufobjekte.
-- `PROPSTACK_PUBLIC_STATUS_NAME`: exakter Name eines öffentlich darstellbaren Status (für den ersten Test: `Vermarktung`). Die ID und `nonpublic: false` werden serverseitig gegen Propstack verifiziert. Bei keinem oder mehreren Treffern werden keine Objekte angezeigt.
+- `PROPSTACK_PUBLIC_STATUS_NAME`: exakter Name eines für den Test freigegebenen Status (`Vermarktung`). Die ID wird serverseitig gegen Propstack abgeglichen. `nonpublic: true` sperrt die Ausgabe; Propstack liefert für diesen SLS-Status `nonpublic: null`, weshalb der Status für das einzelne freigegebene Objekt zugelassen wird. Fehlende oder mehrdeutige Status bleiben gesperrt. Die allgemeine Freigabelogik für eine spätere Veröffentlichung muss gesondert validiert werden.
 
 Nur wenn alle drei Werte vorliegen, fragt `/api/propstack-test-properties` Daten ab. Andere Objekte, archivierte Objekte, Mietobjekte, nicht freigegebene Status und als privat markierte Bilder werden nicht ausgeliefert. Der Fehlerzustand fällt nicht auf Beispielobjekte zurück.
 

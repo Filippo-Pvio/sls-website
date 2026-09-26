@@ -29,7 +29,7 @@ test('API ermittelt nur einen öffentlichen Status mit exaktem Namen und gibt nu
   const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_NAME,globalThis.fetch];
   process.env.PROPSTACK_API_KEY='test-key';process.env.PROPSTACK_TEST_PROPERTY_IDS='17';process.env.PROPSTACK_PUBLIC_STATUS_NAME='Vermarktung';
   globalThis.fetch=async url=>({ok:true,json:async()=>String(url).includes('property_statuses')
-    ? {data:[{id:2,name:'Vermarktung',nonpublic:false},{id:3,name:'Intern',nonpublic:true}]}
+    ? {data:[{id:2,name:'Vermarktung',nonpublic:null},{id:3,name:'Intern',nonpublic:true}]}
     : {data:[{...unit,title:'Testobjekt'},{...unit,id:18,title:'Fremdobjekt'}]}});
   const req={method:'GET',query:{}};
   const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
