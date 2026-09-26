@@ -2317,3 +2317,13 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
   transform:scale(1.2);
   box-shadow:0 0 0 5px #345b6e,0 0 0 9px rgba(255,87,114,.22)
 }
+
+/* Mark the notary milestone once when the final step comes into view. */
+.home-editorial .home-process-route.is-scroll-timeline>li:last-child.is-milestone::before{
+  animation:home-process-milestone .95s ease-out 1
+}
+@keyframes home-process-milestone{
+  0%{transform:scale(1);box-shadow:0 0 0 5px #345b6e,0 0 0 5px rgba(255,87,114,0)}
+  46%{transform:scale(1.42);box-shadow:0 0 0 5px #345b6e,0 0 0 15px rgba(255,87,114,.24)}
+  100%{transform:scale(1.2);box-shadow:0 0 0 5px #345b6e,0 0 0 19px rgba(255,87,114,0)}
+}
