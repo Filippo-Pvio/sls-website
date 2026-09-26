@@ -23,7 +23,7 @@ export default async function handler(req,res) {
     const named=available.filter(s=>s.name === statusName);
     const matches=named.filter(s=>s.nonpublic === false);
     if (matches.length !== 1) {
-      console.error('Propstack preview status mismatch:',JSON.stringify({statusCount:available.length,nameMatches:named.length,publicMatches:matches.length}));
+      console.error('Propstack preview status mismatch:',JSON.stringify({statusCount:available.length,nameMatches:named.length,publicMatches:matches.length,visibility:named.map(s=>({nonpublic:s.nonpublic ?? null,landingPageBlocked:s.landing_page_blocked ?? null,portalsBlocked:s.portals_blocked ?? null}))}));
       return res.status(503).json({error:named.length === 0 ? 'Objektstatus in Propstack nicht gefunden.' : 'Objektstatus in Propstack nicht eindeutig öffentlich.'});
     }
     const statuses=new Set([String(matches[0].id)]);
