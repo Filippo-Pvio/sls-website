@@ -77,10 +77,18 @@ function publicListing(unit, activeStatusIds) {
       unit.archived === true) return null;
 
   const image = safeImage(unit.images);
-  const url = findPublicSlsUrl(unit);
+  let url = findPublicSlsUrl(unit);
+  if (!url) {
+    try {
+      const expose = new URL(unit.public_expose_url);
+      if (expose.protocol === 'https:' && expose.hostname === 'crm.propstack.de' && expose.pathname.startsWith('/public/exposee/')) url = expose.href;
+    } catch {
+      // No safe public detail URL available.
+    }
+  }
   const title = String(unit.title?.value ?? unit.title ?? '').trim().slice(0, 140);
   const city = String(unit.city ?? '').trim().slice(0, 70);
-  const price = Number(unit.price);
+  const price = Number(unit.price?.value ?? unit.price);
   if (!image || !url || !title || !city || !Number.isFinite(price) || price <= 0) return null;
 
   const livingSpace = Number(unit.living_space);
@@ -110,6 +118,7 @@ async function activeListings(key, statusIds) {
       marketing_type: 'BUY',
       per: String(PAGE_SIZE),
       page: String(page),
+      archived: '-1',
       sort_by: 'updated_at',
       order: 'desc',
     });
@@ -157,11 +166,6 @@ res.setHeader('Cache-Control', 'no-store');
     }
 
     const listings = await activeListings(key, activeStatusIds);
-    if (!listings.length) {
-      const query = new URLSearchParams({ with_meta: '1', expand: '1', status: [...activeStatusIds].join(','), marketing_type: 'BUY', per: '12', page: '1', sort_by: 'updated_at', order: 'desc' });
-      const diagnostic = await propstack(`units?${query}`, key);
-      console.error('Propstack active listing diagnostics:', (diagnostic.data || []).map(unit => ({ id: unit.id, title: unit.title?.value ?? unit.title, city: unit.city, price: unit.price, image: Boolean(safeImage(unit.images)), publicExposeUrl: unit.public_expose_url, links: unit.links, keys: Object.keys(unit).filter(key => /url|link|slug|web|external|public/i.test(key)) })));
-    }
     res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=1200');
     return res.status(200).json({ listings });
   } catch (error) {
