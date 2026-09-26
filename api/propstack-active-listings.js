@@ -160,7 +160,7 @@ res.setHeader('Cache-Control', 'no-store');
     if (!listings.length) {
       const query = new URLSearchParams({ with_meta: '1', expand: '1', status: [...activeStatusIds].join(','), marketing_type: 'BUY', per: '12', page: '1', sort_by: 'updated_at', order: 'desc' });
       const diagnostic = await propstack(`units?${query}`, key);
-      console.error('Propstack active listing diagnostics:', (diagnostic.data || []).map(unit => ({ id: unit.id, title: unit.title?.value ?? unit.title, city: unit.city, price: unit.price, image: Boolean(safeImage(unit.images)), keys: Object.keys(unit).filter(key => /url|link|slug|web|external|public/i.test(key)) })));
+      console.error('Propstack active listing diagnostics:', (diagnostic.data || []).map(unit => ({ id: unit.id, title: unit.title?.value ?? unit.title, city: unit.city, price: unit.price, image: Boolean(safeImage(unit.images)), publicExposeUrl: unit.public_expose_url, links: unit.links, keys: Object.keys(unit).filter(key => /url|link|slug|web|external|public/i.test(key)) })));
     }
     res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=1200');
     return res.status(200).json({ listings });
