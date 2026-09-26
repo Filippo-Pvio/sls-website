@@ -17,6 +17,13 @@
 <header class="site-header" data-site-header></header>
 <main id="main">
   <section class="hero hero-premium">
+    <div class="hero-scenes" aria-hidden="true">
+      <picture>
+        <source media="(max-width: 640px)" srcset="/assets/images/hero-scenes/viewing-900.webp">
+        <img class="hero-scene hero-scene-current" data-scene="handshake" src="/assets/images/hero-scenes/handshake-1536.webp" srcset="/assets/images/hero-scenes/handshake-900.webp 900w, /assets/images/hero-scenes/handshake-1536.webp 1536w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
+      </picture>
+      <img class="hero-scene hero-scene-next" alt="" decoding="async">
+    </div>
     <img class="hero-media" src="https://sls.de/wp-content/uploads/2026/08/Team-optimized-1536x1022.webp" srcset="https://sls.de/wp-content/uploads/2026/08/Team-optimized-768x511.webp 768w, https://sls.de/wp-content/uploads/2026/08/Team-optimized-1536x1022.webp 1536w" sizes="100vw" alt="Team der SLS Immobilienpartner GmbH" width="1536" height="1022" fetchpriority="high">
     <div class="hero-content">
       
@@ -325,6 +332,7 @@
 })();
 </script>
 <script src="/assets/site.js" defer></script>
+<script src="/assets/hero-scenes.js" defer></script>
 <script src="/assets/home-team-carousel.js" defer></script>
 <script>
 (async()=>{
