@@ -2862,3 +2862,45 @@ body.home-editorial > section.section.home-faq-section{
 .home-editorial .home-process-route.is-scroll-timeline::before{
   top:var(--process-line-start,13px);
 }
+
+
+/* Mobile process timeline: compact guidance track closer to labels and titles. */
+@media (max-width:760px){
+  .home-editorial .home-process-route{
+    padding-left:38px;
+  }
+  .home-editorial .home-process-route>li{
+    grid-template-columns:44px minmax(0,1fr);
+    gap:10px;
+    min-height:108px;
+    padding-bottom:18px;
+  }
+  .home-editorial .home-process-route>li:last-child{
+    min-height:0;
+    padding-bottom:0;
+  }
+  .home-editorial .home-process-route.is-scroll-timeline>li::before{
+    left:-23px;
+    width:9px;
+    height:9px;
+    top:calc(var(--process-marker-y,13px) - 4.5px);
+  }
+  .home-editorial .home-process-route.is-scroll-timeline::after{
+    left:18px;
+    width:1px;
+  }
+  .home-editorial .home-process-route.is-scroll-timeline::before{
+    left:17px;
+    width:2px;
+  }
+  .home-editorial .home-process-route.is-scroll-timeline>li.is-current::before{
+    transform:scale(1.08);
+    box-shadow:0 0 0 6px rgba(255,89,111,.13);
+  }
+  .home-editorial .home-process-number{
+    font-size:12px;
+    line-height:1.4;
+    align-self:start;
+    padding-top:2px;
+  }
+}
