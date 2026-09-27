@@ -2766,3 +2766,28 @@ body.home-editorial > main > section.section.section-dark.premium-final-cta .hom
     white-space:nowrap;
   }
 }
+
+
+/* Subtle photographic depth for selected light homepage sections. */
+body.home-editorial > main > section.section.home-marketing-section{
+  background:
+    linear-gradient(rgba(249,247,242,.91), rgba(249,247,242,.91)),
+    url("/assets/images/home/marketing-hintergrund.jpeg") center 46% / cover no-repeat !important;
+}
+body.home-editorial > main > section.section.home-team-section:not(.section-dark){
+  background:
+    linear-gradient(rgba(249,247,242,.89), rgba(249,247,242,.89)),
+    url("/assets/images/home/vertrauen-hintergrund.jpeg") center 48% / cover no-repeat !important;
+}
+@media (max-width:760px){
+  body.home-editorial > main > section.section.home-marketing-section{
+    background:
+      linear-gradient(rgba(249,247,242,.93), rgba(249,247,242,.93)),
+      url("/assets/images/home/marketing-hintergrund.jpeg") 62% center / cover no-repeat !important;
+  }
+  body.home-editorial > main > section.section.home-team-section:not(.section-dark){
+    background:
+      linear-gradient(rgba(249,247,242,.92), rgba(249,247,242,.92)),
+      url("/assets/images/home/vertrauen-hintergrund.jpeg") 58% center / cover no-repeat !important;
+  }
+}
