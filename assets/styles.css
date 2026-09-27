@@ -2407,3 +2407,16 @@ body:not(.home-editorial) > main > section.section h2{
 @media(prefers-reduced-motion:reduce){
   .home-editorial .home-reach-platforms.is-spotlit .home-reach-platform svg{animation:none}
 }
+
+
+/* Homepage footer: branded blue close after the white FAQ section. */
+.home-editorial .site-footer{background:#345b6e;color:#fff}
+.home-editorial .site-footer .brand-logo{filter:brightness(0) invert(1)}
+.home-editorial .site-footer .footer-lead p,
+.home-editorial .site-footer a,
+.home-editorial .site-footer p{color:#fff}
+.home-editorial .site-footer h2{color:#fff}
+.home-editorial .site-footer .footer-owner-emphasis{color:var(--coral)}
+.home-editorial .site-footer a:hover,
+.home-editorial .site-footer a:focus-visible{color:#fff;opacity:.78}
+.home-editorial .site-footer .footer-bottom{border-top-color:rgba(255,255,255,.28);color:rgba(255,255,255,.78)}
