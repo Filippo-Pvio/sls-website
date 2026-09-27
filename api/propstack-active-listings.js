@@ -1,7 +1,6 @@
 const API_BASE = 'https://api.propstack.de/v1/';
 const PAGE_SIZE = 100;
-const MAX_PAGES = 3;
-const MAX_RESULTS = 12;
+const MAX_PAGES = 40;
 const ACTIVE_NAMES = new Set(['vermarktung']);
 
 async function propstack(path, key) {
@@ -109,7 +108,7 @@ function publicListing(unit) {
 async function activeListings(key, statusIds) {
   const collected = [];
   const seen = new Set();
-  for (let page = 1; page <= MAX_PAGES && collected.length < MAX_RESULTS; page++) {
+  for (let page = 1; page <= MAX_PAGES; page++) {
     const query = new URLSearchParams({
       with_meta: '1',
       expand: '1',
@@ -130,7 +129,6 @@ async function activeListings(key, statusIds) {
       seen.add(id);
       const listing = publicListing(unit);
       if (listing) collected.push(listing);
-      if (collected.length >= MAX_RESULTS) break;
     }
 
     const total = Number(response.meta?.total_count);
