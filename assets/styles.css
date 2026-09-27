@@ -2904,3 +2904,17 @@ body.home-editorial > section.section.home-faq-section{
     padding-top:2px;
   }
 }
+
+
+/* Final mobile timeline position: move the whole axis closer to 01-05. */
+@media (max-width:760px){
+  .home-editorial .home-process-route.is-scroll-timeline>li::before{
+    left:-17px;
+  }
+  .home-editorial .home-process-route.is-scroll-timeline::after{
+    left:25px;
+  }
+  .home-editorial .home-process-route.is-scroll-timeline::before{
+    left:24px;
+  }
+}
