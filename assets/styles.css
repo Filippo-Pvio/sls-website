@@ -2623,3 +2623,45 @@ body:not(.home-editorial) > main > section.section h2{
 
 /* Difference hierarchy: the individual SLS promise carries the accent, not a repeated label. */
 .home-editorial .home-difference-sls h3{color:var(--coral)}
+
+
+/* Difference section refinement: icons replace timeline markers; separators stay static. */
+.home-editorial .home-difference-progress{display:none!important}
+.home-editorial .home-difference-item{
+  grid-template-columns:minmax(220px,.72fr) 48px minmax(0,1.55fr);
+  gap:clamp(22px,4vw,58px);
+  transform:none!important;
+}
+.home-editorial .home-difference-sls{padding-left:0}
+.home-editorial .home-difference-sls::before{display:none!important}
+.home-editorial .home-difference-icon{
+  display:grid;
+  place-items:center;
+  width:44px;
+  height:44px;
+  margin-top:1px;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:50%;
+  color:rgba(255,255,255,.72);
+  transition:color .35s ease,border-color .35s ease,background .35s ease;
+}
+.home-editorial .home-difference-icon svg{width:22px;height:22px}
+.home-editorial .home-difference-item.is-current .home-difference-icon{
+  color:#fff;
+  border-color:rgba(255,255,255,.55);
+  background:rgba(255,255,255,.06);
+}
+.home-editorial .home-difference-sls h3{color:var(--coral)!important}
+@media (max-width:760px){
+  .home-editorial .home-difference-item{
+    grid-template-columns:44px minmax(0,1fr);
+    column-gap:16px;
+    row-gap:12px;
+  }
+  .home-editorial .home-difference-common{
+    grid-column:1/-1;
+    padding-left:0;
+  }
+  .home-editorial .home-difference-icon{grid-column:1}
+  .home-editorial .home-difference-sls{grid-column:2}
+}
