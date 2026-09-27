@@ -234,10 +234,11 @@ if (isEditorialHome) {
         const bounds = frame.getBoundingClientRect();
         return bounds.top < window.innerHeight && bounds.bottom > 0;
       });
+      const finalCallBounds = finalCall.getBoundingClientRect();
+      const finalCallVisible = finalCallBounds.bottom > 0 && finalCallBounds.top < window.innerHeight;
       const show = window.matchMedia("(max-width: 760px)").matches
         && hero.getBoundingClientRect().bottom <= 0
-        && finalCall.getBoundingClientRect().top > window.innerHeight - 80
-        && footer.getBoundingClientRect().top > window.innerHeight
+        && !finalCallVisible
         && !document.body.classList.contains("menu-open")
         && !videoPlayingInView;
       mobileCall.hidden = !show;
