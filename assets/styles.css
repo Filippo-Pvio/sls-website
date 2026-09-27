@@ -2850,3 +2850,15 @@ body.home-editorial > section.section.home-faq-section{
 .home-editorial .home-process-route.is-scroll-timeline>li.is-current::before{
   box-shadow:0 0 0 8px rgba(255,89,111,.18);
 }
+
+
+/* Align process markers with the center of each matching title, not the row top. */
+.home-editorial .home-process-route.is-scroll-timeline>li::before{
+  top:calc(var(--process-marker-y,13px) - 5.5px);
+}
+.home-editorial .home-process-route.is-scroll-timeline::after{
+  top:var(--process-line-start,13px);
+}
+.home-editorial .home-process-route.is-scroll-timeline::before{
+  top:var(--process-line-start,13px);
+}
