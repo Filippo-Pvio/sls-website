@@ -6,8 +6,11 @@
   const previous = section.querySelector('[data-home-active-prev]');
   const next = section.querySelector('[data-home-active-next]');
   const controls = section.querySelector('[data-home-active-controls]');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let loaded = false;
-  let items = [];
+  let realCount = 0;
+  let cloneCount = 0;
+  let scrollTimer;
 
   const euro = new Intl.NumberFormat('de-DE', {
     style: 'currency',
@@ -16,17 +19,21 @@
   });
   const number = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
 
-  const card = item => {
+  const card = (item, clone = false) => {
     const link = document.createElement('a');
     link.className = 'home-active-card';
     link.href = item.url;
     link.setAttribute('aria-label', `${item.title} in ${item.city} ansehen`);
+    if (clone) {
+      link.setAttribute('aria-hidden', 'true');
+      link.tabIndex = -1;
+    }
 
     const media = document.createElement('div');
     media.className = 'home-active-card-media';
     const image = document.createElement('img');
     image.src = item.image;
-    image.alt = `${item.title} in ${item.city}`;
+    image.alt = clone ? '' : `${item.title} in ${item.city}`;
     image.loading = 'lazy';
     image.decoding = 'async';
     media.appendChild(image);
@@ -62,19 +69,36 @@
     return link;
   };
 
-  const update = () => {
-    const cards = [...track.children];
-    if (!cards.length) return;
-    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth - 2);
-    previous.disabled = track.scrollLeft <= 2;
-    next.disabled = track.scrollLeft >= maxScroll;
+  const cards = () => [...track.children];
+  const nearestIndex = () => {
+    const all = cards();
+    const left = track.scrollLeft;
+    return all.reduce((best, el, index) =>
+      Math.abs(el.offsetLeft - track.offsetLeft - left) <
+      Math.abs(all[best].offsetLeft - track.offsetLeft - left) ? index : best, 0);
   };
-
+  const jumpTo = index => {
+    const target = track.children[index];
+    if (!target) return;
+    track.style.scrollSnapType = 'none';
+    track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: 'instant' });
+    requestAnimationFrame(() => { track.style.scrollSnapType = ''; });
+  };
+  const normalizeLoop = () => {
+    if (realCount < 2) return;
+    const index = nearestIndex();
+    if (index < cloneCount) jumpTo(index + realCount);
+    else if (index >= cloneCount + realCount) jumpTo(index - realCount);
+  };
   const move = direction => {
-    const first = track.firstElementChild;
-    if (!first) return;
-    const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '0') || 0;
-    track.scrollBy({ left: direction * (first.getBoundingClientRect().width + gap), behavior: 'smooth' });
+    if (realCount < 2) return;
+    const index = nearestIndex();
+    const target = track.children[index + direction];
+    if (!target) return;
+    track.scrollTo({
+      left: target.offsetLeft - track.offsetLeft,
+      behavior: reducedMotion.matches ? 'instant' : 'smooth'
+    });
   };
 
   const show = async () => {
@@ -86,16 +110,25 @@
       });
       if (!response.ok) return;
       const data = await response.json();
-      items = Array.isArray(data.listings) ? data.listings.filter(item =>
+      const items = Array.isArray(data.listings) ? data.listings.filter(item =>
         item && typeof item.id === 'string' && typeof item.title === 'string' &&
         typeof item.city === 'string' && typeof item.image === 'string' &&
         typeof item.url === 'string' && Number.isFinite(Number(item.price))) : [];
       if (!items.length) return;
 
-      track.replaceChildren(...items.map(card));
-      controls.hidden = items.length < 2;
+      realCount = items.length;
+      cloneCount = Math.min(4, realCount);
+      const prefix = items.slice(-cloneCount).map(item => card(item, true));
+      const originals = items.map(item => card(item));
+      const suffix = items.slice(0, cloneCount).map(item => card(item, true));
+      track.replaceChildren(...prefix, ...originals, ...suffix);
+
+      controls.hidden = realCount < 2;
+      previous.disabled = realCount < 2;
+      next.disabled = realCount < 2;
       section.hidden = false;
-      requestAnimationFrame(update);
+
+      requestAnimationFrame(() => jumpTo(cloneCount));
     } catch {
       // Keep the optional homepage section hidden when the feed is unavailable.
     }
@@ -103,8 +136,11 @@
 
   previous?.addEventListener('click', () => move(-1));
   next?.addEventListener('click', () => move(1));
-  track?.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
-  window.addEventListener('resize', update, { passive: true });
+  track?.addEventListener('scroll', () => {
+    window.clearTimeout(scrollTimer);
+    scrollTimer = window.setTimeout(normalizeLoop, 120);
+  }, { passive: true });
+  window.addEventListener('resize', () => window.setTimeout(normalizeLoop, 0), { passive: true });
 
   show();
 })();
