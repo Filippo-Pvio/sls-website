@@ -138,15 +138,130 @@ async function activeListings(key, statusIds) {
   return collected;
 }
 
+function num(v){
+  const n=Number(v?.value??v);
+  return Number.isFinite(n)&&n>0?n:null;
+}
+
+function pctl(a,p){
+  if(!a.length)return null;
+  const i=(a.length-1)*p,l=Math.floor(i),h=Math.ceil(i);
+  return a[l]+(a[h]-a[l])*(i-l);
+}
+
+function r50(v){
+  return v==null?null:Math.round(v/50)*50;
+}
+
 async function marketStats(key,statuses){
   const wanted=statuses.filter(s=>MARKET_NAMES.has(normalise(s?.name)));
   const result=[];
+  const areas=new Map();
+
   for(const status of wanted){
-    const q=new URLSearchParams({with_meta:'1',status:String(status.id),marketing_type:'BUY',archived:'-1',per:'1',page:'1'});
-    const x=await propstack('units?'+q,key);
-    result.push({name:String(status.name||''),count:Number(x.meta?.total_count)||0});
+    let count=0;
+
+    for(let page=1;page<=MAX_PAGES;page++){
+      const q=new URLSearchParams({
+        with_meta:'1',
+        expand:'1',
+        status:String(status.id),
+        marketing_type:'BUY',
+        archived:'-1',
+        per:String(PAGE_SIZE),
+        page:String(page)
+      });
+
+      const x=await propstack('units?'+q,key);
+      const rows=Array.isArray(x.data)?x.data:[];
+      count+=rows.length;
+
+      for(const u of rows){
+        const type=u.rs_type==='HOUSE'
+          ?'haus'
+          :u.rs_type==='APARTMENT'
+            ?'wohnung'
+            :null;
+
+        const zip=String(u.zip_code||'').trim();
+        const city=String(u.city||'').trim();
+
+        const living=num(u.living_space);
+        const asking=num(u.price);
+        const sold=num(u.sold_price);
+
+        const isSold=[
+          'verkauft',
+          'erfolgreich vermarktet'
+        ].includes(normalise(status.name));
+
+        const price=isSold ? (sold||asking) : asking;
+
+        if(!type||zip.length!==5||!living||!price) continue;
+
+        const sqm=price/living;
+        if(sqm<250||sqm>20000) continue;
+
+        const k=zip+'|'+type;
+
+        if(!areas.has(k)){
+          areas.set(k,{
+            zipCode:zip,
+            city,
+            type,
+            values:[],
+            stages:{}
+          });
+        }
+
+        const a=areas.get(k);
+        a.values.push(sqm);
+
+        const stage=String(status.name||'');
+        a.stages[stage]=(a.stages[stage]||0)+1;
+      }
+
+      const total=Number(x.meta?.total_count);
+
+      if(
+        rows.length<PAGE_SIZE ||
+        (Number.isFinite(total)&&page*PAGE_SIZE>=total)
+      ) break;
+    }
+
+    result.push({
+      name:String(status.name||''),
+      count
+    });
   }
-  return result;
+
+  const marketAreas=[...areas.values()]
+    .map(a=>{
+      const v=a.values.sort((x,y)=>x-y);
+      const n=v.length;
+
+      return {
+        zipCode:a.zipCode,
+        city:a.city,
+        type:a.type,
+        count:n,
+        low:r50(pctl(v,.25)),
+        typical:r50(pctl(v,.5)),
+        high:r50(pctl(v,.75)),
+        stages:a.stages,
+        confidence:
+          n>=30?'high':
+          n>=12?'medium':
+          n>=5?'low':
+          'insufficient'
+      };
+    })
+    .sort((a,b)=>b.count-a.count);
+
+  return {
+    statuses:result,
+    areas:marketAreas
+  };
 }
 
 export default async function handler(req, res) {
@@ -168,7 +283,7 @@ export default async function handler(req, res) {
     if (req.query.market === '1') {
       const stats = await marketStats(key,statuses);
       res.setHeader('Cache-Control','private, no-store');
-      return res.status(200).json({stats});
+   return res.status(200).json(stats);
     }
 
     const activeStatusIds = new Set(statuses
