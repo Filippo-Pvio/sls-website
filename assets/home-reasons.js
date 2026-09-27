@@ -2,7 +2,7 @@
   const section = document.querySelector('[data-home-reasons]');
   const journey = section?.querySelector('[data-home-reasons-journey]');
   const steps = journey ? [...journey.querySelectorAll('[data-home-reasons-step]')] : [];
-  if (!section || !journey || steps.length !== 6) return;
+  if (!section || !journey || steps.length < 2) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (reducedMotion.matches) {
