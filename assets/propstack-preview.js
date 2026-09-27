@@ -17,7 +17,7 @@
       :'Energieangaben für die Veröffentlichung prüfen';
     return `<a class="pp-card" href="${previewLink(p)}"><div class="pp-image">${photo(p.images?.[0],p.title)}<span class="pp-chip">${esc(p.status||'Verfügbar')}</span></div><div class="pp-card-content"><span class="pp-city">${esc(p.city)}</span><h2>${esc(p.title)}</h2><div class="pp-stats"><span>${area(p.area)}</span>${p.rooms!=null?`<span>${esc(p.rooms)} Zimmer</span>`:''}<span>${esc(p.type)}</span></div><span class="pp-price">${format(p.price)}</span>${p.courtage?`<small class="pp-card-courtage">Käuferprovision: ${esc(p.courtage)}</small>`:''}<small class="pp-card-energy">${energyLine}</small></div></a>`;
   };
-  const fact=(label,value)=>value==null||value===''?'':`<div class="pp-fact"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
+  const fact=(label,value)=>value==null||value===''?'':`<div class="pp-fact${String(label).split(/\s+/).some(word=>word.length>=18)?' pp-fact-wide':''}"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
   function renderList(){
     const form=new FormData($('#pp-form'));
     const query=String(form.get('query')||'').toLocaleLowerCase('de').trim(),city=String(form.get('city')||'').toLocaleLowerCase('de').trim();
