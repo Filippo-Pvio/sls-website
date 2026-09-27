@@ -3,6 +3,29 @@ import { mkdir } from "node:fs/promises";
 
 const routes = ["/", "/verkaufen/", "/immobilien/", "/ueber-uns/", "/kontakt/"];
 
+test("property detail follows the agreed section order and leaves inquiries disabled", async ({ page }) => {
+  const property = {
+    id: "3528391", title: "Testimmobilie", zip: "46348", city: "Raesfeld", type: "Wohnung",
+    price: 233000, rooms: 2, area: 75, status: "Vermarktung", inquiryEnabled: false,
+    description: "Objektbeschreibung", features: "Ausstattungstext", otherNote: "Sonstiges",
+    location: "Lagebeschreibung", amenities: ["Balkon"],
+    objectFacts: [{ label: "Objekttyp", value: "Wohnung" }],
+    energy: { kind: "Verbrauchsausweis", value: 84.4, fuel: "Gas", buildingYear: 2002, rating: "C" },
+    floorplanImages: [{ title: "Erdgeschoss", preview: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E", url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" }],
+    tour: "https://tour.example.org/1", tourEmbed: false
+  };
+  await page.route("**/api/propstack-test-properties**", route => route.fulfill({ json: { items: [property] } }));
+  await page.goto("/immobilien-test/?objekt=3528391", { waitUntil: "domcontentloaded" });
+  await expect(page.locator(".pp-detail-main > .pp-panel").first()).toBeVisible();
+  const headings = await page.locator(".pp-detail-main > .pp-panel > h2, .pp-detail-main > .pp-panel > .pp-section-lead > h2").allTextContents();
+  expect(headings).toEqual([
+    "Kaufpreis & Provision", "Eckdaten", "Energieausweis", "Objektdaten", "Objektbeschreibung",
+    "Ausstattung", "Merkmale", "Weitere Informationen", "Grundrisse", "Virtueller Rundgang",
+    "Lagebeschreibung", "Lage auf der Karte", "Finanzierungsrechner"
+  ]);
+  await expect(page.locator("#pp-inquiry button[type=submit]")).toBeDisabled();
+});
+
 for (const [index, route] of routes.entries()) {
   test(`${route} loads without browser or layout errors`, async ({ page }, testInfo) => {
     const errors = [];
