@@ -2710,3 +2710,9 @@ body:not(.home-editorial) > main > section.section h2{
     color:var(--coral)!important;
   }
 }
+
+
+/* Final override: SLS difference headlines stay coral inside the globally white dark-section heading rule. */
+body.home-editorial > main > section.section.section-dark.premium-final-cta .home-difference-sls h3{
+  color:#ff596f !important;
+}
