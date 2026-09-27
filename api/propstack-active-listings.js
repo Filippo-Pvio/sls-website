@@ -2,6 +2,7 @@ const API_BASE = 'https://api.propstack.de/v1/';
 const PAGE_SIZE = 100;
 const MAX_PAGES = 40;
 const ACTIVE_NAMES = new Set(['vermarktung']);
+const MARKET_NAMES = new Set(['kontaktprozess','entscheidungsprozess','maklervertrag unterschrieben','vermarktung','verkauft','erfolgreich vermarktet']);
 
 async function propstack(path, key) {
   const response = await fetch(new URL(path, API_BASE), {
@@ -137,6 +138,17 @@ async function activeListings(key, statusIds) {
   return collected;
 }
 
+async function marketStats(key,statuses){
+  const wanted=statuses.filter(s=>MARKET_NAMES.has(normalise(s?.name)));
+  const result=[];
+  for(const status of wanted){
+    const q=new URLSearchParams({with_meta:'1',status:String(status.id),marketing_type:'BUY',archived:'-1',per:'1',page:'1'});
+    const x=await propstack('units?'+q,key);
+    result.push({name:String(status.name||''),count:Number(x.meta?.total_count)||0});
+  }
+  return result;
+}
+
 export default async function handler(req, res) {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
   if (req.method !== 'GET') {
@@ -153,6 +165,12 @@ export default async function handler(req, res) {
   try {
     const result = await propstack('property_statuses', key);
     const statuses = Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : [];
+    if (req.query.market === '1') {
+      const stats = await marketStats(key,statuses);
+      res.setHeader('Cache-Control','private, no-store');
+      return res.status(200).json({stats});
+    }
+
     const activeStatusIds = new Set(statuses
       .filter(status => ACTIVE_NAMES.has(normalise(status?.name)))
       .map(status => String(status.id)));
