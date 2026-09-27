@@ -2841,3 +2841,12 @@ body.home-editorial > section.section.home-faq-section{
   top:12.5px;
   height:var(--process-line-length,0px);
 }
+
+
+/* Keep the process axis visually continuous through every marker. */
+.home-editorial .home-process-route.is-scroll-timeline>li::before{
+  box-shadow:none;
+}
+.home-editorial .home-process-route.is-scroll-timeline>li.is-current::before{
+  box-shadow:0 0 0 8px rgba(255,89,111,.18);
+}
