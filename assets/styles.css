@@ -2665,3 +2665,18 @@ body:not(.home-editorial) > main > section.section h2{
   .home-editorial .home-difference-icon{grid-column:1}
   .home-editorial .home-difference-sls{grid-column:2}
 }
+
+
+/* Center and accent the difference icons without adding extra motion. */
+.home-editorial .home-difference-icon{
+  align-self:center;
+  margin-top:0;
+  color:var(--coral);
+  border-color:rgba(231,101,88,.28);
+  background:transparent;
+}
+.home-editorial .home-difference-item.is-current .home-difference-icon{
+  color:var(--coral);
+  border-color:rgba(231,101,88,.28);
+  background:transparent;
+}
