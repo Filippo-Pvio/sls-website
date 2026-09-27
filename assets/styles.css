@@ -2716,3 +2716,30 @@ body:not(.home-editorial) > main > section.section h2{
 body.home-editorial > main > section.section.section-dark.premium-final-cta .home-difference-sls h3{
   color:#ff596f !important;
 }
+
+
+/* Desktop difference layout: use the full content width and align contrast copy with the icon. */
+@media (min-width:761px){
+  .home-editorial .home-difference-list{
+    width:100%;
+    max-width:none;
+  }
+  .home-editorial .home-difference-item{
+    grid-template-columns:minmax(290px,30%) 48px minmax(0,1fr);
+    column-gap:clamp(28px,3.4vw,56px);
+    align-items:center;
+  }
+  .home-editorial .home-difference-common{
+    align-self:center;
+    margin:0;
+  }
+  .home-editorial .home-difference-icon{
+    align-self:center;
+  }
+  .home-editorial .home-difference-sls{
+    min-width:0;
+  }
+  .home-editorial .home-difference-sls h3{
+    max-width:none;
+  }
+}
