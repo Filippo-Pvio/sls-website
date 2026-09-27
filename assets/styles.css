@@ -2619,3 +2619,7 @@ body:not(.home-editorial) > main > section.section h2{
   .home-editorial .home-difference-item{opacity:1;transform:none!important;transition:none}
   .home-editorial .home-difference-progress span{width:100%;transition:none}
 }
+
+
+/* Difference hierarchy: the individual SLS promise carries the accent, not a repeated label. */
+.home-editorial .home-difference-sls h3{color:var(--coral)}
