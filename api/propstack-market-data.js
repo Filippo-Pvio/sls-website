@@ -13,6 +13,11 @@ function num(v){const n=Number(v?.value??v);return Number.isFinite(n)&&n>0?n:nul
 function pctl(a,p){if(!a.length)return null;const i=(a.length-1)*p,l=Math.floor(i),h=Math.ceil(i);return a[l]+(a[h]-a[l])*(i-l);}
 function r50(v){return v==null?null:Math.round(v/50)*50;}
 function objType(u){return u.rs_type==='HOUSE'?'haus':u.rs_type==='APARTMENT'?'wohnung':null;}
+function validPsm(v){return Number.isFinite(v)&&v>=250&&v<=20000;}
+function summary(values){
+  const v=[...values].sort((a,b)=>a-b),n=v.length;
+  return {count:n,low:n>=5?r50(pctl(v,.25)):null,typical:n>=5?r50(pctl(v,.5)):null,high:n>=5?r50(pctl(v,.75)):null};
+}
 
 export default async function handler(req,res){
   res.setHeader('X-Robots-Tag','noindex,nofollow');
@@ -26,8 +31,11 @@ export default async function handler(req,res){
     const cityFilter=String(req.query.city||'').trim();
     const typeFilter=String(req.query.type||'').trim().toLowerCase();
     const statusPayload=await propstack('property_statuses',key);
-    const statuses=(Array.isArray(statusPayload.data)?statusPayload.data:Array.isArray(statusPayload)?statusPayload:[])
-      .filter(s=>MARKET_NAMES.has(norm(s?.name)));
+    const allStatuses=Array.isArray(statusPayload.data)?statusPayload.data:Array.isArray(statusPayload)?statusPayload:[];
+    if(req.query.statuses==='1'){
+      return res.status(200).json({statuses:allStatuses.map(s=>String(s?.name||'').trim()).filter(Boolean).sort((a,b)=>a.localeCompare(b,'de'))});
+    }
+    const statuses=allStatuses.filter(s=>MARKET_NAMES.has(norm(s?.name)));
 
     const areas=new Map();
     const statusCounts=[];
@@ -55,21 +63,23 @@ export default async function handler(req,res){
           const asking=num(unit.price);
           const sold=num(unit.sold_price);
           const soldStatus=['verkauft','erfolgreich vermarktet'].includes(norm(status.name));
-          const price=soldStatus?(sold||asking):asking;
-          if(!type||!/^\d{5}$/.test(unitZip)||!city||!living||!price) continue;
+          if(!type||!/^\d{5}$/.test(unitZip)||!city||!living) continue;
           if(zip&&unitZip!==zip) continue;
           if(cityFilter&&city.toLocaleLowerCase('de-DE')!==cityFilter.toLocaleLowerCase('de-DE')) continue;
           if(typeFilter&&type!==typeFilter) continue;
 
-          const sqm=price/living;
-          if(sqm<250||sqm>20000) continue;
-
+          const askingPsm=asking/living;
+          const soldPsm=sold/living;
           const k=unitZip+'|'+type;
-          if(!areas.has(k)) areas.set(k,{zipCode:unitZip,city,type,values:[],stages:{}});
+          if(!areas.has(k)) areas.set(k,{zipCode:unitZip,city,type,asking:[],sold:[],soldAskingFallback:[],stages:{}});
           const area=areas.get(k);
-          area.values.push(sqm);
-          const stage=String(status.name||'');
-          area.stages[stage]=(area.stages[stage]||0)+1;
+          if(validPsm(askingPsm)) area.asking.push(askingPsm);
+          if(soldStatus&&validPsm(soldPsm)) area.sold.push(soldPsm);
+          if(soldStatus&&!validPsm(soldPsm)&&validPsm(askingPsm)) area.soldAskingFallback.push(askingPsm);
+          if(validPsm(askingPsm)||validPsm(soldPsm)){
+            const stage=String(status.name||'');
+            area.stages[stage]=(area.stages[stage]||0)+1;
+          }
         }
 
         const total=Number(payload.meta?.total_count);
@@ -79,20 +89,22 @@ export default async function handler(req,res){
     }
 
     const result=[...areas.values()].map(a=>{
-      const v=a.values.sort((x,y)=>x-y),n=v.length;
+      const asking=summary(a.asking),sold=summary(a.sold);
+      const usable=Math.max(asking.count,sold.count);
       return {
-        zipCode:a.zipCode,city:a.city,type:a.type,count:n,
-        low:r50(pctl(v,.25)),typical:r50(pctl(v,.5)),high:r50(pctl(v,.75)),
+        zipCode:a.zipCode,city:a.city,type:a.type,
+        asking,sold,soldWithoutRealizedPrice:a.soldAskingFallback.length,
         stages:a.stages,
-        confidence:n>=30?'high':n>=12?'medium':n>=5?'low':'insufficient'
+        confidence:usable>=30?'high':usable>=12?'medium':usable>=5?'low':'insufficient'
       };
-    }).sort((a,b)=>b.count-a.count);
+    }).sort((a,b)=>Math.max(b.asking.count,b.sold.count)-Math.max(a.asking.count,a.sold.count));
 
     return res.status(200).json({
       generatedAt:new Date().toISOString(),
       query:{zip:zip||null,city:cityFilter||null,type:typeFilter||null},
       statuses:statusCounts,
-      areas:result
+      areas:result,
+      methodology:'asking and realized sold prices are kept separate; distributions are suppressed below 5 usable records'
     });
   }catch(error){
     console.error('Propstack market data unavailable:',error);
