@@ -1,6 +1,6 @@
 const API_BASE='https://api.propstack.de/v1/';
 const PAGE_SIZE=100;
-const MAX_PAGES=40;
+const MAX_PAGES=8;
 const MARKET_NAMES=new Set(['kontaktprozess','entscheidungsprozess','maklervertrag unterschrieben','vermarktung','verkauft','erfolgreich vermarktet']);
 
 async function propstack(path,key){
@@ -22,6 +22,9 @@ export default async function handler(req,res){
   if(!key) return res.status(503).json({error:'propstack_not_connected'});
 
   try{
+    const zip=String(req.query.zip||'').trim();
+    const cityFilter=String(req.query.city||'').trim();
+    const typeFilter=String(req.query.type||'').trim().toLowerCase();
     const statusPayload=await propstack('property_statuses',key);
     const statuses=(Array.isArray(statusPayload.data)?statusPayload.data:Array.isArray(statusPayload)?statusPayload:[])
       .filter(s=>MARKET_NAMES.has(norm(s?.name)));
@@ -36,26 +39,33 @@ export default async function handler(req,res){
           with_meta:'1',expand:'1',status:String(status.id),marketing_type:'BUY',
           archived:'-1',per:String(PAGE_SIZE),page:String(page)
         });
+        if(typeFilter==='haus') q.set('rs_type','HOUSE');
+        if(typeFilter==='wohnung') q.set('rs_type','APARTMENT');
+        if(zip) q.set('q',zip);
+        else if(cityFilter) q.set('q',cityFilter);
         const payload=await propstack('units?'+q,key);
         const rows=Array.isArray(payload.data)?payload.data:[];
         count+=rows.length;
 
         for(const unit of rows){
           const type=objType(unit);
-          const zip=String(unit.zip_code||'').trim();
+          const unitZip=String(unit.zip_code||'').trim();
           const city=String(unit.city||'').trim();
           const living=num(unit.living_space);
           const asking=num(unit.price);
           const sold=num(unit.sold_price);
           const soldStatus=['verkauft','erfolgreich vermarktet'].includes(norm(status.name));
           const price=soldStatus?(sold||asking):asking;
-          if(!type||!/^\d{5}$/.test(zip)||!city||!living||!price) continue;
+          if(!type||!/^\d{5}$/.test(unitZip)||!city||!living||!price) continue;
+          if(zip&&unitZip!==zip) continue;
+          if(cityFilter&&city.toLocaleLowerCase('de-DE')!==cityFilter.toLocaleLowerCase('de-DE')) continue;
+          if(typeFilter&&type!==typeFilter) continue;
 
           const sqm=price/living;
           if(sqm<250||sqm>20000) continue;
 
-          const k=zip+'|'+type;
-          if(!areas.has(k)) areas.set(k,{zipCode:zip,city,type,values:[],stages:{}});
+          const k=unitZip+'|'+type;
+          if(!areas.has(k)) areas.set(k,{zipCode:unitZip,city,type,values:[],stages:{}});
           const area=areas.get(k);
           area.values.push(sqm);
           const stage=String(status.name||'');
@@ -80,6 +90,7 @@ export default async function handler(req,res){
 
     return res.status(200).json({
       generatedAt:new Date().toISOString(),
+      query:{zip:zip||null,city:cityFilter||null,type:typeFilter||null},
       statuses:statusCounts,
       areas:result
     });
