@@ -255,31 +255,72 @@
     </div>
   </section>
 
-  <section class="section section-dark premium-final-cta" aria-labelledby="home-reasons-title">
+  <section class="section section-dark premium-final-cta" aria-labelledby="home-reasons-title" data-home-reasons>
     <div class="wrap home-reasons-layout">
       <div class="home-reasons-intro home-copy-reveal">
         <p class="home-kicker">Warum SLS</p>
-        <h2 id="home-reasons-title">Worauf es ankommt. Und was wir dafür tun.</h2>
+        <h2 id="home-reasons-title"><span>Worauf es ankommt.</span> <span class="home-reasons-title-accent">Und was wir dafür tun.</span></h2>
         <p class="lead">Wir verbinden eine fundierte Preisstrategie mit sichtbarer Vermarktung und persönlicher Verantwortung – von der Vorbereitung bis zur Übergabe.</p>
       </div>
-      <div class="home-reasons-columns">
-        <div class="home-reasons-group reveal">
-          <h3>Strategie &amp; Sicherheit</h3>
-          <ul>
-            <li>Fundierte Bewertung und nachvollziehbare Preisstrategie.</li>
-            <li>Aktive Ansprache vorgemerkter Interessenten.</li>
-            <li>Prüfung der Bonität vor Vertragsabschluss.</li>
-          </ul>
-        </div>
-        <div class="home-reasons-group reveal">
-          <h3>Präsentation &amp; Reichweite</h3>
-          <ul>
-            <li>Professionelle Fotos, Video und 360°-Rundgänge, wo sie zur Immobilie passen.</li>
-            <li>Premium-Ansicht auf gängigen Portalen und Präsenz auf Social Media.</li>
-            <li>Persönliche Begleitung und Einblick in die Vermarktung im Eigentümer-Reporting.</li>
-          </ul>
-        </div>
+
+      <div class="home-reasons-journey" data-home-reasons-journey>
+        <div class="home-reasons-line" aria-hidden="true"><span data-home-reasons-progress></span></div>
+
+        <article class="home-reasons-step" data-home-reasons-step>
+          <span class="home-reasons-number">01</span>
+          <div>
+            <p class="home-reasons-category">Strategie &amp; Sicherheit</p>
+            <h3>Fundiert bewerten</h3>
+            <p>Wir entwickeln eine nachvollziehbare Preisstrategie auf Basis von Markt, Lage und Immobilie.</p>
+          </div>
+        </article>
+
+        <article class="home-reasons-step" data-home-reasons-step>
+          <span class="home-reasons-number">02</span>
+          <div>
+            <p class="home-reasons-category">Strategie &amp; Sicherheit</p>
+            <h3>Interessenten aktivieren</h3>
+            <p>Wir sprechen passende, bereits vorgemerkte Interessenten aktiv an.</p>
+          </div>
+        </article>
+
+        <article class="home-reasons-step" data-home-reasons-step>
+          <span class="home-reasons-number">03</span>
+          <div>
+            <p class="home-reasons-category">Strategie &amp; Sicherheit</p>
+            <h3>Bonität prüfen</h3>
+            <p>Wir prüfen die Finanzierung und Bonität, bevor es in Richtung Vertragsabschluss geht.</p>
+          </div>
+        </article>
+
+        <article class="home-reasons-step" data-home-reasons-step>
+          <span class="home-reasons-number">04</span>
+          <div>
+            <p class="home-reasons-category">Präsentation &amp; Reichweite</p>
+            <h3>Professionell präsentieren</h3>
+            <p>Fotos, Video und 360°-Rundgänge setzen wir dort ein, wo sie zur Immobilie und Zielgruppe passen.</p>
+          </div>
+        </article>
+
+        <article class="home-reasons-step" data-home-reasons-step>
+          <span class="home-reasons-number">05</span>
+          <div>
+            <p class="home-reasons-category">Präsentation &amp; Reichweite</p>
+            <h3>Reichweite erzeugen</h3>
+            <p>Wir verbinden Premium-Präsenz auf relevanten Portalen mit zusätzlicher Sichtbarkeit über Social Media.</p>
+          </div>
+        </article>
+
+        <article class="home-reasons-step" data-home-reasons-step>
+          <span class="home-reasons-number">06</span>
+          <div>
+            <p class="home-reasons-category">Präsentation &amp; Reichweite</p>
+            <h3>Persönlich begleiten</h3>
+            <p>Sie behalten über unser Eigentümer-Reporting den Überblick und haben einen persönlichen Ansprechpartner bis zur Übergabe.</p>
+          </div>
+        </article>
       </div>
+
       <div class="home-final-actions">
         <a class="button button-light" href="tel:+4923697428020">Jetzt über Ihren Verkauf sprechen</a>
         <a class="text-link" href="/immobilienbewertung/">Immobilie kostenlos bewerten</a>
@@ -287,6 +328,7 @@
     </div>
   </section>
 </main>
+
   <section class="section home-faq-section">
     <div class="wrap home-faq-layout">
       <div class="home-faq-intro home-copy-reveal">
@@ -440,6 +482,7 @@
 <script src="/assets/home-team-carousel.js" defer></script>
 <script src="/assets/home-references.js" defer></script>
 <script src="/assets/home-active-listings.js" defer></script>
+<script src="/assets/home-reasons.js" defer></script>
 <script>
 (async()=>{
   const box=document.querySelector('[data-google-rating]');
