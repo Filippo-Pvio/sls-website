@@ -2743,3 +2743,26 @@ body.home-editorial > main > section.section.section-dark.premium-final-cta .hom
     max-width:none;
   }
 }
+
+
+/* Desktop reasons intro: deliberate two-line headline with a broader supporting sentence. */
+@media (min-width:761px){
+  .home-editorial .premium-final-cta .home-reasons-intro{
+    max-width:none;
+    width:100%;
+  }
+  .home-editorial .premium-final-cta .home-reasons-intro h2{
+    max-width:1180px;
+  }
+  .home-editorial .premium-final-cta .home-reasons-intro h2 > span{
+    display:block;
+  }
+  .home-editorial .premium-final-cta .home-reasons-intro .lead{
+    max-width:1180px;
+  }
+}
+@media (min-width:1200px){
+  .home-editorial .premium-final-cta .home-reasons-intro .lead{
+    white-space:nowrap;
+  }
+}
