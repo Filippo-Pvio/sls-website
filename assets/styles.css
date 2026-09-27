@@ -2802,7 +2802,7 @@ body.home-editorial > main > section.section.home-marketing-section{
     linear-gradient(rgba(249,247,242,.82), rgba(249,247,242,.82)),
     url("/assets/images/home/marketing-hintergrund.jpeg") center 46% / cover no-repeat !important;
 }
-body.home-editorial > main > section.section.home-faq-section{
+body.home-editorial > section.section.home-faq-section{
   background:
     linear-gradient(rgba(249,247,242,.84), rgba(249,247,242,.84)),
     url("/assets/images/home/vertrauen-hintergrund.jpeg") center 48% / cover no-repeat !important;
@@ -2813,7 +2813,7 @@ body.home-editorial > main > section.section.home-faq-section{
       linear-gradient(rgba(249,247,242,.87), rgba(249,247,242,.87)),
       url("/assets/images/home/marketing-hintergrund.jpeg") 62% center / cover no-repeat !important;
   }
-  body.home-editorial > main > section.section.home-faq-section{
+  body.home-editorial > section.section.home-faq-section{
     background:
       linear-gradient(rgba(249,247,242,.88), rgba(249,247,242,.88)),
       url("/assets/images/home/vertrauen-hintergrund.jpeg") 56% center / cover no-repeat !important;
