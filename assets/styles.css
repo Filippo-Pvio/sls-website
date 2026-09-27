@@ -2680,3 +2680,33 @@ body:not(.home-editorial) > main > section.section h2{
   border-color:rgba(231,101,88,.28);
   background:transparent;
 }
+
+
+/* Mobile difference layout: keep each contrast as one visual unit beside its icon. */
+@media (max-width:760px){
+  .home-editorial .home-difference-item{
+    grid-template-columns:44px minmax(0,1fr);
+    column-gap:18px;
+    row-gap:8px;
+    align-items:center;
+  }
+  .home-editorial .home-difference-icon{
+    grid-column:1;
+    grid-row:1 / span 2;
+    align-self:center;
+  }
+  .home-editorial .home-difference-common{
+    grid-column:2;
+    grid-row:1;
+    margin:0;
+    padding-left:0;
+    align-self:end;
+  }
+  .home-editorial .home-difference-sls{
+    grid-column:2;
+    grid-row:2;
+  }
+  .home-editorial .home-difference-sls h3{
+    color:var(--coral)!important;
+  }
+}
