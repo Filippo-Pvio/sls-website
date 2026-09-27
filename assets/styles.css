@@ -2819,3 +2819,25 @@ body.home-editorial > section.section.home-faq-section{
       url("/assets/images/home/vertrauen-hintergrund.jpeg") 56% center / cover no-repeat !important;
   }
 }
+
+
+/* Process timeline geometry: one exact center-to-center line from step 01 to 05. */
+.home-editorial .home-process-route.is-scroll-timeline>li:not(:last-child)::after{
+  display:none;
+}
+.home-editorial .home-process-route.is-scroll-timeline::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  left:-1px;
+  top:12.5px;
+  width:1px;
+  height:var(--process-line-length,0px);
+  background:rgba(255,255,255,.36);
+  pointer-events:none;
+}
+.home-editorial .home-process-route.is-scroll-timeline::before{
+  left:-2px;
+  top:12.5px;
+  height:var(--process-line-length,0px);
+}
