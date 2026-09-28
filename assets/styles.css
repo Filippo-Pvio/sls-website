@@ -2092,7 +2092,7 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 .home-editorial .home-reach-platforms{margin-top:28px;padding-top:24px}
 }
 
-/* Homepage partner logos: frameless, three then two on mobile. */
+/* Homepage partner logos: consistent height, three per row on mobile. */
 .home-editorial .trust-section-prominent{
   background:var(--paper);
   padding:16px 0 18px;
@@ -2116,14 +2116,10 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 .home-editorial .trust-section-prominent .trust-badge-card:hover{transform:translateY(-2px);box-shadow:none}
 .home-editorial .trust-section-prominent .trust-badge-card img{
   width:auto;
-  height:100px;
+  height:112px;
   max-width:100%;
   object-fit:contain;
 }
-.home-editorial .trust-section-prominent .trust-badge-card:nth-child(2) img{width:auto;height:112px}
-.home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-platin.svg"]{width:auto;height:100px}
-.home-editorial .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{width:auto;height:116px}
-.home-editorial .trust-section-prominent .trust-badge-card img[src$="kleinanzeigen-premium-partner.webp"]{width:auto;height:100px}
 @media(max-width:800px){
   .home-editorial .trust-section-prominent{padding:16px 0 20px}
   .home-editorial .trust-section-prominent .trust-badge-grid{
@@ -2142,10 +2138,6 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
     height:100px;
     max-width:100%;
   }
-  .home-editorial .trust-section-prominent .trust-badge-card:nth-child(2) img{width:auto;height:110px}
-  .home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-platin.svg"]{width:auto;height:100px}
-  .home-editorial .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{width:auto;height:110px}
-  .home-editorial .trust-section-prominent .trust-badge-card img[src$="kleinanzeigen-premium-partner.webp"]{width:auto;height:96px}
 }
 
 /* Compact live Google trust row below partner logos */
