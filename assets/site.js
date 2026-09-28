@@ -62,6 +62,11 @@ const overlaySections = navGroups.map((group) => {
   </section>`;
 }).join("");
 
+const isEditorialHome = document.body.classList.contains("home-editorial");
+const isPropertyPreview = document.body.classList.contains("property-preview");
+const hasHeaderValuationCta = isEditorialHome || isPropertyPreview;
+const valuationCtaLabel = isPropertyPreview ? "Immobilie bewerten" : "Kostenlos bewerten";
+
 document.querySelector("[data-site-header]").innerHTML = `
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
   <div class="floating-header-shell">
@@ -69,7 +74,7 @@ document.querySelector("[data-site-header]").innerHTML = `
       <img src="/assets/logo-sls-horizontal-transparent.png" alt="SLS Immobilienpartner">
     </a>
     <nav class="floating-primary" aria-label="Hauptnavigation">${primaryLinks}</nav>
-    ${document.body.classList.contains("home-editorial") ? '<a class="floating-scroll-cta" href="/immobilienbewertung/"><span class="floating-scroll-cta-full">Kostenlos bewerten</span><span class="floating-scroll-cta-short">Bewerten</span></a>' : ""}
+    ${hasHeaderValuationCta ? `<a class="floating-scroll-cta" href="/immobilienbewertung/"><span class="floating-scroll-cta-full">${valuationCtaLabel}</span><span class="floating-scroll-cta-short">Bewerten</span></a>` : ""}
     <div class="floating-actions">
       <button class="menu-toggle floating-menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menü öffnen">
         <span class="menu-label">Menü</span>${icon("menu")}
@@ -90,16 +95,7 @@ document.querySelector("[data-site-header]").innerHTML = `
     </div>
   </nav>`;
 
-const isEditorialHome = document.body.classList.contains("home-editorial");
 document.querySelector("[data-site-footer]").innerHTML = `
-  ${isEditorialHome ? "" : `<section class="trust-strip" aria-label="Vertrauen und Mitgliedschaften">
-    <div class="wrap trust-grid">
-      <div><strong>Top bewertet</strong><span>Kundenstimmen aus Google</span></div>
-      <div><strong>IVD Mitglied</strong><span>Immobilienverband Deutschland</span></div>
-      <div><strong>ImmoScout24</strong><span>GoldPartner</span></div>
-      <div><strong>30+ Standorte</strong><span>in Nordrhein-Westfalen</span></div>
-    </div>
-  </section>`}
   <div class="footer-inner">
     <div class="footer-lead">
       <a class="brand" href="/" aria-label="SLS Immobilienpartner Startseite"><img class="brand-logo" src="/assets/logo-sls.svg" alt="SLS Immobilienpartner" width="267" height="170"></a>
@@ -211,6 +207,13 @@ if (heroValuation) {
     window.addEventListener("resize", syncValuation, { passive: true });
     syncValuation();
   }
+} else if (isPropertyPreview) {
+  const syncPropertyValuation = () => {
+    header.classList.toggle("has-scroll-cta", window.scrollY > 28);
+  };
+  window.addEventListener("scroll", syncPropertyValuation, { passive: true });
+  window.addEventListener("resize", syncPropertyValuation, { passive: true });
+  syncPropertyValuation();
 }
 
 // Keep a direct call option within reach on the mobile homepage after the hero.
