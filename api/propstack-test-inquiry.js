@@ -87,34 +87,35 @@ export default async function handler(req,res) {
     const contactId=Number(client.id);
     if(!Number.isSafeInteger(contactId)||contactId<=0) throw new Error('Propstack contact response missing ID');
 
-    const source=Number(process.env.PROPSTACK_INQUIRY_SOURCE_ID);
-    const task={
-      title:`[TEST WEBSITE] Anfrage ${reference||id}`,
-      client_ids:[contactId],
-      property_ids:[Number(id)],
-      broker_id:unit.broker_id||unit.broker?.id||undefined,
-      body:[
-        '<strong>TESTANFRAGE – nicht als echte Kundenanfrage behandeln</strong>',
-        `Objekt: ${html(reference||id)}`,
-        `Name: ${html(firstName)} ${html(lastName)}`,
-        `E-Mail: ${html(email)}`,
-        `Telefon: ${html(phone)}`,
-        'Quelle: SLS Website Preview'
-      ].join('<br>')
-    };
-    if(Number.isSafeInteger(source)&&source>0) task.client_source_id=source;
+    let verified=null;
+    try {
+      verified=await propstack(`contacts/${contactId}`,writeKey);
+    } catch(error) {
+      console.error('Propstack contact verification failed:',error.message);
+      return res.status(502).json({
+        error:'Propstack hat eine Kontakt-ID zurückgegeben, der Kontakt konnte danach aber nicht wieder ausgelesen werden. Es wurde keine Aufgabe angelegt.',
+        contactId
+      });
+    }
 
-    const createdTask=await propstack('tasks',writeKey,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({task})
-    });
+    const verifiedId=Number(verified?.id);
+    const verifiedEmail=String(verified?.email||verified?.client?.email||'').trim().toLocaleLowerCase('de-DE');
+    const emailMatches=!verifiedEmail||verifiedEmail===email.toLocaleLowerCase('de-DE');
+    if(verifiedId!==contactId||!emailMatches){
+      console.error('Propstack contact verification mismatch',{contactId,verifiedId});
+      return res.status(502).json({
+        error:'Der angelegte Kontakt konnte nicht eindeutig bestätigt werden. Es wurde keine Aufgabe angelegt.',
+        contactId
+      });
+    }
 
     return res.status(200).json({
       ok:true,
+      diagnosticMode:true,
+      contactVerified:true,
       contactId,
-      taskId:createdTask?.id||null,
-      reference:reference||null
+      reference:reference||null,
+      taskCreated:false
     });
   } catch(error) {
     console.error('Propstack inquiry preview failed:',error.message);
