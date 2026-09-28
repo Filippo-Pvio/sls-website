@@ -31,13 +31,12 @@ async function resolvePublicStatus(key){
   return matches[0];
 }
 
-function isPublished(unit,statusId){
+function isPublished(unit){
   return Boolean(
     unit &&
     /^\d+$/.test(String(unit.id||'')) &&
     unit.archived!==true &&
     unit.marketing_type==='BUY' &&
-    String(unit.status?.id||unit.status_id||'')===String(statusId) &&
     unit.status?.nonpublic!==true
   );
 }
@@ -47,13 +46,14 @@ async function listingById(id,key,statusId){
     with_meta:'1',
     expand:'1',
     property_ids:String(id),
+    status:String(statusId),
     marketing_type:'BUY',
     archived:'-1',
     per:'100'
   });
   const result=await read(`units?${query}`,key);
   return (Array.isArray(result.data)?result.data:[]).find(unit=>
-    String(unit.id)===String(id) && isPublished(unit,statusId)
+    String(unit.id)===String(id) && isPublished(unit)
   )||null;
 }
 
@@ -76,7 +76,7 @@ async function allListings(key,statusId){
     const rows=Array.isArray(result.data)?result.data:[];
     for(const unit of rows){
       const unitId=String(unit?.id||'');
-      if(!unitId||seen.has(unitId)||!isPublished(unit,statusId))continue;
+      if(!unitId||seen.has(unitId)||!isPublished(unit))continue;
       seen.add(unitId);
       items.push(publicUnit(unit));
     }
