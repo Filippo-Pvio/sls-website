@@ -215,7 +215,21 @@ export default async function handler(req,res){
       body:JSON.stringify(inquiryPayload)
     });
 
-    const inquiryId=Number(inquiry?.id||inquiry?.activity_id);
+    const inquiryId=Number(inquiry?.activity_id||inquiry?.id);
+    let activityVerified=false;
+    let activitySourceId=null;
+    let activityType=null;
+    if(Number.isSafeInteger(inquiryId)&&inquiryId>0){
+      try{
+        const activity=await propstack(`activities/${inquiryId}`,readKey);
+        activitySourceId=Number(activity?.source_id||activity?.client_source_id||activity?.task?.client_source_id)||null;
+        activityType=activity?.activatable_type||activity?.type||activity?.task?.activatable_type||null;
+        activityVerified=activitySourceId===sourceId;
+      }catch(error){
+        console.warn('Propstack activity verification unavailable:',error.message);
+      }
+    }
+
     let deal=hadDealBefore?existingDeals[0]:null;
     if(!hadDealBefore&&dealCheckAvailable){
       try{
@@ -231,6 +245,9 @@ export default async function handler(req,res){
       contactId,
       inquiryId:Number.isSafeInteger(inquiryId)&&inquiryId>0?inquiryId:null,
       sourceId,
+      activityVerified,
+      activitySourceId,
+      activityType,
       reference:reference||null,
       contactReused:contactResolution.reused===true,
       hadDealBefore,
