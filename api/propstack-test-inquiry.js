@@ -68,20 +68,6 @@ async function resolveInquirySource(key){
 }
 
 
-async function resolveInquiryActivityType(key){
-  const result=await propstack('activity_types',key);
-  const types=Array.isArray(result)?result:Array.isArray(result.data)?result.data:[];
-  const ranked=types
-    .map(type=>({type,name:normalise(type?.name||type?.title||type?.label)}))
-    .sort((a,b)=>{
-      const score=name=>name==='anfrage'?4:name.includes('anfrage')?3:name==='notiz'?2:name.includes('notiz')?1:0;
-      return score(b.name)-score(a.name);
-    });
-  const found=ranked.find(entry=>entry.name.includes('anfrage')||entry.name.includes('notiz'));
-  const id=Number(found?.type?.id);
-  return Number.isSafeInteger(id)&&id>0?id:null;
-}
-
 async function dealsForContactAndProperty(key,clientId,propertyId){
   const q=new URLSearchParams({
     client_id:String(clientId),
@@ -157,22 +143,12 @@ export default async function handler(req,res){
     const verified=await propstack(`contacts/${contactId}`,writeKey);
     if(Number(verified?.id)!==contactId)throw new Error('Propstack contact verification failed');
 
-    const activityTypeId=await resolveInquiryActivityType(readKey);
-    if(!activityTypeId){
-      return res.status(503).json({
-        error:'Propstack liefert keinen eindeutigen Aktivitätstyp für die Website-Anfrage. Es wurde noch keine Portalanfrage ausgelöst.',
-        code:'ACTIVITY_TYPE_MISSING',
-        contactId
-      });
-    }
-
     const existingDeals=await dealsForContactAndProperty(readKey,contactId,Number(id));
     const hadDealBefore=existingDeals.length>0;
 
     const inquiryPayload={
       task:{
         title:'Anfrage über die SLS Website',
-        note_type_id:activityTypeId,
         client_source_id:sourceId,
         client_ids:[contactId],
         property_ids:[Number(id)],
@@ -201,7 +177,6 @@ export default async function handler(req,res){
       contactId,
       inquiryId:Number.isSafeInteger(inquiryId)&&inquiryId>0?inquiryId:null,
       sourceId,
-      activityTypeId,
       reference:reference||null,
       hadDealBefore,
       dealDetected:Boolean(deal),
