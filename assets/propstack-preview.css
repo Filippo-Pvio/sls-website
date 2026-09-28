@@ -177,3 +177,6 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 .property-preview.pp-is-detail .pp-finance-jump{display:inline-block;margin-top:16px;font-size:14px;font-weight:700}
 @media(max-width:850px){.property-preview.pp-is-detail .pp-financing-widget iframe{height:660px}}
 @media(max-width:600px){.property-preview.pp-is-detail .pp-financing-widget iframe{height:560px}.property-preview.pp-is-detail .pp-financing{padding:24px 16px}}
+
+.pp-load-status{padding:24px 0 8px;text-align:center;color:var(--muted);font-size:13px;font-weight:700}
+.pp-load-sentinel{height:1px}
