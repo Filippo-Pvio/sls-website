@@ -137,7 +137,7 @@
         const response=await fetch('/api/propstack-test-inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...fields,propertyId:p.id,privacy:fields.privacy==='on',testMode:p.inquiryTestMode===true})});
         const result=await response.json();
         if(!response.ok)throw new Error(result.error||'Die Anfrage konnte nicht gesendet werden.');
-        form.reset();status.textContent=result.diagnosticMode&&result.contactVerified&&result.taskVerified?`Test erfolgreich: Kontakt ${result.contactId} und Aufgabe ${result.taskId} wurden in Propstack angelegt und bestätigt. Die Aufgabe ist mit dem angefragten Objekt verknüpft.`:result.diagnosticMode&&result.contactVerified?`Kontakt ${result.contactId} wurde bestätigt. Die Aufgabe konnte noch nicht vollständig bestätigt werden.`:'Vielen Dank. Ihre Anfrage wurde an Propstack übermittelt.';
+        form.reset();status.textContent=result.diagnosticMode&&result.contactVerified?`Kontakt ${result.contactId} wurde in Propstack bestätigt. Es wird bewusst keine Aufgabe angelegt; der automatische Portal-Anfrage-/Deal-/Exposé-Prozess wird separat angebunden.`:'Vielen Dank. Ihre Anfrage wurde an Propstack übermittelt.';
       } catch(error) {status.textContent=error.message;button.disabled=false}
     });
     if(floorplanImages.length){
