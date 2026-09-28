@@ -1895,7 +1895,7 @@ a.google-review-card .google-review-more{
 .home-editorial .hero-premium .hero-scene.is-visible{opacity:1}
 .home-editorial .hero-premium .hero-scene.is-resetting{transition:none}
 .home-editorial .hero-premium .hero-media{inset:auto 0 0 auto;width:min(52vw,1050px);height:auto;object-fit:contain;object-position:right bottom;z-index:2;filter:drop-shadow(0 12px 20px rgba(11,17,18,.24));transform-origin:right bottom}
-.home-editorial .hero-premium::after{z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(11,17,18,.91),rgba(11,17,18,.67) 43%,rgba(11,17,18,.25) 100%),linear-gradient(rgba(59,83,94,.18),rgba(59,83,94,.18))}
+.home-editorial .hero-premium::after{z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(59,83,94,.86),rgba(59,83,94,.67) 43%,rgba(59,83,94,.2) 100%),linear-gradient(rgba(59,83,94,.18),rgba(59,83,94,.18))}
 .home-editorial .hero-premium .hero-content{z-index:3;width:min(calc(100% - 48px),660px);margin-left:clamp(24px,3.4vw,72px);margin-right:auto}
 .home-editorial .hero-premium .hero-media{animation:home-hero-image-settle 6s cubic-bezier(.22,.61,.36,1) both}
 .home-editorial .hero-premium h1,
@@ -1935,7 +1935,7 @@ a.google-review-card .google-review-more{
   .home-editorial .hero-premium{
     display:block;
     min-height:max(800px,100svh);
-    background:#223943;
+    background:#3b535e;
   }
   .home-editorial .hero-premium .hero-media{
     inset:auto 0 0;
@@ -1951,7 +1951,7 @@ a.google-review-card .google-review-more{
   .home-editorial .hero-premium .hero-scene[data-scene="presentation"]{object-position:49% 39%}
   .home-editorial .hero-premium .hero-scene[data-scene="consultation"]{object-position:53% 40%}
   .home-editorial .hero-premium::after{
-    background:linear-gradient(180deg,rgba(11,25,31,.81) 0%,rgba(11,25,31,.77) 49%,rgba(11,25,31,.63) 68%,rgba(11,25,31,.28) 85%,rgba(11,25,31,.1) 100%);
+    background:linear-gradient(180deg,rgba(59,83,94,.86) 0%,rgba(59,83,94,.77) 49%,rgba(59,83,94,.62) 68%,rgba(59,83,94,.28) 85%,rgba(59,83,94,.1) 100%);
   }
   .home-editorial .hero-premium .hero-content{
     width:calc(100% - 32px);
