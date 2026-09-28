@@ -1376,7 +1376,7 @@ body.faq-page > main > section.section.faq-page-cta p:not(.eyebrow){color:#edf3f
   max-width:100%;
   object-fit:contain;
 }
-.trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{
+.trust-section-prominent .trust-badge-card img[src$="immowelt-platin.svg"]{
   width:auto;
   height:118px;
   max-width:100%;
@@ -1387,7 +1387,7 @@ body.faq-page > main > section.section.faq-page-cta p:not(.eyebrow){color:#edf3f
     width:auto;
     height:102px;
   }
-  .trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{
+  .trust-section-prominent .trust-badge-card img[src$="immowelt-platin.svg"]{
     width:auto;
     height:88px;
   }
@@ -2100,7 +2100,7 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 .home-editorial .trust-section-prominent .trust-logo-section{display:block}
 .home-editorial .trust-section-prominent .trust-badge-grid{
   display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
+  grid-template-columns:repeat(6,minmax(0,1fr));
   gap:26px;
   margin:0;
   align-items:center;
@@ -2121,8 +2121,9 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
   object-fit:contain;
 }
 .home-editorial .trust-section-prominent .trust-badge-card:nth-child(2) img{width:auto;height:112px}
-.home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{width:auto;height:100px}
+.home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-platin.svg"]{width:auto;height:100px}
 .home-editorial .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{width:auto;height:116px}
+.home-editorial .trust-section-prominent .trust-badge-card img[src$="kleinanzeigen-premium-partner.webp"]{width:auto;height:100px}
 @media(max-width:800px){
   .home-editorial .trust-section-prominent{padding:16px 0 20px}
   .home-editorial .trust-section-prominent .trust-badge-grid{
@@ -2142,10 +2143,9 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
     max-width:100%;
   }
   .home-editorial .trust-section-prominent .trust-badge-card:nth-child(2) img{width:auto;height:110px}
-  .home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-partner.png"]{width:auto;height:100px}
+  .home-editorial .trust-section-prominent .trust-badge-card img[src$="immowelt-platin.svg"]{width:auto;height:100px}
   .home-editorial .trust-section-prominent .trust-badge-card img[src$="immobilie1-siegel-version-partner.png"]{width:auto;height:110px}
-  .home-editorial .trust-section-prominent .trust-badge-card:nth-child(4){grid-column:2 / span 2}
-  .home-editorial .trust-section-prominent .trust-badge-card:nth-child(5){grid-column:4 / span 2}
+  .home-editorial .trust-section-prominent .trust-badge-card img[src$="kleinanzeigen-premium-partner.webp"]{width:auto;height:96px}
 }
 
 /* Compact live Google trust row below partner logos */
