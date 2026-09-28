@@ -112,6 +112,25 @@ async function resolveContactForInquiry(key,{firstName,lastName,email,phone}){
   return {contactId,reused:false};
 }
 
+
+async function resolveWebsiteInquiryNoteType(key){
+  const configured=Number(process.env.PROPSTACK_WEBSITE_INQUIRY_NOTE_TYPE_ID);
+  if(Number.isSafeInteger(configured)&&configured>0)return configured;
+
+  for(const endpoint of ['activity_types','note_types']){
+    try{
+      const result=await propstack(endpoint,key);
+      const types=Array.isArray(result.data)?result.data:Array.isArray(result)?result:[];
+      const found=types.find(type=>normalise(type?.name)==='sls website anfrage');
+      const id=Number(found?.id);
+      if(Number.isSafeInteger(id)&&id>0)return id;
+    }catch(error){
+      console.warn(`Propstack note type lookup via ${endpoint} unavailable:`,error.message);
+    }
+  }
+  return null;
+}
+
 async function dealsForContactAndProperty(key,clientId,propertyId){
   const q=new URLSearchParams({
     client_id:String(clientId),
@@ -169,6 +188,14 @@ export default async function handler(req,res){
       });
     }
 
+    const noteTypeId=await resolveWebsiteInquiryNoteType(readKey);
+    if(!noteTypeId){
+      return res.status(503).json({
+        error:'Die Propstack-Notiz-Kategorie „SLS Website Anfrage“ konnte mit den aktuellen API-Rechten nicht automatisch gelesen werden. Es wurde keine Anfrage ausgelöst.',
+        code:'SLS_NOTE_TYPE_MISSING'
+      });
+    }
+
     const reference=String(unit.unit_id?.value??unit.unit_id??'').trim();
     const contactResolution=await resolveContactForInquiry(writeKey,{firstName,lastName,email,phone});
     if(contactResolution.conflict){
@@ -195,6 +222,7 @@ export default async function handler(req,res){
     const inquiryPayload={
       task:{
         title:'Anfrage über die SLS Website',
+        note_type_id:noteTypeId,
         client_source_id:sourceId,
         client_ids:[contactId],
         property_ids:[Number(id)],
@@ -245,6 +273,7 @@ export default async function handler(req,res){
       contactId,
       inquiryId:Number.isSafeInteger(inquiryId)&&inquiryId>0?inquiryId:null,
       sourceId,
+      noteTypeId,
       activityVerified,
       activitySourceId,
       activityType,
