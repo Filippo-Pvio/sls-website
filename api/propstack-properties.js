@@ -154,9 +154,8 @@ export default async function handler(req,res){
         if(publicDetail[field]==null)publicDetail[field]=publicListing[field];
       }
       publicDetail.objectFacts=publicPropertyFacts(combined,publicDetail);
-      publicDetail.inquiryEnabled=process.env.PROPSTACK_INQUIRY_ENABLED==='1'&&
-        Boolean(process.env.PROPSTACK_INQUIRY_API_KEY)&&
-        /^\d+$/.test(process.env.PROPSTACK_INQUIRY_SOURCE_ID||'');
+      publicDetail.inquiryEnabled=process.env.VERCEL_ENV==='preview'&&Boolean(process.env.PROPSTACK_API_KEY);
+      publicDetail.inquiryTestMode=publicDetail.inquiryEnabled;
 
       return res.status(200).json({items:[publicDetail]});
     }
