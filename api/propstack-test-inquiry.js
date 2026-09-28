@@ -54,7 +54,7 @@ async function resolveInquirySource(key){
   if(Number.isSafeInteger(configured)&&configured>0)return configured;
 
   const preferred=['sls website','sls.de','website sls'];
-  for(const endpoint of ['client_sources','contact_sources']){
+  for(const endpoint of ['client_sources','contact_sources','sources']){
     try{
       const result=await propstack(endpoint,key);
       const sources=Array.isArray(result)?result:Array.isArray(result.data)?result.data:[];
