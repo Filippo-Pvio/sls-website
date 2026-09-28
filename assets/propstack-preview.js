@@ -137,7 +137,7 @@
         const response=await fetch('/api/propstack-test-inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...fields,propertyId:p.id,privacy:fields.privacy==='on',testMode:p.inquiryTestMode===true})});
         const result=await response.json();
         if(!response.ok)throw new Error(result.error||'Die Anfrage konnte nicht gesendet werden.');
-        form.reset();status.textContent=result.portalInquiryTriggered?`Testanfrage wurde als objektbezogene Propstack-Anfrage übergeben (Kontakt ${result.contactId}${result.inquiryId?`, Anfrage ${result.inquiryId}`:''}). Bitte jetzt in Propstack prüfen, ob die Automationen 230635 → 230636 → 230637 ausgelöst wurden.`:'Vielen Dank. Ihre Anfrage wurde an Propstack übermittelt.';
+        form.reset();status.textContent=result.portalInquiryTriggered?`Propstack-Anfrage übergeben (Kontakt ${result.contactId}${result.inquiryId?`, Anfrage ${result.inquiryId}`:''}). ${result.hadDealBefore?'Für Kontakt + Objekt bestand bereits ein Deal.':result.dealDetected?`Neuer Objekt-Deal wurde erkannt${result.dealId?` (Deal ${result.dealId})`:''}.`:'Noch kein Objekt-Deal erkannt – bitte in Propstack prüfen, ob die Automation ausgelöst wurde.'}`:'Vielen Dank. Ihre Anfrage wurde an Propstack übermittelt.';
       } catch(error) {status.textContent=error.message;button.disabled=false}
     });
     if(floorplanImages.length){
