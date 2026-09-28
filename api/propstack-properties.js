@@ -1,8 +1,7 @@
 import {publicUnit} from '../lib/propstack-preview.mjs';
 import {publicPropertyFacts,publicPropertySourceFields} from '../lib/public-property-facts.mjs';
 
-const PAGE_SIZE=100;
-const MAX_PAGES=40;
+const LIST_PAGE_SIZE=9;
 const PUBLIC_STATUS_NAME='vermarktung';
 
 async function read(path,key){
@@ -57,33 +56,38 @@ async function listingById(id,key,statusId){
   )||null;
 }
 
-async function allListings(key,statusId){
-  const items=[];
-  const seen=new Set();
-  for(let page=1;page<=MAX_PAGES;page++){
-    const query=new URLSearchParams({
-      with_meta:'1',
-      expand:'1',
-      status:String(statusId),
-      marketing_type:'BUY',
-      archived:'-1',
-      per:String(PAGE_SIZE),
-      page:String(page),
-      sort_by:'updated_at',
-      order:'desc'
-    });
-    const result=await read(`units?${query}`,key);
-    const rows=Array.isArray(result.data)?result.data:[];
-    for(const unit of rows){
-      const unitId=String(unit?.id||'');
-      if(!unitId||seen.has(unitId)||!isPublished(unit))continue;
-      seen.add(unitId);
-      items.push(publicUnit(unit));
-    }
-    const total=Number(result.meta?.total_count);
-    if(rows.length<PAGE_SIZE||(Number.isFinite(total)&&page*PAGE_SIZE>=total))break;
-  }
-  return items;
+async function pageListings(key,statusId,page,per,sort){
+  const sortMap={
+    'default':['updated_at','desc'],
+    'newest':['updated_at','desc'],
+    'price-asc':['price','asc'],
+    'price-desc':['price','desc'],
+    'area-desc':['living_space','desc']
+  };
+  const [sortBy,order]=sortMap[sort]||sortMap.default;
+  const query=new URLSearchParams({
+    with_meta:'1',
+    expand:'1',
+    status:String(statusId),
+    marketing_type:'BUY',
+    archived:'-1',
+    per:String(per),
+    page:String(page),
+    sort_by:sortBy,
+    order
+  });
+  const result=await read(`units?${query}`,key);
+  const rows=Array.isArray(result.data)?result.data:[];
+  const items=rows.filter(isPublished).map(publicUnit);
+  const metaTotal=Number(result.meta?.total_count);
+  const total=Number.isFinite(metaTotal)?metaTotal:((page-1)*per+rows.length+(rows.length===per?1:0));
+  return {
+    items,
+    total,
+    page,
+    per,
+    hasMore:page*per<total && rows.length>0
+  };
 }
 
 function mergeDetail(summary,detail){
@@ -157,9 +161,13 @@ export default async function handler(req,res){
       return res.status(200).json({items:[publicDetail]});
     }
 
-    const items=await allListings(key,status.id);
+    const page=Math.max(1,Number.parseInt(req.query.page||'1',10)||1);
+    const requestedPer=Number.parseInt(req.query.per||String(LIST_PAGE_SIZE),10)||LIST_PAGE_SIZE;
+    const per=Math.min(LIST_PAGE_SIZE,Math.max(1,requestedPer));
+    const sort=String(req.query.sort||'default');
+    const result=await pageListings(key,status.id,page,per,sort);
     res.setHeader('Cache-Control','public, s-maxage=300, stale-while-revalidate=600');
-    return res.status(200).json({items});
+    return res.status(200).json(result);
   }catch(error){
     console.error('Propstack property feed failed:',error.message);
     return res.status(502).json({error:'Propstack-Objekte sind momentan nicht abrufbar.'});
