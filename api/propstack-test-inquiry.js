@@ -1,32 +1,32 @@
-const text=(value,max=150)=>typeof value==='string' ? value.trim().slice(0,max) : '';
+const text=(value,max=150)=>typeof value==='string'?value.trim().slice(0,max):'';
 const normalise=value=>String(value||'').trim().toLocaleLowerCase('de-DE');
 const html=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
-async function propstack(path,key,options={}) {
+async function propstack(path,key,options={}){
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),10000);
-  try {
+  try{
     const response=await fetch(`https://api.propstack.de/v1/${path}`,{
       ...options,
       headers:{'X-API-KEY':key,...options.headers},
       signal:controller.signal
     });
     const data=await response.json().catch(()=>({}));
-    if(!response.ok) throw new Error(`Propstack ${path} returned ${response.status}`);
+    if(!response.ok)throw new Error(`Propstack ${path} returned ${response.status}`);
     return data;
-  } finally {clearTimeout(timer)}
+  }finally{clearTimeout(timer)}
 }
 
 function isPreviewRequest(req){
   const host=String(req.headers?.['x-forwarded-host']||req.headers?.host||'').toLowerCase();
-  return host.endsWith('.vercel.app') || host.includes('localhost');
+  return host.endsWith('.vercel.app')||host.includes('localhost');
 }
 
 async function publicStatusId(key){
   const result=await propstack('property_statuses',key);
   const statuses=Array.isArray(result.data)?result.data:Array.isArray(result)?result:[];
   const matches=statuses.filter(s=>normalise(s?.name)==='vermarktung'&&s?.nonpublic!==true);
-  if(matches.length!==1) throw new Error('Vermarktungsstatus nicht eindeutig');
+  if(matches.length!==1)throw new Error('Vermarktungsstatus nicht eindeutig');
   return String(matches[0].id);
 }
 
@@ -42,27 +42,45 @@ async function publicUnit(id,key,statusId){
   });
   const result=await propstack(`units?${q}`,key);
   return (Array.isArray(result.data)?result.data:[]).find(u=>
-    String(u?.id)===id &&
-    u?.archived!==true &&
-    u?.marketing_type==='BUY' &&
+    String(u?.id)===id&&
+    u?.archived!==true&&
+    u?.marketing_type==='BUY'&&
     u?.status?.nonpublic!==true
   )||null;
 }
 
-export default async function handler(req,res) {
+async function resolveInquirySource(key){
+  const configured=Number(process.env.PROPSTACK_INQUIRY_SOURCE_ID);
+  if(Number.isSafeInteger(configured)&&configured>0)return configured;
+
+  const preferred=['sls website','sls.de','website sls'];
+  for(const endpoint of ['client_sources','contact_sources']){
+    try{
+      const result=await propstack(endpoint,key);
+      const sources=Array.isArray(result)?result:Array.isArray(result.data)?result.data:[];
+      const found=sources.find(source=>preferred.includes(normalise(source?.name)));
+      if(found&&Number.isSafeInteger(Number(found.id)))return Number(found.id);
+    }catch(error){
+      console.warn(`Propstack source lookup via ${endpoint} unavailable:`,error.message);
+    }
+  }
+  return null;
+}
+
+export default async function handler(req,res){
   res.setHeader('Cache-Control','no-store');
   res.setHeader('X-Robots-Tag','noindex, nofollow');
-  if(req.method!=='POST') return res.status(405).json({error:'Methode nicht erlaubt'});
-  if(!isPreviewRequest(req)) return res.status(403).json({error:'Testanfragen sind nur im geschützten Preview möglich.'});
-  if(!req.headers?.['content-type']?.startsWith('application/json') || Number(req.headers?.['content-length']||0)>5000)
+  if(req.method!=='POST')return res.status(405).json({error:'Methode nicht erlaubt'});
+  if(!isPreviewRequest(req))return res.status(403).json({error:'Testanfragen sind nur im geschützten Preview möglich.'});
+  if(!req.headers?.['content-type']?.startsWith('application/json')||Number(req.headers?.['content-length']||0)>5000)
     return res.status(400).json({error:'Ungültige Anfrage.'});
 
   const readKey=process.env.PROPSTACK_API_KEY;
-  const writeKey=process.env.PROPSTACK_INQUIRY_API_KEY || readKey;
-  if(!readKey || !writeKey) return res.status(503).json({error:'Propstack-Anfragezugang ist noch nicht verfügbar.'});
+  const writeKey=process.env.PROPSTACK_INQUIRY_API_KEY||readKey;
+  if(!readKey||!writeKey)return res.status(503).json({error:'Propstack-Anfragezugang ist noch nicht verfügbar.'});
 
   const body=req.body||{};
-  if(body.testMode!==true) return res.status(400).json({error:'Testmodus fehlt.'});
+  if(body.testMode!==true)return res.status(400).json({error:'Testmodus fehlt.'});
 
   const id=String(body.propertyId||'');
   const firstName=text(body.firstName,100);
@@ -72,106 +90,71 @@ export default async function handler(req,res) {
   if(!/^\d+$/.test(id)||!firstName||!lastName||!/^\S+@\S+\.\S+$/.test(email)||!phone||body.privacy!==true)
     return res.status(400).json({error:'Bitte alle Pflichtfelder und die Datenschutzeinwilligung prüfen.'});
 
-  try {
+  try{
     const statusId=await publicStatusId(readKey);
     const unit=await publicUnit(id,readKey,statusId);
-    if(!unit) return res.status(404).json({error:'Objekt nicht verfügbar.'});
+    if(!unit)return res.status(404).json({error:'Objekt nicht verfügbar.'});
+
+    const sourceId=await resolveInquirySource(readKey);
+    if(!sourceId){
+      return res.status(503).json({
+        error:'In Propstack fehlt noch die Kontaktquelle „SLS Website“ bzw. deren API-ID. Es wurde noch keine Portalanfrage ausgelöst.',
+        code:'SOURCE_MISSING'
+      });
+    }
 
     const reference=String(unit.unit_id?.value??unit.unit_id??'').trim();
-    const clientPayload={client:{first_name:firstName,last_name:lastName,email,phone}};
     const client=await propstack('contacts',writeKey,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(clientPayload)
+      body:JSON.stringify({client:{
+        first_name:firstName,
+        last_name:lastName,
+        email,
+        phone
+      }})
     });
+
     const contactId=Number(client.id);
-    if(!Number.isSafeInteger(contactId)||contactId<=0) throw new Error('Propstack contact response missing ID');
+    if(!Number.isSafeInteger(contactId)||contactId<=0)throw new Error('Propstack contact response missing ID');
 
-    let verified=null;
-    try {
-      verified=await propstack(`contacts/${contactId}`,writeKey);
-    } catch(error) {
-      console.error('Propstack contact verification failed:',error.message);
-      return res.status(502).json({
-        error:'Propstack hat eine Kontakt-ID zurückgegeben, der Kontakt konnte danach aber nicht wieder ausgelesen werden. Es wurde keine Aufgabe angelegt.',
-        contactId
-      });
-    }
+    const verified=await propstack(`contacts/${contactId}`,writeKey);
+    if(Number(verified?.id)!==contactId)throw new Error('Propstack contact verification failed');
 
-    const verifiedId=Number(verified?.id);
-    const verifiedEmail=String(verified?.email||verified?.client?.email||'').trim().toLocaleLowerCase('de-DE');
-    const emailMatches=!verifiedEmail||verifiedEmail===email.toLocaleLowerCase('de-DE');
-    if(verifiedId!==contactId||!emailMatches){
-      console.error('Propstack contact verification mismatch',{contactId,verifiedId});
-      return res.status(502).json({
-        error:'Der angelegte Kontakt konnte nicht eindeutig bestätigt werden. Es wurde keine Aufgabe angelegt.',
-        contactId
-      });
-    }
+    const inquiryPayload={
+      task:{
+        title:'Anfrage über die SLS Website',
+        client_source_id:sourceId,
+        client_ids:[contactId],
+        property_ids:[Number(id)],
+        broker_id:unit.broker_id||unit.broker?.id||undefined,
+        body:[
+          '<strong>Website-Anfrage über sls.de</strong>',
+          `Objekt: ${html(reference||id)}`,
+          `Name: ${html(firstName)} ${html(lastName)}`,
+          `E-Mail: ${html(email)}`,
+          `Telefon: ${html(phone)}`
+        ].join('<br>')
+      }
+    };
 
+    const inquiry=await propstack('tasks',writeKey,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(inquiryPayload)
+    });
+
+    const inquiryId=Number(inquiry?.id||inquiry?.activity_id);
     return res.status(200).json({
       ok:true,
-      diagnosticMode:true,
-      contactVerified:true,
+      portalInquiryTriggered:true,
       contactId,
-      reference:reference||null,
-      automationPending:true,
-      taskCreated:false
+      inquiryId:Number.isSafeInteger(inquiryId)&&inquiryId>0?inquiryId:null,
+      sourceId,
+      reference:reference||null
     });
-  } catch(error) {
-      console.error('Propstack task creation failed:',error.message);
-      return res.status(502).json({
-        error:'Der Kontakt wurde bestätigt, aber die Testaufgabe konnte nicht angelegt werden.',
-        contactId,
-        contactVerified:true
-      });
-    }
-
-    const taskId=Number(createdTask?.id);
-    if(!Number.isSafeInteger(taskId)||taskId<=0){
-      console.error('Propstack task response missing ID');
-      return res.status(502).json({
-        error:'Die Testaufgabe wurde gesendet, Propstack hat aber keine eindeutige Aufgaben-ID zurückgegeben.',
-        contactId,
-        contactVerified:true
-      });
-    }
-
-    let verifiedTask=null;
-    try {
-      verifiedTask=await propstack(`tasks/${taskId}`,writeKey);
-    } catch(error) {
-      console.error('Propstack task verification failed:',error.message);
-      return res.status(502).json({
-        error:'Propstack hat eine Aufgaben-ID zurückgegeben, die Aufgabe konnte danach aber nicht wieder ausgelesen werden.',
-        contactId,
-        taskId,
-        contactVerified:true
-      });
-    }
-
-    const taskVerified=Number(verifiedTask?.id)===taskId;
-    if(!taskVerified){
-      return res.status(502).json({
-        error:'Die angelegte Testaufgabe konnte nicht eindeutig bestätigt werden.',
-        contactId,
-        taskId,
-        contactVerified:true
-      });
-    }
-
-    return res.status(200).json({
-      ok:true,
-      diagnosticMode:true,
-      contactVerified:true,
-      taskVerified:true,
-      contactId,
-      taskId,
-      reference:reference||null,
-      taskCreated:true
-    });
-  } catch(error) {
-    console.error('Propstack inquiry preview failed:',error.message);
-    return res.status(502).json({error:'Die Testanfrage konnte nicht an Propstack übermittelt werden.'});
+  }catch(error){
+    console.error('Propstack website inquiry failed:',error.message);
+    return res.status(502).json({error:'Die Website-Anfrage konnte nicht vollständig an Propstack übergeben werden.'});
   }
 }
