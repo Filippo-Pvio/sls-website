@@ -143,7 +143,14 @@ export default async function handler(req,res){
     const verified=await propstack(`contacts/${contactId}`,writeKey);
     if(Number(verified?.id)!==contactId)throw new Error('Propstack contact verification failed');
 
-    const existingDeals=await dealsForContactAndProperty(readKey,contactId,Number(id));
+    let existingDeals=[];
+    let dealCheckAvailable=true;
+    try{
+      existingDeals=await dealsForContactAndProperty(readKey,contactId,Number(id));
+    }catch(error){
+      dealCheckAvailable=false;
+      console.warn('Propstack deal pre-check unavailable:',error.message);
+    }
     const hadDealBefore=existingDeals.length>0;
 
     const inquiryPayload={
@@ -170,7 +177,15 @@ export default async function handler(req,res){
     });
 
     const inquiryId=Number(inquiry?.id||inquiry?.activity_id);
-    const deal=hadDealBefore?existingDeals[0]:await waitForDeal(readKey,contactId,Number(id));
+    let deal=hadDealBefore?existingDeals[0]:null;
+    if(!hadDealBefore&&dealCheckAvailable){
+      try{
+        deal=await waitForDeal(readKey,contactId,Number(id));
+      }catch(error){
+        dealCheckAvailable=false;
+        console.warn('Propstack deal post-check unavailable:',error.message);
+      }
+    }
     return res.status(200).json({
       ok:true,
       portalInquiryTriggered:true,
@@ -179,6 +194,7 @@ export default async function handler(req,res){
       sourceId,
       reference:reference||null,
       hadDealBefore,
+      dealCheckAvailable,
       dealDetected:Boolean(deal),
       dealId:deal?.id||null,
       dealStageId:deal?.deal_stage_id||deal?.deal_stage?.id||null
