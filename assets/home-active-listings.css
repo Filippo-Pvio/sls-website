@@ -8,7 +8,7 @@
 .home-active-arrow:disabled{opacity:.32;cursor:default}
 .home-active-track{display:grid;grid-auto-columns:calc(33.333% - 16px);grid-auto-flow:column;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;padding:0 0 8px}
 .home-active-track::-webkit-scrollbar{display:none}
-.home-active-card{scroll-snap-align:start;min-width:0;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(11,17,18,.12);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.home-active-card{scroll-snap-align:start;min-width:0;display:flex;flex-direction:column;overflow:hidden;border-radius:6px;background:#fff;border:1px solid rgba(11,17,18,.12);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
 .home-active-card:hover{transform:translateY(-3px);border-color:rgba(11,17,18,.24);box-shadow:0 16px 38px rgba(11,17,18,.09)}
 .home-active-card-media{overflow:hidden;background:#d8e0e2}
 .home-active-card-media img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .45s ease}
