@@ -137,7 +137,7 @@
         const response=await fetch('/api/propstack-test-inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...fields,propertyId:p.id,privacy:fields.privacy==='on',testMode:p.inquiryTestMode===true})});
         const result=await response.json();
         if(!response.ok)throw new Error(result.error||'Die Anfrage konnte nicht gesendet werden.');
-        form.reset();status.textContent='Vielen Dank. Ihre Anfrage wurde an Propstack übermittelt.';
+        form.reset();status.textContent=result.diagnosticMode&&result.contactVerified?`Test erfolgreich: Propstack hat den Kontakt gespeichert und bestätigt (Kontakt-ID ${result.contactId}). Es wurde bewusst noch keine Aufgabe angelegt.`:'Vielen Dank. Ihre Anfrage wurde an Propstack übermittelt.';
       } catch(error) {status.textContent=error.message;button.disabled=false}
     });
     if(floorplanImages.length){
