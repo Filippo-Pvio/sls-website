@@ -137,7 +137,7 @@
         const response=await fetch('/api/propstack-test-inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...fields,propertyId:p.id,privacy:fields.privacy==='on',testMode:p.inquiryTestMode===true})});
         const result=await response.json();
         if(!response.ok)throw new Error(result.error||'Die Anfrage konnte nicht gesendet werden.');
-        form.reset();status.textContent=result.portalInquiryTriggered?`Propstack-Anfrage übergeben (Kontakt ${result.contactId}${result.inquiryId?`, Anfrage ${result.inquiryId}`:''}). ${result.hadDealBefore?'Für Kontakt + Objekt bestand bereits ein Deal.':result.dealDetected?`Neuer Objekt-Deal wurde erkannt${result.dealId?` (Deal ${result.dealId})`:''}.`:'Noch kein Objekt-Deal erkannt – bitte in Propstack prüfen, ob die Automation ausgelöst wurde.'}`:'Vielen Dank. Ihre Anfrage wurde an Propstack übermittelt.';
+        form.reset();status.textContent=result.portalInquiryTriggered?`Propstack-Anfrage übergeben (Kontakt ${result.contactId}${result.inquiryId?`, Anfrage ${result.inquiryId}`:''}). ${result.dealCheckAvailable===false?'Die Anfrage wurde erfolgreich ausgelöst; die Deal-Kontrolle ist mit den aktuellen API-Rechten nicht lesbar – bitte den Deal/Exposé-Ablauf jetzt in Propstack prüfen.':result.hadDealBefore?'Für Kontakt + Objekt bestand bereits ein Deal.':result.dealDetected?`Neuer Objekt-Deal wurde erkannt${result.dealId?` (Deal ${result.dealId})`:''}.`:'Noch kein Objekt-Deal erkannt – bitte in Propstack prüfen, ob die Automation ausgelöst wurde.'}`:'Vielen Dank. Ihre Anfrage wurde an Propstack übermittelt.';
       } catch(error) {status.textContent=error.message;button.disabled=false}
     });
     if(floorplanImages.length){
