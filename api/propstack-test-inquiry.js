@@ -68,6 +68,50 @@ async function resolveInquirySource(key){
 }
 
 
+
+function samePerson(contact,firstName,lastName){
+  return normalise(contact?.first_name)===normalise(firstName)&&
+    normalise(contact?.last_name)===normalise(lastName);
+}
+
+async function contactsByEmail(key,email){
+  const q=new URLSearchParams({email,archived:'-1',with_meta:'1',per:'100'});
+  const result=await propstack(`contacts?${q}`,key);
+  return Array.isArray(result.data)?result.data:Array.isArray(result)?result:[];
+}
+
+async function resolveContactForInquiry(key,{firstName,lastName,email,phone}){
+  const matches=await contactsByEmail(key,email);
+  if(matches.length){
+    const exact=matches.find(contact=>samePerson(contact,firstName,lastName));
+    if(exact){
+      const id=Number(exact.id);
+      if(Number.isSafeInteger(id)&&id>0)return {contactId:id,reused:true};
+    }
+    return {
+      conflict:true,
+      existingContactIds:matches
+        .map(contact=>Number(contact.id))
+        .filter(id=>Number.isSafeInteger(id)&&id>0)
+        .slice(0,10)
+    };
+  }
+
+  const client=await propstack('contacts',key,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({client:{
+      first_name:firstName,
+      last_name:lastName,
+      email,
+      phone
+    }})
+  });
+  const contactId=Number(client.id);
+  if(!Number.isSafeInteger(contactId)||contactId<=0)throw new Error('Propstack contact response missing ID');
+  return {contactId,reused:false};
+}
+
 async function dealsForContactAndProperty(key,clientId,propertyId){
   const q=new URLSearchParams({
     client_id:String(clientId),
@@ -126,20 +170,15 @@ export default async function handler(req,res){
     }
 
     const reference=String(unit.unit_id?.value??unit.unit_id??'').trim();
-    const client=await propstack('contacts',writeKey,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({client:{
-        first_name:firstName,
-        last_name:lastName,
-        email,
-        phone
-      }})
-    });
+    const contactResolution=await resolveContactForInquiry(writeKey,{firstName,lastName,email,phone});
+    if(contactResolution.conflict){
+      return res.status(409).json({
+        error:'Diese E-Mail-Adresse ist in Propstack bereits einem anderen Namen zugeordnet. Die vorhandenen Kontaktdaten wurden nicht verändert und es wurde keine Anfrage ausgelöst.',
+        code:'CONTACT_IDENTITY_CONFLICT'
+      });
+    }
 
-    const contactId=Number(client.id);
-    if(!Number.isSafeInteger(contactId)||contactId<=0)throw new Error('Propstack contact response missing ID');
-
+    const contactId=contactResolution.contactId;
     const verified=await propstack(`contacts/${contactId}`,writeKey);
     if(Number(verified?.id)!==contactId)throw new Error('Propstack contact verification failed');
 
@@ -193,6 +232,7 @@ export default async function handler(req,res){
       inquiryId:Number.isSafeInteger(inquiryId)&&inquiryId>0?inquiryId:null,
       sourceId,
       reference:reference||null,
+      contactReused:contactResolution.reused===true,
       hadDealBefore,
       dealCheckAvailable,
       dealDetected:Boolean(deal),
