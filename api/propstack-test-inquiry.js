@@ -173,7 +173,7 @@ export default async function handler(req,res){
     const contactResolution=await resolveContactForInquiry(writeKey,{firstName,lastName,email,phone});
     if(contactResolution.conflict){
       return res.status(409).json({
-        error:'Diese E-Mail-Adresse ist in Propstack bereits einem anderen Namen zugeordnet. Die vorhandenen Kontaktdaten wurden nicht verändert und es wurde keine Anfrage ausgelöst.',
+        error:'Diese E-Mail-Adresse ist in Propstack bereits einem anderen Kontakt zugeordnet. Propstack erlaubt für zwei eigenständige Kontakte keine identische E-Mail-Adresse. Die vorhandenen Kontaktdaten wurden nicht verändert und es wurde keine Anfrage ausgelöst. Bitte für diese Person eine andere E-Mail-Adresse verwenden.',
         code:'CONTACT_IDENTITY_CONFLICT'
       });
     }
