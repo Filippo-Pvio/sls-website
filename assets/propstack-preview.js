@@ -7,7 +7,7 @@
   const url=new URL(location.href), demo=url.searchParams.get('demo')==='1', id=url.searchParams.get('objekt');
   const sample={id:'demo',title:'Lichtdurchflutete Wohnung mit Balkon, offenem Wohnen, Stellplatz und langfristig gesicherter Miete',city:'Raesfeld',zip:'46348',price:139500,area:52.06,rooms:2,bedrooms:1,baths:1,year:2002,type:'Wohnung',status:'Verfügbar',images:['https://sls.de/wp-content/uploads/2026/09/6927c1a63b43bc35506a97fd149101a1.jpg','https://sls.de/wp-content/uploads/2026/09/8b0f34e1662b362b49076948be67fb47.jpg','https://sls.de/wp-content/uploads/2026/09/ed4ad76935300ee4c87702b1fb3e962c.jpg','https://sls.de/wp-content/uploads/2026/09/ee63526f68d37e694efac2bc8b383435.jpg'],description:'Die Wohnung liegt im ersten Obergeschoss. Durch die offene Küche und den hellen Wohnbereich entsteht ein zusammenhängender Raum. Zur Wohnung gehören ein Balkon, ein Außenstellplatz und ein Kellerraum. Die Wohnung ist seit 2019 vermietet.',location:'46348 Raesfeld',features:'Balkon, Außenstellplatz, Kellerraum',courtage:'3,57 % inkl. MwSt.',broker:{name:'Herr Cüneyt Demirli',phone:'(02369) 742 80 20',email:'c.demirli@sls.de',mobile:'+49 152 099 30 734'}};
   sample.objectFacts=[{label:'Standort',value:'46348 Raesfeld'},{label:'Objekttyp',value:'Wohnung'},{label:'Wohnfläche',value:sample.area,kind:'area'},{label:'Zimmer',value:sample.rooms},{label:'Schlafzimmer',value:sample.bedrooms},{label:'Badezimmer',value:sample.baths},{label:'Baujahr',value:sample.year}];
-  let all=[];
+  let all=[], total=0, currentPage=1, hasMore=false, loadingMore=false;
   const photo=(src,alt,loading="lazy")=>src?`<img src="${esc(src)}" alt="${esc(alt)}" loading="${loading}"${loading==="eager"?' fetchpriority="low"':''}>`:'<span class="pp-fallback">SLS Immobilienpartner</span>';
   const previewLink=p=>`/immobilien-test/?objekt=${encodeURIComponent(p.id)}${demo?'&demo=1':''}`;
   const card=p=>{
@@ -18,14 +18,49 @@
     return `<a class="pp-card" href="${previewLink(p)}"><div class="pp-image">${photo(p.images?.[0],p.title)}<span class="pp-chip">${esc(p.status||'Verfügbar')}</span></div><div class="pp-card-content"><span class="pp-city">${esc(p.city)}</span><h2>${esc(p.title)}</h2><div class="pp-stats"><span>${area(p.area)}</span>${p.rooms!=null?`<span>${esc(p.rooms)} Zimmer</span>`:''}<span>${esc(p.type)}</span></div><span class="pp-price">${format(p.price)}</span>${p.courtage?`<small class="pp-card-courtage">Käuferprovision: ${esc(p.courtage)}</small>`:''}<small class="pp-card-energy">${energyLine}</small></div></a>`;
   };
   const fact=(label,value)=>value==null||value===''?'':`<div class="pp-fact${String(label).split(/\s+/).some(word=>word.length>=18)?' pp-fact-wide':''}"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
-  function renderList(){
+  const activeFilters=()=>{
     const form=new FormData($('#pp-form'));
-    const query=String(form.get('query')||'').toLocaleLowerCase('de').trim(),city=String(form.get('city')||'').toLocaleLowerCase('de').trim();
-    const type=form.get('type'),price=Number(form.get('price')),minArea=Number(form.get('area')),rooms=Number(form.get('rooms'));
-    const found=all.filter(p=>(!query||`${p.title} ${p.id}`.toLocaleLowerCase('de').includes(query))&&(!city||p.city.toLocaleLowerCase('de').includes(city))&&(!type||p.type===type)&&(!price||(p.price!=null&&p.price<=price))&&(!minArea||(p.area!=null&&p.area>=minArea))&&(!rooms||(p.rooms!=null&&p.rooms>=rooms)));
-    switch($('#pp-sort').value){case'price-asc':found.sort((a,b)=>(a.price??Infinity)-(b.price??Infinity));break;case'price-desc':found.sort((a,b)=>(b.price??-1)-(a.price??-1));break;case'area-desc':found.sort((a,b)=>(b.area??0)-(a.area??0))}
-    $('#pp-count').textContent=`Zeige ${found.length} ${found.length===1?'Immobilie':'Immobilien'}`;
-    $('#pp-results').innerHTML=found.length?found.map(card).join(''):'<div class="pp-error">Für diese Suchkriterien sind keine Immobilien freigegeben.</div>';
+    return {
+      query:String(form.get('query')||'').toLocaleLowerCase('de').trim(),
+      city:String(form.get('city')||'').toLocaleLowerCase('de').trim(),
+      type:form.get('type'),
+      price:Number(form.get('price')),
+      minArea:Number(form.get('area')),
+      rooms:Number(form.get('rooms'))
+    };
+  };
+  const filteredItems=()=>{
+    const {query,city,type,price,minArea,rooms}=activeFilters();
+    return all.filter(p=>(!query||`${p.title} ${p.id}`.toLocaleLowerCase('de').includes(query))&&(!city||p.city.toLocaleLowerCase('de').includes(city))&&(!type||p.type===type)&&(!price||(p.price!=null&&p.price<=price))&&(!minArea||(p.area!=null&&p.area>=minArea))&&(!rooms||(p.rooms!=null&&p.rooms>=rooms)));
+  };
+  function renderList(){
+    const found=filteredItems();
+    $('#pp-count').textContent=Object.values(activeFilters()).some(Boolean)
+      ?`${found.length} passende ${found.length===1?'Immobilie':'Immobilien'} in ${all.length} geladenen Objekten`
+      :`${total} ${total===1?'Immobilie':'Immobilien'} gefunden · ${all.length} angezeigt`;
+    $('#pp-results').innerHTML=found.length?found.map(card).join(''):'<div class="pp-error">Für diese Suchkriterien sind in den bisher geladenen Immobilien keine Treffer vorhanden.</div>';
+    const progress=$('#pp-progress');
+    if(progress)progress.textContent=hasMore?`${all.length} von ${total} Immobilien angezeigt`:`Alle ${all.length} Immobilien geladen`;
+  }
+  async function fetchPage(page,{append=false}={}){
+    const sort=$('#pp-sort').value||'default';
+    const response=await fetch(`/api/propstack-properties?page=${page}&per=9&sort=${encodeURIComponent(sort)}`,{cache:'no-store'});
+    const data=await response.json();
+    if(!response.ok)throw new Error(data.error||'Daten nicht abrufbar');
+    all=append?[...all,...data.items]:data.items;
+    total=Number(data.total)||all.length;
+    currentPage=Number(data.page)||page;
+    hasMore=Boolean(data.hasMore);
+    renderList();
+  }
+  async function loadMore(){
+    if(loadingMore||!hasMore||id||demo)return;
+    loadingMore=true;
+    const progress=$('#pp-progress');
+    if(progress)progress.textContent='Weitere Immobilien werden geladen …';
+    try{await fetchPage(currentPage+1,{append:true})}
+    catch(error){if(progress)progress.textContent='Weitere Immobilien konnten nicht geladen werden.'}
+    finally{loadingMore=false}
   }
   function renderDetail(p){
     $('#pp-search').hidden=true;$('#pp-detail').hidden=false;
@@ -151,11 +186,20 @@
 
   async function load(){
     try {
-      if(demo){all=[sample];$('#pp-banner').textContent='Designvorschau mit einem öffentlich sichtbaren Beispielobjekt. Keine Live-Abfrage; Angaben und Verfügbarkeit bitte auf sls.de prüfen.'}
-      else {const response=await fetch(`/api/propstack-properties${id?`?id=${encodeURIComponent(id)}`:''}`,{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'Daten nicht abrufbar');all=data.items;$('#pp-banner').textContent=id?'Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.':'Aktuelle Kaufimmobilien aus Propstack im Status Vermarktung. Objektanfragen werden hier noch nicht versendet.'}
+      if(demo){all=[sample];total=1;hasMore=false;$('#pp-banner').textContent='Designvorschau mit einem öffentlich sichtbaren Beispielobjekt. Keine Live-Abfrage; Angaben und Verfügbarkeit bitte auf sls.de prüfen.'}
+      else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'Daten nicht abrufbar');all=data.items;$('#pp-banner').textContent='Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
+      else {await fetchPage(1);$('#pp-banner').textContent='Aktuelle Kaufimmobilien aus Propstack im Status Vermarktung. Weitere Immobilien werden beim Scrollen automatisch nachgeladen.'}
       if(id){const p=all.find(item=>item.id===id);if(p)renderDetail(p);else throw new Error('Dieses Objekt ist in der Testansicht nicht verfügbar.')}
       else renderList();
     } catch(error){$('#pp-count').textContent='Noch keine Immobilien verfügbar';$('#pp-results').innerHTML=`<div class="pp-error">${esc(error.message)}<br><a href="/immobilien-test/?demo=1">Design mit einem Beispielobjekt ansehen</a></div>`}
   }
-  $('#pp-form').addEventListener('submit',event=>{event.preventDefault();renderList()});$('#pp-sort').addEventListener('change',renderList);load();
+  $('#pp-form').addEventListener('submit',event=>{event.preventDefault();renderList()});
+  $('#pp-sort').addEventListener('change',async()=>{if(id||demo){renderList();return}all=[];currentPage=1;hasMore=false;await fetchPage(1)});
+  const sentinel=$('#pp-load-sentinel');
+  if(sentinel&&'IntersectionObserver' in window){
+    new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting))loadMore()},{rootMargin:'500px 0px'}).observe(sentinel);
+  } else {
+    window.addEventListener('scroll',()=>{if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-600)loadMore()},{passive:true});
+  }
+  load();
 })();
