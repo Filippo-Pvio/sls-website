@@ -1,0 +1,167 @@
+import {publicUnit} from '../lib/propstack-preview.mjs';
+import {publicPropertyFacts,publicPropertySourceFields} from '../lib/public-property-facts.mjs';
+
+const PAGE_SIZE=100;
+const MAX_PAGES=40;
+const PUBLIC_STATUS_NAME='vermarktung';
+
+async function read(path,key){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),10000);
+  try{
+    const response=await fetch(`https://api.propstack.de/v1/${path}`,{
+      headers:{'X-API-KEY':key},
+      signal:controller.signal
+    });
+    if(!response.ok)throw new Error(`Propstack returned ${response.status}`);
+    return await response.json();
+  }finally{clearTimeout(timer);}
+}
+
+const normalise=value=>String(value||'').trim().toLocaleLowerCase('de-DE');
+
+async function resolvePublicStatus(key){
+  const result=await read('property_statuses',key);
+  const statuses=Array.isArray(result.data)?result.data:Array.isArray(result)?result:[];
+  const matches=statuses.filter(status=>
+    normalise(status?.name)===PUBLIC_STATUS_NAME &&
+    status?.nonpublic!==true
+  );
+  if(matches.length!==1)throw new Error('Aktiver Vermarktungsstatus in Propstack nicht eindeutig gefunden');
+  return matches[0];
+}
+
+function isPublished(unit,statusId){
+  return Boolean(
+    unit &&
+    /^\d+$/.test(String(unit.id||'')) &&
+    unit.archived!==true &&
+    unit.marketing_type==='BUY' &&
+    String(unit.status?.id||unit.status_id||'')===String(statusId) &&
+    unit.status?.nonpublic!==true
+  );
+}
+
+async function listingById(id,key,statusId){
+  const query=new URLSearchParams({
+    with_meta:'1',
+    expand:'1',
+    property_ids:String(id),
+    marketing_type:'BUY',
+    archived:'-1',
+    per:'100'
+  });
+  const result=await read(`units?${query}`,key);
+  return (Array.isArray(result.data)?result.data:[]).find(unit=>
+    String(unit.id)===String(id) && isPublished(unit,statusId)
+  )||null;
+}
+
+async function allListings(key,statusId){
+  const items=[];
+  const seen=new Set();
+  for(let page=1;page<=MAX_PAGES;page++){
+    const query=new URLSearchParams({
+      with_meta:'1',
+      expand:'1',
+      status:String(statusId),
+      marketing_type:'BUY',
+      archived:'-1',
+      per:String(PAGE_SIZE),
+      page:String(page),
+      sort_by:'updated_at',
+      order:'desc'
+    });
+    const result=await read(`units?${query}`,key);
+    const rows=Array.isArray(result.data)?result.data:[];
+    for(const unit of rows){
+      const unitId=String(unit?.id||'');
+      if(!unitId||seen.has(unitId)||!isPublished(unit,statusId))continue;
+      seen.add(unitId);
+      items.push(publicUnit(unit));
+    }
+    const total=Number(result.meta?.total_count);
+    if(rows.length<PAGE_SIZE||(Number.isFinite(total)&&page*PAGE_SIZE>=total))break;
+  }
+  return items;
+}
+
+function mergeDetail(summary,detail){
+  const combined={...summary,...detail,status:summary.status,images:detail.images?.length?detail.images:summary.images};
+  combined.broker={...(summary.broker||{}),...(detail.broker||{})};
+  const unwrap=value=>value&&typeof value==='object'&&'value' in value?value.value:value;
+  for(const field of new Set([
+    'price','object_price','living_space','property_space_value','number_of_rooms',
+    'number_of_bed_rooms','number_of_bath_rooms','plot_area','construction_year',
+    'rs_type','city','zip_code',...publicPropertySourceFields
+  ])){
+    const detailValue=unwrap(combined[field]);
+    const summaryValue=unwrap(summary[field]);
+    if((detailValue==null||detailValue==='')&&summaryValue!=null&&summaryValue!=='')combined[field]=summary[field];
+  }
+  return combined;
+}
+
+export default async function handler(req,res){
+  res.setHeader('Cache-Control','no-store');
+  res.setHeader('X-Robots-Tag','noindex, nofollow');
+  if(req.method!=='GET')return res.status(405).json({error:'Methode nicht erlaubt'});
+
+  const key=process.env.PROPSTACK_API_KEY;
+  if(!key)return res.status(503).json({error:'Propstack ist noch nicht verbunden.'});
+
+  try{
+    const status=await resolvePublicStatus(key);
+    const id=req.query.id;
+
+    if(id){
+      if(!/^\d+$/.test(String(id)))return res.status(404).json({error:'Objekt nicht gefunden'});
+      const summary=await listingById(id,key,status.id);
+      if(!summary)return res.status(404).json({error:'Objekt nicht veröffentlicht'});
+
+      const detail=await read(`units/${encodeURIComponent(id)}?new=1`,key);
+      if(String(detail?.id)!==String(id)||detail.archived===true||
+        (detail.marketing_type&&detail.marketing_type!=='BUY')||
+        (detail.status?.id&&String(detail.status.id)!==String(status.id))||
+        detail.status?.nonpublic===true){
+        return res.status(404).json({error:'Objekt nicht veröffentlicht'});
+      }
+
+      const combined=mergeDetail(summary,detail);
+      const brokerId=detail.broker_id||summary.broker_id||combined.broker?.id;
+      if(brokerId&&(!combined.broker?.phone||!combined.broker?.email)){
+        try{
+          const brokers=await read('brokers',key);
+          const all=Array.isArray(brokers)?brokers:(brokers.data||[]);
+          const full=all.find(b=>String(b.id)===String(brokerId));
+          if(full)combined.broker={...full,...Object.fromEntries(Object.entries(combined.broker||{}).filter(([,value])=>value))};
+        }catch(error){
+          console.warn('Propstack broker details unavailable:',error.message);
+        }
+      }
+
+      const publicListing=publicUnit(summary);
+      const publicDetail=publicUnit(combined);
+      for(const field of ['price','area','rooms','city','zip']){
+        if(publicListing[field]!=null&&publicListing[field]!=='')publicDetail[field]=publicListing[field];
+      }
+      if(publicListing.type!=='Immobilie')publicDetail.type=publicListing.type;
+      for(const field of ['bedrooms','baths','year']){
+        if(publicDetail[field]==null)publicDetail[field]=publicListing[field];
+      }
+      publicDetail.objectFacts=publicPropertyFacts(combined,publicDetail);
+      publicDetail.inquiryEnabled=process.env.PROPSTACK_INQUIRY_ENABLED==='1'&&
+        Boolean(process.env.PROPSTACK_INQUIRY_API_KEY)&&
+        /^\d+$/.test(process.env.PROPSTACK_INQUIRY_SOURCE_ID||'');
+
+      return res.status(200).json({items:[publicDetail]});
+    }
+
+    const items=await allListings(key,status.id);
+    res.setHeader('Cache-Control','public, s-maxage=300, stale-while-revalidate=600');
+    return res.status(200).json({items});
+  }catch(error){
+    console.error('Propstack property feed failed:',error.message);
+    return res.status(502).json({error:'Propstack-Objekte sind momentan nicht abrufbar.'});
+  }
+}
