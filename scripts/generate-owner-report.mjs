@@ -21,6 +21,12 @@ async function all(path){
  throw new Error('pagination_limit');
 }
 function belongs(x,id){return [x.property_id,x.property?.id,...(x.property_ids||[]),...(x.properties||[]).map(p=>p.id),...(x.units||[]).map(p=>p.id)].some(v=>String(v)===id);}
+const norm=v=>String(v??'').trim().toLocaleLowerCase('de-DE');
+function flatStrings(v,out=[]){if(v==null)return out;if(typeof v==='string'||typeof v==='number'){out.push(norm(v));return out;}if(Array.isArray(v)){for(const x of v)flatStrings(x,out);return out;}if(typeof v==='object')for(const x of Object.values(v))flatStrings(x,out);return out;}
+function hasText(v,list){const hay=flatStrings(v).join(' | ');return list.some(x=>hay.includes(norm(x)));}
+const PORTAL=['homepage','immobilienscout24','immoscout24','immowelt','sls website','sls.de','ebay kleinanzeigen','kleinanzeigen','frimo'];
+const OWN_MAIL=['212 suchmail verkauf','212 suchmail','312 suchkunden mail vermietung','312 suchkunden-mail vermietung','312 suchkunden mail','312 suchkunden'];
+const PRICE_FINANCE=['preis und finanzierung','preis & finanzierung','preis','finanzierung','finanzierbarkeit'];
 try{
  const unit=await get(`units/${TEST_ID}?new=1`);
  if(String(unit.id)!==TEST_ID)throw new Error('object_scope_not_verified');
