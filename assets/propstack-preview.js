@@ -62,6 +62,39 @@
     catch(error){if(progress)progress.textContent='Weitere Immobilien konnten nicht geladen werden.'}
     finally{loadingMore=false}
   }
+  function initSimilarProperties(p){
+    const section=$('#pp-similar');
+    const overview=demo?'/immobilien-test/?demo=1':'/immobilien-test/';
+    const render=items=>{
+      section.innerHTML=`<div class="pp-related-heading"><span class="pp-eyebrow">Weitere Angebote</span><h2 id="pp-similar-title">${items.length?'Ähnliche Immobilien':'Weitere Immobilien entdecken'}</h2></div>${items.length?`<div class="pp-grid">${items.map(item=>card(item).replace('<h2>','<h3>').replace('</h2>','</h3>')).join('')}</div>`:'<p>Entdecken Sie unsere aktuellen Angebote in der Immobilienübersicht.</p>'}<a class="pp-related-overview" href="${overview}">Alle Immobilien ansehen →</a>`;
+      section.removeAttribute('aria-busy');
+    };
+    const loadSimilar=async()=>{
+      if(demo){render([]);return}
+      const controller=new AbortController();
+      const timeout=setTimeout(()=>controller.abort(),20000);
+      try{
+        const {similarProperties}=await import('/assets/property-similarity.mjs');
+        const candidates=[];
+        // Reuse the cached public feed, including subsequent listing pages.
+        for(let page=1;page<=50;page++){
+          const response=await fetch(`/api/propstack-properties?page=${page}&per=9&sort=default`,{signal:controller.signal});
+          if(!response.ok)throw new Error('Angebote nicht abrufbar');
+          const data=await response.json();
+          if(!Array.isArray(data.items))throw new Error('Ungültige Angebotsliste');
+          candidates.push(...data.items);
+          if(!data.hasMore)break;
+        }
+        render(similarProperties(p,candidates));
+      }catch{render([])}finally{clearTimeout(timeout)}
+    };
+    if('IntersectionObserver' in window){
+      const observer=new IntersectionObserver(entries=>{
+        if(entries.some(entry=>entry.isIntersecting)){observer.disconnect();loadSimilar()}
+      },{rootMargin:'800px 0px'});
+      observer.observe(section);
+    }else loadSimilar();
+  }
   function renderDetail(p){
     $('#pp-search').hidden=true;$('#pp-detail').hidden=false;
     document.body.classList.add('pp-is-detail');
@@ -109,6 +142,8 @@
     $('.pp-detail-main').insertAdjacentHTML('beforeend', '<section class="pp-panel pp-financing" id="pp-financing" aria-labelledby="pp-financing-title"><span class="pp-eyebrow">Für Kaufinteressenten</span><h2 id="pp-financing-title">Finanzierungsrechner</h2><p>Welche Finanzierung passt zu Ihrem Vorhaben? Sie nutzen den Rechner von Justhome. Ihre Eingaben werden dort verarbeitet. <a href="https://justhome.co/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutz bei Justhome ↗</a></p><div class="pp-financing-widget"><iframe title="Justhome Finanzierungsrechner" src="https://calculator.justhome.com/?partner-id=66f3be08e1c9f54400131a96" width="100%" height="630" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen"></iframe></div></section>');
     $('.pp-money')?.insertAdjacentHTML('beforeend', '<a class="pp-finance-jump" href="#pp-financing">Finanzierung prüfen ↓</a>');
     $('#pp-detail-content').insertAdjacentHTML('beforeend', '<section class="pp-owner-valuation" aria-labelledby="pp-owner-title"><div class="pp-owner-intro"><span class="pp-eyebrow">Für Eigentümer</span><h2 id="pp-owner-title">So könnte auch Ihre Immobilie präsentiert werden</h2><p>Sie überlegen, Ihre Immobilie zu verkaufen? Mit unserem Bewertungsrechner erhalten Sie einen ersten Anhaltspunkt für den Wert Ihrer Immobilie.</p></div><div class="pp-owner-widget"><iframe id="pp-fisher-widget" title="Immobilienbewertung von SLS Immobilienpartner" width="100%" height="600" referrerpolicy="strict-origin-when-cross-origin"></iframe></div></section>');
+    $('.pp-owner-valuation').insertAdjacentHTML('beforebegin','<section class="pp-related" id="pp-similar" aria-labelledby="pp-similar-title" aria-busy="true"><div class="pp-related-heading"><span class="pp-eyebrow">Weitere Angebote</span><h2 id="pp-similar-title">Weitere Immobilien</h2></div><p>Passende Angebote werden geladen …</p></section>');
+    initSimilarProperties(p);
     window.ppInitValuation?.();
     // The contact panel follows every property section in the document.
     // The single-column layout places it after the map on narrow screens.

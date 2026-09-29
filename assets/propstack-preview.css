@@ -185,3 +185,12 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 
 .pp-load-status{padding:24px 0 8px;text-align:center;color:var(--muted);font-size:13px;font-weight:700}
 .pp-load-sentinel{height:1px}
+
+/* Related public listings close the buyer journey before owner valuation. */
+.property-preview.pp-is-detail .pp-related{margin:60px 0 0;min-width:0}
+.property-preview.pp-is-detail .pp-related-heading{margin-bottom:24px}
+.property-preview.pp-is-detail .pp-related-heading h2{color:#4e6878;font-size:clamp(27px,3vw,36px);margin:8px 0 0}
+.property-preview.pp-is-detail .pp-related .pp-grid{align-items:stretch}
+.property-preview.pp-is-detail .pp-related .pp-card-content h3{font-size:19px;line-height:1.34;margin:7px 0 13px;color:#4e6878}
+.property-preview.pp-is-detail .pp-related-overview{display:inline-block;margin-top:24px;color:#346d82;font-weight:700;text-underline-offset:4px}
+@media(max-width:600px){.property-preview.pp-is-detail .pp-related{margin-top:42px}.property-preview.pp-is-detail .pp-related .pp-grid{grid-template-columns:minmax(0,1fr)}}
