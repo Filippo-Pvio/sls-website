@@ -26,7 +26,7 @@ const norm=v=>String(v??'').trim().toLocaleLowerCase('de-DE');
 function flatStrings(v,out=[]){if(v==null)return out;if(typeof v==='string'||typeof v==='number'){out.push(norm(v));return out;}if(Array.isArray(v)){for(const x of v)flatStrings(x,out);return out;}if(typeof v==='object')for(const x of Object.values(v))flatStrings(x,out);return out;}
 function hasText(v,list){const hay=flatStrings(v).join(' | ');return list.some(x=>hay.includes(norm(x)));}
 const PORTAL=['homepage','immobilienscout24','immoscout24','immowelt','sls website','sls.de','ebay kleinanzeigen','kleinanzeigen','frimo'];
-const OWN_MAIL=['212 suchmail verkauf','212 suchmail','312 suchkunden mail vermietung','312 suchkunden-mail vermietung','312 suchkunden mail','312 suchkunden'];
+const OWN_MAIL_CATEGORY_IDS=new Set([180736,180740]);
 const PRICE_FINANCE=['preis und finanzierung','preis & finanzierung','preis','finanzierung','finanzierbarkeit'];
 try{
  const unit=await get(`units/${TEST_ID}?new=1`);
@@ -46,9 +46,7 @@ try{
  }
  const portalActivities=activitiesResult.rows.filter(a=>hasText(a,PORTAL));
  const portalClients=new Set(portalActivities.flatMap(a=>[a.client_id,...(a.client_ids||[]),...(a.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
- const messageCategories=new Map(activityTypesResult.rows.filter(t=>norm(t.category)==='message').map(t=>[Number(t.id),norm(t.name)]));
- const ownCategoryIds=new Set([...messageCategories].filter(([,name])=>OWN_MAIL.some(label=>name.includes(norm(label)))).map(([id])=>id));
- const ownEmails=emailActivitiesResult.rows.filter(e=>ownCategoryIds.has(Number(e.message_category_id??e.activatable?.message_category_id??e.message?.message_category_id)));
+ const ownEmails=emailActivitiesResult.rows.filter(e=>OWN_MAIL_CATEGORY_IDS.has(Number(e.message_category_id??e.activatable?.message_category_id??e.message?.message_category_id)));
  const ownClients=new Set(ownEmails.flatMap(e=>[e.client_id,...(e.client_ids||[]),...(e.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
  const amounts=deals.map(d=>d.sold_price??d.purchase_price??d.offer_price??d.price).map(v=>v?.value??v).map(v=>Number(String(v??'').replace(/\./g,'').replace(',','.').replace(/[^0-9.-]/g,''))).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
  const rejectionReasons={priceFinance:0,other:0};
