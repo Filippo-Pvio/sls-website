@@ -30,9 +30,20 @@ try{
   await page.waitForFunction(()=>document.querySelector('#pp-map-status').textContent.includes('13 von 14'));
   assert.equal(await page.locator('#pp-results .pp-card').count(),6);
   assert.ok(await page.locator('.pp-map-marker').count()>0);
-  await page.locator('#pp-pagination [data-page="2"]').click();assert.equal(await page.locator('#pp-results .pp-card').count(),6);
-  assert.equal(await page.locator('#pp-results .pp-card-shell').first().getAttribute('data-property-id'),'7');
-  await page.locator('.pp-map-marker').first().click();await page.locator('.pp-map-popup [data-select="1"]').click();
+  assert.equal(await page.locator('#pp-pagination').count(),0);
+  await page.locator('#pp-load-sentinel').scrollIntoViewIfNeeded();
+  await page.waitForFunction(()=>document.querySelectorAll('#pp-results .pp-card').length>6);
+  assert.equal(await page.locator('#pp-results .pp-card-shell').first().getAttribute('data-property-id'),'1');
+  if(width===1440){
+    await page.locator('#pp-results .pp-card').nth(7).scrollIntoViewIfNeeded();
+    const before=await page.evaluate(()=>scrollY);
+    await page.locator('#pp-results .pp-card').nth(7).click();await page.locator('.pp-detail-header').waitFor();
+    await page.goBack();await page.waitForFunction(()=>document.querySelectorAll('#pp-results .pp-card').length>6);
+    await page.waitForFunction(y=>Math.abs(scrollY-y)<30,before);
+    console.log('PASS back navigation restores expanded results and scroll position');
+  }
+
+  await page.locator('.pp-map-marker').first().click();await page.locator('.pp-map-popup [data-select="1"]').last().click();
   assert.equal(await page.locator('#pp-results .is-map-selected').getAttribute('data-property-id'),'1');
   if(width<=850){
    await page.locator('#pp-mobile-filter').click();assert.equal(await page.locator('#pp-filter-dialog').isVisible(),true);
@@ -54,7 +65,11 @@ try{
   }
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   await page.locator('#pp-count').scrollIntoViewIfNeeded();await page.screenshot({path:`/tmp/sls-search-map-${width}.png`});
-  console.log(`PASS ${width}px: full feed, six-card pagination, map selection, search/filter, no overflow`);
+  if(width>850)await page.locator('[data-view="list"]').click();else await page.locator('#pp-mobile-map').click();
+  await page.evaluate(()=>scrollTo(0,0));
+  await page.locator('#pp-load-sentinel').scrollIntoViewIfNeeded();
+  await page.waitForFunction(()=>document.querySelectorAll('#pp-results .pp-card').length===14);
+  console.log(`PASS ${width}px: full feed, six-card start and automatic scroll loading, map selection, search/filter, no overflow`);
  }
  failNextPage=true;await page.goto('https://sls-preview.test/immobilien-test/');await page.locator('#pp-catalog-retry').waitFor();
  assert.match(await page.locator('#pp-count').innerText(),/bisher geladen/);failNextPage=false;await page.locator('#pp-catalog-retry').click();await page.waitForFunction(()=>document.querySelector('#pp-count').textContent==='14 Immobilien');

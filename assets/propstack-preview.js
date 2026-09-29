@@ -106,15 +106,15 @@
     if(sort!=='default')found.sort((a,b)=>a[key]==null?b[key]==null?0:1:b[key]==null?-1:direction*(a[key]-b[key]));
     return found;
   }
-  function renderList(){
-    const found=browseItems(),size=viewMode==='map'?6:9,pages=Math.max(1,Math.ceil(found.length/size));
-    browsePage=Math.min(browsePage,pages);
+  let restoringBrowse=null,loadFrame=0;
+  function renderList(updateMap=true){
+    const found=browseItems(),size=viewMode==='map'?6:9;
     $('#pp-count').textContent=`${found.length} ${found.length===1?'Immobilie':'Immobilien'}${hasMore?' bisher geladen':''}`;
-    $('#pp-results').innerHTML=found.length?found.slice((browsePage-1)*size,browsePage*size).map(card).join(''):'<div class="pp-error">Keine passenden Immobilien. Bitte ändern Sie Ihre Suche oder Filter.</div>';
+    $('#pp-results').innerHTML=found.length?found.slice(0,browsePage*size).map(card).join(''):'<div class="pp-error">Keine passenden Immobilien. Bitte ändern Sie Ihre Suche oder Filter.</div>';
     document.querySelectorAll('#pp-results .pp-card-shell').forEach(el=>el.classList.toggle('is-map-selected',el.dataset.propertyId===selectedProperty));
     $('#pp-progress').innerHTML=catalogError?'Nicht alle Angebote konnten geladen werden. <button type="button" id="pp-catalog-retry">Erneut versuchen</button>':hasMore?'Weitere Angebote werden geladen …':'';
     $('#pp-catalog-retry')?.addEventListener('click',()=>ensureCatalog());
-    $('#pp-pagination').innerHTML=pages>1?`<button type="button" data-page="${browsePage-1}" ${browsePage===1?'disabled':''}>← Zurück</button><span>Seite ${browsePage} von ${pages}</span><button type="button" data-page="${browsePage+1}" ${browsePage===pages?'disabled':''}>Weiter →</button>`:'';
+    $('#pp-load-sentinel').hidden=browsePage*size>=found.length;
     document.body.classList.toggle('pp-is-map',viewMode==='map');
     $('#pp-browse-layout').classList.toggle('is-map-view',viewMode==='map');
     $('#pp-map-panel').hidden=viewMode!=='map';
@@ -124,14 +124,30 @@
     const filterCount=Object.values(activeFilters()).filter(Boolean).length;
     $('#pp-mobile-filter span').textContent=filterCount?`Filtern (${filterCount})`:'Filtern';
     syncFavorites();
-    if(viewMode==='map')updateBrowseMap(found);
+    if(viewMode==='map'&&updateMap)updateBrowseMap(found);
+    if(restoringBrowse&&!hasMore){
+      const saved=restoringBrowse;
+      requestAnimationFrame(()=>{window.scrollTo(0,saved.scrollY||0);requestAnimationFrame(()=>{restoringBrowse=null})});
+    }
+    scheduleMoreVisible();
+  }
+  function scheduleMoreVisible(){
+    if(loadFrame)return;
+    loadFrame=requestAnimationFrame(()=>{
+      loadFrame=0;
+      if(restoringBrowse)return;
+      const sentinel=$('#pp-load-sentinel');
+      if(!sentinel||sentinel.hidden)return;
+      const rect=sentinel.getBoundingClientRect();
+      if(rect.top<window.innerHeight+180&&rect.bottom>=0){browsePage++;renderList(false)}
+    });
   }
   async function updateBrowseMap(items){
     const own=++mapVersion;
     try{
       if(!mapPromise)mapPromise=import('/assets/property-map.mjs').then(({createPropertyMap})=>createPropertyMap($('#pp-list-map'),$('#pp-map-status'),propertyId=>{
         const index=browseItems().findIndex(p=>String(p.id)===propertyId);if(index<0)return;
-        selectedProperty=propertyId;browsePage=Math.floor(index/6)+1;renderList();
+        selectedProperty=propertyId;browsePage=Math.max(browsePage,Math.floor(index/6)+1);renderList();
         const card=[...document.querySelectorAll('#pp-results .pp-card-shell')].find(el=>el.dataset.propertyId===propertyId);
         card?.scrollIntoView({block:'nearest',behavior:'smooth'});card?.querySelector('a')?.focus({preventScroll:true});
       },previewLink)).catch(error=>{mapPromise=null;throw error});
@@ -162,10 +178,27 @@
     search.insertAdjacentHTML('afterbegin',`<div class="pp-mobile-tools"><form id="pp-quick-search" role="search"><label class="pp-sr-only" for="pp-quick-query">Ort, PLZ oder Objekt suchen</label><input id="pp-quick-query" type="search" placeholder="Ort, PLZ oder Objekt suchen"><button type="submit" aria-label="Jetzt suchen">⌕</button></form><nav aria-label="Immobiliensuche"><button type="button" id="pp-mobile-sort"><b aria-hidden="true">⇅</b><span>Sortieren</span></button><a href="/immobilien-test/?favoriten=1${demo?'&demo=1':''}" id="pp-mobile-favorites"><b aria-hidden="true">♡</b><span>Favoriten (${favorites.size})</span></a><button type="button" id="pp-mobile-filter"><b aria-hidden="true">☷</b><span>Filtern</span></button><button type="button" id="pp-mobile-map" aria-pressed="false"><b aria-hidden="true">▧</b><span>Karte</span></button></nav></div><div class="pp-view-switch" role="group" aria-label="Ansicht wählen"><button type="button" data-view="list" aria-pressed="true">Liste</button><button type="button" data-view="map" aria-pressed="false">Karte</button></div>`);
     $('.pp-wrap').prepend($('.pp-mobile-tools'));
     const grid=$('#pp-results');grid.insertAdjacentHTML('beforebegin','<div id="pp-browse-layout"><div class="pp-list-column"></div><aside id="pp-map-panel" aria-label="Karte der Immobilien" hidden><div class="pp-map-sticky"><div id="pp-list-map" aria-label="Ungefähre Immobilienstandorte"></div><p class="pp-map-disclaimer">Ungefähre Lage des Postleitzahlgebiets – keine Objektadresse.</p><p id="pp-map-status" role="status">Karte wird geladen …</p></div></aside></div>');
-    $('.pp-list-column').append(grid);$('.pp-list-column').insertAdjacentHTML('beforeend','<nav id="pp-pagination" aria-label="Ergebnisseiten"></nav>');
+    $('.pp-list-column').append(grid,$('#pp-load-sentinel'));
     $('#pp-load-sentinel').hidden=true;
     document.body.insertAdjacentHTML('beforeend','<dialog id="pp-filter-dialog" class="pp-search-dialog" aria-labelledby="pp-filter-title"><div class="pp-dialog-top"><h2 id="pp-filter-title">Immobilien filtern</h2><button type="button" data-close-dialog aria-label="Filter schließen">×</button></div><div id="pp-filter-slot"></div></dialog><dialog id="pp-sort-dialog" class="pp-search-dialog" aria-labelledby="pp-sort-title"><div class="pp-dialog-top"><h2 id="pp-sort-title">Sortieren</h2><button type="button" data-close-dialog aria-label="Sortierung schließen">×</button></div><label for="pp-mobile-sort-select">Reihenfolge</label><select id="pp-mobile-sort-select"></select></dialog>');
     const form=$('#pp-form'),placeholder=document.createComment('filter form');form.before(placeholder);
+    restoringBrowse=history.state?.ppBrowse||null;
+    if(restoringBrowse){
+      browsePage=Math.max(1,Number(restoringBrowse.batches)||1);
+      viewMode=restoringBrowse.view==='map'?'map':'list';
+      for(const [name,value] of Object.entries(restoringBrowse.fields||{}))if(form.elements.namedItem(name))form.elements.namedItem(name).value=value;
+      $('#pp-sort').value=restoringBrowse.sort||'default';
+      $('#pp-quick-query').value=form.elements.query.value;
+    }
+    history.scrollRestoration='manual';
+    const saveBrowse=()=>{
+      if(restoringBrowse)return;
+      const state={batches:browsePage,view:viewMode,fields:Object.fromEntries(new FormData(form)),sort:$('#pp-sort').value,scrollY:window.scrollY};
+      history.replaceState({...history.state,ppBrowse:state},'',location.href);
+    };
+    document.addEventListener('click',event=>{const link=event.target.closest('a[href]');if(link&&new URL(link.href).searchParams.has('objekt'))saveBrowse()},{capture:true});
+    window.addEventListener('pagehide',saveBrowse);
+
     $('#pp-mobile-filter').addEventListener('click',()=>{$('#pp-filter-slot').append(form);$('#pp-filter-dialog').showModal()});
     $('#pp-filter-dialog').addEventListener('close',()=>placeholder.after(form));
     $('#pp-mobile-sort-select').innerHTML=$('#pp-sort').innerHTML;
@@ -174,11 +207,13 @@
     document.querySelectorAll('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>button.closest('dialog').close()));
     document.querySelectorAll('.pp-search-dialog').forEach(dialog=>dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()}}));
     $('#pp-quick-search').addEventListener('submit',event=>{event.preventDefault();form.elements.query.value=$('#pp-quick-query').value;browsePage=1;renderList()});
-    const setView=mode=>{viewMode=mode;browsePage=1;const next=new URL(location.href);if(mode==='map')next.searchParams.set('ansicht','karte');else next.searchParams.delete('ansicht');history.replaceState(null,'',next);renderList()};
+    const setView=mode=>{viewMode=mode;browsePage=1;const next=new URL(location.href);if(mode==='map')next.searchParams.set('ansicht','karte');else next.searchParams.delete('ansicht');history.replaceState({...history.state,ppBrowse:null},'',next);renderList()};
     document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
     $('#pp-mobile-map').addEventListener('click',()=>setView(viewMode==='map'?'list':'map'));
-    $('#pp-pagination').addEventListener('click',event=>{const button=event.target.closest('[data-page]');if(button&&!button.disabled){browsePage=Number(button.dataset.page);renderList();$('#pp-count').scrollIntoView({block:'start',behavior:'smooth'})}});
+
     for(const eventName of ['mouseover','focusin'])grid.addEventListener(eventName,event=>{const card=event.target.closest('[data-property-id]');if(card&&viewMode==='map'&&!card.contains(event.relatedTarget))mapApi?.focus(card.dataset.propertyId)});
+    window.addEventListener('scroll',scheduleMoreVisible,{passive:true});
+    window.addEventListener('resize',scheduleMoreVisible);
     window.addEventListener('resize',()=>{mapApi?.resize();if(window.innerWidth>850){$('#pp-filter-dialog').close();$('#pp-sort-dialog').close()}});
   }
   function initSimilarProperties(p){
