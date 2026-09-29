@@ -113,13 +113,37 @@
     await loadNextPage();
   }
   let restoringBrowse=null,loadFrame=0;
+  function placeSearchProfileCta(){
+    const cta=document.querySelector('.sls-search-profile-cta'),grid=$('#pp-results');
+    if(!cta||!grid)return;
+    if(favoritesView||id||demo){cta.hidden=true;return}
+    cta.hidden=false;
+    const title=cta.querySelector('strong'),copy=cta.querySelector('p');
+    const cards=[...grid.querySelectorAll('.pp-card-shell')];
+    const noResults=cards.length===0&&!loadingMore;
+    if(noResults){
+      if(title)title.textContent='Aktuell nichts Passendes gefunden?';
+      if(copy)copy.textContent='Speichern Sie Ihre Suche. Wir informieren Sie, sobald eine passende Immobilie verfügbar ist.';
+      grid.append(cta);
+      return;
+    }
+    if(title)title.textContent='Noch nicht das Richtige dabei?';
+    if(copy)copy.textContent='Speichern Sie Ihre Suche. Wir informieren Sie, sobald eine passende Immobilie verfügbar ist.';
+    const firstRound=viewMode==='map'?6:9;
+    const target=cards[Math.min(firstRound,cards.length)-1];
+    if(target)target.insertAdjacentElement('afterend',cta);
+  }
+
   function renderList(updateMap=true){
     const found=browseItems(),size=viewMode==='map'?6:9;
+    const cta=document.querySelector('.sls-search-profile-cta'),grid=$('#pp-results');
+    if(cta&&grid?.contains(cta))$('#pp-search').insertBefore(cta,grid);
     $('#pp-count').textContent=`${total} ${total===1?'Immobilie':'Immobilien'}`;
-    const visible=found.slice(0,browsePage*size),ids=visible.map(p=>String(p.id)),grid=$('#pp-results');
+    const visible=found.slice(0,browsePage*size),ids=visible.map(p=>String(p.id));
     if(renderedIds.length&&renderedIds.every((id,index)=>ids[index]===id))grid.insertAdjacentHTML('beforeend',visible.slice(renderedIds.length).map(card).join(''));
     else grid.innerHTML=visible.length?visible.map(card).join(''):loadingMore?'<p role="status">Immobilien werden geladen …</p>':'<div class="pp-error">Keine passenden Immobilien. Bitte ändern Sie Ihre Suche oder Filter.</div>';
     renderedIds=ids;
+    placeSearchProfileCta();
     document.querySelectorAll('#pp-results .pp-card-shell').forEach(el=>el.classList.toggle('is-map-selected',el.dataset.propertyId===selectedProperty));
     $('#pp-progress').innerHTML=catalogError?'Nicht alle Angebote konnten geladen werden. <button type="button" id="pp-catalog-retry">Erneut versuchen</button>':loadingMore?'Weitere Angebote werden geladen …':'';
     $('#pp-catalog-retry')?.addEventListener('click',()=>loadNextPage());
