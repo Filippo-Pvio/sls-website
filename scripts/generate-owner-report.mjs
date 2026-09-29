@@ -32,7 +32,7 @@ try{
  const unit=await get(`units/${TEST_ID}?new=1`);
  if(String(unit.id)!==TEST_ID)throw new Error('object_scope_not_verified');
  const unitId=String(unit.id);
- const [events,deals,activitiesResult,emailsResult]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`),optionalAll(`activities?property_id=${unitId}&only_inquiries=1`),optionalAll(`emails?property_id=${unitId}`)]);
+ const [events,deals,activitiesResult,emailActivitiesResult,activityTypesResult,clientSourcesResult]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`),optionalAll(`activities?property_id=${unitId}&only_inquiries=1`),optionalAll(`activities?property_id=${unitId}&activatable_type=Message`),optionalAll(`activity_types`),optionalAll(`client_sources`)]);
  if(events.some(e=>!belongs(e,unitId))||deals.some(d=>!belongs(d,unitId)))throw new Error('object_scope_not_verified');
  // SLS category IDs verified in Propstack administration on 2026-09-29.
  const viewingEvents=events.filter(e=>[321135,321136].includes(Number(e.note_type_id)));
