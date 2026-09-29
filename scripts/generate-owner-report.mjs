@@ -44,7 +44,8 @@ try{
   else if(e.state==='neutral'&&Date.parse(e.starts_at)>now)viewings.planned++;
   else viewings.unconfirmed++;
  }
- const portalActivities=activitiesResult.rows.filter(a=>hasText(a,PORTAL));
+ const portalSourceIds=new Set(clientSourcesResult.rows.filter(s=>hasText(s.name,PORTAL)).map(s=>Number(s.id)).filter(Number.isFinite));
+ const portalActivities=activitiesResult.rows.filter(a=>portalSourceIds.has(Number(a.source_id??a.client_source_id)));
  const portalClients=new Set(portalActivities.flatMap(a=>[a.client_id,...(a.client_ids||[]),...(a.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
  const ownEmails=emailActivitiesResult.rows.filter(e=>OWN_MAIL_CATEGORY_IDS.has(Number(e.category_id??e.message_category_id??e.activatable?.message_category_id??e.message?.message_category_id)));
  const ownClients=new Set(ownEmails.flatMap(e=>[e.client_id,...(e.client_ids||[]),...(e.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
