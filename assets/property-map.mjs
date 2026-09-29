@@ -23,6 +23,8 @@ export async function createPropertyMap(container,status,onSelect,detailLink){
   const L=await loadLeaflet();
   const map=L.map(container,{scrollWheelZoom:false,maxZoom:14}).setView([51.3,7.2],7);
   const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · Orte: <a href="https://www.geonames.org/" target="_blank" rel="noopener">GeoNames</a>'}).addTo(map);
+  const summaries=new Map();
+  import('/assets/google-property-basemap.mjs').then(({googleBasemap})=>googleBasemap(L,map,tiles,()=>{status.textContent='Google Maps derzeit nicht verfügbar. Ersatzkarte wird angezeigt.'})).catch(()=>{status.textContent='Google Maps derzeit nicht verfügbar. Ersatzkarte wird angezeigt.'});
   let tileFailed=false,points=[],markers=new Map(),currentKey='',version=0;
   const layer=L.layerGroup().addTo(map);
   tiles.on('tileerror',()=>{tileFailed=true;status.textContent='Kartenhintergrund derzeit nicht verfügbar. Die Objektliste bleibt nutzbar.'});
@@ -33,9 +35,28 @@ export async function createPropertyMap(container,status,onSelect,detailLink){
     groups.forEach(group=>{
       const center=[0,1].map(axis=>group.reduce((sum,p)=>sum+p.point[axis],0)/group.length);
       const label=group.length>1?String(group.length):money(group[0].item.price);
-      const marker=L.marker(center,{keyboard:true,title:group.length>1?`${group.length} Immobilien – ungefähre Lage`:group[0].item.title,icon:L.divIcon({className:'pp-map-marker',html:`<span>${escape(label)}</span>`,iconSize:[group.length>1?44:112,40],iconAnchor:[group.length>1?22:56,20]})}).addTo(layer);
+      const marker=L.marker(center,{keyboard:true,title:group.length>1?`${group.length} Immobilien – ungefähre Lage`:`${group[0].item.zip} ${group[0].item.city} – ungefähre Lage`,icon:L.divIcon({className:'pp-map-marker',html:`<span>${escape(label)}</span>`,iconSize:[group.length>1?44:112,40],iconAnchor:[group.length>1?22:56,20]})}).addTo(layer);
       const popup=document.createElement('div');popup.className='pp-map-popup';
-      popup.innerHTML=`<p class="pp-map-popup-hint">Ungefähre Lage · ${group.length} ${group.length===1?'Immobilie':'Immobilien'}</p>`+group.map(({item})=>`<article>${item.images?.[0]?`<img src="${escape(item.images[0])}" alt="" loading="lazy">`:''}<strong>${escape(item.title)}</strong><p>${escape(item.zip)} ${escape(item.city)} · ${escape(money(item.price))}</p><button type="button" data-select="${escape(item.id)}">In Liste zeigen</button><a href="${escape(detailLink(item))}">Objekt ansehen →</a></article>`).join('');
+      popup.innerHTML=`<p class="pp-map-popup-hint">Ungefähre Lage · ${group.length} ${group.length===1?'Immobilie':'Immobilien'}</p>`+group.map(({item})=>`<article data-popup-id="${escape(item.id)}"><strong>${escape(item.zip)} ${escape(item.city)}</strong><p>${escape(money(item.price))}</p><button type="button" data-select="${escape(item.id)}">In Liste zeigen</button><a href="${escape(detailLink(item))}">Objekt ansehen →</a></article>`).join('');
+      // Fetch card details only for popup entries actually scrolled into view.
+      let observer;
+      marker.on('popupopen',()=>{
+        observer?.disconnect();
+        observer=new IntersectionObserver(entries=>entries.forEach(async entry=>{
+          if(!entry.isIntersecting)return;
+          observer.unobserve(entry.target);
+          const node=entry.target,id=node.dataset.popupId;if(node.dataset.loaded)return;
+          try{
+            if(!summaries.has(id))summaries.set(id,fetch(`/api/propstack-properties?summary=${encodeURIComponent(id)}`,{signal:AbortSignal.timeout(15000)}).then(async r=>{if(!r.ok)throw new Error('Objekt fehlt');return (await r.json()).items[0]}).catch(e=>{summaries.delete(id);throw e}));
+            const item=await summaries.get(id);if(!item)return;
+            node.querySelector('strong').textContent=item.title;
+            if(item.images?.[0]){const img=document.createElement('img');img.src=item.images[0];img.alt='';img.loading='lazy';node.prepend(img)}
+            node.dataset.loaded='1';
+          }catch{}
+        }),{root:popup.closest('.leaflet-popup-content'),rootMargin:'50px'});
+        popup.querySelectorAll('[data-popup-id]').forEach(node=>observer.observe(node));
+      });
+      marker.on('popupclose',()=>observer?.disconnect());
       popup.addEventListener('click',event=>{const button=event.target.closest('[data-select]');if(button)onSelect(button.dataset.select)});
       marker.bindPopup(popup,{maxWidth:310,maxHeight:320});
       group.forEach(({item})=>markers.set(String(item.id),marker));

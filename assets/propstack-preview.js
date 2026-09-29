@@ -8,7 +8,8 @@
   const sample={id:'demo',title:'Lichtdurchflutete Wohnung mit Balkon, offenem Wohnen, Stellplatz und langfristig gesicherter Miete',city:'Raesfeld',zip:'46348',price:139500,area:52.06,rooms:2,bedrooms:1,baths:1,year:2002,type:'Wohnung',status:'Verfügbar',images:['https://sls.de/wp-content/uploads/2026/09/6927c1a63b43bc35506a97fd149101a1.jpg','https://sls.de/wp-content/uploads/2026/09/8b0f34e1662b362b49076948be67fb47.jpg','https://sls.de/wp-content/uploads/2026/09/ed4ad76935300ee4c87702b1fb3e962c.jpg','https://sls.de/wp-content/uploads/2026/09/ee63526f68d37e694efac2bc8b383435.jpg'],description:'Die Wohnung liegt im ersten Obergeschoss. Durch die offene Küche und den hellen Wohnbereich entsteht ein zusammenhängender Raum. Zur Wohnung gehören ein Balkon, ein Außenstellplatz und ein Kellerraum. Die Wohnung ist seit 2019 vermietet.',location:'46348 Raesfeld',features:'Balkon, Außenstellplatz, Kellerraum',courtage:'3,57 % inkl. MwSt.',broker:{name:'Herr Cüneyt Demirli',phone:'(02369) 742 80 20',email:'c.demirli@sls.de',mobile:'+49 152 099 30 734'}};
   sample.objectFacts=[{label:'Standort',value:'46348 Raesfeld'},{label:'Objekttyp',value:'Wohnung'},{label:'Wohnfläche',value:sample.area,kind:'area'},{label:'Zimmer',value:sample.rooms},{label:'Schlafzimmer',value:sample.bedrooms},{label:'Badezimmer',value:sample.baths},{label:'Baujahr',value:sample.year}];
   let all=[], total=0, currentPage=1, hasMore=false, loadingMore=false;
-  let browsePage=1,viewMode=url.searchParams.get('ansicht')==='karte'?'map':'list',catalogPromise=null,catalogError=false,mapApi=null,mapPromise=null,mapVersion=0,selectedProperty=null;
+  let browsePage=1,viewMode=url.searchParams.get('ansicht')==='karte'?'map':'list',catalogError=false,mapApi=null,mapPromise=null,mapVersion=0,selectedProperty=null;
+  let browseGeneration=0,browseRequest=null,committedQuery=new URLSearchParams(),renderedIds=[],mapItems=null;
   const favoritesView=url.searchParams.get('favoriten')==='1'&&!id;
   const favoriteKey=demo?'sls-property-favorites-demo-v1':'sls-property-favorites-v1';
   const parseFavorites=raw=>{
@@ -64,7 +65,7 @@
         try{
           if(demo)result={item:sample};
           else{
-            const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(propertyId)}`,{cache:'no-store',signal:AbortSignal.timeout(15000)});
+            const response=await fetch(`/api/propstack-properties?summary=${encodeURIComponent(propertyId)}`,{cache:'no-store',signal:AbortSignal.timeout(15000)});
             if(response.status===404)result={state:'unavailable'};
             else{if(!response.ok)throw new Error('Ladefehler');const data=await response.json();const item=data.items?.find(p=>String(p.id)===propertyId);if(!item)throw new Error('Objekt fehlt');result={item}}
           }
@@ -96,25 +97,33 @@
       rooms:Number(form.get('rooms'))
     };
   };
-  const filteredItems=()=>{
-    const {query,city,type,price,minArea,rooms}=activeFilters();
-    return all.filter(p=>(!query||`${p.title} ${p.reference||''} ${p.id} ${p.city} ${p.zip}`.toLocaleLowerCase('de').includes(query))&&(!city||p.city.toLocaleLowerCase('de').includes(city))&&(!type||p.type===type)&&(!price||(p.price!=null&&p.price<=price))&&(!minArea||(p.area!=null&&p.area>=minArea))&&(!rooms||(p.rooms!=null&&p.rooms>=rooms)));
-  };
-  function browseItems(){
-    const found=filteredItems(),sort=$('#pp-sort').value;
-    const key=sort==='area-desc'?'area':'price',direction=sort==='price-asc'?1:-1;
-    if(sort!=='default')found.sort((a,b)=>a[key]==null?b[key]==null?0:1:b[key]==null?-1:direction*(a[key]-b[key]));
-    return found;
+  const browseItems=()=>all;
+  function captureQuery(){
+    const q=new URLSearchParams();
+    for(const [key,value] of new FormData($('#pp-form')))if(String(value).trim())q.set(key,String(value).trim());
+    q.set('sort',$('#pp-sort').value);return q;
+  }
+  async function resetBrowse(){
+    restoringBrowse=null;browsePage=1;currentPage=0;all=[];total=0;hasMore=false;catalogError=false;
+    mapItems=null;mapVersion++;browseGeneration++;browseRequest?.abort();loadingMore=false;
+    committedQuery=captureQuery();renderedIds=[];$('#pp-results').innerHTML='<p role="status">Immobilien werden geladen …</p>';
+    if(demo){
+      const f=activeFilters();all=[sample].filter(p=>(!f.query||`${p.title} ${p.city} ${p.zip}`.toLocaleLowerCase('de').includes(f.query))&&(!f.city||p.city.toLocaleLowerCase('de').includes(f.city))&&(!f.type||p.type===f.type)&&(!f.price||p.price<=f.price)&&(!f.minArea||p.area>=f.minArea)&&(!f.rooms||p.rooms>=f.rooms));total=all.length;renderList();return;
+    }
+    await loadNextPage();
   }
   let restoringBrowse=null,loadFrame=0;
   function renderList(updateMap=true){
     const found=browseItems(),size=viewMode==='map'?6:9;
-    $('#pp-count').textContent=`${found.length} ${found.length===1?'Immobilie':'Immobilien'}${hasMore?' bisher geladen':''}`;
-    $('#pp-results').innerHTML=found.length?found.slice(0,browsePage*size).map(card).join(''):'<div class="pp-error">Keine passenden Immobilien. Bitte ändern Sie Ihre Suche oder Filter.</div>';
+    $('#pp-count').textContent=`${total} ${total===1?'Immobilie':'Immobilien'}`;
+    const visible=found.slice(0,browsePage*size),ids=visible.map(p=>String(p.id)),grid=$('#pp-results');
+    if(renderedIds.length&&renderedIds.every((id,index)=>ids[index]===id))grid.insertAdjacentHTML('beforeend',visible.slice(renderedIds.length).map(card).join(''));
+    else grid.innerHTML=visible.length?visible.map(card).join(''):loadingMore?'<p role="status">Immobilien werden geladen …</p>':'<div class="pp-error">Keine passenden Immobilien. Bitte ändern Sie Ihre Suche oder Filter.</div>';
+    renderedIds=ids;
     document.querySelectorAll('#pp-results .pp-card-shell').forEach(el=>el.classList.toggle('is-map-selected',el.dataset.propertyId===selectedProperty));
-    $('#pp-progress').innerHTML=catalogError?'Nicht alle Angebote konnten geladen werden. <button type="button" id="pp-catalog-retry">Erneut versuchen</button>':hasMore?'Weitere Angebote werden geladen …':'';
-    $('#pp-catalog-retry')?.addEventListener('click',()=>ensureCatalog());
-    $('#pp-load-sentinel').hidden=browsePage*size>=found.length;
+    $('#pp-progress').innerHTML=catalogError?'Nicht alle Angebote konnten geladen werden. <button type="button" id="pp-catalog-retry">Erneut versuchen</button>':loadingMore?'Weitere Angebote werden geladen …':'';
+    $('#pp-catalog-retry')?.addEventListener('click',()=>loadNextPage());
+    $('#pp-load-sentinel').hidden=catalogError||(!hasMore&&browsePage*size>=found.length);
     document.body.classList.toggle('pp-is-map',viewMode==='map');
     $('#pp-browse-layout').classList.toggle('is-map-view',viewMode==='map');
     $('#pp-map-panel').hidden=viewMode!=='map';
@@ -124,8 +133,8 @@
     const filterCount=Object.values(activeFilters()).filter(Boolean).length;
     $('#pp-mobile-filter span').textContent=filterCount?`Filtern (${filterCount})`:'Filtern';
     syncFavorites();
-    if(viewMode==='map'&&updateMap)updateBrowseMap(found);
-    if(restoringBrowse&&!hasMore){
+    if(viewMode==='map'&&updateMap)updateBrowseMap();
+    if(restoringBrowse&&(currentPage>=(restoringBrowse.batches||1)||!hasMore)){
       const saved=restoringBrowse;
       requestAnimationFrame(()=>{window.scrollTo(0,saved.scrollY||0);requestAnimationFrame(()=>{restoringBrowse=null})});
     }
@@ -135,42 +144,65 @@
     if(loadFrame)return;
     loadFrame=requestAnimationFrame(()=>{
       loadFrame=0;
-      if(restoringBrowse)return;
+      if(restoringBrowse||loadingMore||catalogError)return;
       const sentinel=$('#pp-load-sentinel');
       if(!sentinel||sentinel.hidden)return;
       const rect=sentinel.getBoundingClientRect();
-      if(rect.top<window.innerHeight+180&&rect.bottom>=0){browsePage++;renderList(false)}
+      if(rect.top<window.innerHeight+180&&rect.bottom>=0){if(browsePage*(viewMode==='map'?6:9)<all.length){browsePage++;renderList(false)}else if(hasMore)loadNextPage()}
     });
   }
-  async function updateBrowseMap(items){
+  async function updateBrowseMap(){
     const own=++mapVersion;
     try{
-      if(!mapPromise)mapPromise=import('/assets/property-map.mjs').then(({createPropertyMap})=>createPropertyMap($('#pp-list-map'),$('#pp-map-status'),propertyId=>{
-        const index=browseItems().findIndex(p=>String(p.id)===propertyId);if(index<0)return;
+      if(!mapPromise)mapPromise=import('/assets/property-map.mjs').then(({createPropertyMap})=>createPropertyMap($('#pp-list-map'),$('#pp-map-status'),async propertyId=>{
+        const generation=browseGeneration;
+        while(!all.some(p=>String(p.id)===propertyId)&&hasMore&&!loadingMore&&!catalogError){await loadNextPage();if(generation!==browseGeneration)return}
+        const index=all.findIndex(p=>String(p.id)===propertyId);if(index<0)return;
         selectedProperty=propertyId;browsePage=Math.max(browsePage,Math.floor(index/6)+1);renderList();
         const card=[...document.querySelectorAll('#pp-results .pp-card-shell')].find(el=>el.dataset.propertyId===propertyId);
         card?.scrollIntoView({block:'nearest',behavior:'smooth'});card?.querySelector('a')?.focus({preventScroll:true});
       },previewLink)).catch(error=>{mapPromise=null;throw error});
       mapApi=await mapPromise;
-      if(own===mapVersion&&viewMode==='map')await mapApi.update(items);
-    }catch{if(own===mapVersion){$('#pp-map-status').innerHTML='Die Karte konnte nicht geladen werden. <button type="button" id="pp-map-retry">Erneut versuchen</button>';$('#pp-map-retry').addEventListener('click',()=>updateBrowseMap(browseItems()))}}
+      let items=mapItems;
+      if(!items){
+        if(demo)items=all;
+        else{
+          const q=new URLSearchParams(committedQuery);q.set('map','1');
+          const response=await fetch(`/api/propstack-properties?${q}`,{signal:AbortSignal.timeout(20000)});
+          if(!response.ok)throw new Error('Kartenpunkte fehlen');
+          const data=await response.json();if(!Array.isArray(data.items))throw new Error('Kartenpunkte fehlen');items=data.items;
+        }
+      }
+      if(own===mapVersion&&viewMode==='map'){mapItems=items;await mapApi.update(items)}
+    }catch{if(own===mapVersion){$('#pp-map-status').innerHTML='Die Karte konnte nicht geladen werden. <button type="button" id="pp-map-retry">Erneut versuchen</button>';$('#pp-map-retry').addEventListener('click',()=>updateBrowseMap())}}
   }
   async function fetchPage(page,{append=false}={}){
-    const response=await fetch(`/api/propstack-properties?page=${page}&per=9&sort=default`,{signal:AbortSignal.timeout(20000)});
-    const data=await response.json();
-    if(!response.ok||!Array.isArray(data.items))throw new Error(data.error||'Daten nicht abrufbar');
-    all=append?[...new Map([...all,...data.items].map(p=>[String(p.id),p])).values()]:data.items;
-    total=Number(data.total)||all.length;currentPage=page;hasMore=Boolean(data.hasMore);renderList();
+    const generation=browseGeneration;
+    browseRequest?.abort();browseRequest=new AbortController();
+    const controller=browseRequest;
+    const timeout=setTimeout(()=>controller.abort(),20000);
+    const q=new URLSearchParams(committedQuery);q.set('page',page);q.set('per',viewMode==='map'?6:9);
+    try{
+      const response=await fetch(`/api/propstack-properties?${q}`,{signal:controller.signal});
+      const data=await response.json();
+      if(generation!==browseGeneration)return false;
+      if(!response.ok||!Array.isArray(data.items))throw new Error(data.error||'Daten nicht abrufbar');
+      all=append?[...new Map([...all,...data.items].map(p=>[String(p.id),p])).values()]:data.items;
+      total=Number(data.total)||all.length;currentPage=page;hasMore=Boolean(data.hasMore);browsePage=Math.max(browsePage,page);
+      return true;
+    }finally{clearTimeout(timeout)}
   }
-  async function ensureCatalog(){
-    if(catalogPromise||demo||id||favoritesView)return catalogPromise;
-    catalogError=false;
-    catalogPromise=(async()=>{
-      try{while(hasMore){if(currentPage>=1000)throw new Error('Zu viele Ergebnisse');await fetchPage(currentPage+1,{append:true})}}
-      catch{catalogError=true}
-      finally{catalogPromise=null;renderList()}
-    })();
-    await catalogPromise;
+  async function loadNextPage(){
+    if(loadingMore||demo||id||favoritesView)return;
+    const generation=browseGeneration;loadingMore=true;catalogError=false;
+    $('#pp-progress').textContent='Weitere Angebote werden geladen …';
+    try{await fetchPage(currentPage+1,{append:currentPage>0})}
+    catch{if(generation===browseGeneration)catalogError=true}
+    finally{
+      if(generation===browseGeneration){loadingMore=false;renderList(currentPage===1);
+        if(restoringBrowse&&hasMore&&!catalogError&&currentPage<(restoringBrowse.batches||1))await loadNextPage();
+      }
+    }
   }
   function setupBrowse(){
     document.body.classList.add('pp-is-browse');
@@ -193,7 +225,7 @@
     history.scrollRestoration='manual';
     const saveBrowse=()=>{
       if(restoringBrowse)return;
-      const state={batches:browsePage,view:viewMode,fields:Object.fromEntries(new FormData(form)),sort:$('#pp-sort').value,scrollY:window.scrollY};
+      const state={batches:currentPage,view:viewMode,fields:Object.fromEntries(new FormData(form)),sort:$('#pp-sort').value,scrollY:window.scrollY};
       history.replaceState({...history.state,ppBrowse:state},'',location.href);
     };
     document.addEventListener('click',event=>{const link=event.target.closest('a[href]');if(link&&new URL(link.href).searchParams.has('objekt'))saveBrowse()},{capture:true});
@@ -203,11 +235,11 @@
     $('#pp-filter-dialog').addEventListener('close',()=>placeholder.after(form));
     $('#pp-mobile-sort-select').innerHTML=$('#pp-sort').innerHTML;
     $('#pp-mobile-sort').addEventListener('click',()=>{$('#pp-mobile-sort-select').value=$('#pp-sort').value;$('#pp-sort-dialog').showModal()});
-    $('#pp-mobile-sort-select').addEventListener('change',()=>{$('#pp-sort').value=$('#pp-mobile-sort-select').value;browsePage=1;renderList();$('#pp-sort-dialog').close()});
+    $('#pp-mobile-sort-select').addEventListener('change',()=>{$('#pp-sort').value=$('#pp-mobile-sort-select').value;resetBrowse();$('#pp-sort-dialog').close()});
     document.querySelectorAll('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>button.closest('dialog').close()));
     document.querySelectorAll('.pp-search-dialog').forEach(dialog=>dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()}}));
-    $('#pp-quick-search').addEventListener('submit',event=>{event.preventDefault();form.elements.query.value=$('#pp-quick-query').value;browsePage=1;renderList()});
-    const setView=mode=>{viewMode=mode;browsePage=1;const next=new URL(location.href);if(mode==='map')next.searchParams.set('ansicht','karte');else next.searchParams.delete('ansicht');history.replaceState({...history.state,ppBrowse:null},'',next);renderList()};
+    $('#pp-quick-search').addEventListener('submit',event=>{event.preventDefault();form.elements.query.value=$('#pp-quick-query').value;resetBrowse()});
+    const setView=mode=>{viewMode=mode;browsePage=1;const next=new URL(location.href);if(mode==='map')next.searchParams.set('ansicht','karte');else next.searchParams.delete('ansicht');history.replaceState({...history.state,ppBrowse:null},'',next);resetBrowse()};
     document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
     $('#pp-mobile-map').addEventListener('click',()=>setView(viewMode==='map'?'list':'map'));
 
@@ -228,18 +260,11 @@
       const controller=new AbortController();
       const timeout=setTimeout(()=>controller.abort(),20000);
       try{
-        const {similarProperties}=await import('/assets/property-similarity.mjs');
-        const candidates=[];
-        // Reuse the cached public feed, including subsequent listing pages.
-        for(let page=1;page<=50;page++){
-          const response=await fetch(`/api/propstack-properties?page=${page}&per=9&sort=default`,{signal:controller.signal});
-          if(!response.ok)throw new Error('Angebote nicht abrufbar');
-          const data=await response.json();
-          if(!Array.isArray(data.items))throw new Error('Ungültige Angebotsliste');
-          candidates.push(...data.items);
-          if(!data.hasMore)break;
-        }
-        render(similarProperties(p,candidates));
+        const response=await fetch(`/api/propstack-properties?similarTo=${encodeURIComponent(p.id)}`,{signal:controller.signal});
+        if(!response.ok)throw new Error('Angebote nicht abrufbar');
+        const data=await response.json();if(!Array.isArray(data.items))throw new Error('Ungültige Angebotsliste');
+        render(data.items);
+
       }catch{render([])}finally{clearTimeout(timeout)}
     };
     if('IntersectionObserver' in window){
@@ -388,12 +413,12 @@
       if(!id)setupBrowse();
       if(demo){all=[sample];total=1;hasMore=false;$('#pp-banner').textContent='Designvorschau mit einem öffentlich sichtbaren Beispielobjekt. Keine Live-Abfrage; Angaben und Verfügbarkeit bitte auf sls.de prüfen.'}
       else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'Daten nicht abrufbar');all=data.items;$('#pp-banner').textContent='Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
-      else {await fetchPage(1);$('#pp-banner').textContent='Aktuelle Kaufimmobilien aus Propstack im Status Vermarktung.'}
+      else {committedQuery=captureQuery();currentPage=0;await loadNextPage();$('#pp-banner').textContent='Aktuelle Kaufimmobilien aus Propstack im Status Vermarktung.'}
       if(id){const p=all.find(item=>item.id===id);if(p)renderDetail(p);else throw new Error('Dieses Objekt ist in der Testansicht nicht verfügbar.')}
-      else {renderList();ensureCatalog()}
+      else if(demo){renderList()}
     } catch(error){$('#pp-count').textContent='Noch keine Immobilien verfügbar';$('#pp-results').innerHTML=`<div class="pp-error">${esc(error.message)}<br><a href="${esc(location.pathname+location.search)}">Erneut laden</a><br><a href="/immobilien-test/?demo=1">Design mit einem Beispielobjekt ansehen</a></div>`}
   }
-  $('#pp-form').addEventListener('submit',event=>{event.preventDefault();browsePage=1;const quick=$('#pp-quick-query');if(quick)quick.value=$('#pp-form').elements.query.value;$('#pp-filter-dialog')?.close();renderList()});
-  $('#pp-sort').addEventListener('change',()=>{browsePage=1;renderList()});
+  $('#pp-form').addEventListener('submit',event=>{event.preventDefault();browsePage=1;const quick=$('#pp-quick-query');if(quick)quick.value=$('#pp-form').elements.query.value;$('#pp-filter-dialog')?.close();resetBrowse()});
+  $('#pp-sort').addEventListener('change',()=>{resetBrowse()});
   load();
 })();

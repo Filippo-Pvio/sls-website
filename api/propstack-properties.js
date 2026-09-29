@@ -1,3 +1,5 @@
+import {propertyCard,queryProperties,cachedCatalog} from '../lib/property-catalog.mjs';
+import {similarProperties} from '../assets/property-similarity.mjs';
 import {publicUnit} from '../lib/propstack-preview.mjs';
 import {publicPropertyFacts,publicPropertySourceFields} from '../lib/public-property-facts.mjs';
 
@@ -78,7 +80,7 @@ async function pageListings(key,statusId,page,per,sort){
   });
   const result=await read(`units?${query}`,key);
   const rows=Array.isArray(result.data)?result.data:[];
-  const items=rows.filter(isPublished).map(publicUnit);
+  const items=rows.filter(isPublished).map(publicUnit).map(propertyCard);
   const metaTotal=Number(result.meta?.total_count);
   const total=Number.isFinite(metaTotal)?metaTotal:((page-1)*per+rows.length+(rows.length===per?1:0));
   return {
@@ -89,6 +91,16 @@ async function pageListings(key,statusId,page,per,sort){
     hasMore:page*per<total && rows.length>0
   };
 }
+
+const getCatalog=cachedCatalog(async(key,statusId)=>{
+  const items=[];
+  for(let page=1;page<=50;page++){
+    const result=await pageListings(key,statusId,page,100,'default');
+    items.push(...result.items);
+    if(!result.hasMore)return [...new Map(items.map(p=>[String(p.id),p])).values()];
+  }
+  throw new Error('Public catalog exceeds safety limit');
+});
 
 function mergeDetail(summary,detail){
   const combined={...summary,...detail,status:summary.status,images:detail.images?.length?detail.images:summary.images};
@@ -117,6 +129,15 @@ export default async function handler(req,res){
   try{
     const status=await resolvePublicStatus(key);
     const id=req.query.id;
+    if(req.query.summary){
+      const summary=String(req.query.summary);
+      if(!/^\d+$/.test(summary))return res.status(404).json({error:'Objekt nicht gefunden'});
+      const row=await listingById(summary,key,status.id);
+      if(!row)return res.status(404).json({error:'Objekt nicht veröffentlicht'});
+      res.setHeader('Cache-Control','public, s-maxage=60');
+      return res.status(200).json({items:[propertyCard(publicUnit(row))]});
+    }
+
 
     if(id){
       if(!/^\d+$/.test(String(id)))return res.status(404).json({error:'Objekt nicht gefunden'});
@@ -164,7 +185,20 @@ export default async function handler(req,res){
     const requestedPer=Number.parseInt(req.query.per||String(LIST_PAGE_SIZE),10)||LIST_PAGE_SIZE;
     const per=Math.min(LIST_PAGE_SIZE,Math.max(1,requestedPer));
     const sort=String(req.query.sort||'default');
-    const result=await pageListings(key,status.id,page,per,sort);
+    let result;
+    const needsCatalog=req.query.map==='1'||req.query.similarTo||['query','city','type','price','area','rooms'].some(k=>Boolean(req.query[k]));
+    if(needsCatalog){
+      const catalog=await getCatalog(key,status.id);
+      if(req.query.similarTo){
+        const current=catalog.find(p=>String(p.id)===String(req.query.similarTo));
+        result={items:current?similarProperties(current,catalog):[]};
+      }else{
+        const found=queryProperties(catalog,req.query);
+        result=req.query.map==='1'
+          ?{items:found.map(({id,zip,city,price})=>({id,zip,city,price})),total:found.length}
+          :{items:found.slice((page-1)*per,page*per),total:found.length,page,per,hasMore:page*per<found.length};
+      }
+    }else result=await pageListings(key,status.id,page,per,sort);
     res.setHeader('Cache-Control','public, s-maxage=300, stale-while-revalidate=600');
     return res.status(200).json(result);
   }catch(error){
