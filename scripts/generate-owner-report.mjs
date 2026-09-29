@@ -27,13 +27,18 @@ try{
  const unitId=String(unit.id);
  const [events,deals]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`)]);
  if(events.some(e=>!belongs(e,unitId))||deals.some(d=>!belongs(d,unitId)))throw new Error('object_scope_not_verified');
- console.log('OWNER_REPORT:offer_field',JSON.stringify(deals.map(d=>d.custom_fields?.gebot).filter(v=>v!=null).map(v=>({type:typeof v,keys:typeof v==='object'?Object.keys(v):[],numeric:Number(v?.value??v)||null}))));
- console.log('OWNER_REPORT:neutral_dates',JSON.stringify(events.filter(e=>[321135,321136].includes(e.note_type_id)&&e.state==='neutral').map(e=>({starts_at:e.starts_at,ends_at:e.ends_at}))));
- const viewings={planned:0,completed:0,cancelled:0,unclassified:0};
- // Until the account's structured categories are verified, never count all events as viewings.
- const viewingEvents=events.filter(e=>/besichtigung/i.test(String(e.note_type?.name||'')));
- for(const e of viewingEvents){const s={neutral:'planned',took_place:'completed',cancelled:'cancelled'}[e.state]||'unclassified';viewings[s]++;}
- const data={generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,propertyId:unitId,counts:{interestedParties:new Set(deals.map(d=>d.client_id).filter(Boolean)).size,deals:deals.length,viewings:null,offers:null},viewings:null,topOffers:[],diagnostics:{objectVerified:true,events:events.length,viewingCategoriesVerified:false,offerFieldsVerified:false}};
+ // SLS category IDs verified in Propstack administration on 2026-09-29.
+ const viewingEvents=events.filter(e=>[321135,321136].includes(Number(e.note_type_id)));
+ const viewings={planned:0,completed:0,cancelled:0,unconfirmed:0};
+ const now=Date.now();
+ for(const e of viewingEvents){
+  if(e.state==='took_place')viewings.completed++;
+  else if(e.state==='cancelled')viewings.cancelled++;
+  else if(e.state==='neutral'&&Date.parse(e.starts_at)>now)viewings.planned++;
+  else viewings.unconfirmed++;
+ }
+ const amounts=deals.map(d=>d.custom_fields?.gebot).map(v=>v?.value??v).filter(v=>typeof v==='number'||typeof v==='string'&&/^\d+(\.\d+)?$/.test(v.trim())).map(Number).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
+ const data={status:'ok',generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,propertyId:unitId,counts:{interestedParties:new Set(deals.map(d=>d.client_id).filter(Boolean)).size,deals:deals.length,viewings:viewings.completed,offers:amounts.length},viewings,topOffers:amounts.slice(0,3),topDealPrices:deals.map(d=>Number(d.sold_price)).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a).slice(0,3),diagnostics:{objectVerified:true,events:events.length,viewingEvents:viewingEvents.length,otherEvents:events.length-viewingEvents.length,offerSource:'custom_fields.gebot',viewingCountUnit:'appointments'}};
  await mkdir('eigentuemer-cockpit-test',{recursive:true});
  await writeFile('eigentuemer-cockpit-test/owner-report-data.json',JSON.stringify(data,null,2));
  console.log('OWNER_REPORT:ok',JSON.stringify(data));
