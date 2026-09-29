@@ -48,7 +48,7 @@ try{
  const portalClients=new Set(portalActivities.flatMap(a=>[a.client_id,...(a.client_ids||[]),...(a.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
  const ownEmails=emailsResult.rows.filter(e=>hasText(e,OWN_MAIL));
  const ownClients=new Set(ownEmails.flatMap(e=>[e.client_id,...(e.client_ids||[]),...(e.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
- const amounts=deals.map(d=>d.custom_fields?.gebot).map(v=>v?.value??v).filter(v=>typeof v==='number'||typeof v==='string'&&/^\d+(\.\d+)?$/.test(v.trim())).map(Number).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
+ const amounts=deals.map(d=>d.sold_price??d.purchase_price??d.offer_price??d.price).map(v=>v?.value??v).map(v=>Number(String(v??'').replace(/\./g,'').replace(',','.').replace(/[^0-9.-]/g,''))).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
  const rejectionReasons={priceFinance:0,other:0};
  for(const d of deals){
    const reason=d.rejection_reason??d.rejection_reason_name??d.cancel_reason??d.cancellation_reason??d.lost_reason??d.deal_lost_reason??d.reason??d.custom_fields;
@@ -56,7 +56,7 @@ try{
    if(hasText(reason,PRICE_FINANCE))rejectionReasons.priceFinance++;
    else rejectionReasons.other++;
  }
- const data={status:'ok',generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,propertyId:unitId,counts:{portalInquiries:portalClients.size||portalActivities.length,ownDatabaseContacts:ownClients.size||ownEmails.length,interestedParties:new Set(deals.map(d=>d.client_id).filter(Boolean)).size,deals:deals.length,viewings:viewings.completed,offers:amounts.length},viewings,topOffers:amounts.slice(0,3),rejectionReasons,topDealPrices:deals.map(d=>Number(d.sold_price)).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a).slice(0,3),diagnostics:{objectVerified:true,events:events.length,viewingEvents:viewingEvents.length,otherEvents:events.length-viewingEvents.length,portalActivities:portalActivities.length,ownDatabaseEmails:ownEmails.length,activitiesAvailable:activitiesResult.ok,emailsAvailable:emailsResult.ok,offerSource:'deal purchase price',viewingCountUnit:'appointments'}};
+ const data={status:'ok',generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,propertyId:unitId,counts:{portalInquiries:portalClients.size||portalActivities.length,ownDatabaseContacts:ownClients.size||ownEmails.length,interestedParties:new Set(deals.map(d=>d.client_id).filter(Boolean)).size,deals:deals.length,viewings:viewings.completed,offers:amounts.length},viewings,topOffers:amounts.slice(0,3),rejectionReasons,diagnostics:{objectVerified:true,events:events.length,viewingEvents:viewingEvents.length,otherEvents:events.length-viewingEvents.length,portalActivities:portalActivities.length,ownDatabaseEmails:ownEmails.length,activitiesAvailable:activitiesResult.ok,emailsAvailable:emailsResult.ok,offerSource:'deal purchase price',viewingCountUnit:'appointments'}};
  await mkdir('eigentuemer-cockpit-test',{recursive:true});
  await writeFile('eigentuemer-cockpit-test/owner-report-data.json',JSON.stringify(data,null,2));
  console.log('OWNER_REPORT:ok',JSON.stringify(data));
