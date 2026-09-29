@@ -1,6 +1,5 @@
-const BASE="https://api.propstack.de/v1/";const PID="101701672";
-async function get(path,key){const r=await fetch(new URL(path,BASE),{headers:{"X-API-KEY":key},signal:AbortSignal.timeout(10000)});const b=await r.json().catch(()=>null);return{ok:r.ok,status:r.status,b}}
-function arr(body){if(Array.isArray(body))return body;if(Array.isArray(body?.data))return body.data;if(Array.isArray(body?.events))return body.events;if(Array.isArray(body?.client_properties))return body.client_properties;return[]}
-export default async function handler(req,res){res.setHeader("X-Robots-Tag","noindex,nofollow");res.setHeader("Cache-Control","private,no-store");const key=process.env.PROPSTACK_API_KEY;if(!key)return res.status(503).json({error:"key"});
-const unit=await get("units/"+PID+"?new=1",key);const list=await get("units?with_meta=1&property_ids="+PID+"&per=10",key);const events=await get("events?property="+PID,key);const deals=await get("client_properties?property_id="+PID+"&per=100",key);
-return res.status(200).json({propertyId:PID,unit:{ok:unit.ok,status:unit.status,id:unit.ok?String(unit.b?.id||""):null},list:{ok:list.ok,status:list.status,count:arr(list.b).length},events:{ok:events.ok,status:events.status,count:arr(events.b).length,fields:Object.keys(arr(events.b)[0]||{}).sort()},deals:{ok:deals.ok,status:deals.status,count:arr(deals.b).length,fields:Object.keys(arr(deals.b)[0]||{}).sort()}})}
+export default function handler(req,res){
+  res.setHeader('X-Robots-Tag','noindex,nofollow');
+  res.setHeader('Cache-Control','private,no-store');
+  return res.status(410).json({error:'Legacy diagnostic retired',report:'/eigentuemer-cockpit-test/owner-report-data.json'});
+}
