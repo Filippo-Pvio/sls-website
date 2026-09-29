@@ -303,3 +303,5 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
  .sls-search-profile-card{padding:22px}
  .sls-search-profile-fields{grid-template-columns:1fr}
 }
+
+.property-preview #pp-results>.sls-search-profile-cta{grid-column:1/-1;margin:2px 0}
