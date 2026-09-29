@@ -137,7 +137,7 @@
   function renderList(updateMap=true){
     const found=browseItems(),size=viewMode==='map'?6:9;
     const cta=document.querySelector('.sls-search-profile-cta'),grid=$('#pp-results');
-    if(cta&&grid?.contains(cta))$('#pp-search').insertBefore(cta,grid);
+    if(cta&&grid?.contains(cta))grid.parentNode?.insertBefore(cta,grid);
     $('#pp-count').textContent=`${total} ${total===1?'Immobilie':'Immobilien'}`;
     const visible=found.slice(0,browsePage*size),ids=visible.map(p=>String(p.id));
     if(renderedIds.length&&renderedIds.every((id,index)=>ids[index]===id))grid.insertAdjacentHTML('beforeend',visible.slice(renderedIds.length).map(card).join(''));
