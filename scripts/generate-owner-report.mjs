@@ -8,7 +8,7 @@ async function get(path){
   if(!r.ok)throw new Error(`HTTP_${r.status}_${path.split('?')[0]}`);
   return r.json();
 }
-function rows(b){if(Array.isArray(b))return b;for(const k of ['data','events','client_properties','activities','emails','note_types'])if(Array.isArray(b?.[k]))return b[k];throw new Error('unexpected_response');}
+function rows(b){if(Array.isArray(b))return b;for(const k of ['data','events','client_properties','activities','emails','messages','client_sources','activity_types','note_types'])if(Array.isArray(b?.[k]))return b[k];throw new Error('unexpected_response');}
 async function all(path){
  const result=[],seen=new Set();
  for(let page=1;page<=100;page++){
