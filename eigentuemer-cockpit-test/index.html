@@ -6,4 +6,15 @@
 <div class="two"><section class="card"><h2>Vermarktungsverlauf</h2><div id="timeline"><div class="event"><strong>Daten werden geprüft</strong><div class="muted">Die Ansicht wird im nächsten Schritt mit Propstack verbunden.</div></div></div></section><section class="card"><h2>Aktuelle Kaufangebote</h2><div class="offer"><span>1. Angebot</span><strong id="o1">– €</strong></div><div class="offer"><span>2. Angebot</span><strong id="o2">– €</strong></div><div class="offer"><span>3. Angebot</span><strong id="o3">– €</strong></div><p class="muted">Nur eindeutig dem Objekt zugeordnete Angebote.</p></section></div>
 <section class="card" style="margin-top:16px"><h2>Besichtigungen</h2><div class="badges"><span id="done">durchgeführt –</span><span id="planned">geplant –</span><span id="cancelled">abgesagt –</span></div></section>
 <section class="card" style="margin-top:16px"><h2>Aktuelle Einschätzung Ihres Maklers</h2><p class="muted">Persönliche Einordnung des zuständigen Maklers – bewusst nicht automatisch generiert.</p></section>
-<footer>SLS Immobilienpartner · interner Prototyp · keine personenbezogenen Interessentendaten</footer></main></body></html>
+<footer>SLS Immobilienpartner · interner Prototyp · keine personenbezogenen Interessentendaten</footer></main><script>
+(async()=>{try{const r=await fetch('./owner-report-data.json',{cache:'no-store'});if(!r.ok)throw new Error('data');const d=await r.json();
+document.getElementById('out').textContent=d.counts?.interestedParties ?? '–';
+document.getElementById('vis').textContent=d.counts?.viewings ?? '–';
+document.getElementById('offers').textContent=d.counts?.offers ?? '–';
+document.getElementById('done').textContent='durchgeführt '+(d.viewings?.completed ?? '–');
+document.getElementById('planned').textContent='geplant '+(d.viewings?.planned ?? '–');
+document.getElementById('cancelled').textContent='abgesagt '+(d.viewings?.cancelled ?? '–');
+for(let i=0;i<3;i++){const el=document.getElementById('o'+(i+1));const v=d.topOffers?.[i];el.textContent=v?new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v):'– €'}
+document.getElementById('timeline').innerHTML='<div class="event"><strong>Live-Daten aus Propstack geladen</strong><div class="muted">Stand: '+new Date(d.generatedAt).toLocaleString('de-DE')+'</div></div>';
+}catch(e){console.error(e)}})();
+</script></body></html>
