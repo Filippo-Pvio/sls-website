@@ -27,10 +27,8 @@ try{
  const unitId=String(unit.id);
  const [events,deals]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`)]);
  if(events.some(e=>!belongs(e,unitId))||deals.some(d=>!belongs(d,unitId)))throw new Error('object_scope_not_verified');
- const types=await get('note_types').catch(()=>null);
- const pipelines=await get('deal_pipelines').catch(()=>null);
- console.log('OWNER_REPORT:events',JSON.stringify(events.map(e=>({type:e.note_type_id,state:e.state,mass:e.mass_viewing,participantCount:e.viewings?.length,participantFields:Object.keys(e.viewings?.[0]||{})}))));
- console.log('OWNER_REPORT:amounts',JSON.stringify({dealAmounts:deals.filter(d=>Number(d.sold_price)>0).map(d=>({amount:d.sold_price,stage:d.deal_stage_id})),customFieldKeys:[...new Set(deals.flatMap(d=>Object.keys(d.custom_fields||{})))]}));
+ console.log('OWNER_REPORT:offer_field',JSON.stringify(deals.map(d=>d.custom_fields?.gebot).filter(v=>v!=null).map(v=>({type:typeof v,keys:typeof v==='object'?Object.keys(v):[],numeric:Number(v?.value??v)||null}))));
+ console.log('OWNER_REPORT:neutral_dates',JSON.stringify(events.filter(e=>[321135,321136].includes(e.note_type_id)&&e.state==='neutral').map(e=>({starts_at:e.starts_at,ends_at:e.ends_at}))));
  const viewings={planned:0,completed:0,cancelled:0,unclassified:0};
  // Until the account's structured categories are verified, never count all events as viewings.
  const viewingEvents=events.filter(e=>/besichtigung/i.test(String(e.note_type?.name||'')));
