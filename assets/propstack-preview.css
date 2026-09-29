@@ -276,3 +276,30 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
  .property-preview .pp-list-column{width:100%}
  .property-preview .pp-search-dialog{padding:20px}
 }
+
+.property-preview .sls-search-profile-cta{display:flex;align-items:center;justify-content:space-between;gap:28px;margin:0 0 25px;padding:22px 25px;background:#edf3f5;border:1px solid #d3e0e4;border-radius:9px;color:#405965}
+.property-preview .sls-search-profile-cta strong{display:block;font-size:19px;color:#405965;margin-bottom:4px}
+.property-preview .sls-search-profile-cta p{margin:0;line-height:1.55}
+.property-preview .sls-search-profile-cta small{display:block;margin-top:6px;color:#52676e}
+.property-preview .sls-search-profile-open{flex:0 0 auto}
+.sls-search-profile-dialog{width:min(620px,calc(100% - 28px));max-height:90dvh;border:0;border-radius:12px;padding:0;color:#405965;background:#fff}
+.sls-search-profile-dialog::backdrop{background:#14252999}
+.sls-search-profile-card{padding:28px}
+.sls-search-profile-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.sls-search-profile-top h2{margin:3px 0 0;font-size:30px}
+.sls-search-profile-top>button{width:42px;height:42px;border:1px solid #d4dfe2;background:#fff;border-radius:50%;font-size:25px;color:#405965;cursor:pointer}
+.sls-search-profile-criteria{padding:12px 14px;background:#edf3f5;border-radius:6px;font-weight:700}
+.sls-search-profile-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.sls-search-profile-fields label{display:grid;gap:6px;font-weight:700;font-size:14px}
+.sls-search-profile-fields input{min-height:46px;padding:9px 11px;border:1px solid #bdcdd2;border-radius:5px;font:inherit}
+.sls-search-profile-consent{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5}
+.sls-search-profile-consent input{margin-top:3px}
+.sls-search-profile-consent a{color:#346579}
+.sls-search-profile-status{min-height:22px;margin:14px 0 8px;font-size:14px}
+.sls-search-profile-submit:disabled{opacity:.55;cursor:wait}
+@media(max-width:700px){
+ .property-preview .sls-search-profile-cta{align-items:stretch;flex-direction:column;gap:15px}
+ .property-preview .sls-search-profile-open{width:100%}
+ .sls-search-profile-card{padding:22px}
+ .sls-search-profile-fields{grid-template-columns:1fr}
+}
