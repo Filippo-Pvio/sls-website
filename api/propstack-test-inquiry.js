@@ -136,45 +136,6 @@ async function resolveWebsiteInquiryNoteType(key){
 }
 
 
-async function resolveBuyerDealStage(key){
-  const configured=Number(process.env.PROPSTACK_BUYER_DEAL_STAGE_ID);
-  if(Number.isSafeInteger(configured)&&configured>0)return configured;
-
-  const result=await propstack('deal_pipelines',key);
-  const pipelines=Array.isArray(result.data)?result.data:Array.isArray(result)?result:[];
-  const preferred=pipelines.find(p=>normalise(p?.name)==='05_verkaufsprozess käufer')||null;
-  const searchIn=preferred?[preferred]:pipelines;
-  const matches=[];
-  for(const pipeline of searchIn){
-    for(const stage of Array.isArray(pipeline?.deal_stages)?pipeline.deal_stages:[]){
-      if(normalise(stage?.name)==='neuer kaufinteressent')matches.push(stage);
-    }
-  }
-  if(matches.length!==1)throw new Error('Deal-Phase Neuer Kaufinteressent nicht eindeutig');
-  const id=Number(matches[0].id);
-  if(!Number.isSafeInteger(id)||id<=0)throw new Error('Ungültige Deal-Phase');
-  return id;
-}
-
-async function createWebsiteDeal(key,{clientId,propertyId,dealStageId,sourceId,brokerId}){
-  const client_property={
-    client_id:Number(clientId),
-    property_id:Number(propertyId),
-    deal_stage_id:Number(dealStageId),
-    client_source_id:Number(sourceId)
-  };
-  if(Number.isSafeInteger(Number(brokerId))&&Number(brokerId)>0)client_property.broker_id=Number(brokerId);
-  const created=await propstack('client_properties',key,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({client_property})
-  });
-  const deal=created?.client_property||created;
-  const dealId=Number(deal?.id);
-  if(!Number.isSafeInteger(dealId)||dealId<=0)throw new Error('Propstack deal response missing ID');
-  return deal;
-}
-
 async function dealsForContactAndProperty(key,clientId,propertyId){
   const q=new URLSearchParams({
     client_id:String(clientId),
@@ -289,23 +250,6 @@ export default async function handler(req,res){
 
     const inquiryId=Number(inquiry?.activity_id||inquiry?.id);
 
-    let deal=hadDealBefore?existingDeals[0]:null;
-    let dealCreated=false;
-    let dealStageId=deal?.deal_stage_id||deal?.deal_stage?.id||null;
-
-    if(!hadDealBefore){
-      const buyerDealStageId=await resolveBuyerDealStage(readKey);
-      deal=await createWebsiteDeal(writeKey,{
-        clientId:contactId,
-        propertyId:Number(id),
-        dealStageId:buyerDealStageId,
-        sourceId,
-        brokerId:unit.broker_id||unit.broker?.id
-      });
-      dealCreated=true;
-      dealStageId=deal?.deal_stage_id||deal?.deal_stage?.id||buyerDealStageId;
-    }
-
     let activityVerified=false;
     let activitySourceId=null;
     let activityType=null;
@@ -320,10 +264,10 @@ export default async function handler(req,res){
       }
     }
 
-    if(!deal&&dealCheckAvailable){
+    let deal=hadDealBefore?existingDeals[0]:null;
+    if(!hadDealBefore&&dealCheckAvailable){
       try{
         deal=await waitForDeal(readKey,contactId,Number(id));
-        dealStageId=deal?.deal_stage_id||deal?.deal_stage?.id||dealStageId;
       }catch(error){
         dealCheckAvailable=false;
         console.warn('Propstack deal post-check unavailable:',error.message);
@@ -342,11 +286,10 @@ export default async function handler(req,res){
       reference:reference||null,
       contactReused:contactResolution.reused===true,
       hadDealBefore,
-      dealCreated,
       dealCheckAvailable,
       dealDetected:Boolean(deal),
       dealId:deal?.id||null,
-      dealStageId
+      dealStageId:deal?.deal_stage_id||deal?.deal_stage?.id||null
     });
   }catch(error){
     console.error('Propstack website inquiry failed:',error.message);
