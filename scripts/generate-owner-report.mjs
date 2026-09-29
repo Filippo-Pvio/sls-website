@@ -46,7 +46,7 @@ try{
  }
  const portalActivities=activitiesResult.rows.filter(a=>hasText(a,PORTAL));
  const portalClients=new Set(portalActivities.flatMap(a=>[a.client_id,...(a.client_ids||[]),...(a.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
- const ownEmails=emailActivitiesResult.rows.filter(e=>OWN_MAIL_CATEGORY_IDS.has(Number(e.message_category_id??e.activatable?.message_category_id??e.message?.message_category_id)));
+ const ownEmails=emailActivitiesResult.rows.filter(e=>OWN_MAIL_CATEGORY_IDS.has(Number(e.category_id??e.message_category_id??e.activatable?.message_category_id??e.message?.message_category_id)));
  const ownClients=new Set(ownEmails.flatMap(e=>[e.client_id,...(e.client_ids||[]),...(e.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
  const amounts=deals.map(d=>d.sold_price??d.purchase_price??d.offer_price??d.price).map(v=>v?.value??v).map(v=>Number(String(v??'').replace(/\./g,'').replace(',','.').replace(/[^0-9.-]/g,''))).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
  const rejectionReasons={priceFinance:0,other:0};
