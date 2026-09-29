@@ -8,6 +8,71 @@
   const sample={id:'demo',title:'Lichtdurchflutete Wohnung mit Balkon, offenem Wohnen, Stellplatz und langfristig gesicherter Miete',city:'Raesfeld',zip:'46348',price:139500,area:52.06,rooms:2,bedrooms:1,baths:1,year:2002,type:'Wohnung',status:'Verfügbar',images:['https://sls.de/wp-content/uploads/2026/09/6927c1a63b43bc35506a97fd149101a1.jpg','https://sls.de/wp-content/uploads/2026/09/8b0f34e1662b362b49076948be67fb47.jpg','https://sls.de/wp-content/uploads/2026/09/ed4ad76935300ee4c87702b1fb3e962c.jpg','https://sls.de/wp-content/uploads/2026/09/ee63526f68d37e694efac2bc8b383435.jpg'],description:'Die Wohnung liegt im ersten Obergeschoss. Durch die offene Küche und den hellen Wohnbereich entsteht ein zusammenhängender Raum. Zur Wohnung gehören ein Balkon, ein Außenstellplatz und ein Kellerraum. Die Wohnung ist seit 2019 vermietet.',location:'46348 Raesfeld',features:'Balkon, Außenstellplatz, Kellerraum',courtage:'3,57 % inkl. MwSt.',broker:{name:'Herr Cüneyt Demirli',phone:'(02369) 742 80 20',email:'c.demirli@sls.de',mobile:'+49 152 099 30 734'}};
   sample.objectFacts=[{label:'Standort',value:'46348 Raesfeld'},{label:'Objekttyp',value:'Wohnung'},{label:'Wohnfläche',value:sample.area,kind:'area'},{label:'Zimmer',value:sample.rooms},{label:'Schlafzimmer',value:sample.bedrooms},{label:'Badezimmer',value:sample.baths},{label:'Baujahr',value:sample.year}];
   let all=[], total=0, currentPage=1, hasMore=false, loadingMore=false;
+  const favoritesView=url.searchParams.get('favoriten')==='1'&&!id;
+  const favoriteKey=demo?'sls-property-favorites-demo-v1':'sls-property-favorites-v1';
+  const parseFavorites=raw=>{
+    try{const value=JSON.parse(raw);return new Set(Array.isArray(value)?value.filter(v=>typeof v==='string'&&(/^\d+$/.test(v)||(demo&&v==='demo'))):[])}catch{return new Set()}
+  };
+  const readFavorites=()=>{try{return parseFavorites(localStorage.getItem(favoriteKey))}catch{return new Set()}};
+  let favorites=readFavorites(),favoritesRun=0,storageWritable=true;
+  const favoriteResults=new Map();
+  const heart='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>';
+  const favoriteButton=(p,detail=false)=>`<button type="button" class="pp-favorite${detail?' pp-favorite-detail':''}" data-favorite="${esc(p.id)}" aria-pressed="${favorites.has(String(p.id))}" aria-label="${favorites.has(String(p.id))?'Aus Favoriten entfernen':'Zu Favoriten hinzufügen'}: ${esc(p.title||'Immobilie')}" data-favorite-title="${esc(p.title||'Immobilie')}">${heart}${detail?'<span>Merken</span>':''}</button>`;
+  const syncFavorites=()=>{
+    document.querySelectorAll('[data-favorite]').forEach(button=>{
+      const saved=favorites.has(button.dataset.favorite);
+      button.setAttribute('aria-pressed',String(saved));
+      button.setAttribute('aria-label',`${saved?'Aus Favoriten entfernen':'Zu Favoriten hinzufügen'}: ${button.dataset.favoriteTitle}`);
+      const label=button.querySelector('span');if(label)label.textContent=saved?'Gemerkt':'Merken';
+    });
+    $('#pp-favorites-link').textContent=`♡ Favoriten (${favorites.size})`;
+  };
+  document.querySelector('.pp-banner').insertAdjacentHTML('afterend',`<div class="pp-favorites-bar">${favoritesView?`<a class="pp-favorites-back" href="/immobilien-test/${demo?'?demo=1':''}">← Alle Immobilien</a>`:''}<a id="pp-favorites-link" href="/immobilien-test/?favoriten=1${demo?'&demo=1':''}">♡ Favoriten (${favorites.size})</a></div><p class="pp-favorites-notice" id="pp-favorites-notice" role="status" aria-live="polite"></p>`);
+  document.addEventListener('click',event=>{
+    const button=event.target.closest('[data-favorite]');if(!button)return;
+    const propertyId=button.dataset.favorite;
+    // Read again so another tab's latest changes are preserved.
+    try{if(storageWritable)favorites=parseFavorites(localStorage.getItem(favoriteKey))}catch{}
+    const removed=favorites.delete(propertyId);if(!removed)favorites.add(propertyId);
+    try{localStorage.setItem(favoriteKey,JSON.stringify([...favorites]));$('#pp-favorites-notice').textContent=removed?'Immobilie aus Favoriten entfernt.':'Immobilie in Favoriten gespeichert.'}
+    catch{storageWritable=false;$('#pp-favorites-notice').textContent='Ihr Browser erlaubt derzeit keine dauerhafte Speicherung. Ihre Auswahl bleibt nur auf dieser geöffneten Seite erhalten.'}
+    syncFavorites();if(favoritesView)renderFavorites();
+  });
+  window.addEventListener('storage',event=>{
+    if(event.key!==favoriteKey&&event.key!==null)return;
+    favorites=readFavorites();syncFavorites();if(favoritesView)loadFavorites();
+  });
+  function renderFavorites(){
+    $('#pp-count').textContent=`${favorites.size} gespeicherte ${favorites.size===1?'Immobilie':'Immobilien'}`;
+    $('#pp-results').innerHTML=favorites.size?[...favorites].map(propertyId=>{
+      const result=favoriteResults.get(propertyId);
+      if(result?.item)return card(result.item);
+      const unavailable=result?.state==='unavailable';
+      return `<article class="pp-panel pp-favorite-unavailable"><h2>Immobilie ${esc(propertyId)}</h2><p>${unavailable?'Dieses Objekt ist nicht mehr verfügbar.':result?.state==='error'?'Dieses Objekt konnte gerade nicht geladen werden. Bitte versuchen Sie es erneut.':'Aktuelle Angaben werden geladen …'}</p><button type="button" class="pp-favorite-remove" data-favorite="${esc(propertyId)}" data-favorite-title="Immobilie ${esc(propertyId)}" aria-pressed="true">Aus Favoriten entfernen</button></article>`;
+    }).join(''):'<div class="pp-error"><h2>Noch keine Immobilien gespeichert</h2><p>Tippen Sie auf das Herz, um sich ein Angebot zu merken.</p><a href="/immobilien-test/'+(demo?'?demo=1':'')+'">Immobilien entdecken →</a></div>';
+    $('#pp-progress').innerHTML=[...favorites].some(propertyId=>favoriteResults.get(propertyId)?.state==='error')?'<button type="button" class="pp-button" id="pp-favorites-retry">Erneut versuchen</button>':'';
+    $('#pp-favorites-retry')?.addEventListener('click',loadFavorites);
+    syncFavorites();
+  }
+  async function loadFavorites(){
+    const run=++favoritesRun,ids=[...favorites];renderFavorites();
+    for(let offset=0;offset<ids.length;offset+=4){
+      await Promise.all(ids.slice(offset,offset+4).map(async propertyId=>{
+        let result;
+        try{
+          if(demo)result={item:sample};
+          else{
+            const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(propertyId)}`,{cache:'no-store',signal:AbortSignal.timeout(15000)});
+            if(response.status===404)result={state:'unavailable'};
+            else{if(!response.ok)throw new Error('Ladefehler');const data=await response.json();const item=data.items?.find(p=>String(p.id)===propertyId);if(!item)throw new Error('Objekt fehlt');result={item}}
+          }
+        }catch{result={state:'error'}}
+        if(run===favoritesRun)favoriteResults.set(propertyId,result);
+      }));
+      if(run!==favoritesRun)return;renderFavorites();
+    }
+  }
+
   const photo=(src,alt,loading="lazy")=>src?`<img src="${esc(src)}" alt="${esc(alt)}" loading="${loading}"${loading==="eager"?' fetchpriority="low"':''}>`:'<span class="pp-fallback">SLS Immobilienpartner</span>';
   const previewLink=p=>`/immobilien-test/?objekt=${encodeURIComponent(p.id)}${demo?'&demo=1':''}`;
   const card=p=>{
@@ -15,7 +80,7 @@
     const energyLine=energy.kind&&energy.value!=null&&energy.fuel&&energy.buildingYear&&energy.rating
       ?`${esc(energy.kind)} · ${esc(new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(energy.value))} kWh/(m²·a) · ${esc(energy.fuel)} · ${energy.yearFromCertificate?'Baujahr':'Baujahr lt. Objektdaten'} ${esc(energy.buildingYear)} · Klasse ${esc(energy.rating)}`
       :'Energieangaben für die Veröffentlichung prüfen';
-    return `<a class="pp-card" href="${previewLink(p)}"><div class="pp-image">${photo(p.images?.[0],p.title)}<span class="pp-chip">${esc(p.status||'Verfügbar')}</span></div><div class="pp-card-content"><span class="pp-city">${p.reference?`${esc(p.reference)} · `:''}${esc(p.city)}</span><h2>${esc(p.title)}</h2><div class="pp-stats"><span>${area(p.area)}</span>${p.rooms!=null?`<span>${esc(p.rooms)} Zimmer</span>`:''}<span>${esc(p.type)}</span></div><span class="pp-price">${format(p.price)}</span>${p.courtage?`<small class="pp-card-courtage">Käuferprovision: ${esc(p.courtage)}</small>`:''}<small class="pp-card-energy">${energyLine}</small></div></a>`;
+    return `<article class="pp-card-shell"><a class="pp-card" href="${previewLink(p)}"><div class="pp-image">${photo(p.images?.[0],p.title)}<span class="pp-chip">${esc(p.status||'Verfügbar')}</span></div><div class="pp-card-content"><span class="pp-city">${p.reference?`${esc(p.reference)} · `:''}${esc(p.city)}</span><h2>${esc(p.title)}</h2><div class="pp-stats"><span>${area(p.area)}</span>${p.rooms!=null?`<span>${esc(p.rooms)} Zimmer</span>`:''}<span>${esc(p.type)}</span></div><span class="pp-price">${format(p.price)}</span>${p.courtage?`<small class="pp-card-courtage">Käuferprovision: ${esc(p.courtage)}</small>`:''}<small class="pp-card-energy">${energyLine}</small></div></a>${favoriteButton(p)}</article>`;
   };
   const fact=(label,value)=>value==null||value===''?'':`<div class="pp-fact${String(label).split(/\s+/).some(word=>word.length>=18)?' pp-fact-wide':''}"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
   const activeFilters=()=>{
@@ -54,7 +119,7 @@
     renderList();
   }
   async function loadMore(){
-    if(loadingMore||!hasMore||id||demo)return;
+    if(loadingMore||!hasMore||id||demo||favoritesView)return;
     loadingMore=true;
     const progress=$('#pp-progress');
     if(progress)progress.textContent='Weitere Immobilien werden geladen …';
@@ -144,6 +209,8 @@
     $('#pp-detail-content').insertAdjacentHTML('beforeend', '<section class="pp-owner-valuation" aria-labelledby="pp-owner-title"><div class="pp-owner-intro"><span class="pp-eyebrow">Für Eigentümer</span><h2 id="pp-owner-title">So könnte auch Ihre Immobilie präsentiert werden</h2><p>Sie überlegen, Ihre Immobilie zu verkaufen? Mit unserem Bewertungsrechner erhalten Sie einen ersten Anhaltspunkt für den Wert Ihrer Immobilie.</p></div><div class="pp-owner-widget"><iframe id="pp-fisher-widget" title="Immobilienbewertung von SLS Immobilienpartner" width="100%" height="600" referrerpolicy="strict-origin-when-cross-origin"></iframe></div></section>');
     $('.pp-owner-valuation').insertAdjacentHTML('beforebegin','<section class="pp-related" id="pp-similar" aria-labelledby="pp-similar-title" aria-busy="true"><div class="pp-related-heading"><span class="pp-eyebrow">Weitere Angebote</span><h2 id="pp-similar-title">Weitere Immobilien</h2></div><p>Passende Angebote werden geladen …</p></section>');
     initSimilarProperties(p);
+    $('.pp-detail-header').insertAdjacentHTML('beforeend',favoriteButton(p,true));
+    syncFavorites();
     window.ppInitValuation?.();
     // The contact panel follows every property section in the document.
     // The single-column layout places it after the map on narrow screens.
@@ -221,6 +288,14 @@
 
   async function load(){
     try {
+      if(favoritesView){
+        document.title='Ihre Favoriten · SLS Immobilienpartner';
+        $('.pp-heading h1').textContent='Ihre Favoriten';
+        $('.pp-heading>p:last-child').textContent='Ihre gemerkten Immobilien – gespeichert in diesem Browser auf diesem Gerät.';
+        $('#pp-form').hidden=true;$('.pp-toolbar label').hidden=true;$('#pp-load-sentinel').hidden=true;
+        $('#pp-banner').textContent='Preise und Verfügbarkeit werden beim Öffnen der Favoriten aktualisiert.';
+        await loadFavorites();return;
+      }
       if(demo){all=[sample];total=1;hasMore=false;$('#pp-banner').textContent='Designvorschau mit einem öffentlich sichtbaren Beispielobjekt. Keine Live-Abfrage; Angaben und Verfügbarkeit bitte auf sls.de prüfen.'}
       else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'Daten nicht abrufbar');all=data.items;$('#pp-banner').textContent='Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
       else {await fetchPage(1);$('#pp-banner').textContent='Aktuelle Kaufimmobilien aus Propstack im Status Vermarktung. Weitere Immobilien werden beim Scrollen automatisch nachgeladen.'}
