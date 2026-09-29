@@ -15,3 +15,6 @@ Für diese Vorschau wurde ein separater API-Schlüssel mit Objekte-Leserecht ang
 Anfragen, Propstack-Exposéversand, Rechtsformular und Suchprofilübermittlung sind noch nicht freigeschaltet. Ihre konkrete Zuordnung und Protokollierung wird vor der Integration mit einem Testkontakt geprüft. Ebenso bleiben URL- und SEO-Migration ein separater Prüfschritt.
 
 Lokale Überprüfung: `node --test qa/propstack-preview.test.mjs`; Design: `/immobilien-test/?demo=1`.
+
+
+Deployment-Hinweis: Die Suchprofil-CTA-Position wird im Preview nach der ersten Ergebnisrunde getestet.
