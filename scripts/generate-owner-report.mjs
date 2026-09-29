@@ -48,13 +48,13 @@ try{
  const emailActivityRows=[];
  for(let i=0;i<dealClientIds.length;i+=40){
    const ids=dealClientIds.slice(i,i+40).join(',');
-   const batch=await optionalAll(`messages?client_ids=${ids}&message_category_ids=180736,180740`);
+   const batch=await optionalAll(`activities?client_ids=${ids}&item_type=message`);
    emailActivityRows.push(...batch.rows);
  }
  const portalSourceIds=new Set(clientSourcesResult.rows.filter(s=>hasText(s.name,PORTAL)).map(s=>Number(s.id)).filter(Number.isFinite));
  const portalDeals=deals.filter(d=>portalSourceIds.has(Number(d.client_source_id)));
  const portalClients=new Set(portalDeals.map(d=>d.client_id).filter(Boolean).map(String));
- const ownEmails=emailActivityRows;
+ const ownEmails=emailActivityRows.filter(e=>OWN_MAIL_CATEGORY_IDS.has(Number(e.message_category_id??e.category_id)));
  const ownClients=new Set(ownEmails.flatMap(e=>[e.client_id,...(e.client_ids||[]),...(e.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
  const amounts=deals.map(d=>d.sold_price??d.purchase_price??d.offer_price??d.price).map(v=>v?.value??v).map(v=>Number(String(v??'').replace(/\./g,'').replace(',','.').replace(/[^0-9.-]/g,''))).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
  const rejectionReasons={priceFinance:0,other:0};
