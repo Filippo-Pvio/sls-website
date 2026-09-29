@@ -140,6 +140,11 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 .property-preview.pp-is-detail .pp-inquiry-shortcut{position:sticky;top:100px;z-index:12;height:0;visibility:hidden;pointer-events:none}
 .property-preview.pp-is-detail .pp-inquiry-shortcut.is-active{visibility:visible;pointer-events:auto}
 .property-preview.pp-is-detail .pp-inquiry-shortcut .pp-button{width:100%;box-shadow:0 8px 24px #1d30303d}
+.property-preview.pp-is-detail .pp-inquiry-shortcut .pp-financing-shortcut{display:none}
+@media(min-width:851px){
+  .property-preview.pp-is-detail .pp-inquiry-shortcut .pp-financing-shortcut{display:inline-flex;margin-top:10px;background:#fff;color:#4c7080;border:1px solid #4c7080;box-shadow:none}
+  .property-preview.pp-is-detail .pp-inquiry-shortcut .pp-financing-shortcut:hover{background:#edf3f5}
+}
 .property-preview.pp-is-detail .pp-agent-intro{display:flex;align-items:center;gap:14px;min-width:0}
 .property-preview.pp-is-detail .pp-agent-intro>div{min-width:0}
 .property-preview.pp-is-detail .pp-agent-label{display:block;font-size:13px;color:#688391;margin-bottom:3px}
