@@ -1,0 +1,6 @@
+const BASE="https://api.propstack.de/v1/";const PID="101701672";
+async function get(path,key){const r=await fetch(new URL(path,BASE),{headers:{"X-API-KEY":key}});const b=await r.json().catch(()=>null);return{ok:r.ok,status:r.status,b}}
+function n(b){if(Number.isFinite(Number(b?.meta?.total_count)))return Number(b.meta.total_count);if(Array.isArray(b?.data))return b.data.length;if(Array.isArray(b))return b.length;return null}
+export default async function handler(req,res){res.setHeader("X-Robots-Tag","noindex,nofollow");res.setHeader("Cache-Control","private,no-store");if(req.method!=="GET")return res.status(405).json({error:"method"});const key=process.env.PROPSTACK_API_KEY;if(!key)return res.status(503).json({error:"key"});
+const paths={property:"units/"+PID+"?expand=1",activities:"activities?property_id="+PID+"&with_meta=1&per=100",events:"events?property_id="+PID+"&with_meta=1&per=100",deals:"deals?property_id="+PID+"&with_meta=1&per=100"};
+const out={propertyId:PID};for(const [name,path] of Object.entries(paths)){const x=await get(path,key);out[name]={ok:x.ok,status:x.status,count:name==="property"?undefined:n(x.b),fields:x.ok?Object.keys((Array.isArray(x.b?.data)?x.b.data[0]:x.b?.data)||x.b||{}).sort():[]}}return res.status(200).json(out)}
