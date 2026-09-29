@@ -1,6 +1,6 @@
-import {writeFile,mkdir} from 'node:fs/promises';
+import {writeFile,mkdir,cp} from 'node:fs/promises';
 const BASE='https://api.propstack.de/v1/';
-const TEST_ID='101701672';
+const TEST_ID='3528391';
 const key=process.env.PROPSTACK_API_KEY;
 async function get(path){
   if(!key)throw new Error('no_key');
@@ -22,10 +22,9 @@ async function all(path){
 }
 function belongs(x,id){return [x.property_id,x.property?.id,...(x.property_ids||[]),...(x.properties||[]).map(p=>p.id),...(x.units||[]).map(p=>p.id)].some(v=>String(v)===id);}
 try{
- const units=await all(`units?with_meta=1&q=${TEST_ID}&archived=-1`);
- const matches=units.filter(u=>[u.id,u.unit_id,u.exposee_id].some(v=>String(v?.value??v)===TEST_ID));
- if(matches.length!==1)throw new Error(`no_unique_unit_${matches.length}`);
- const unitId=String(matches[0].id);
+ const unit=await get(`units/${TEST_ID}?new=1`);
+ if(String(unit.id)!==TEST_ID)throw new Error('object_scope_not_verified');
+ const unitId=String(unit.id);
  const [events,deals]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`)]);
  if(events.some(e=>!belongs(e,unitId))||deals.some(d=>!belongs(d,unitId)))throw new Error('object_scope_not_verified');
  console.log('OWNER_REPORT:schema',JSON.stringify({propertyId:unitId,eventFields:Object.keys(events[0]||{}),dealFields:Object.keys(deals[0]||{}),eventTypes:[...new Set(events.map(e=>e.note_type_id))],eventStates:[...new Set(events.map(e=>e.state))]}));
@@ -43,3 +42,7 @@ try{
  await writeFile('eigentuemer-cockpit-test/owner-report-data.json',JSON.stringify({generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,status:'unavailable',error:code,counts:null,viewings:null,topOffers:[]},null,2));
  console.warn('OWNER_REPORT:unavailable',code);
 }
+
+// Explicit public allowlist for this isolated reporting preview.
+await mkdir('public/eigentuemer-cockpit-test',{recursive:true});
+for(const name of ['index.html','owner-report-data.json'])await cp(`eigentuemer-cockpit-test/${name}`,`public/eigentuemer-cockpit-test/${name}`);
