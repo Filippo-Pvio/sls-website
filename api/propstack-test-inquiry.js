@@ -136,6 +136,33 @@ async function resolveWebsiteInquiryNoteType(key){
 }
 
 
+async function createOwnerInterestNote(key,{contactId,propertyId,brokerId,firstName,lastName,email,phone,reference}){
+  const noteTypeId=739259;
+  const task={
+    title:'Interessent ist auch Eigentümer – Kontakt gewünscht',
+    note_type_id:noteTypeId,
+    client_ids:[contactId],
+    property_ids:[Number(propertyId)],
+    broker_id:brokerId||undefined,
+    body:[
+      '<strong>Eigentümer-Kontaktwunsch über sls.de</strong>',
+      'Der Interessent möchte wissen, was die eigene Immobilie aktuell wert ist, und wünscht eine kostenlose und unverbindliche Kontaktaufnahme.',
+      `Angefragtes Objekt: ${html(reference||propertyId)}`,
+      `Name: ${html(firstName)} ${html(lastName)}`,
+      `E-Mail: ${html(email)}`,
+      `Telefon: ${html(phone)}`
+    ].join('<br>')
+  };
+  const result=await propstack('tasks',key,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({task})
+  });
+  const id=Number(result?.activity_id||result?.id);
+  if(!Number.isSafeInteger(id)||id<=0)throw new Error('Propstack owner interest note response missing ID');
+  return id;
+}
+
 async function dealsForContactAndProperty(key,clientId,propertyId){
   const q=new URLSearchParams({
     client_id:String(clientId),
@@ -177,6 +204,7 @@ export default async function handler(req,res){
   const lastName=text(body.lastName,100);
   const email=text(body.email,254);
   const phone=text(body.phone,60);
+  const ownerInterest=body.ownerInterest===true;
   if(!/^\d+$/.test(id)||!firstName||!lastName||!/^\S+@\S+\.\S+$/.test(email)||!phone||body.privacy!==true)
     return res.status(400).json({error:'Bitte alle Pflichtfelder und die Datenschutzeinwilligung prüfen.'});
 
@@ -250,6 +278,20 @@ export default async function handler(req,res){
 
     const inquiryId=Number(inquiry?.activity_id||inquiry?.id);
 
+    let ownerInterestNoteId=null;
+    if(ownerInterest){
+      ownerInterestNoteId=await createOwnerInterestNote(writeKey,{
+        contactId,
+        propertyId:Number(id),
+        brokerId:unit.broker_id||unit.broker?.id,
+        firstName,
+        lastName,
+        email,
+        phone,
+        reference
+      });
+    }
+
     let activityVerified=false;
     let activitySourceId=null;
     let activityType=null;
@@ -278,6 +320,8 @@ export default async function handler(req,res){
       portalInquiryTriggered:true,
       contactId,
       inquiryId:Number.isSafeInteger(inquiryId)&&inquiryId>0?inquiryId:null,
+      ownerInterest,
+      ownerInterestNoteId,
       sourceId,
       noteTypeId,
       activityVerified,
