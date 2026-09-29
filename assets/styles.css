@@ -2923,38 +2923,3 @@ body.home-editorial > section.section.home-faq-section{
 .property-preview .site-footer a:hover,
 .property-preview .site-footer a:focus-visible{color:#fff;opacity:.78}
 .property-preview .site-footer .footer-bottom{border-top-color:rgba(255,255,255,.28);color:rgba(255,255,255,.78)}
-
-/* Property pages keep the owner valuation action available after the first scroll. */
-@media (max-width:1049px){
-  .property-preview .floating-scroll-cta{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:34px;
-    margin-left:auto;
-    padding:0 11px;
-    border-radius:999px;
-    background:var(--coral);
-    color:#fff;
-    font:750 10px/1.1 "Raleway",Arial,sans-serif;
-    text-decoration:none;
-    white-space:nowrap;
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none;
-    transform:translateX(6px);
-    transition:opacity .26s ease,transform .26s ease,visibility .26s ease;
-  }
-  .property-preview .floating-scroll-cta-full{display:none}
-  .property-preview .floating-scroll-cta-short{display:inline}
-  .property-preview .site-header.has-scroll-cta:not(.menu-active) .floating-scroll-cta{
-    opacity:1;
-    visibility:visible;
-    pointer-events:auto;
-    transform:none;
-  }
-}
-@media (max-width:420px){
-  .property-preview .floating-header-shell{gap:6px}
-  .property-preview .floating-scroll-cta{padding:0 9px}
-}
