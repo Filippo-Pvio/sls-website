@@ -1,20 +1,27 @@
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>SLS Eigentümer-Cockpit</title><style>
 :root{--b:#123b68;--r:#c92d35;--bg:#f5f7fa;--t:#172033;--m:#6c7788;--l:#e6eaf0}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--t)}header{background:var(--b);color:white;padding:32px 20px}.w{max-width:1120px;margin:auto}.ey{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.7}h1{margin:8px 0 5px;font-size:31px}.sub{opacity:.82}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}.card{background:#fff;border:1px solid var(--l);border-radius:18px;padding:20px;box-shadow:0 8px 28px #142c4710}.k strong{display:block;color:var(--b);font-size:31px;margin:6px 0}.muted{color:var(--m);font-size:14px}.notice{background:#fff;border-left:4px solid var(--r);padding:17px 19px;border-radius:12px;margin:18px 0}.two{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}.event,.offer{padding:14px 0;border-bottom:1px solid var(--l)}.offer{display:flex;justify-content:space-between}.offer strong{color:var(--b)}h2{font-size:20px;margin:0 0 10px}.badges span{display:inline-block;background:#edf3f8;color:var(--b);font-weight:700;font-size:13px;border-radius:99px;padding:8px 11px;margin:3px}footer{padding:28px 0 50px;color:var(--m);font-size:13px}@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}h1{font-size:26px}}</style></head>
 <body><header><div class="w"><div class="ey">Interner Prototyp</div><h1>Ihr SLS Eigentümer-Cockpit</h1><div class="sub">Testobjekt 101701672 · nicht öffentlich verlinkt</div></div></header><main class="w" style="padding:0 20px">
-<div class="grid"><div class="card k"><span class="muted">Anfragen</span><strong id="inq">–</strong><span class="muted">seit Vermarktungsstart</span></div><div class="card k"><span class="muted">Interessenten angesprochen</span><strong id="out">–</strong><span class="muted">aktive Ansprache</span></div><div class="card k"><span class="muted">Besichtigungen</span><strong id="vis">–</strong><span class="muted">durchgeführt</span></div><div class="card k"><span class="muted">Kaufangebote</span><strong id="offers">–</strong><span class="muted">strukturierte Angebote</span></div></div>
-<div class="notice"><strong>Neu seit Ihrem letzten Besuch</strong><div class="muted" style="margin-top:6px">Später erscheinen hier automatisch neue Anfragen, Besichtigungen, Feedbacks und Kaufangebote.</div></div>
+<div class="grid"><div class="card k"><span class="muted">Interessenten</span><strong id="inq">–</strong><span class="muted">eindeutige Kontakte zum Objekt</span></div><div class="card k"><span class="muted">Deals</span><strong id="out">–</strong><span class="muted">objektbezogene Beziehungen</span></div><div class="card k"><span class="muted">Besichtigungen</span><strong id="vis">–</strong><span class="muted">durchgeführt</span></div><div class="card k"><span class="muted">Kaufangebote</span><strong id="offers">–</strong><span class="muted">strukturierte Angebote</span></div></div>
+<div class="notice"><strong>Datenstand</strong><div class="muted" style="margin-top:6px">Die Kennzahlen werden serverseitig aus Propstack geladen.</div></div>
 <div class="two"><section class="card"><h2>Vermarktungsverlauf</h2><div id="timeline"><div class="event"><strong>Daten werden geprüft</strong><div class="muted">Die Ansicht wird im nächsten Schritt mit Propstack verbunden.</div></div></div></section><section class="card"><h2>Aktuelle Kaufangebote</h2><div class="offer"><span>1. Angebot</span><strong id="o1">– €</strong></div><div class="offer"><span>2. Angebot</span><strong id="o2">– €</strong></div><div class="offer"><span>3. Angebot</span><strong id="o3">– €</strong></div><p class="muted">Nur eindeutig dem Objekt zugeordnete Angebote.</p></section></div>
 <section class="card" style="margin-top:16px"><h2>Besichtigungen</h2><div class="badges"><span id="done">durchgeführt –</span><span id="planned">geplant –</span><span id="cancelled">abgesagt –</span></div></section>
 <section class="card" style="margin-top:16px"><h2>Aktuelle Einschätzung Ihres Maklers</h2><p class="muted">Persönliche Einordnung des zuständigen Maklers – bewusst nicht automatisch generiert.</p></section>
 <footer>SLS Immobilienpartner · interner Prototyp · keine personenbezogenen Interessentendaten</footer></main><script>
 (async()=>{try{const r=await fetch('./owner-report-data.json',{cache:'no-store'});if(!r.ok)throw new Error('data');const d=await r.json();
-document.getElementById('out').textContent=d.counts?.interestedParties ?? '–';
+if(d.status==='unavailable')throw new Error(d.error);
+document.getElementById('inq').textContent=d.counts?.interestedParties ?? '–';
+document.getElementById('out').textContent=d.counts?.deals ?? '–';
 document.getElementById('vis').textContent=d.counts?.viewings ?? '–';
 document.getElementById('offers').textContent=d.counts?.offers ?? '–';
 document.getElementById('done').textContent='durchgeführt '+(d.viewings?.completed ?? '–');
 document.getElementById('planned').textContent='geplant '+(d.viewings?.planned ?? '–');
 document.getElementById('cancelled').textContent='abgesagt '+(d.viewings?.cancelled ?? '–');
 for(let i=0;i<3;i++){const el=document.getElementById('o'+(i+1));const v=d.topOffers?.[i];el.textContent=v?new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v):'– €'}
-document.getElementById('timeline').innerHTML='<div class="event"><strong>Live-Daten aus Propstack geladen</strong><div class="muted">Stand: '+new Date(d.generatedAt).toLocaleString('de-DE')+'</div></div>';
-}catch(e){console.error(e)}})();
+document.getElementById('timeline').innerHTML='<div class="event"><strong>Propstack-Datenstand beim letzten Build</strong><div class="muted">Stand: '+new Date(d.generatedAt).toLocaleString('de-DE')+'</div></div>';
+}catch(e){
+const box=document.getElementById('timeline');box.replaceChildren();
+const title=document.createElement('strong');title.textContent='Objektzuordnung noch offen';
+const message=document.createElement('p');message.className='muted';message.textContent='Für die Kennung 101701672 konnte noch kein eindeutiges Propstack-Objekt geladen werden. Es werden keine geschätzten Zahlen angezeigt. Bitte die Propstack-Objektadresse oder SLS-Objektnummer prüfen.';
+box.append(title,message);
+}})();
 </script></body></html>
