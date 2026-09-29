@@ -176,6 +176,11 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 .property-preview.pp-is-detail .pp-financing .pp-eyebrow{display:block;margin-bottom:9px}
 .property-preview.pp-is-detail .pp-financing h2{color:#4e6878;margin-bottom:12px}
 .property-preview.pp-is-detail .pp-financing>p{color:#627984;line-height:1.55;margin:0 0 20px}
+.property-preview.pp-is-detail .pp-financing-context{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 20px}
+.property-preview.pp-is-detail .pp-financing-context span{display:grid;gap:3px;padding:12px 14px;background:#f3f8f9;border:1px solid #dce9ec;border-radius:5px}
+.property-preview.pp-is-detail .pp-financing-context small{color:#6b8089;font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:750}
+.property-preview.pp-is-detail .pp-financing-context strong{color:#405965;font-size:15px;line-height:1.35}
+@media(max-width:600px){.property-preview.pp-is-detail .pp-financing-context{grid-template-columns:1fr}}
 .property-preview.pp-is-detail .pp-financing-widget{min-width:0;width:100%;overflow:hidden}
 .property-preview.pp-is-detail .pp-financing-widget iframe{display:block;width:100%;height:630px;border:0;background:#fff}
 .property-preview.pp-is-detail .pp-financing>p a,.property-preview.pp-is-detail .pp-finance-jump{color:#346d82;text-underline-offset:2px}
