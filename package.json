@@ -6,7 +6,8 @@
   "scripts": {
     "preview": "node qa/server.mjs",
     "qa": "QA_INCLUDE_TABLET=true playwright test",
-    "qa:static": "node qa/static-check.mjs"
+    "qa:static": "node qa/static-check.mjs",
+    "build": "node scripts/generate-owner-report.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0"
