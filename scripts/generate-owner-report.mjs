@@ -32,7 +32,7 @@ try{
  const unit=await get(`units/${TEST_ID}?new=1`);
  if(String(unit.id)!==TEST_ID)throw new Error('object_scope_not_verified');
  const unitId=String(unit.id);
- const [events,deals,activitiesResult,emailActivitiesResult,activityTypesResult,clientSourcesResult]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`),optionalAll(`activities?property_id=${unitId}&only_inquiries=1`),optionalAll(`activities?property_id=${unitId}&item_type=message`),optionalAll(`activity_types`),optionalAll(`client_sources`)]);
+ const [events,deals,activitiesResult,emailActivitiesResult,activityTypesResult,clientSourcesResult]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`),optionalAll(`activities?property_id=${unitId}&only_inquiries=1`),optionalAll(`activities?property_id=${unitId}&item_type=message&category_ids=180736,180740`),optionalAll(`activity_types`),optionalAll(`client_sources`)]);
  if(events.some(e=>!belongs(e,unitId))||deals.some(d=>!belongs(d,unitId)))throw new Error('object_scope_not_verified');
  // SLS category IDs verified in Propstack administration on 2026-09-29.
  const viewingEvents=events.filter(e=>[321135,321136].includes(Number(e.note_type_id)));
@@ -47,7 +47,7 @@ try{
  const portalSourceIds=new Set(clientSourcesResult.rows.filter(s=>hasText(s.name,PORTAL)).map(s=>Number(s.id)).filter(Number.isFinite));
  const portalActivities=activitiesResult.rows.filter(a=>portalSourceIds.has(Number(a.source_id??a.client_source_id)));
  const portalClients=new Set(portalActivities.flatMap(a=>[a.client_id,...(a.client_ids||[]),...(a.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
- const ownEmails=emailActivitiesResult.rows.filter(e=>OWN_MAIL_CATEGORY_IDS.has(Number(e.category_id??e.message_category_id??e.activatable?.message_category_id??e.message?.message_category_id)));
+ const ownEmails=emailActivitiesResult.rows;
  const ownClients=new Set(ownEmails.flatMap(e=>[e.client_id,...(e.client_ids||[]),...(e.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
  const amounts=deals.map(d=>d.sold_price??d.purchase_price??d.offer_price??d.price).map(v=>v?.value??v).map(v=>Number(String(v??'').replace(/\./g,'').replace(',','.').replace(/[^0-9.-]/g,''))).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
  const rejectionReasons={priceFinance:0,other:0};
