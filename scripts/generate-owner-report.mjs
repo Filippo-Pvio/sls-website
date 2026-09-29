@@ -45,12 +45,8 @@ try{
   else viewings.unconfirmed++;
  }
  const dealClientIds=[...new Set(deals.map(d=>d.client_id).filter(Boolean).map(String))];
- const emailActivityRows=[];
- for(let i=0;i<dealClientIds.length;i+=40){
-   const ids=dealClientIds.slice(i,i+40).join(',');
-   const batch=await optionalAll(`activities?client_ids=${ids}&item_type=message`);
-   emailActivityRows.push(...batch.rows);
- }
+ const emailResult=await optionalAll(`activities?property_id=${unitId}&item_type=message`);
+ const emailActivityRows=emailResult.rows;
  const portalSourceIds=new Set(clientSourcesResult.rows.filter(s=>hasText(s.name,PORTAL)).map(s=>Number(s.id)).filter(Number.isFinite));
  const portalDeals=deals.filter(d=>portalSourceIds.has(Number(d.client_source_id)));
  const portalClients=new Set(portalDeals.map(d=>d.client_id).filter(Boolean).map(String));
@@ -64,7 +60,7 @@ try{
    if(hasText(reason,PRICE_FINANCE))rejectionReasons.priceFinance++;
    else rejectionReasons.other++;
  }
- const data={status:'ok',generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,propertyId:unitId,counts:{portalInquiries:activitiesResult.rows.length,ownDatabaseContacts:ownClients.size||ownEmails.length,interestedParties:new Set(deals.map(d=>d.client_id).filter(Boolean)).size,deals:deals.length,viewings:viewings.completed,offers:amounts.length},viewings,topOffers:amounts.slice(0,3),rejectionReasons,diagnostics:{objectVerified:true,deals:deals.length,dealFields:Object.keys(deals[0]||{}),dealClientIds:dealClientIds.length,events:events.length,viewingEvents:viewingEvents.length,otherEvents:events.length-viewingEvents.length,portalActivities:portalDeals.length,ownDatabaseEmails:ownEmails.length,activitiesAvailable:activitiesResult.ok,activityRows:activitiesResult.rows.length,activityFields:Object.keys(activitiesResult.rows[0]||{}),activityError:activitiesResult.error||null,emailRows:emailActivityRows.length,emailFields:Object.keys(emailActivityRows[0]||{}),activityTypeRows:activityTypesResult.rows.length,activityTypeFields:Object.keys(activityTypesResult.rows[0]||{}),clientSourceRows:clientSourcesResult.rows.length,clientSourceFields:Object.keys(clientSourcesResult.rows[0]||{}),offerSource:'deal purchase price',viewingCountUnit:'appointments'}};
+ const data={status:'ok',generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,propertyId:unitId,counts:{portalInquiries:activitiesResult.rows.length,ownDatabaseContacts:ownClients.size||ownEmails.length,interestedParties:new Set(deals.map(d=>d.client_id).filter(Boolean)).size,deals:deals.length,viewings:viewings.completed,offers:amounts.length},viewings,topOffers:amounts.slice(0,3),rejectionReasons,diagnostics:{objectVerified:true,deals:deals.length,dealFields:Object.keys(deals[0]||{}),dealClientIds:dealClientIds.length,events:events.length,viewingEvents:viewingEvents.length,otherEvents:events.length-viewingEvents.length,portalActivities:portalDeals.length,ownDatabaseEmails:ownEmails.length,activitiesAvailable:activitiesResult.ok,activityRows:activitiesResult.rows.length,activityFields:Object.keys(activitiesResult.rows[0]||{}),activityError:activitiesResult.error||null,emailRows:emailActivityRows.length,emailFields:Object.keys(emailActivityRows[0]||{}),emailError:emailResult.error||null,emailMatchedRows:ownEmails.length,activityTypeRows:activityTypesResult.rows.length,activityTypeFields:Object.keys(activityTypesResult.rows[0]||{}),clientSourceRows:clientSourcesResult.rows.length,clientSourceFields:Object.keys(clientSourcesResult.rows[0]||{}),offerSource:'deal purchase price',viewingCountUnit:'appointments'}};
  await mkdir('eigentuemer-cockpit-test',{recursive:true});
  await writeFile('eigentuemer-cockpit-test/owner-report-data.json',JSON.stringify(data,null,2));
  console.log('OWNER_REPORT:ok',JSON.stringify(data));
