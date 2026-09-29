@@ -37,4 +37,9 @@ try{
  await mkdir('eigentuemer-cockpit-test',{recursive:true});
  await writeFile('eigentuemer-cockpit-test/owner-report-data.json',JSON.stringify(data,null,2));
  console.log('OWNER_REPORT:ok',JSON.stringify(data));
-}catch(e){console.error('OWNER_REPORT:',e.message);process.exit(1);}
+}catch(e){
+ const code=/^(no_key|no_unique_unit_\d+|HTTP_\d+_[a-z_]+|object_scope_not_verified|pagination_not_progressing|incomplete_pagination|pagination_limit|unexpected_response)$/.test(e.message)?e.message:'upstream_unavailable';
+ await mkdir('eigentuemer-cockpit-test',{recursive:true});
+ await writeFile('eigentuemer-cockpit-test/owner-report-data.json',JSON.stringify({generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,status:'unavailable',error:code,counts:null,viewings:null,topOffers:[]},null,2));
+ console.warn('OWNER_REPORT:unavailable',code);
+}
