@@ -53,7 +53,7 @@ try{
  const amounts=deals.map(d=>d.sold_price??d.purchase_price??d.offer_price??d.price).map(v=>v?.value??v).map(v=>Number(String(v??'').replace(/\./g,'').replace(',','.').replace(/[^0-9.-]/g,''))).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
  const rejectionReasons={priceFinance:0,other:0};
  for(const d of deals){
-   const reason=d.rejection_reason??d.rejection_reason_name??d.cancel_reason??d.cancellation_reason??d.lost_reason??d.deal_lost_reason??d.reason??d.custom_fields;
+   const reason=d.rejection_reason??d.rejection_reason_name??d.cancel_reason??d.cancellation_reason??d.lost_reason??d.deal_lost_reason??d.reason;
    if(reason==null)continue;
    if(hasText(reason,PRICE_FINANCE))rejectionReasons.priceFinance++;
    else rejectionReasons.other++;
