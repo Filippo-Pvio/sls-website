@@ -8,7 +8,7 @@ async function get(path){
   if(!r.ok)throw new Error(`HTTP_${r.status}_${path.split('?')[0]}`);
   return r.json();
 }
-function rows(b){if(Array.isArray(b))return b;for(const k of ['data','events','client_properties','note_types'])if(Array.isArray(b?.[k]))return b[k];throw new Error('unexpected_response');}
+function rows(b){if(Array.isArray(b))return b;for(const k of ['data','events','client_properties','activities','emails','note_types'])if(Array.isArray(b?.[k]))return b[k];throw new Error('unexpected_response');}
 async function all(path){
  const result=[],seen=new Set();
  for(let page=1;page<=100;page++){
@@ -20,6 +20,7 @@ async function all(path){
  }
  throw new Error('pagination_limit');
 }
+async function optionalAll(path){try{return {ok:true,rows:await all(path)}}catch(e){return {ok:false,rows:[],error:e.message}}}
 function belongs(x,id){return [x.property_id,x.property?.id,...(x.property_ids||[]),...(x.properties||[]).map(p=>p.id),...(x.units||[]).map(p=>p.id)].some(v=>String(v)===id);}
 const norm=v=>String(v??'').trim().toLocaleLowerCase('de-DE');
 function flatStrings(v,out=[]){if(v==null)return out;if(typeof v==='string'||typeof v==='number'){out.push(norm(v));return out;}if(Array.isArray(v)){for(const x of v)flatStrings(x,out);return out;}if(typeof v==='object')for(const x of Object.values(v))flatStrings(x,out);return out;}
@@ -31,7 +32,7 @@ try{
  const unit=await get(`units/${TEST_ID}?new=1`);
  if(String(unit.id)!==TEST_ID)throw new Error('object_scope_not_verified');
  const unitId=String(unit.id);
- const [events,deals]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`)]);
+ const [events,deals,activitiesResult,emailsResult]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`),optionalAll(`activities?property_id=${unitId}&only_inquiries=1`),optionalAll(`emails?property_id=${unitId}`)]);
  if(events.some(e=>!belongs(e,unitId))||deals.some(d=>!belongs(d,unitId)))throw new Error('object_scope_not_verified');
  // SLS category IDs verified in Propstack administration on 2026-09-29.
  const viewingEvents=events.filter(e=>[321135,321136].includes(Number(e.note_type_id)));
