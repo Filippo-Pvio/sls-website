@@ -1,6 +1,6 @@
 import {writeFile,mkdir,cp} from 'node:fs/promises';
 const BASE='https://api.propstack.de/v1/';
-const TEST_ID='3528391';
+const TEST_ID='5644071';
 const key=process.env.PROPSTACK_API_KEY;
 async function get(path){
   if(!key)throw new Error('no_key');
