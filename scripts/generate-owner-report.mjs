@@ -32,7 +32,7 @@ try{
  const unit=await get(`units/${TEST_ID}?new=1`);
  if(String(unit.id)!==TEST_ID)throw new Error('object_scope_not_verified');
  const unitId=String(unit.id);
- const [events,deals,activitiesResult,emailActivitiesResult,activityTypesResult,clientSourcesResult]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`),optionalAll(`activities?property_id=${unitId}&only_inquiries=1`),optionalAll(`activities?property_id=${unitId}&item_type=message&category_ids=180736,180740`),optionalAll(`activity_types`),optionalAll(`client_sources`)]);
+ const [events,deals,activitiesResult,activityTypesResult,clientSourcesResult]=await Promise.all([all(`events?property=${unitId}`),all(`client_properties?property_id=${unitId}&show_archived_clients=true`),optionalAll(`activities?property_id=${unitId}&only_inquiries=1`),optionalAll(`activity_types`),optionalAll(`client_sources`)]);
  if(events.some(e=>!belongs(e,unitId))||deals.some(d=>!belongs(d,unitId)))throw new Error('object_scope_not_verified');
  // SLS category IDs verified in Propstack administration on 2026-09-29.
  const viewingEvents=events.filter(e=>[321135,321136].includes(Number(e.note_type_id)));
@@ -44,10 +44,17 @@ try{
   else if(e.state==='neutral'&&Date.parse(e.starts_at)>now)viewings.planned++;
   else viewings.unconfirmed++;
  }
+ const dealClientIds=[...new Set(deals.map(d=>d.client_id).filter(Boolean).map(String))];
+ const emailActivityRows=[];
+ for(let i=0;i<dealClientIds.length;i+=40){
+   const ids=dealClientIds.slice(i,i+40).join(',');
+   const batch=await optionalAll(`activities?client_ids=${ids}&item_type=message&category_ids=180736,180740`);
+   emailActivityRows.push(...batch.rows);
+ }
  const portalSourceIds=new Set(clientSourcesResult.rows.filter(s=>hasText(s.name,PORTAL)).map(s=>Number(s.id)).filter(Number.isFinite));
  const portalActivities=activitiesResult.rows.filter(a=>portalSourceIds.has(Number(a.source_id??a.client_source_id)));
  const portalClients=new Set(portalActivities.flatMap(a=>[a.client_id,...(a.client_ids||[]),...(a.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
- const ownEmails=emailActivitiesResult.rows;
+ const ownEmails=emailActivityRows;
  const ownClients=new Set(ownEmails.flatMap(e=>[e.client_id,...(e.client_ids||[]),...(e.clients||[]).map(x=>x?.id)]).filter(Boolean).map(String));
  const amounts=deals.map(d=>d.sold_price??d.purchase_price??d.offer_price??d.price).map(v=>v?.value??v).map(v=>Number(String(v??'').replace(/\./g,'').replace(',','.').replace(/[^0-9.-]/g,''))).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
  const rejectionReasons={priceFinance:0,other:0};
@@ -57,7 +64,7 @@ try{
    if(hasText(reason,PRICE_FINANCE))rejectionReasons.priceFinance++;
    else rejectionReasons.other++;
  }
- const data={status:'ok',generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,propertyId:unitId,counts:{portalInquiries:portalClients.size||portalActivities.length,ownDatabaseContacts:ownClients.size||ownEmails.length,interestedParties:new Set(deals.map(d=>d.client_id).filter(Boolean)).size,deals:deals.length,viewings:viewings.completed,offers:amounts.length},viewings,topOffers:amounts.slice(0,3),rejectionReasons,diagnostics:{objectVerified:true,events:events.length,viewingEvents:viewingEvents.length,otherEvents:events.length-viewingEvents.length,portalActivities:portalActivities.length,ownDatabaseEmails:ownEmails.length,activitiesAvailable:activitiesResult.ok,activityRows:activitiesResult.rows.length,activityFields:Object.keys(activitiesResult.rows[0]||{}),emailsAvailable:emailActivitiesResult.ok,emailRows:emailActivitiesResult.rows.length,emailFields:Object.keys(emailActivitiesResult.rows[0]||{}),emailMessageCategoryIds:[...new Set(emailActivitiesResult.rows.map(e=>e.message_category_id??e.activatable?.message_category_id??e.message?.message_category_id).filter(v=>v!=null).map(String))].slice(0,50),activityTypeRows:activityTypesResult.rows.length,activityTypeFields:Object.keys(activityTypesResult.rows[0]||{}),clientSourceRows:clientSourcesResult.rows.length,clientSourceFields:Object.keys(clientSourcesResult.rows[0]||{}),offerSource:'deal purchase price',viewingCountUnit:'appointments'}};
+ const data={status:'ok',generatedAt:new Date().toISOString(),requestedPropertyId:TEST_ID,propertyId:unitId,counts:{portalInquiries:portalClients.size||portalActivities.length,ownDatabaseContacts:ownClients.size||ownEmails.length,interestedParties:new Set(deals.map(d=>d.client_id).filter(Boolean)).size,deals:deals.length,viewings:viewings.completed,offers:amounts.length},viewings,topOffers:amounts.slice(0,3),rejectionReasons,diagnostics:{objectVerified:true,events:events.length,viewingEvents:viewingEvents.length,otherEvents:events.length-viewingEvents.length,portalActivities:portalActivities.length,ownDatabaseEmails:ownEmails.length,activitiesAvailable:activitiesResult.ok,activityRows:activitiesResult.rows.length,activityFields:Object.keys(activitiesResult.rows[0]||{}),emailRows:emailActivityRows.length,emailFields:Object.keys(emailActivityRows[0]||{}),activityTypeRows:activityTypesResult.rows.length,activityTypeFields:Object.keys(activityTypesResult.rows[0]||{}),clientSourceRows:clientSourcesResult.rows.length,clientSourceFields:Object.keys(clientSourcesResult.rows[0]||{}),offerSource:'deal purchase price',viewingCountUnit:'appointments'}};
  await mkdir('eigentuemer-cockpit-test',{recursive:true});
  await writeFile('eigentuemer-cockpit-test/owner-report-data.json',JSON.stringify(data,null,2));
  console.log('OWNER_REPORT:ok',JSON.stringify(data));
