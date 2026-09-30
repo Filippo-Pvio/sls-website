@@ -4,7 +4,23 @@
   const format=n=>n==null?'Preis auf Anfrage':new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
   const area=n=>n==null?'–':`${new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(n)} m²`;
   const date=x=>{const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(x||''));return m?`${m[3]}.${m[2]}.${m[1]}`:x};
-  const url=new URL(location.href), demo=url.searchParams.get('demo')==='1', id=url.searchParams.get('objekt');
+  const url=new URL(location.href), demo=url.searchParams.get('demo')==='1';
+  const productionRoute=location.pathname.startsWith('/immobilie/')||location.pathname.startsWith('/immobilien/');
+  const browsePath=productionRoute?'/immobilien/':'/immobilien-test/';
+  const pathObjectMatch=location.pathname.match(/^\/immobilie\/[^/]*-(\d+)\/?$/);
+  const id=url.searchParams.get('objekt')||pathObjectMatch?.[1]||null;
+  const slugify=value=>String(value||'immobilie').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,105);
+  const objectPath=p=>`/immobilie/${slugify([p.title,p.city,p.reference].filter(Boolean).join('-'))}-${encodeURIComponent(p.id)}/`;
+  const setSeo=p=>{
+    if(!productionRoute||!p)return;
+    const canonical=`https://sls.de${objectPath(p)}`;
+    document.title=`${p.title}${p.city?` in ${p.city}`:''} | SLS Immobilienpartner`;
+    const description=[p.type&&`${p.type} kaufen`,p.city&&`in ${p.city}`,p.area!=null&&`${new Intl.NumberFormat('de-DE',{maximumFractionDigits:1}).format(p.area)} m²`,p.rooms!=null&&`${p.rooms} Zimmer`].filter(Boolean).join(' · ');
+    let meta=document.querySelector('meta[name="description"]');if(!meta){meta=document.createElement('meta');meta.name='description';document.head.append(meta)}meta.content=`${description}. Jetzt bei SLS Immobilienpartner ansehen.`;
+    let link=document.querySelector('link[rel="canonical"]');if(!link){link=document.createElement('link');link.rel='canonical';document.head.append(link)}link.href=canonical;
+    const data={'@context':'https://schema.org','@type':'RealEstateListing',name:p.title,url:canonical,image:p.images||[],datePosted:undefined,offers:p.price!=null?{'@type':'Offer',price:p.price,priceCurrency:'EUR',availability:'https://schema.org/InStock'}:undefined,address:{'@type':'PostalAddress',postalCode:p.zip||undefined,addressLocality:p.city||undefined,addressCountry:'DE'}};
+    const clean=JSON.parse(JSON.stringify(data));let script=document.querySelector('#pp-property-jsonld');if(!script){script=document.createElement('script');script.type='application/ld+json';script.id='pp-property-jsonld';document.head.append(script)}script.textContent=JSON.stringify(clean);
+  };
   const sample={id:'demo',title:'Lichtdurchflutete Wohnung mit Balkon, offenem Wohnen, Stellplatz und langfristig gesicherter Miete',city:'Raesfeld',zip:'46348',price:139500,area:52.06,rooms:2,bedrooms:1,baths:1,year:2002,type:'Wohnung',status:'Verfügbar',images:['https://sls.de/wp-content/uploads/2026/09/6927c1a63b43bc35506a97fd149101a1.jpg','https://sls.de/wp-content/uploads/2026/09/8b0f34e1662b362b49076948be67fb47.jpg','https://sls.de/wp-content/uploads/2026/09/ed4ad76935300ee4c87702b1fb3e962c.jpg','https://sls.de/wp-content/uploads/2026/09/ee63526f68d37e694efac2bc8b383435.jpg'],description:'Die Wohnung liegt im ersten Obergeschoss. Durch die offene Küche und den hellen Wohnbereich entsteht ein zusammenhängender Raum. Zur Wohnung gehören ein Balkon, ein Außenstellplatz und ein Kellerraum. Die Wohnung ist seit 2019 vermietet.',location:'46348 Raesfeld',features:'Balkon, Außenstellplatz, Kellerraum',courtage:'3,57 % inkl. MwSt.',broker:{name:'Herr Cüneyt Demirli',phone:'(02369) 742 80 20',email:'c.demirli@sls.de',mobile:'+49 152 099 30 734'}};
   sample.objectFacts=[{label:'Standort',value:'46348 Raesfeld'},{label:'Objekttyp',value:'Wohnung'},{label:'Wohnfläche',value:sample.area,kind:'area'},{label:'Zimmer',value:sample.rooms},{label:'Schlafzimmer',value:sample.bedrooms},{label:'Badezimmer',value:sample.baths},{label:'Baujahr',value:sample.year}];
   let all=[], total=0, currentPage=1, hasMore=false, loadingMore=false;
@@ -77,7 +93,7 @@
   }
 
   const photo=(src,alt,loading="lazy")=>src?`<img src="${esc(src)}" alt="${esc(alt)}" loading="${loading}"${loading==="eager"?' fetchpriority="low"':''}>`:'<span class="pp-fallback">SLS Immobilienpartner</span>';
-  const previewLink=p=>`/immobilien-test/?objekt=${encodeURIComponent(p.id)}${demo?'&demo=1':''}`;
+  const previewLink=p=>productionRoute?objectPath(p):`/immobilien-test/?objekt=${encodeURIComponent(p.id)}${demo?'&demo=1':''}`;
   const card=p=>{
     const energy=p.energy||{};
     const energyLine=energy.kind&&energy.value!=null&&energy.fuel&&energy.buildingYear&&energy.rating
@@ -302,7 +318,8 @@
     $('#pp-search').hidden=true;$('#pp-detail').hidden=false;
     document.body.classList.add('pp-is-detail');
     document.title=`${p.title} · SLS Testseite`;
-    $('.pp-back').href=demo?'/immobilien-test/?demo=1':'/immobilien-test/';
+    setSeo(p);
+    $('.pp-back').href=demo?'/immobilien-test/?demo=1':browsePath;
     const floorplanImages=p.floorplanImages||[];
     const pictures=[...(p.images||[]).map((src,i)=>({src,alt:`${p.title} – Bild ${i+1}`,isFloorplan:false})),...floorplanImages.map(plan=>({src:plan.preview,alt:plan.title,isFloorplan:true,url:plan.url}))];
     const extraFloorplans=(p.floorplans||[]).filter(plan=>!floorplanImages.some(image=>image.url===plan.url || image.preview===plan.url));
