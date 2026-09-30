@@ -25,3 +25,12 @@ body.sell-page #main .sell-decision h3{color:#b5e4a1}
 .sell-page .sell-partner-logos img{width:100%;max-width:200px;height:150px;object-fit:contain}
 .sell-page .sell-reference-link{text-align:center;margin-top:32px}
 @media(max-width:850px){.sell-page .sell-benefits article{grid-template-columns:1fr;gap:24px}.sell-page .sell-partner-logos{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.sell-page .sell-partner-logos img{height:120px}}
+
+/* Consistent section headings; reading content retains its left alignment. */
+body.sell-page #main .section-head{width:100%;max-width:850px;text-align:center;margin:0 auto 40px}
+body.sell-page #main .section-head .eyebrow{max-width:none;margin:0 auto 14px}
+body.sell-page #main .section-head h2{margin:0 auto;max-width:850px;text-wrap:balance}
+body.sell-page #main .section-head>p:not(.eyebrow){margin:20px auto 0;max-width:680px}
+body.sell-page #main .buy-process-intro h2,body.sell-page #main .buy-final h2{text-wrap:balance}
+.sell-page .split .copy,.sell-page .sell-benefits,.sell-page .buy-steps,.sell-page .faq{text-align:left}
+@media(max-width:850px){body.sell-page #main .section-head{margin-bottom:28px}}
