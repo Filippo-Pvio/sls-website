@@ -386,3 +386,12 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
     flex-basis:58px;
   }
 }
+
+/* Keep desktop browse actions together without changing the mobile tools. */
+.property-preview .pp-browse-actions{display:none}
+@media(min-width:851px){
+ .property-preview.pp-is-browse .pp-heading{margin-bottom:18px}
+ .property-preview .pp-browse-actions{display:flex;justify-content:flex-end;align-items:center;gap:12px;margin:0 0 18px}
+ .property-preview .pp-browse-actions .pp-favorites-bar,.property-preview .pp-browse-actions .pp-view-switch{margin:0}
+ .property-preview .pp-browse-actions a,.property-preview .pp-browse-actions button{min-height:46px;box-sizing:border-box}
+}
