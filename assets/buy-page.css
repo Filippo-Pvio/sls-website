@@ -102,3 +102,43 @@ body.buy-page #main>section>.wrap{width:calc(100% - 32px)}
 .buy-page .buy-intro .lead,
 .buy-page .buy-intro .page-actions .button{animation:none!important;opacity:1!important;transform:none!important}
 }
+
+/* Buying process follows the homepage's blue, scroll-led timeline. */
+body.buy-page #main>.buy-path{background:#345b6e!important;color:#fff}
+.buy-page .buy-process-layout{display:grid;grid-template-columns:minmax(0,.98fr) minmax(0,1.02fr);gap:clamp(36px,6vw,96px);align-items:start}
+body.buy-page #main .buy-process-intro h2{color:#fff;font-size:clamp(46px,5.2vw,78px);line-height:.99;margin-top:16px}
+.buy-page .buy-process-intro .eyebrow{color:#dfe5e7}
+.buy-page .buy-process-intro.is-motion-ready{opacity:0;transform:translateY(28px);transition:opacity .82s ease-out,transform .82s cubic-bezier(.22,1,.36,1)}
+.buy-page .buy-process-intro.is-visible{opacity:1;transform:none}
+.buy-page .buy-path .buy-steps{position:relative;display:grid;gap:0;margin:8px 0 0;padding:0 0 0 26px;border-left:1px solid transparent;list-style:none}
+.buy-page .buy-path .buy-steps>li{position:relative;display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;min-height:105px;padding:0 0 28px;border:0}
+.buy-page .buy-path .buy-steps>li:last-child{min-height:0;padding-bottom:0}
+.buy-page .buy-path .buy-steps>li>span{color:var(--coral);font:750 13px/1.5 Raleway,Arial,sans-serif;letter-spacing:.08em}
+.buy-page .buy-path .buy-steps h3{color:#fff;font:550 clamp(27px,2.5vw,35px)/1.05 'Playfair Display',Georgia,serif;margin:0}
+.buy-page .buy-path .buy-steps p{color:#dfe5e7;margin:9px 0 0;font-size:14px;line-height:1.45}
+.buy-page .buy-path .buy-steps>li::before{content:"";position:absolute;left:-32px;top:7px;z-index:2;width:11px;height:11px;border-radius:50%;background:var(--coral)}
+.buy-page .buy-path .buy-steps>li:not(:last-child)::after{left:-27px;top:12px;bottom:0;height:100%;background:#ffffff5c}
+.buy-page .buy-path .buy-steps.is-scroll-timeline>li::after{display:none}
+.buy-page .buy-steps.is-scroll-timeline::before,.buy-page .buy-steps.is-scroll-timeline::after{content:"";position:absolute;top:var(--process-line-start,13px);height:var(--process-line-length,0px);pointer-events:none}
+.buy-page .buy-steps.is-scroll-timeline::after{left:-1px;width:1px;background:#ffffff5c}
+.buy-page .buy-steps.is-scroll-timeline::before{left:-2px;width:3px;z-index:1;background:var(--coral);transform:scaleY(var(--process-progress,0));transform-origin:top}
+.buy-page .buy-path .buy-steps.is-scroll-timeline>li::before{top:calc(var(--process-marker-y,13px) - 5.5px);transition:transform .32s ease,box-shadow .32s ease}
+.buy-page .buy-steps.is-scroll-timeline>li>div{opacity:.9;transform:translateY(6px);transition:opacity .4s ease,transform .4s cubic-bezier(.22,1,.36,1)}
+.buy-page .buy-steps.is-scroll-timeline>li.is-reached>div{opacity:1;transform:none}
+.buy-page .buy-path .buy-steps.is-scroll-timeline>li.is-current::before{transform:scale(1.2);box-shadow:0 0 0 8px #ff596f2e}
+.buy-page .buy-steps.is-scroll-timeline>li:last-child.is-milestone::before{animation:home-process-milestone .95s ease-out 1}
+@media(max-width:850px){
+.buy-page .buy-process-layout{grid-template-columns:1fr;gap:34px}
+body.buy-page #main .buy-process-intro h2{font-size:clamp(38px,10vw,56px)}
+.buy-page .buy-path .buy-steps{padding-left:38px}
+.buy-page .buy-path .buy-steps>li{grid-template-columns:44px minmax(0,1fr);gap:10px}
+.buy-page .buy-path .buy-steps>li::before{left:-17px;width:9px;height:9px}
+.buy-page .buy-path .buy-steps.is-scroll-timeline>li::before{top:calc(var(--process-marker-y,13px) - 4.5px)}
+.buy-page .buy-steps.is-scroll-timeline::after{left:25px}
+.buy-page .buy-steps.is-scroll-timeline::before{left:24px;width:2px}
+.buy-page .buy-path .buy-steps>li:not(:last-child)::after{left:-13px}
+}
+@media(prefers-reduced-motion:reduce){
+.buy-page .buy-process-intro.is-motion-ready,.buy-page .buy-steps.is-scroll-timeline>li>div{opacity:1;transform:none;transition:none}
+.buy-page .buy-steps.is-scroll-timeline>li::before{animation:none!important;transition:none!important}
+}
