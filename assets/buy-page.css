@@ -1,5 +1,5 @@
 .buy-page{color:#345b6e;background:var(--paper)}
-.buy-page .buy-intro,.buy-page .buy-final{background:#345b6e;color:#fff}
+body.buy-page #main>.buy-intro,body.buy-page #main>.buy-final{background:#345b6e;color:#fff}
 .buy-page .buy-intro{padding:155px 0 64px}
 .buy-page .buy-intro h1{font-size:clamp(40px,5.5vw,72px);line-height:1.08;letter-spacing:-.035em;margin:12px 0 24px;max-width:950px;color:#fff}
 .buy-page .buy-intro .lead{max-width:710px;color:#edf3f5}
@@ -7,7 +7,7 @@
 .buy-page .buy-intro-note{font-size:14px;margin:28px 0 0;color:#d7e6ed}
 .buy-page h2{color:#345b6e;max-width:900px}
 .buy-page .section{padding:76px 0}
-.buy-page .buy-offers,.buy-page .buy-faq{background:#fff}
+body.buy-page #main>.buy-offers,body.buy-page #main>.buy-faq{background:#fff}
 .buy-page .buy-listings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:32px 0}
 .buy-page .buy-card{display:flex;flex-direction:column;border:1px solid #d9e3e7;border-radius:8px;overflow:hidden;color:#345b6e;transition:box-shadow .2s}
 .buy-page .buy-card:hover{box-shadow:0 12px 30px #345b6e22}
@@ -23,7 +23,7 @@
 .buy-page .buy-steps li>span{font:500 35px/1.2 'Playfair Display',Georgia,serif;color:#6c97ab}
 .buy-page .buy-steps h3{margin:0 0 10px;font-size:23px}
 .buy-page .buy-steps p{margin:0;color:#526873}
-.buy-page .buy-profile{background:#eaf0f3;scroll-margin-top:100px}
+body.buy-page #main>.buy-profile{background:#eaf0f3;scroll-margin-top:100px}
 .buy-page .buy-profile-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
 .buy-page .buy-profile-box{background:#fff;padding:30px;border-radius:9px}
 .buy-page .buy-criteria{display:grid;grid-template-columns:1fr 1fr;gap:20px}
