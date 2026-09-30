@@ -1,0 +1,11 @@
+body.sell-page #main>.sell-services{background:#eaf0f3}
+.sell-page .section-head{max-width:850px;margin:0 auto 36px;text-align:center}
+.sell-page .section-head h2,.sell-page .section-head>p{margin-inline:auto}
+.sell-page .split{gap:56px;align-items:center}
+.sell-page .split-media{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px}
+.sell-page .premium-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.sell-page .premium-card{background:transparent;border:0;border-top:1px solid #b9ced7;border-radius:0;padding:24px 0;box-shadow:none}
+.sell-page .premium-card h3{font:500 27px/1.2 'Playfair Display',Georgia,serif}
+.sell-page .buy-final .lead{color:#edf3f5;max-width:720px;margin:0 auto 28px}
+.sell-page #verkaufsablauf,.sell-page #vermarktung{scroll-margin-top:100px}
+@media(max-width:850px){.sell-page .split,.sell-page .premium-grid{grid-template-columns:1fr;gap:28px}}
