@@ -1,0 +1,43 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "rewrites": [
+    {
+      "source": "/immobilien/",
+      "destination": "/immobilien/preview.html"
+    },
+    {
+      "source": "/immobilie/:slug/",
+      "destination": "/immobilien/preview.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/immobilien-test/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/immobilien/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/immobilie/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ]
+}
