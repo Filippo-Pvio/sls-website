@@ -6,7 +6,7 @@ body.sell-page #main>.sell-services{background:#eaf0f3}
 .sell-page .premium-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
 .sell-page .premium-card{background:transparent;border:0;border-top:1px solid #b9ced7;border-radius:0;padding:24px 0;box-shadow:none}
 .sell-page .premium-card h3{font:500 27px/1.2 'Playfair Display',Georgia,serif}
-.sell-page .buy-final .lead{color:#edf3f5;max-width:720px;margin:0 auto 28px}
+body.sell-page #main>.buy-final .lead{color:#edf3f5;max-width:720px;margin:0 auto 28px}
 .sell-page #verkaufsablauf,.sell-page #vermarktung{scroll-margin-top:100px}
 @media(max-width:850px){.sell-page .split,.sell-page .premium-grid{grid-template-columns:1fr;gap:28px}}
 
