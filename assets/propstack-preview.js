@@ -443,6 +443,18 @@
     }
   }
 
+  function renderUnavailable(){
+    $('#pp-search').hidden=true;$('#pp-detail').hidden=false;
+    document.body.classList.add('pp-is-detail');
+    document.title='Immobilie nicht mehr verfügbar | SLS Immobilienpartner';
+    let meta=document.querySelector('meta[name="robots"]');if(!meta){meta=document.createElement('meta');meta.name='robots';document.head.append(meta)}meta.content='noindex,follow';
+    const canonical='https://sls.de/immobilien/';
+    let link=document.querySelector('link[rel="canonical"]');if(!link){link=document.createElement('link');link.rel='canonical';document.head.append(link)}link.href=canonical;
+    $('.pp-back').href=browsePath;
+    $('#pp-banner').textContent='Dieses Angebot ist nicht mehr verfügbar.';
+    $('#pp-detail-content').innerHTML=`<section class="pp-unavailable pp-panel" aria-labelledby="pp-unavailable-title"><span class="pp-eyebrow">SLS Immobilienpartner</span><h1 id="pp-unavailable-title">Diese Immobilie ist nicht mehr verfügbar.</h1><p>Das Angebot wurde aus der aktuellen Vermarktung genommen. Entdecken Sie unsere derzeit verfügbaren Immobilien oder speichern Sie Ihre Suche, damit wir Sie über passende neue Angebote informieren können.</p><div class="pp-unavailable-actions"><a class="pp-button" href="${browsePath}">Aktuelle Immobilien ansehen</a><a class="pp-button pp-button-secondary" href="${browsePath}#pp-search">Neue Suche starten</a></div></section>`;
+  }
+
   async function load(){
     try {
       if(favoritesView){
@@ -456,7 +468,7 @@
       if(productionRoute&&!id&&location.pathname.startsWith('/immobilie/'))throw new Error('Diese Immobilienadresse ist nicht gültig.');
       if(!id)setupBrowse();
       if(demo){all=[sample];total=1;hasMore=false;$('#pp-banner').textContent='Designvorschau mit einem öffentlich sichtbaren Beispielobjekt. Keine Live-Abfrage; Angaben und Verfügbarkeit bitte auf sls.de prüfen.'}
-      else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'Daten nicht abrufbar');all=data.items;$('#pp-banner').textContent='Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
+      else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(response.status===410&&data.code==='PROPERTY_UNAVAILABLE'){renderUnavailable();return}if(!response.ok)throw new Error(data.error||'Daten nicht abrufbar');all=data.items;$('#pp-banner').textContent=productionRoute?'Aktuelles Immobilienangebot von SLS Immobilienpartner.':'Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
       else {committedQuery=captureQuery();currentPage=0;await loadNextPage();$('#pp-banner').textContent='Aktuelle Kaufimmobilien aus Propstack im Status Vermarktung.'}
       if(id){const p=all.find(item=>item.id===id);if(p)renderDetail(p);else throw new Error('Dieses Objekt ist in der Testansicht nicht verfügbar.')}
       else if(demo){renderList()}
