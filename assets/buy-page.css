@@ -18,14 +18,16 @@ body.buy-page #main>.buy-offers,body.buy-page #main>.buy-faq{background:#fff}
 .buy-page .buy-card strong{margin-top:auto;padding-top:16px;font-size:20px}
 .buy-page .buy-card .buy-card-link{font-size:14px;font-weight:700}
 .buy-page .buy-listings>p{grid-column:1/-1}
-.buy-page .buy-steps{list-style:none;padding:0;margin:40px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:24px 48px}
-.buy-page .buy-steps li{display:flex;gap:20px;border-top:1px solid #c9d8df;padding-top:22px}
+.buy-page .buy-steps{list-style:none;padding:0;margin:44px 0 0;display:grid;grid-template-columns:1fr;gap:0;max-width:960px}
+.buy-page .buy-steps li{position:relative;display:grid;grid-template-columns:56px 1fr;gap:28px;border:0;padding:0 0 36px}
+.buy-page .buy-steps li:not(:last-child)::after{content:"";position:absolute;left:23px;top:48px;bottom:12px;width:1px;background:#c9d8df}
+.buy-page .buy-steps li:last-child{padding-bottom:0}
 .buy-page .buy-steps li>span{font:500 35px/1.2 'Playfair Display',Georgia,serif;color:#6c97ab}
 .buy-page .buy-steps h3{margin:0 0 10px;font-size:23px}
 .buy-page .buy-steps p{margin:0;color:#526873}
 body.buy-page #main>.buy-profile{background:#eaf0f3;scroll-margin-top:100px}
 .buy-page .buy-profile-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
-.buy-page .buy-profile-box{background:#fff;padding:30px;border-radius:9px}
+.buy-page .buy-profile-box{background:transparent;padding:8px 0 0;border-radius:0}
 .buy-page .buy-criteria{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .buy-page .buy-criteria label{display:grid;gap:7px;font-size:14px;font-weight:700}
 .buy-page .buy-criteria label:first-child{grid-column:1/-1}
@@ -42,5 +44,27 @@ body.buy-page #main>.buy-profile{background:#eaf0f3;scroll-margin-top:100px}
 .buy-page .buy-listings,.buy-page .buy-profile-layout,.buy-page .buy-steps{grid-template-columns:1fr}
 .buy-page .buy-profile-layout{gap:24px}.buy-page .buy-card{display:grid;grid-template-columns:40% 1fr}.buy-page .buy-card img{height:100%;min-height:220px}.buy-page .buy-card-body{padding:20px}
 }
-@media(max-width:540px){.buy-page .buy-card{display:flex}.buy-page .buy-card img{height:auto;min-height:0}.buy-page .buy-profile-box{padding:20px}.buy-page .buy-criteria{grid-template-columns:1fr}.buy-page .page-actions{display:flex;flex-direction:column;align-items:stretch}.buy-page .page-actions a{text-align:center;justify-content:center}.buy-page .buy-intro h1{font-size:40px}}
+@media(max-width:540px){.buy-page .buy-card{display:flex}.buy-page .buy-card img{height:auto;min-height:0}.buy-page .buy-profile-box{padding:0}.buy-page .buy-criteria{grid-template-columns:1fr}.buy-page .page-actions{display:flex;flex-direction:column;align-items:stretch}.buy-page .page-actions a{text-align:center;justify-content:center}.buy-page .buy-intro h1{font-size:40px}}
 @media(prefers-reduced-motion:reduce){.buy-page .buy-card{transition:none}}
+
+/* Keep every section on the same editorial grid as the hero. */
+body.buy-page #main>section>.wrap{width:min(calc(100% - 96px),1120px);margin-inline:auto}
+body.buy-page #main h2{color:#345b6e;font-size:clamp(30px,3.4vw,44px);line-height:1.16;letter-spacing:-.025em}
+body.buy-page #main .buy-finance h2,body.buy-page #main .buy-final h2{color:#fff}
+.buy-page .section-head{display:block;max-width:760px;margin-bottom:32px}
+.buy-page .section-head>p{max-width:680px;margin-top:20px}
+.buy-page .buy-profile-layout{grid-template-columns:1.05fr 1fr;gap:72px}
+.buy-page .buy-profile-box .button{width:auto;margin-top:12px}
+.buy-page .buy-criteria input,.buy-page .buy-criteria select{border-radius:2px;background:rgba(255,255,255,.65);border-color:#bbcbd2}
+.buy-page .buy-criteria input:focus-visible,.buy-page .buy-criteria select:focus-visible{outline:2px solid #345b6e;outline-offset:3px}
+.buy-page [data-search-profile-note]:empty{display:none}
+@media(max-width:850px){
+body.buy-page #main>section>.wrap{width:calc(100% - 48px)}
+.buy-page .buy-profile-layout{grid-template-columns:1fr;gap:32px}
+.buy-page .buy-steps li{grid-template-columns:44px 1fr;gap:20px}
+.buy-page .buy-steps li:not(:last-child)::after{left:18px}
+}
+@media(max-width:540px){
+body.buy-page #main>section>.wrap{width:calc(100% - 32px)}
+.buy-page .buy-profile-box .button{width:100%}
+}
