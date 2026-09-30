@@ -91,3 +91,18 @@ body.buy-page #main>section>.wrap{width:calc(100% - 32px)}
 .buy-page .buy-hero-pause{background:#345b6e}
 }
 @media(prefers-reduced-motion:reduce){.buy-page .buy-intro .hero-scene{transition:none}}
+
+/* One-time entrance, matching the homepage's timing and easing. */
+.buy-page .buy-intro h1,
+.buy-page .buy-intro .lead,
+.buy-page .buy-intro .page-actions .button{animation:home-hero-copy-enter 1.15s cubic-bezier(.22,.61,.36,1) backwards}
+.buy-page .buy-intro h1{animation-delay:.05s}
+.buy-page .buy-intro .lead{animation-delay:.30s}
+.buy-page .buy-intro .page-actions .button-light{animation-delay:.55s}
+.buy-page .buy-intro .page-actions .button-ghost{animation-delay:.75s}
+.buy-page .buy-intro .page-actions .button:focus-visible{animation:none}
+@media(prefers-reduced-motion:reduce){
+.buy-page .buy-intro h1,
+.buy-page .buy-intro .lead,
+.buy-page .buy-intro .page-actions .button{animation:none!important;opacity:1!important;transform:none!important}
+}
