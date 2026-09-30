@@ -3,7 +3,7 @@ const navGroups = [
     ["Aktuelle Immobilien", "/immobilien/", "Häuser, Wohnungen & besondere Objekte"],
     ["Immobilie kaufen", "/kaufen/", "Vom Suchprofil bis zum Notartermin"],
     ["Finanzierung", "/finanzierung/", "Budget frühzeitig realistisch einordnen"],
-    ["Suchprofil anlegen", "/kontakt/", "Passende Angebote früher erhalten"]
+    ["Suchprofil anlegen", "/suchprofil/", "Passende Angebote früher erhalten"]
   ]},
   { label: "Verkaufen", href: "/verkaufen/", kicker: "Für Eigentümer", items: [
     ["Immobilie verkaufen", "/verkaufen/", "Unser Prozess von Bewertung bis Übergabe"],
