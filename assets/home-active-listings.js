@@ -1,3 +1,5 @@
+import {objectPath} from './property-seo.mjs';
+
 (() => {
   const section = document.querySelector('[data-home-active-listings]');
   if (!section) return;
@@ -22,7 +24,7 @@
   const card = (item, clone = false) => {
     const link = document.createElement('a');
     link.className = 'home-active-card';
-    link.href = item.url;
+    link.href = objectPath(item);
     link.setAttribute('aria-label', `${item.title} in ${item.city} ansehen`);
     if (clone) {
       link.setAttribute('aria-hidden', 'true');
@@ -32,7 +34,7 @@
     const media = document.createElement('div');
     media.className = 'home-active-card-media';
     const image = document.createElement('img');
-    image.src = item.image;
+    image.src = item.images[0];
     image.alt = clone ? '' : `${item.title} in ${item.city}`;
     image.loading = 'lazy';
     image.decoding = 'async';
@@ -51,14 +53,14 @@
     const details = document.createElement('p');
     details.className = 'home-active-card-details';
     const facts = [item.city];
-    if (item.livingSpace) facts.push(`ca. ${number.format(item.livingSpace)} m²`);
+    if (item.area) facts.push(`ca. ${number.format(item.area)} m²`);
     if (item.rooms) facts.push(`${number.format(item.rooms)} Zimmer`);
     details.textContent = facts.join(' · ');
 
     const bottom = document.createElement('div');
     bottom.className = 'home-active-card-bottom';
     const price = document.createElement('strong');
-    price.textContent = euro.format(item.price);
+    price.textContent = item.price > 0 ? euro.format(item.price) : 'Preis auf Anfrage';
     const action = document.createElement('span');
     action.className = 'home-active-card-action';
     action.textContent = 'Immobilie ansehen';
@@ -105,15 +107,14 @@
     if (loaded) return;
     loaded = true;
     try {
-      const response = await fetch('/api/propstack-active-listings', {
+      const response = await fetch('/api/propstack-properties?per=12&page=1', {
         signal: AbortSignal.timeout(15000),
       });
       if (!response.ok) return;
       const data = await response.json();
-      const items = Array.isArray(data.listings) ? data.listings.filter(item =>
-        item && typeof item.id === 'string' && typeof item.title === 'string' &&
-        typeof item.city === 'string' && typeof item.image === 'string' &&
-        typeof item.url === 'string' && Number.isFinite(Number(item.price))) : [];
+      const items = Array.isArray(data.items) ? data.items.filter(item =>
+        item && /^\d+$/.test(String(item.id)) && typeof item.title === 'string' &&
+        Array.isArray(item.images) && /^https:\/\//.test(item.images[0] || '')) : [];
       if (!items.length) return;
 
       realCount = items.length;

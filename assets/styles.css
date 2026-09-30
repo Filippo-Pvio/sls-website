@@ -2911,3 +2911,15 @@ body.home-editorial > section.section.home-faq-section{
     left:24px;
   }
 }
+
+/* Shared SLS footer: use the current branded close on property pages too. */
+.property-preview .site-footer{background:#345b6e;color:#fff}
+.property-preview .site-footer .brand-logo{filter:brightness(0) invert(1)}
+.property-preview .site-footer .footer-lead p,
+.property-preview .site-footer a,
+.property-preview .site-footer p{color:#fff}
+.property-preview .site-footer h2{color:#fff}
+.property-preview .site-footer .footer-owner-emphasis{color:var(--coral)}
+.property-preview .site-footer a:hover,
+.property-preview .site-footer a:focus-visible{color:#fff;opacity:.78}
+.property-preview .site-footer .footer-bottom{border-top-color:rgba(255,255,255,.28);color:rgba(255,255,255,.78)}

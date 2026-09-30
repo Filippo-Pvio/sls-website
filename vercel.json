@@ -1,0 +1,45 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "rewrites": [
+    {
+      "source": "/immobilie/:slug/",
+      "destination": "/api/property-page?slug=:slug"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/immobilien-test/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/immobilien/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/immobilie/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "api/property-page.js": {
+      "includeFiles": "immobilien/index.html",
+      "maxDuration": 60
+    }
+  }
+}
