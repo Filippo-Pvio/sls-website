@@ -144,7 +144,7 @@ body.buy-page #main .buy-process-intro h2{font-size:clamp(38px,10vw,56px)}
 }
 
 /* Existing SLS partner budget calculator, with room for every step. */
-.buy-page .buy-finance .split{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:48px;align-items:start}
+.buy-page .buy-finance .split{grid-template-columns:minmax(0,.65fr) minmax(0,1.35fr);gap:32px;align-items:start}
 .buy-page .buy-budget{min-width:0;background:#fff;border-radius:8px;overflow:hidden}
 .buy-page .buy-budget iframe{display:block;width:100%;border:0;background:#fff}
 .buy-page #budget{scroll-margin-top:100px}
