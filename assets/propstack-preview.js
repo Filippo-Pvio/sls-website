@@ -35,6 +35,9 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
   let browsePage=1,viewMode=url.searchParams.get('ansicht')==='karte'?'map':'list',catalogError=false,mapApi=null,mapPromise=null,mapVersion=0,selectedProperty=null;
   let browseGeneration=0,browseRequest=null,committedQuery=new URLSearchParams(),renderedIds=[],mapItems=null;
   const favoritesView=url.searchParams.get('favoriten')==='1'&&!id;
+  const browseBase=productionRoute?'/immobilien/':'/immobilien-test/';
+  const searchProfileCta=document.querySelector('.sls-search-profile-cta');
+  if(searchProfileCta&&(favoritesView||id||demo))searchProfileCta.hidden=true;
   const favoriteKey=demo?'sls-property-favorites-demo-v1':'sls-property-favorites-v1';
   const parseFavorites=raw=>{
     try{const value=JSON.parse(raw);return new Set(Array.isArray(value)?value.filter(v=>typeof v==='string'&&(/^\d+$/.test(v)||(demo&&v==='demo'))):[])}catch{return new Set()}
@@ -54,7 +57,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
     $('#pp-favorites-link').textContent=`♡ Favoriten (${favorites.size})`;
     const mobile=$('#pp-mobile-favorites span');if(mobile)mobile.textContent=`Favoriten (${favorites.size})`;
   };
-  document.querySelector('.pp-banner').insertAdjacentHTML('afterend',`<div class="pp-favorites-bar">${favoritesView?`<a class="pp-favorites-back" href="/immobilien-test/${demo?'?demo=1':''}">← Alle Immobilien</a>`:''}<a id="pp-favorites-link" href="/immobilien-test/?favoriten=1${demo?'&demo=1':''}">♡ Favoriten (${favorites.size})</a></div><p class="pp-favorites-notice" id="pp-favorites-notice" role="status" aria-live="polite"></p>`);
+  document.querySelector('.pp-banner').insertAdjacentHTML('afterend',`<div class="pp-favorites-bar">${favoritesView?`<a class="pp-favorites-back" href="${browseBase}${demo?'?demo=1':''}">← Alle Immobilien</a>`:''}<a id="pp-favorites-link" href="${browseBase}?favoriten=1${demo?'&demo=1':''}">♡ Favoriten (${favorites.size})</a></div><p class="pp-favorites-notice" id="pp-favorites-notice" role="status" aria-live="polite"></p>`);
   document.addEventListener('click',event=>{
     const button=event.target.closest('[data-favorite]');if(!button)return;
     const propertyId=button.dataset.favorite;
@@ -76,7 +79,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
       if(result?.item)return card(result.item);
       const unavailable=result?.state==='unavailable';
       return `<article class="pp-panel pp-favorite-unavailable"><h2>Immobilie ${esc(propertyId)}</h2><p>${unavailable?'Dieses Objekt ist nicht mehr verfügbar.':result?.state==='error'?'Dieses Objekt konnte gerade nicht geladen werden. Bitte versuchen Sie es erneut.':'Aktuelle Angaben werden geladen …'}</p><button type="button" class="pp-favorite-remove" data-favorite="${esc(propertyId)}" data-favorite-title="Immobilie ${esc(propertyId)}" aria-pressed="true">Aus Favoriten entfernen</button></article>`;
-    }).join(''):'<div class="pp-error"><h2>Noch keine Immobilien gespeichert</h2><p>Tippen Sie auf das Herz, um sich ein Angebot zu merken.</p><a href="/immobilien-test/'+(demo?'?demo=1':'')+'">Immobilien entdecken →</a></div>';
+    }).join(''):'<div class="pp-error"><h2>Noch keine Immobilien gespeichert</h2><p>Tippen Sie auf das Herz, um sich ein Angebot zu merken.</p><a href="'+browseBase+(demo?'?demo=1':'')+'">Immobilien entdecken →</a></div>';
     $('#pp-progress').innerHTML=[...favorites].some(propertyId=>favoriteResults.get(propertyId)?.state==='error')?'<button type="button" class="pp-button" id="pp-favorites-retry">Erneut versuchen</button>':'';
     $('#pp-favorites-retry')?.addEventListener('click',loadFavorites);
     syncFavorites();
@@ -90,7 +93,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
           if(demo)result={item:sample};
           else{
             const response=await fetch(`/api/propstack-properties?summary=${encodeURIComponent(propertyId)}`,{cache:'no-store',signal:AbortSignal.timeout(15000)});
-            if(response.status===404)result={state:'unavailable'};
+            if(response.status===404||response.status===410)result={state:'unavailable'};
             else{if(!response.ok)throw new Error('Ladefehler');const data=await response.json();const item=data.items?.find(p=>String(p.id)===propertyId);if(!item)throw new Error('Objekt fehlt');result={item}}
           }
         }catch{result={state:'error'}}
@@ -131,7 +134,9 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
   async function resetBrowse(){
     restoringBrowse=null;browsePage=1;currentPage=0;all=[];total=0;hasMore=false;catalogError=false;
     mapItems=null;mapVersion++;browseGeneration++;browseRequest?.abort();loadingMore=false;
-    committedQuery=captureQuery();renderedIds=[];$('#pp-results').innerHTML='<p role="status">Immobilien werden geladen …</p>';
+    committedQuery=captureQuery();renderedIds=[];
+    if(searchProfileCta&&$('#pp-results').contains(searchProfileCta))$('#pp-results').before(searchProfileCta);
+    $('#pp-results').innerHTML='<p role="status">Immobilien werden geladen …</p>';
     if(demo){
       const f=activeFilters();all=[sample].filter(p=>(!f.query||`${p.title} ${p.city} ${p.zip}`.toLocaleLowerCase('de').includes(f.query))&&(!f.city||p.city.toLocaleLowerCase('de').includes(f.city))&&(!f.type||p.type===f.type)&&(!f.price||p.price<=f.price)&&(!f.minArea||p.area>=f.minArea)&&(!f.rooms||p.rooms>=f.rooms));total=all.length;renderList();return;
     }
@@ -256,7 +261,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
   function setupBrowse(){
     document.body.classList.add('pp-is-browse');
     const search=$('#pp-search');
-    search.insertAdjacentHTML('afterbegin',`<div class="pp-mobile-tools"><form id="pp-quick-search" role="search"><label class="pp-sr-only" for="pp-quick-query">Ort, PLZ oder Objekt suchen</label><input id="pp-quick-query" type="search" placeholder="Ort, PLZ oder Objekt suchen"><button type="submit" aria-label="Jetzt suchen">⌕</button></form><nav aria-label="Immobiliensuche"><button type="button" id="pp-mobile-sort"><b aria-hidden="true">⇅</b><span>Sortieren</span></button><a href="/immobilien-test/?favoriten=1${demo?'&demo=1':''}" id="pp-mobile-favorites"><b aria-hidden="true">♡</b><span>Favoriten (${favorites.size})</span></a><button type="button" id="pp-mobile-filter"><b aria-hidden="true">☷</b><span>Filtern</span></button><button type="button" id="pp-mobile-map" aria-pressed="false"><b aria-hidden="true">▧</b><span>Karte</span></button></nav></div><div class="pp-view-switch" role="group" aria-label="Ansicht wählen"><button type="button" data-view="list" aria-pressed="true">Liste</button><button type="button" data-view="map" aria-pressed="false">Karte</button></div>`);
+    search.insertAdjacentHTML('afterbegin',`<div class="pp-mobile-tools"><form id="pp-quick-search" role="search"><label class="pp-sr-only" for="pp-quick-query">Ort, PLZ oder Objekt suchen</label><input id="pp-quick-query" type="search" placeholder="Ort, PLZ oder Objekt suchen"><button type="submit" aria-label="Jetzt suchen">⌕</button></form><nav aria-label="Immobiliensuche"><button type="button" id="pp-mobile-sort"><b aria-hidden="true">⇅</b><span>Sortieren</span></button><a href="${browseBase}?favoriten=1${demo?'&demo=1':''}" id="pp-mobile-favorites"><b aria-hidden="true">♡</b><span>Favoriten (${favorites.size})</span></a><button type="button" id="pp-mobile-filter"><b aria-hidden="true">☷</b><span>Filtern</span></button><button type="button" id="pp-mobile-map" aria-pressed="false"><b aria-hidden="true">▧</b><span>Karte</span></button></nav></div><div class="pp-view-switch" role="group" aria-label="Ansicht wählen"><button type="button" data-view="list" aria-pressed="true">Liste</button><button type="button" data-view="map" aria-pressed="false">Karte</button></div>`);
     $('.pp-wrap').prepend($('.pp-mobile-tools'));
     const actions=document.createElement('div');actions.className='pp-browse-actions';
     search.prepend(actions);actions.append($('.pp-favorites-bar'),$('.pp-view-switch'));
