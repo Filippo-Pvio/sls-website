@@ -395,3 +395,6 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
  .property-preview .pp-browse-actions .pp-favorites-bar,.property-preview .pp-browse-actions .pp-view-switch{margin:0}
  .property-preview .pp-browse-actions a,.property-preview .pp-browse-actions button{min-height:46px;box-sizing:border-box}
 }
+
+/* Keep the live region available without an empty visual message box. */
+.property-preview.pp-is-detail .pp-inquiry .pp-data-note:empty{margin:0;padding:0;border:0;background:transparent}
