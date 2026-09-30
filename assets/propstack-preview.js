@@ -13,7 +13,9 @@
   const objectPath=p=>`/immobilie/${slugify([p.title,p.city,p.reference].filter(Boolean).join('-'))}-${encodeURIComponent(p.id)}/`;
   const setSeo=p=>{
     if(!productionRoute||!p)return;
-    const canonical=`https://sls.de${objectPath(p)}`;
+    const expectedPath=objectPath(p);
+    const canonical=`https://sls.de${expectedPath}`;
+    if(location.pathname.startsWith('/immobilie/')&&location.pathname!==expectedPath)history.replaceState(null,'',expectedPath);
     document.title=`${p.title}${p.city?` in ${p.city}`:''} | SLS Immobilienpartner`;
     const description=[p.type&&`${p.type} kaufen`,p.city&&`in ${p.city}`,p.area!=null&&`${new Intl.NumberFormat('de-DE',{maximumFractionDigits:1}).format(p.area)} m²`,p.rooms!=null&&`${p.rooms} Zimmer`].filter(Boolean).join(' · ');
     let meta=document.querySelector('meta[name="description"]');if(!meta){meta=document.createElement('meta');meta.name='description';document.head.append(meta)}meta.content=`${description}. Jetzt bei SLS Immobilienpartner ansehen.`;
@@ -451,6 +453,7 @@
         $('#pp-banner').textContent='Preise und Verfügbarkeit werden beim Öffnen der Favoriten aktualisiert.';
         await loadFavorites();return;
       }
+      if(productionRoute&&!id&&location.pathname.startsWith('/immobilie/'))throw new Error('Diese Immobilienadresse ist nicht gültig.');
       if(!id)setupBrowse();
       if(demo){all=[sample];total=1;hasMore=false;$('#pp-banner').textContent='Designvorschau mit einem öffentlich sichtbaren Beispielobjekt. Keine Live-Abfrage; Angaben und Verfügbarkeit bitte auf sls.de prüfen.'}
       else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'Daten nicht abrufbar');all=data.items;$('#pp-banner').textContent='Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
