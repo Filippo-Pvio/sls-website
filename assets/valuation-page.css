@@ -8,15 +8,14 @@ body.valuation-page #main .section-head>p:not(.eyebrow){max-width:740px;margin:2
 body.valuation-page #main>.valuation-methods{background:#eaf0f3}
 .valuation-page .valuation-method-intro{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:36px}
 .valuation-page .valuation-method-intro p{margin:0}
-.valuation-page .valuation-method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.valuation-page .valuation-method-grid article{background:#fff;border-top:3px solid #6c97ab;padding:28px;border-radius:4px}
-.valuation-page .valuation-method-grid article>span{color:#345b6e;font-size:13px;font-weight:700}
-body.valuation-page #main .valuation-method-grid h3{font:500 clamp(22px,2vw,28px)/1.2 'Playfair Display',Georgia,serif;overflow-wrap:anywhere;color:#345b6e;margin:14px 0 20px}
-.valuation-page .valuation-method-grid p{font-size:15px;line-height:1.6}
-.valuation-page .valuation-method-note{border-top:1px solid #d3e0e4;padding-top:16px;margin-bottom:0}
+ .valuation-page .valuation-method-grid{display:grid;gap:32px}
+.valuation-page .valuation-method-grid article{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:48px;border-top:1px solid #b9ced7;padding:32px 0 0}
+body.valuation-page #main .valuation-method-grid h3{font:500 clamp(24px,2.5vw,32px)/1.2 'Playfair Display',Georgia,serif;overflow-wrap:normal;hyphens:auto;color:#345b6e;margin:0}
+.valuation-page .valuation-method-grid p{font-size:16px;line-height:1.6;margin:0}
+.valuation-page .valuation-method-grid .valuation-method-note{margin-top:12px}
 .valuation-page .valuation-method-result{max-width:760px;text-align:center;margin:36px auto 0;padding:28px;border-radius:6px;background:#345b6e}
 body.valuation-page #main .valuation-method-result h3{color:#fff;font:500 30px/1.2 'Playfair Display',Georgia,serif;margin:10px 0 16px}
 body.valuation-page #main .valuation-method-result p{color:#edf3f5;margin-bottom:0}
 body.valuation-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin:0 auto 28px}
 .valuation-page .buy-final .page-actions{justify-content:center}
-@media(max-width:850px){.valuation-page .valuation-method-grid,.valuation-page .valuation-method-intro{grid-template-columns:1fr;gap:24px}.valuation-page .valuation-widget-shell{padding:12px}.valuation-page .valuation-method-grid article{padding:24px}}
+@media(max-width:850px){.valuation-page .valuation-method-grid,.valuation-page .valuation-method-intro{grid-template-columns:1fr;gap:24px}.valuation-page .valuation-widget-shell{padding:12px}.valuation-page .valuation-method-grid article{grid-template-columns:1fr;gap:16px;padding:24px 0 0}}
