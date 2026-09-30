@@ -3,12 +3,8 @@
   "trailingSlash": true,
   "rewrites": [
     {
-      "source": "/immobilien/",
-      "destination": "/immobilien/index.html"
-    },
-    {
       "source": "/immobilie/:slug/",
-      "destination": "/immobilien/index.html"
+      "destination": "/immobilien/"
     }
   ],
   "headers": [
