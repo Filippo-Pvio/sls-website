@@ -1,0 +1,46 @@
+.buy-page{color:#345b6e;background:var(--paper)}
+.buy-page .buy-intro,.buy-page .buy-final{background:#345b6e;color:#fff}
+.buy-page .buy-intro{padding:155px 0 64px}
+.buy-page .buy-intro h1{font-size:clamp(40px,5.5vw,72px);line-height:1.08;letter-spacing:-.035em;margin:12px 0 24px;max-width:950px;color:#fff}
+.buy-page .buy-intro .lead{max-width:710px;color:#edf3f5}
+.buy-page .buy-intro .eyebrow,.buy-page .buy-final .eyebrow{color:#d7e6ed}
+.buy-page .buy-intro-note{font-size:14px;margin:28px 0 0;color:#d7e6ed}
+.buy-page h2{color:#345b6e;max-width:900px}
+.buy-page .section{padding:76px 0}
+.buy-page .buy-offers,.buy-page .buy-faq{background:#fff}
+.buy-page .buy-listings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:32px 0}
+.buy-page .buy-card{display:flex;flex-direction:column;border:1px solid #d9e3e7;border-radius:8px;overflow:hidden;color:#345b6e;transition:box-shadow .2s}
+.buy-page .buy-card:hover{box-shadow:0 12px 30px #345b6e22}
+.buy-page .buy-card img{aspect-ratio:4/3;object-fit:cover}
+.buy-page .buy-card-body{padding:24px;display:flex;flex:1;flex-direction:column;gap:12px}
+.buy-page .buy-card h3{font:500 25px/1.2 'Playfair Display',Georgia,serif;margin:0}
+.buy-page .buy-card p{font-size:14px;margin:0}
+.buy-page .buy-card strong{margin-top:auto;padding-top:16px;font-size:20px}
+.buy-page .buy-card .buy-card-link{font-size:14px;font-weight:700}
+.buy-page .buy-listings>p{grid-column:1/-1}
+.buy-page .buy-steps{list-style:none;padding:0;margin:40px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:24px 48px}
+.buy-page .buy-steps li{display:flex;gap:20px;border-top:1px solid #c9d8df;padding-top:22px}
+.buy-page .buy-steps li>span{font:500 35px/1.2 'Playfair Display',Georgia,serif;color:#6c97ab}
+.buy-page .buy-steps h3{margin:0 0 10px;font-size:23px}
+.buy-page .buy-steps p{margin:0;color:#526873}
+.buy-page .buy-profile{background:#eaf0f3;scroll-margin-top:100px}
+.buy-page .buy-profile-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.buy-page .buy-profile-box{background:#fff;padding:30px;border-radius:9px}
+.buy-page .buy-criteria{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.buy-page .buy-criteria label{display:grid;gap:7px;font-size:14px;font-weight:700}
+.buy-page .buy-criteria label:first-child{grid-column:1/-1}
+.buy-page .buy-criteria input,.buy-page .buy-criteria select{width:100%;min-width:0;min-height:48px;border:1px solid #bacbd3;border-radius:5px;padding:10px;font:inherit;font-size:16px;background:#fff;color:#345b6e}
+.buy-page .buy-profile-box .button,.buy-page .pp-button{background:#345b6e;color:#fff;border:0;border-radius:6px;padding:14px 22px;font:700 15px Raleway,Arial,sans-serif;cursor:pointer}
+.buy-page .buy-profile-box .button{width:100%}
+.buy-page .buy-small{font-size:14px;color:#526873}
+.buy-page .buy-finance h2,.buy-page .buy-final h2{color:#fff}
+.buy-page .buy-final{text-align:center}
+.buy-page .buy-final h2{margin:12px auto 28px}
+.buy-page .sls-search-profile-card .eyebrow{color:#345b6e}
+@media(max-width:850px){
+.buy-page .buy-intro{padding:118px 0 40px}.buy-page .section{padding:48px 0}
+.buy-page .buy-listings,.buy-page .buy-profile-layout,.buy-page .buy-steps{grid-template-columns:1fr}
+.buy-page .buy-profile-layout{gap:24px}.buy-page .buy-card{display:grid;grid-template-columns:40% 1fr}.buy-page .buy-card img{height:100%;min-height:220px}.buy-page .buy-card-body{padding:20px}
+}
+@media(max-width:540px){.buy-page .buy-card{display:flex}.buy-page .buy-card img{height:auto;min-height:0}.buy-page .buy-profile-box{padding:20px}.buy-page .buy-criteria{grid-template-columns:1fr}.buy-page .page-actions{display:flex;flex-direction:column;align-items:stretch}.buy-page .page-actions a{text-align:center;justify-content:center}.buy-page .buy-intro h1{font-size:40px}}
+@media(prefers-reduced-motion:reduce){.buy-page .buy-card{transition:none}}

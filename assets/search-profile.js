@@ -33,7 +33,7 @@
     const dialog=document.createElement('dialog');
     dialog.className='sls-search-profile-dialog';
     dialog.innerHTML=`<form method="dialog" class="sls-search-profile-card">
-      <div class="sls-search-profile-top"><div><p class="eyebrow">SLS Suchauftrag</p><h2>Suche speichern</h2></div><button value="cancel" aria-label="Schließen">×</button></div>
+      <div class="sls-search-profile-top"><div><p class="eyebrow">SLS Suchauftrag</p><h2>Suche speichern</h2></div><button type="button" data-profile-close aria-label="Schließen">×</button></div>
       <p>Wir informieren Sie, sobald eine passende Immobilie verfügbar ist.</p>
       <p class="sls-search-profile-criteria" data-profile-criteria></p>
       <div class="sls-search-profile-fields">
@@ -53,7 +53,9 @@
     const form=dialog.querySelector('form');
     let criteria={};
 
+    dialog.querySelector('[data-profile-close]').addEventListener('click',()=>dialog.close());
     open.addEventListener('click',()=>{
+      if(!source.reportValidity())return;
       criteria=readCriteria();
       if(!criteria.type&&!criteria.city&&!criteria.price&&!criteria.minArea&&!criteria.rooms){
         status.textContent='';
