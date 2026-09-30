@@ -53,3 +53,5 @@ body.sell-page #main .sell-video-link:hover{color:#fff}
 
 body.sell-page #main .sell-video-label{color:#d7e6ed;font-size:12px;font-weight:700;letter-spacing:.06em;margin:0 0 10px}
 body.sell-page #main .sell-video-title{color:#fff;font:500 26px/1.2 "Playfair Display",Georgia,serif;margin:0 0 20px}
+
+body.sell-page #main .sell-video-intro{color:#edf3f5;font-size:16px;line-height:1.55;margin:0 0 20px}
