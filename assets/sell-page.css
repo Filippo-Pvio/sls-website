@@ -9,3 +9,19 @@ body.sell-page #main>.sell-services{background:#eaf0f3}
 .sell-page .buy-final .lead{color:#edf3f5;max-width:720px;margin:0 auto 28px}
 .sell-page #verkaufsablauf,.sell-page #vermarktung{scroll-margin-top:100px}
 @media(max-width:850px){.sell-page .split,.sell-page .premium-grid{grid-template-columns:1fr;gap:28px}}
+
+.sell-page .sell-benefits{display:grid;gap:40px}
+.sell-page .sell-benefits article{display:grid;grid-template-columns:minmax(180px,.7fr) minmax(0,1.7fr);gap:48px;border-top:1px solid #b9ced7;padding-top:32px}
+.sell-page .sell-benefits h3{font:500 clamp(26px,2.8vw,34px)/1.15 'Playfair Display',Georgia,serif;margin:0}
+.sell-page .sell-benefits ul{list-style:none;padding:0;margin:0;display:grid;gap:16px}
+.sell-page .sell-benefits li{position:relative;padding-left:27px}
+.sell-page .sell-benefits li::before{content:'✓';position:absolute;left:0;color:#49854b;font-weight:700}
+body.sell-page #main .sell-decision h3{color:#b5e4a1}
+.sell-page .buy-path .buy-steps>.sell-decision::before{background:#b5e4a1}
+.sell-page .buy-path .buy-steps>.sell-decision>span{color:#b5e4a1;font-size:24px}
+.sell-page .sell-decision>div{border-left:3px solid #b5e4a1;padding-left:18px}
+.sell-page .sell-partner-logos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:32px}
+.sell-page .sell-partner-logos .trust-badge-card{display:flex;justify-content:center;align-items:center;min-width:0;padding:16px;background:transparent;border:0;box-shadow:none}
+.sell-page .sell-partner-logos img{width:100%;max-width:200px;height:150px;object-fit:contain}
+.sell-page .sell-reference-link{text-align:center;margin-top:32px}
+@media(max-width:850px){.sell-page .sell-benefits article{grid-template-columns:1fr;gap:24px}.sell-page .sell-partner-logos{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.sell-page .sell-partner-logos img{height:120px}}
