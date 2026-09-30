@@ -29,3 +29,15 @@ Auf dem aktuellen Preview-Branch `feat/propstack-property-preview-current` werde
 - Grundstück SLS 10257, Objekt-ID 6158199: In der vorherigen Browserprüfung waren 900 m² Grundstücksfläche und „wird nicht benötigt“ vorhanden; keine fehlenden Energiewerte daraus ableiten.
 
 Die Liste beschreibt die offenen Prüfkriterien und bekannte Beispiele, keinen vollständigen Audit aller Angebote. Anfrage-Statusmeldungen und die ausdrücklich aufgerufene Demo-Kennzeichnung bleiben erhalten. SEO-Prüfung und Homepage-Verknüpfung sind separate nächste Schritte.
+
+## SEO-Preview-Prüfung (30.09.2026)
+
+Objektbezogene Titel ohne erneut angehängten Ort, Beschreibungen mit Grundstücksfläche bzw. Wohnfläche und vorhandenem Preis, parameterfreie Canonicals auf die geplante sls.de-Objektadresse. Bestehende Slugs bleiben stabil. Bei Objektpfaden hat die ID im Pfad Vorrang vor einem widersprüchlichen Query-Parameter.
+
+JSON-LD: RealEstateListing mit mainEntity (Apartment, House oder Place), öffentlich sichtbarem Standort ohne Straße, vorhandenen Flächen und numerischem EUR-Angebot. Fehlende Preise, Bilder und Standortwerte werden nicht erfunden. Kein aktives Angebots-Markup für Demo-, Fehler- oder nicht verfügbare Seiten. Nicht verfügbare Seiten verweisen nicht mehr per Canonical auf die inhaltlich andere Übersicht. Preview-noindex bleibt in HTML und Vercel-Headern erhalten.
+
+Tests: `node --test qa/property-seo.test.mjs qa/property-loading.test.mjs qa/property-similarity.test.mjs`.
+
+Vor dem Livegang noch erforderlich: serverseitig ausgelieferte Objekt-Metadaten und echte HTTP-404/410 für die HTML-Detailrouten. Aktuell liefert der statische Rewrite HTTP 200; nur die Objekt-API unterscheidet 404/410. Die Metadaten und Fehleransichten werden derzeit per JavaScript gesetzt. Die Vorschau ist daher ausdrücklich keine Freigabe zur Indexierung. Bestehende sls.de/Frymo-Adressen müssen vor einer URL-Migration separat abgeglichen werden.
+
+Quellen: https://schema.org/RealEstateListing und https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics
