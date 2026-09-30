@@ -68,3 +68,26 @@ body.buy-page #main>section>.wrap{width:calc(100% - 48px)}
 body.buy-page #main>section>.wrap{width:calc(100% - 32px)}
 .buy-page .buy-profile-box .button{width:100%}
 }
+
+/* Buyer hero: the homepage's image treatment and quiet crossfade. */
+.buy-page .buy-intro{position:relative;isolation:isolate;overflow:hidden}
+.buy-page .buy-hero-scenes,.buy-page .buy-intro .hero-scene{position:absolute;inset:0;width:100%;height:100%}
+.buy-page .buy-hero-scenes{z-index:-2;overflow:hidden}
+.buy-page .buy-intro .hero-scene{object-fit:cover;object-position:50% 42%;filter:saturate(.82) contrast(.95);opacity:0;transition:opacity 1.6s ease;backface-visibility:hidden}
+.buy-page .buy-intro .hero-scene.is-visible{opacity:1}
+.buy-page .buy-intro .hero-scene.is-resetting{transition:none}
+.buy-page .buy-intro::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(59,83,94,.86),rgba(59,83,94,.67) 43%,rgba(59,83,94,.2) 100%),linear-gradient(rgba(59,83,94,.18),rgba(59,83,94,.18))}
+.buy-page .buy-intro h1{max-width:760px;font-size:clamp(40px,4.6vw,64px)}
+.buy-page .buy-intro .lead{max-width:600px}
+.buy-page .buy-hero-pause{margin-top:20px;padding:7px 12px;border:1px solid #ffffff80;background:#345b6e99;color:#fff;font:600 12px/1.4 Raleway,Arial,sans-serif;cursor:pointer;border-radius:3px}
+.buy-page .buy-hero-pause:focus-visible{outline:2px solid white;outline-offset:4px}
+.buy-page .buy-hero-pause[hidden]{display:none}
+@media(max-width:760px){
+.buy-page .buy-intro::after{background:linear-gradient(180deg,rgba(59,83,94,.86) 0%,rgba(59,83,94,.77) 49%,rgba(59,83,94,.62) 68%,rgba(59,83,94,.28) 85%,rgba(59,83,94,.1) 100%)}
+.buy-page .buy-intro{padding-bottom:56px}
+.buy-page .buy-intro .hero-scene[data-scene="beratung"]{object-position:54% 40%}
+.buy-page .buy-intro .hero-scene[data-scene="kontakt"]{object-position:40% 40%}
+.buy-page .buy-intro .hero-scene[data-scene="besichtigung"]{object-position:51% 40%}
+.buy-page .buy-hero-pause{background:#345b6e}
+}
+@media(prefers-reduced-motion:reduce){.buy-page .buy-intro .hero-scene{transition:none}}
