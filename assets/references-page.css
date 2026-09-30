@@ -1,0 +1,27 @@
+body.references-page #main .section-head{display:block;text-align:center;max-width:850px;margin:0 auto 36px}
+body.references-page #main .section-head h2{margin:0 auto;text-wrap:balance}
+body.references-page #main .section-head .eyebrow{margin:0 auto 14px;max-width:none}
+body.references-page #main .section-head>p:not(.eyebrow){max-width:700px;margin:20px auto 0}
+.references-page #referenzimmobilien{scroll-margin-top:100px}
+.references-page #references-status{text-align:center}
+.references-page .references-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 24px}
+.references-page .reference-card{min-width:0;border-bottom:1px solid #c9d8df;padding-bottom:24px}
+.references-page .reference-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;background:#eaf0f3}
+.references-page .reference-card .reference-tag{display:block;margin:20px 0 12px;color:#345b6e;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+body.references-page #main .reference-card h3{font:500 25px/1.22 'Playfair Display',Georgia,serif;color:#345b6e;margin:0 0 12px;overflow-wrap:break-word}
+.references-page .reference-card p{margin:0;color:#526873;font-size:15px}
+.references-page .references-more{text-align:center;margin-top:32px}
+.references-page .references-more button[hidden]{display:none}
+body.references-page #main>.references-approach{background:#eaf0f3}
+.references-page .references-values{display:grid;gap:28px}
+.references-page .references-values article{display:grid;grid-template-columns:1fr 1.5fr;gap:48px;border-top:1px solid #b9ced7;padding-top:28px}
+.references-page .references-values h3{font:500 30px/1.15 'Playfair Display',Georgia,serif;margin:0;color:#345b6e}
+.references-page .references-values p{margin:0}
+.references-page .references-process-link{text-align:center;margin:32px 0 0}
+body.references-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin:0 auto 28px}
+.references-page .buy-final .page-actions{justify-content:center}
+.references-page .reference-card.is-entering{animation:reference-enter .6s ease backwards}
+@keyframes reference-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media(max-width:850px){.references-page .references-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.references-page .references-values article{grid-template-columns:1fr;gap:16px}}
+@media(max-width:540px){.references-page .references-grid{grid-template-columns:1fr}.references-page .reference-card.is-entering{animation:none}}
+@media(prefers-reduced-motion:reduce){.references-page .reference-card.is-entering{animation:none}}
