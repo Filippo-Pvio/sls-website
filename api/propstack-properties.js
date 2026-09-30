@@ -19,6 +19,29 @@ async function read(path,key){
   }finally{clearTimeout(timer);}
 }
 
+async function readMaybe(path,key){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),10000);
+  try{
+    const response=await fetch(`https://api.propstack.de/v1/${path}`,{
+      headers:{'X-API-KEY':key},
+      signal:controller.signal
+    });
+    if(response.status===404)return null;
+    if(!response.ok)throw new Error(`Propstack returned ${response.status}`);
+    return await response.json();
+  }finally{clearTimeout(timer);}
+}
+
+async function unavailableResponse(id,key,res){
+  const raw=await readMaybe(`units/${encodeURIComponent(id)}?new=1`,key);
+  if(!raw||String(raw.id)!==String(id))return res.status(404).json({error:'Objekt nicht gefunden',code:'PROPERTY_NOT_FOUND'});
+  return res.status(410).json({
+    error:'Dieses Objekt ist nicht mehr verfügbar.',
+    code:'PROPERTY_UNAVAILABLE'
+  });
+}
+
 const normalise=value=>String(value||'').trim().toLocaleLowerCase('de-DE');
 
 async function resolvePublicStatus(key){
@@ -133,7 +156,7 @@ export default async function handler(req,res){
       const summary=String(req.query.summary);
       if(!/^\d+$/.test(summary))return res.status(404).json({error:'Objekt nicht gefunden'});
       const row=await listingById(summary,key,status.id);
-      if(!row)return res.status(404).json({error:'Objekt nicht veröffentlicht'});
+      if(!row)return unavailableResponse(summary,key,res);
       res.setHeader('Cache-Control','public, s-maxage=60');
       return res.status(200).json({items:[propertyCard(publicUnit(row))]});
     }
@@ -142,7 +165,7 @@ export default async function handler(req,res){
     if(id){
       if(!/^\d+$/.test(String(id)))return res.status(404).json({error:'Objekt nicht gefunden'});
       const summary=await listingById(id,key,status.id);
-      if(!summary)return res.status(404).json({error:'Objekt nicht veröffentlicht'});
+      if(!summary)return unavailableResponse(id,key,res);
 
       const detail=await read(`units/${encodeURIComponent(id)}?new=1`,key);
       if(String(detail?.id)!==String(id)||detail.archived===true||
