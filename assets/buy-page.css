@@ -105,7 +105,7 @@ body.buy-page #main>section>.wrap{width:calc(100% - 32px)}
 
 /* Buying process follows the homepage's blue, scroll-led timeline. */
 body.buy-page #main>.buy-path{background:#345b6e!important;color:#fff}
-.buy-page .buy-process-layout{display:grid;grid-template-columns:minmax(0,.98fr) minmax(0,1.02fr);gap:clamp(36px,6vw,96px);align-items:start}
+.buy-page .buy-process-layout{display:grid;grid-template-columns:1fr;gap:48px;align-items:start}
 body.buy-page #main .buy-process-intro h2{color:#fff;font-size:clamp(46px,5.2vw,78px);line-height:.99;margin-top:16px}
 .buy-page .buy-process-intro .eyebrow{color:#dfe5e7}
 .buy-page .buy-process-intro.is-motion-ready{opacity:0;transform:translateY(28px);transition:opacity .82s ease-out,transform .82s cubic-bezier(.22,1,.36,1)}
@@ -152,3 +152,7 @@ body.buy-page #main .buy-process-intro h2{font-size:clamp(38px,10vw,56px)}
 
 @media(min-width:1001px){.buy-page .buy-budget{margin-top:-48px}}
 @media(max-width:1000px){.buy-page .buy-finance .split{gap:16px}}
+
+.buy-page .buy-process-intro{text-align:center;max-width:960px;margin-inline:auto}
+body.buy-page #main .buy-process-intro h2{max-width:960px;margin-inline:auto}
+.buy-page .buy-path .buy-steps{width:100%;max-width:760px;margin-inline:auto}
