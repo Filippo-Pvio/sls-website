@@ -18,3 +18,14 @@ Lokale Überprüfung: `node --test qa/propstack-preview.test.mjs`; Design: `/imm
 
 
 Deployment-Hinweis: Die Suchprofil-CTA-Position wird im Preview nach der ersten Ergebnisrunde getestet.
+
+## Interne Datenprüfung vor dem Livegang (30.09.2026)
+
+Auf dem aktuellen Preview-Branch `feat/propstack-property-preview-current` werden redaktionelle Prüfaufforderungen nicht mehr in der Besucheransicht ausgegeben. Diese Änderung ist keine Freigabe der Datenqualität oder der Veröffentlichung.
+
+- Energieangaben: Bei nicht ausdrücklich als „wird nicht benötigt“ markierten Objekten Ausweistyp, Kennwert, Energieträger, Baujahr und Effizienzklasse auf Vollständigkeit prüfen. Besucher erhalten bei Lücken den neutralen Hinweis „Weitere Angaben zum Energieausweis erhalten Sie auf Anfrage“; Angebotskarten zeigen „Energieangaben auf Anfrage“.
+- Baujahr: Ein aus den Objektdaten übernommenes Baujahr weiterhin mit dem Energieausweis abgleichen. Die sachliche Kennzeichnung „Baujahr laut Objektdaten“ bleibt erhalten. Beispiel aus der Preview-Prüfung: SLS 4826, Objekt-ID 4954810.
+- Provision: Wenn ein Provisionssatz vorliegt, aber kein ausführlicher Provisionshinweis, den Text in Propstack ergänzen und fachlich prüfen. Vorhandene Provisionssätze und Texte werden unverändert angezeigt; fehlende Texte werden nicht erfunden.
+- Grundstück SLS 10257, Objekt-ID 6158199: In der vorherigen Browserprüfung waren 900 m² Grundstücksfläche und „wird nicht benötigt“ vorhanden; keine fehlenden Energiewerte daraus ableiten.
+
+Die Liste beschreibt die offenen Prüfkriterien und bekannte Beispiele, keinen vollständigen Audit aller Angebote. Anfrage-Statusmeldungen und die ausdrücklich aufgerufene Demo-Kennzeichnung bleiben erhalten. SEO-Prüfung und Homepage-Verknüpfung sind separate nächste Schritte.
