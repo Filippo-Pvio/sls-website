@@ -4,11 +4,11 @@
   "rewrites": [
     {
       "source": "/immobilien/",
-      "destination": "/immobilien/preview.html"
+      "destination": "/immobilien/index.html"
     },
     {
       "source": "/immobilie/:slug/",
-      "destination": "/immobilien/preview.html"
+      "destination": "/immobilien/index.html"
     }
   ],
   "headers": [
