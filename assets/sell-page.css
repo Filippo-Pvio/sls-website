@@ -44,3 +44,9 @@ body.sell-page #main .buy-process-intro h2,body.sell-page #main .buy-final h2{te
 .sell-page .sell-video-icon{position:absolute;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--coral);color:#fff;font-size:21px}
 .sell-page .sell-video-hint{position:absolute;z-index:1;bottom:14px;left:12px;right:12px;text-align:center;font:500 12px/1.4 Raleway,Arial,sans-serif;color:#fff}
 .sell-page .sell-video-play:focus-visible{outline:3px solid var(--coral);outline-offset:-3px}
+
+.sell-page .sell-video{padding:20px;background:#345b6e;border-radius:6px}
+body.sell-page #main .sell-video-link{display:block;margin-top:16px;color:#edf3f5;font-size:14px;font-weight:700;line-height:1.5;text-decoration:underline;text-underline-offset:4px}
+body.sell-page #main .sell-video-link:hover{color:#fff}
+.sell-page .sell-video-link:focus-visible{outline:2px solid #fff;outline-offset:5px}
+@media(max-width:540px){.sell-page .sell-video{padding:14px}}
