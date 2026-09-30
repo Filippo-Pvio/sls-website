@@ -1,11 +1,2 @@
-body.search-page #main>.search-how{background:#345b6e!important;color:#fff}
-.search-page .search-how .section-head{text-align:center;max-width:900px;margin-inline:auto}
-body.search-page #main .search-how h2{color:#fff;margin-inline:auto}
-.search-page .search-how .eyebrow{color:#d7e6ed}
-.search-page .search-how-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin-top:44px}
-.search-page .search-how-grid span{color:var(--coral);font-weight:700}
-.search-page .search-how-grid h3{color:#fff;font:500 29px/1.2 'Playfair Display',Georgia,serif;margin:18px 0}
-.search-page .search-how-grid p,.search-page .buy-final p{color:#edf3f5}
-.search-page .buy-final p{margin-bottom:28px}
+.search-page .buy-final p{color:#edf3f5;margin-bottom:28px}
 .search-page .buy-profile{scroll-margin-top:100px}
-@media(max-width:850px){.search-page .search-how-grid{grid-template-columns:1fr;gap:28px}}
