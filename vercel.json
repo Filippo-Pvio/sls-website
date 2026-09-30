@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/immobilie/:slug/",
-      "destination": "/immobilien/"
+      "destination": "/api/property-page?slug=:slug"
     }
   ],
   "headers": [
@@ -35,5 +35,11 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/property-page.js": {
+      "includeFiles": "immobilien/index.html",
+      "maxDuration": 60
+    }
+  }
 }

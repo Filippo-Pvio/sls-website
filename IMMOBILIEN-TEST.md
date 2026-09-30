@@ -38,6 +38,6 @@ JSON-LD: RealEstateListing mit mainEntity (Apartment, House oder Place), öffent
 
 Tests: `node --test qa/property-seo.test.mjs qa/property-loading.test.mjs qa/property-similarity.test.mjs`.
 
-Vor dem Livegang noch erforderlich: serverseitig ausgelieferte Objekt-Metadaten und echte HTTP-404/410 für die HTML-Detailrouten. Aktuell liefert der statische Rewrite HTTP 200; nur die Objekt-API unterscheidet 404/410. Die Metadaten und Fehleransichten werden derzeit per JavaScript gesetzt. Die Vorschau ist daher ausdrücklich keine Freigabe zur Indexierung. Bestehende sls.de/Frymo-Adressen müssen vor einer URL-Migration separat abgeglichen werden.
+Die HTML-Detailrouten liefern Objekt-Metadaten, Canonical, JSON-LD und eine lesbare Objektzusammenfassung serverseitig aus. Aktive Angebote liefern HTTP 200, nicht mehr verfügbare Angebote 410 und unbekannte IDs 404. Temporäre Datenfehler bleiben 502/503 mit Wiederholungsmöglichkeit. Der Browser übernimmt ausschließlich dieselben öffentlich freigegebenen Objektdaten für die vollständige Detailansicht. Die Vorschau bleibt noindex und ist ausdrücklich keine Freigabe zur Indexierung. Zusätzliche Prüfungen: `node --test qa/property-page.test.mjs` (Statuscodes, HEAD, Pfadpriorität, sichere HTML-/JSON-Einbettung). Bestehende sls.de/Frymo-Adressen müssen vor einer URL-Migration separat abgeglichen werden.
 
 Quellen: https://schema.org/RealEstateListing und https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics

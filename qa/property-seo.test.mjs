@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
+import {objectPath,buildPropertySeo} from '../assets/property-seo.mjs';
 
 const source=readFileSync(new URL('../assets/propstack-preview.js',import.meta.url),'utf8');
 function loadSeo(href='https://preview.vercel.app/immobilie/alt-123/?objekt=999'){
@@ -11,9 +12,9 @@ function loadSeo(href='https://preview.vercel.app/immobilie/alt-123/?objekt=999'
     createElement:()=>({remove(){for(const [key,value] of nodes)if(value===this)nodes.delete(key)}}),
     head:{append(node){nodes.set(node.id?'#'+node.id:node.rel?'link[rel="canonical"]':`meta[name="${node.name}"]`,node)}}};
   document.head.append({name:'robots',content:'noindex,nofollow'});
-  const context={URL,Intl,document,location:new URL(href),history:{replaceState(){}}};
+  const context={URL,Intl,objectPath,buildPropertySeo,document,location:new URL(href),history:{replaceState(){}}};
   vm.createContext(context);
-  vm.runInContext(source.slice(0,source.indexOf('  const sample='))+'globalThis.seo={buildPropertySeo,setSeo,setInactiveSeo,id};})();',context);
+  vm.runInContext(source.slice(source.indexOf('(() => {'),source.indexOf('  const sample='))+'globalThis.seo={buildPropertySeo,setSeo,setInactiveSeo,id};})();',context);
   return {...context.seo,document,nodes};
 }
 const property={id:'123',title:'Wohnung in Düsseldorf',city:'Düsseldorf',type:'Wohnung',reference:'SLS 123',zip:'40217',area:96.51,rooms:2,price:415000,images:['https://example.com/a.jpg']};

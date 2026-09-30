@@ -1,43 +1,17 @@
+import {objectPath,buildPropertySeo} from './property-seo.mjs';
 (() => {
   const $=s=>document.querySelector(s);
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const format=n=>n==null?'Preis auf Anfrage':new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
   const area=n=>n==null?'–':`${new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(n)} m²`;
   const date=x=>{const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(x||''));return m?`${m[3]}.${m[2]}.${m[1]}`:x};
-  const url=new URL(location.href), demo=url.searchParams.get('demo')==='1';
+  const bootstrap=document.querySelector('#pp-server-data');
+  const serverData=bootstrap?JSON.parse(bootstrap.textContent):null;
+  const url=new URL(location.href), demo=!serverData&&url.searchParams.get('demo')==='1';
   const productionRoute=location.pathname.startsWith('/immobilie/')||location.pathname.startsWith('/immobilien/');
   const browsePath=productionRoute?'/immobilien/':'/immobilien-test/';
   const pathObjectMatch=location.pathname.match(/^\/immobilie\/[^/]*-(\d+)\/?$/);
   const id=pathObjectMatch?.[1]||url.searchParams.get('objekt')||null;
-  const slugify=value=>String(value||'immobilie').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,105);
-  const objectPath=p=>`/immobilie/${slugify([p.title,p.city,p.reference].filter(Boolean).join('-'))}-${encodeURIComponent(p.id)}/`;
-  const seoText=value=>String(value??'').replace(/\s+/g,' ').trim();
-  const seoNumber=value=>typeof value==='number'&&Number.isFinite(value)&&value>0;
-  const buildPropertySeo=p=>{
-    const name=seoText(p.title)||[seoText(p.type)||'Immobilie',seoText(p.reference)||seoText(p.id)].filter(Boolean).join(' ');
-    const city=seoText(p.city),type=seoText(p.type)||'Immobilie';
-    const canonical=`https://sls.de${objectPath(p)}`;
-    const title=`${name}${city&&!name.toLocaleLowerCase('de').includes(city.toLocaleLowerCase('de'))?` in ${city}`:''} | SLS Immobilienpartner`;
-    const facts=[`${type} kaufen`,city&&`in ${city}`,
-      type==='Grundstück'?(seoNumber(p.plot)&&`${area(p.plot)} Grundstück`):(seoNumber(p.area)&&`${area(p.area)} Wohnfläche`),
-      seoNumber(p.rooms)&&`${new Intl.NumberFormat('de-DE').format(p.rooms)} Zimmer`,
-      seoNumber(p.price)&&format(p.price),seoText(p.reference)&&`Objekt ${seoText(p.reference)}`].filter(Boolean);
-    const description=`${facts.join(' · ')}. Jetzt bei SLS Immobilienpartner ansehen.`;
-    const propertyType=type==='Wohnung'?'Apartment':type==='Haus'?'House':'Place';
-    const property={'@type':propertyType,'@id':`${canonical}#property`,name,
-      additionalProperty:[{'@type':'PropertyValue',name:'Objekttyp',value:type}]};
-    if(city||seoText(p.zip))property.address={'@type':'PostalAddress',...(city?{addressLocality:city}:{}),...(seoText(p.zip)?{postalCode:seoText(p.zip)}:{}),addressCountry:'DE'};
-    if(propertyType!=='Place'){
-      if(seoNumber(p.area))property.floorSize={'@type':'QuantitativeValue',value:p.area,unitCode:'MTK'};
-      if(seoNumber(p.rooms))property.numberOfRooms=p.rooms;
-    }
-    if(seoNumber(p.plot))property.additionalProperty.push({'@type':'PropertyValue',name:'Grundstücksfläche',value:p.plot,unitCode:'MTK'});
-    const images=(p.images||[]).filter(src=>typeof src==='string'&&/^https:\/\//i.test(src));
-    const data={'@context':'https://schema.org','@type':'RealEstateListing','@id':`${canonical}#listing`,name,url:canonical,description,inLanguage:'de-DE',mainEntity:property};
-    if(images.length)data.image=images;
-    if(seoNumber(p.price))data.offers={'@type':'Offer',url:canonical,price:p.price,priceCurrency:'EUR',availability:'https://schema.org/InStock'};
-    return {title,description,canonical,data};
-  };
   const setDescription=value=>{
     let meta=document.querySelector('meta[name="description"]');if(!meta){meta=document.createElement('meta');meta.name='description';document.head.append(meta)}meta.content=value;
   };
@@ -496,6 +470,12 @@
 
   async function load(){
     try {
+      if(serverData){
+        if(serverData.status===410){renderUnavailable();return}
+        if(serverData.status===404){renderNotFound();return}
+        if(serverData.status===200&&String(serverData.property?.id)===id){renderDetail(serverData.property);return}
+        return; // Keep the server-rendered temporary error and its retry link.
+      }
       if(favoritesView){
         document.title='Ihre Favoriten · SLS Immobilienpartner';
         $('.pp-heading h1').textContent='Ihre Favoriten';

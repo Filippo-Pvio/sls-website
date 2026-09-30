@@ -162,7 +162,35 @@ export default async function handler(req,res){
     }
 
 
-    if(id){
+    if(id)return await detailResponse(id,key,status,res);
+
+    const page=Math.max(1,Number.parseInt(req.query.page||'1',10)||1);
+    const requestedPer=Number.parseInt(req.query.per||String(LIST_PAGE_SIZE),10)||LIST_PAGE_SIZE;
+    const per=Math.min(LIST_PAGE_SIZE,Math.max(1,requestedPer));
+    const sort=String(req.query.sort||'default');
+    let result;
+    const needsCatalog=req.query.map==='1'||req.query.similarTo||['query','city','type','price','area','rooms'].some(k=>Boolean(req.query[k]));
+    if(needsCatalog){
+      const catalog=await getCatalog(key,status.id);
+      if(req.query.similarTo){
+        const current=catalog.find(p=>String(p.id)===String(req.query.similarTo));
+        result={items:current?similarProperties(current,catalog):[]};
+      }else{
+        const found=queryProperties(catalog,req.query);
+        result=req.query.map==='1'
+          ?{items:found.map(({id,zip,city,price})=>({id,zip,city,price})),total:found.length}
+          :{items:found.slice((page-1)*per,page*per),total:found.length,page,per,hasMore:page*per<found.length};
+      }
+    }else result=await pageListings(key,status.id,page,per,sort);
+    res.setHeader('Cache-Control','public, s-maxage=300, stale-while-revalidate=600');
+    return res.status(200).json(result);
+  }catch(error){
+    console.error('Propstack property feed failed:',error.message);
+    return res.status(502).json({error:'Propstack-Objekte sind momentan nicht abrufbar.'});
+  }
+}
+
+async function detailResponse(id,key,status,res){
       if(!/^\d+$/.test(String(id)))return res.status(404).json({error:'Objekt nicht gefunden'});
       const summary=await listingById(id,key,status.id);
       if(!summary)return unavailableResponse(id,key,res);
@@ -202,30 +230,15 @@ export default async function handler(req,res){
       publicDetail.inquiryTestMode=publicDetail.inquiryEnabled;
 
       return res.status(200).json({items:[publicDetail]});
-    }
 
-    const page=Math.max(1,Number.parseInt(req.query.page||'1',10)||1);
-    const requestedPer=Number.parseInt(req.query.per||String(LIST_PAGE_SIZE),10)||LIST_PAGE_SIZE;
-    const per=Math.min(LIST_PAGE_SIZE,Math.max(1,requestedPer));
-    const sort=String(req.query.sort||'default');
-    let result;
-    const needsCatalog=req.query.map==='1'||req.query.similarTo||['query','city','type','price','area','rooms'].some(k=>Boolean(req.query[k]));
-    if(needsCatalog){
-      const catalog=await getCatalog(key,status.id);
-      if(req.query.similarTo){
-        const current=catalog.find(p=>String(p.id)===String(req.query.similarTo));
-        result={items:current?similarProperties(current,catalog):[]};
-      }else{
-        const found=queryProperties(catalog,req.query);
-        result=req.query.map==='1'
-          ?{items:found.map(({id,zip,city,price})=>({id,zip,city,price})),total:found.length}
-          :{items:found.slice((page-1)*per,page*per),total:found.length,page,per,hasMore:page*per<found.length};
-      }
-    }else result=await pageListings(key,status.id,page,per,sort);
-    res.setHeader('Cache-Control','public, s-maxage=300, stale-while-revalidate=600');
-    return res.status(200).json(result);
-  }catch(error){
-    console.error('Propstack property feed failed:',error.message);
-    return res.status(502).json({error:'Propstack-Objekte sind momentan nicht abrufbar.'});
-  }
+}
+
+export async function propertyDetailResult(id){
+  const result={status:200,body:null};
+  const res={status(code){result.status=code;return this},json(body){result.body=body;return result}};
+  if(!/^\d+$/.test(String(id)))return res.status(404).json({code:'PROPERTY_NOT_FOUND'});
+  const key=process.env.PROPSTACK_API_KEY;
+  if(!key)return res.status(503).json({code:'PROPERTY_SERVICE_UNAVAILABLE'});
+  try{return await detailResponse(id,key,await resolvePublicStatus(key),res)}
+  catch(error){console.error('Property HTML data unavailable:',error.message);return res.status(502).json({code:'PROPERTY_SERVICE_UNAVAILABLE'})}
 }
