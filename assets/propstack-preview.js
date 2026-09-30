@@ -8,20 +8,52 @@
   const productionRoute=location.pathname.startsWith('/immobilie/')||location.pathname.startsWith('/immobilien/');
   const browsePath=productionRoute?'/immobilien/':'/immobilien-test/';
   const pathObjectMatch=location.pathname.match(/^\/immobilie\/[^/]*-(\d+)\/?$/);
-  const id=url.searchParams.get('objekt')||pathObjectMatch?.[1]||null;
+  const id=pathObjectMatch?.[1]||url.searchParams.get('objekt')||null;
   const slugify=value=>String(value||'immobilie').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,105);
   const objectPath=p=>`/immobilie/${slugify([p.title,p.city,p.reference].filter(Boolean).join('-'))}-${encodeURIComponent(p.id)}/`;
+  const seoText=value=>String(value??'').replace(/\s+/g,' ').trim();
+  const seoNumber=value=>typeof value==='number'&&Number.isFinite(value)&&value>0;
+  const buildPropertySeo=p=>{
+    const name=seoText(p.title)||[seoText(p.type)||'Immobilie',seoText(p.reference)||seoText(p.id)].filter(Boolean).join(' ');
+    const city=seoText(p.city),type=seoText(p.type)||'Immobilie';
+    const canonical=`https://sls.de${objectPath(p)}`;
+    const title=`${name}${city&&!name.toLocaleLowerCase('de').includes(city.toLocaleLowerCase('de'))?` in ${city}`:''} | SLS Immobilienpartner`;
+    const facts=[`${type} kaufen`,city&&`in ${city}`,
+      type==='Grundstück'?(seoNumber(p.plot)&&`${area(p.plot)} Grundstück`):(seoNumber(p.area)&&`${area(p.area)} Wohnfläche`),
+      seoNumber(p.rooms)&&`${new Intl.NumberFormat('de-DE').format(p.rooms)} Zimmer`,
+      seoNumber(p.price)&&format(p.price),seoText(p.reference)&&`Objekt ${seoText(p.reference)}`].filter(Boolean);
+    const description=`${facts.join(' · ')}. Jetzt bei SLS Immobilienpartner ansehen.`;
+    const propertyType=type==='Wohnung'?'Apartment':type==='Haus'?'House':'Place';
+    const property={'@type':propertyType,'@id':`${canonical}#property`,name,
+      additionalProperty:[{'@type':'PropertyValue',name:'Objekttyp',value:type}]};
+    if(city||seoText(p.zip))property.address={'@type':'PostalAddress',...(city?{addressLocality:city}:{}),...(seoText(p.zip)?{postalCode:seoText(p.zip)}:{}),addressCountry:'DE'};
+    if(propertyType!=='Place'){
+      if(seoNumber(p.area))property.floorSize={'@type':'QuantitativeValue',value:p.area,unitCode:'MTK'};
+      if(seoNumber(p.rooms))property.numberOfRooms=p.rooms;
+    }
+    if(seoNumber(p.plot))property.additionalProperty.push({'@type':'PropertyValue',name:'Grundstücksfläche',value:p.plot,unitCode:'MTK'});
+    const images=(p.images||[]).filter(src=>typeof src==='string'&&/^https:\/\//i.test(src));
+    const data={'@context':'https://schema.org','@type':'RealEstateListing','@id':`${canonical}#listing`,name,url:canonical,description,inLanguage:'de-DE',mainEntity:property};
+    if(images.length)data.image=images;
+    if(seoNumber(p.price))data.offers={'@type':'Offer',url:canonical,price:p.price,priceCurrency:'EUR',availability:'https://schema.org/InStock'};
+    return {title,description,canonical,data};
+  };
+  const setDescription=value=>{
+    let meta=document.querySelector('meta[name="description"]');if(!meta){meta=document.createElement('meta');meta.name='description';document.head.append(meta)}meta.content=value;
+  };
+  const setInactiveSeo=(title,description)=>{
+    document.title=`${title} | SLS Immobilienpartner`;
+    setDescription(description);
+    document.querySelectorAll('link[rel="canonical"], #pp-property-jsonld').forEach(node=>node.remove());
+    let meta=document.querySelector('meta[name="robots"]');if(!meta){meta=document.createElement('meta');meta.name='robots';document.head.append(meta)}meta.content='noindex,nofollow';
+  };
   const setSeo=p=>{
-    if(!productionRoute||!p)return;
-    const expectedPath=objectPath(p);
-    const canonical=`https://sls.de${expectedPath}`;
-    if(location.pathname.startsWith('/immobilie/')&&location.pathname!==expectedPath)history.replaceState(null,'',expectedPath);
-    document.title=`${p.title}${p.city?` in ${p.city}`:''} | SLS Immobilienpartner`;
-    const description=[p.type&&`${p.type} kaufen`,p.city&&`in ${p.city}`,p.area!=null&&`${new Intl.NumberFormat('de-DE',{maximumFractionDigits:1}).format(p.area)} m²`,p.rooms!=null&&`${p.rooms} Zimmer`].filter(Boolean).join(' · ');
-    let meta=document.querySelector('meta[name="description"]');if(!meta){meta=document.createElement('meta');meta.name='description';document.head.append(meta)}meta.content=`${description}. Jetzt bei SLS Immobilienpartner ansehen.`;
-    let link=document.querySelector('link[rel="canonical"]');if(!link){link=document.createElement('link');link.rel='canonical';document.head.append(link)}link.href=canonical;
-    const data={'@context':'https://schema.org','@type':'RealEstateListing',name:p.title,url:canonical,image:p.images||[],datePosted:undefined,offers:p.price!=null?{'@type':'Offer',price:p.price,priceCurrency:'EUR',availability:'https://schema.org/InStock'}:undefined,address:{'@type':'PostalAddress',postalCode:p.zip||undefined,addressLocality:p.city||undefined,addressCountry:'DE'}};
-    const clean=JSON.parse(JSON.stringify(data));let script=document.querySelector('#pp-property-jsonld');if(!script){script=document.createElement('script');script.type='application/ld+json';script.id='pp-property-jsonld';document.head.append(script)}script.textContent=JSON.stringify(clean);
+    if(!productionRoute||!p||demo)return;
+    const seo=buildPropertySeo(p),expectedPath=objectPath(p);
+    if(location.pathname.startsWith('/immobilie/')&&location.pathname!==expectedPath)history.replaceState(null,'',expectedPath+location.search);
+    document.title=seo.title;setDescription(seo.description);
+    let link=document.querySelector('link[rel="canonical"]');if(!link){link=document.createElement('link');link.rel='canonical';document.head.append(link)}link.href=seo.canonical;
+    let script=document.querySelector('#pp-property-jsonld');if(!script){script=document.createElement('script');script.type='application/ld+json';script.id='pp-property-jsonld';document.head.append(script)}script.textContent=JSON.stringify(seo.data);
   };
   const sample={id:'demo',title:'Lichtdurchflutete Wohnung mit Balkon, offenem Wohnen, Stellplatz und langfristig gesicherter Miete',city:'Raesfeld',zip:'46348',price:139500,area:52.06,rooms:2,bedrooms:1,baths:1,year:2002,type:'Wohnung',status:'Verfügbar',images:['https://sls.de/wp-content/uploads/2026/09/6927c1a63b43bc35506a97fd149101a1.jpg','https://sls.de/wp-content/uploads/2026/09/8b0f34e1662b362b49076948be67fb47.jpg','https://sls.de/wp-content/uploads/2026/09/ed4ad76935300ee4c87702b1fb3e962c.jpg','https://sls.de/wp-content/uploads/2026/09/ee63526f68d37e694efac2bc8b383435.jpg'],description:'Die Wohnung liegt im ersten Obergeschoss. Durch die offene Küche und den hellen Wohnbereich entsteht ein zusammenhängender Raum. Zur Wohnung gehören ein Balkon, ein Außenstellplatz und ein Kellerraum. Die Wohnung ist seit 2019 vermietet.',location:'46348 Raesfeld',features:'Balkon, Außenstellplatz, Kellerraum',courtage:'3,57 % inkl. MwSt.',broker:{name:'Herr Cüneyt Demirli',phone:'(02369) 742 80 20',email:'c.demirli@sls.de',mobile:'+49 152 099 30 734'}};
   sample.objectFacts=[{label:'Standort',value:'46348 Raesfeld'},{label:'Objekttyp',value:'Wohnung'},{label:'Wohnfläche',value:sample.area,kind:'area'},{label:'Zimmer',value:sample.rooms},{label:'Schlafzimmer',value:sample.bedrooms},{label:'Badezimmer',value:sample.baths},{label:'Baujahr',value:sample.year}];
@@ -449,13 +481,17 @@
   function renderUnavailable(){
     $('#pp-search').hidden=true;$('#pp-detail').hidden=false;
     document.body.classList.add('pp-is-detail');
-    document.title='Immobilie nicht mehr verfügbar | SLS Immobilienpartner';
-    let meta=document.querySelector('meta[name="robots"]');if(!meta){meta=document.createElement('meta');meta.name='robots';document.head.append(meta)}meta.content='noindex,follow';
-    const canonical='https://sls.de/immobilien/';
-    let link=document.querySelector('link[rel="canonical"]');if(!link){link=document.createElement('link');link.rel='canonical';document.head.append(link)}link.href=canonical;
+    setInactiveSeo('Immobilie nicht mehr verfügbar','Dieses Immobilienangebot ist nicht mehr verfügbar. Finden Sie aktuelle Kaufimmobilien bei SLS Immobilienpartner.');
     $('.pp-back').href=browsePath;
     $('#pp-banner').textContent='Dieses Angebot ist nicht mehr verfügbar.';
     $('#pp-detail-content').innerHTML=`<section class="pp-unavailable pp-panel" aria-labelledby="pp-unavailable-title"><span class="pp-eyebrow">SLS Immobilienpartner</span><h1 id="pp-unavailable-title">Diese Immobilie ist nicht mehr verfügbar.</h1><p>Das Angebot wurde aus der aktuellen Vermarktung genommen. Entdecken Sie unsere derzeit verfügbaren Immobilien oder speichern Sie Ihre Suche, damit wir Sie über passende neue Angebote informieren können.</p><div class="pp-unavailable-actions"><a class="pp-button" href="${browsePath}">Aktuelle Immobilien ansehen</a><a class="pp-button pp-button-secondary" href="${browsePath}#pp-search">Neue Suche starten</a></div></section>`;
+  }
+
+  function renderNotFound(){
+    setInactiveSeo('Immobilie nicht gefunden','Dieses Immobilienangebot wurde nicht gefunden. Entdecken Sie die aktuellen Angebote von SLS Immobilienpartner.');
+    $('#pp-search').hidden=true;$('#pp-detail').hidden=false;document.body.classList.add('pp-is-detail');
+    $('.pp-back').href=browsePath;
+    $('#pp-detail-content').innerHTML=`<section class="pp-panel"><h1>Immobilie nicht gefunden</h1><p>Unter dieser Adresse ist kein Immobilienangebot verfügbar.</p><a class="pp-button" href="${browsePath}">Aktuelle Immobilien ansehen</a></section>`;
   }
 
   async function load(){
@@ -468,14 +504,14 @@
         $('#pp-banner').textContent='Preise und Verfügbarkeit werden beim Öffnen der Favoriten aktualisiert.';
         await loadFavorites();return;
       }
-      if(productionRoute&&!id&&location.pathname.startsWith('/immobilie/'))throw new Error('Diese Immobilienadresse ist nicht gültig.');
+      if(productionRoute&&!id&&location.pathname.startsWith('/immobilie/')){renderNotFound();return}
       if(!id)setupBrowse();
       if(demo){all=[sample];total=1;hasMore=false;$('#pp-banner').textContent='Designvorschau mit einem öffentlich sichtbaren Beispielobjekt. Keine Live-Abfrage; Angaben und Verfügbarkeit bitte auf sls.de prüfen.'}
-      else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(response.status===410&&data.code==='PROPERTY_UNAVAILABLE'){renderUnavailable();return}if(!response.ok)throw new Error(data.error||'Daten nicht abrufbar');all=data.items;$('#pp-banner').textContent=productionRoute?'Aktuelles Immobilienangebot von SLS Immobilienpartner.':'Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
+      else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(response.status===410&&data.code==='PROPERTY_UNAVAILABLE'){renderUnavailable();return}if(!response.ok){if(response.status===404){renderNotFound();return}throw new Error(data.error||'Daten nicht abrufbar')}all=data.items;$('#pp-banner').textContent=productionRoute?'Aktuelles Immobilienangebot von SLS Immobilienpartner.':'Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
       else {committedQuery=captureQuery();currentPage=0;await loadNextPage();$('#pp-banner').textContent='Entdecken Sie unsere aktuellen Kaufimmobilien.'}
-      if(id){const p=all.find(item=>item.id===id);if(p)renderDetail(p);else throw new Error('Dieses Objekt ist in der Testansicht nicht verfügbar.')}
+      if(id){const p=all.find(item=>item.id===id);if(p)renderDetail(p);else {renderNotFound();return}}
       else if(demo){renderList()}
-    } catch(error){$('#pp-count').textContent='Noch keine Immobilien verfügbar';$('#pp-results').innerHTML=`<div class="pp-error">${esc(error.message)}<br><a href="${esc(location.pathname+location.search)}">Erneut laden</a><br><a href="/immobilien-test/?demo=1">Design mit einem Beispielobjekt ansehen</a></div>`}
+    } catch(error){if(id||location.pathname.startsWith('/immobilie/'))setInactiveSeo('Immobilie derzeit nicht abrufbar','Das Immobilienangebot kann gerade nicht geladen werden. Bitte versuchen Sie es später erneut.');$('#pp-count').textContent='Noch keine Immobilien verfügbar';$('#pp-results').innerHTML=`<div class="pp-error">${esc(error.message)}<br><a href="${esc(location.pathname+location.search)}">Erneut laden</a><br><a href="/immobilien-test/?demo=1">Design mit einem Beispielobjekt ansehen</a></div>`}
   }
   $('#pp-form').addEventListener('submit',event=>{event.preventDefault();browsePage=1;const quick=$('#pp-quick-query');if(quick)quick.value=$('#pp-form').elements.query.value;$('#pp-filter-dialog')?.close();resetBrowse()});
   $('#pp-sort').addEventListener('change',()=>{resetBrowse()});
