@@ -63,3 +63,13 @@ test('HTML and JSON escape markup and preserve literal replacement strings',()=>
   assert.equal(JSON.parse(embedded).property.title,title);
   assert.match(html,/&lt;\/script&gt;/);
 });
+
+test('production detail enables the inquiry form with configured Propstack access',async()=>{
+  const before=process.env.VERCEL_ENV;
+  try{
+    process.env.VERCEL_ENV='production';
+    const res=await request('active');
+    const payload=JSON.parse(res.body.match(/id="pp-server-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+    assert.equal(payload.property.inquiryEnabled,true);
+  }finally{if(before===undefined)delete process.env.VERCEL_ENV;else process.env.VERCEL_ENV=before}
+});

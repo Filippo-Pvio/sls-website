@@ -226,7 +226,7 @@ async function detailResponse(id,key,status,res){
         if(publicDetail[field]==null)publicDetail[field]=publicListing[field];
       }
       publicDetail.objectFacts=publicPropertyFacts(combined,publicDetail);
-      publicDetail.inquiryEnabled=process.env.VERCEL_ENV==='preview'&&Boolean(process.env.PROPSTACK_API_KEY);
+      publicDetail.inquiryEnabled=['preview','production'].includes(process.env.VERCEL_ENV)&&Boolean(process.env.PROPSTACK_API_KEY);
       publicDetail.inquiryTestMode=publicDetail.inquiryEnabled;
 
       return res.status(200).json({items:[publicDetail]});

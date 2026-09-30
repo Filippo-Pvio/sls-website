@@ -41,3 +41,11 @@ Tests: `node --test qa/property-seo.test.mjs qa/property-loading.test.mjs qa/pro
 Die HTML-Detailrouten liefern Objekt-Metadaten, Canonical, JSON-LD und eine lesbare Objektzusammenfassung serverseitig aus. Aktive Angebote liefern HTTP 200, nicht mehr verfügbare Angebote 410 und unbekannte IDs 404. Temporäre Datenfehler bleiben 502/503 mit Wiederholungsmöglichkeit. Der Browser übernimmt ausschließlich dieselben öffentlich freigegebenen Objektdaten für die vollständige Detailansicht. Die Vorschau bleibt noindex und ist ausdrücklich keine Freigabe zur Indexierung. Zusätzliche Prüfungen: `node --test qa/property-page.test.mjs` (Statuscodes, HEAD, Pfadpriorität, sichere HTML-/JSON-Einbettung). Bestehende sls.de/Frymo-Adressen müssen vor einer URL-Migration separat abgeglichen werden.
 
 Quellen: https://schema.org/RealEstateListing und https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics
+
+## Vorbereitung Hauptversion (30.09.2026)
+
+Production und Preview können Objektanfragen bei vorhandenem Propstack-Zugang aktivieren. Beide verwenden die bereits geprüfte SLS-Notizkategorie 739127; PROPSTACK_WEBSITE_INQUIRY_NOTE_TYPE_ID hat Vorrang. Das gilt für das bestehende SLS-Konto (gemeinsame PROPSTACK_API_KEY-Konfiguration), nicht für andere Propstack-Konten. Der Anfrage-Endpunkt bleibt auf Vercel-/lokale Hosts begrenzt; eine spätere sls.de-Migration ist damit ausdrücklich nicht freigegeben.
+
+Vercel UI geprüft: PROPSTACK_API_KEY, GOOGLE_MAPS_BROWSER_KEY und GOOGLE_PLACES_API_KEY sind für Production vorhanden. Nur sls-website-eight.vercel.app ist als Domain verbunden. Google-Kartenschlüssel SLS Marktkarte um genau https://sls-website-eight.vercel.app/* ergänzt; seine Maps-JavaScript-API-Beschränkung bleibt bestehen. Die tatsächliche Kartenfunktion mit dem Production-Schlüssel muss nach Übernahme geprüft werden: die bisherige Hauptversion enthält noch keine neue Kartenansicht.
+
+Validierung: qa/production-inquiry.test.mjs prüft simulierte Production-Anfragen, Notizkategorie, Überschreibung, Objekt- und Quellenzuordnung; qa/property-page.test.mjs prüft zusätzlich die Formularfreigabe bei Production. Keine echten Kontakte, Anfragen oder E-Mails erzeugt. Main nicht geändert, keine Production-Veröffentlichung.

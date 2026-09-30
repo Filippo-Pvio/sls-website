@@ -117,9 +117,9 @@ async function resolveWebsiteInquiryNoteType(key){
   const configured=Number(process.env.PROPSTACK_WEBSITE_INQUIRY_NOTE_TYPE_ID);
   if(Number.isSafeInteger(configured)&&configured>0)return configured;
 
-  // Preview fallback: verified in Propstack UI for the dedicated
-  // "SLS Website Anfrage" note category. Production should use the env var.
-  if(process.env.VERCEL_ENV==='preview')return 739127;
+  // Verified SLS account category, shared by the preview and production API key.
+  // An explicit environment value overrides this when using another account.
+  if(['preview','production'].includes(process.env.VERCEL_ENV))return 739127;
 
   for(const endpoint of ['activity_types','note_types']){
     try{
