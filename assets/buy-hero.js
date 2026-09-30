@@ -16,16 +16,7 @@
   let generation = 0;
   let visible = true;
   let scheduled = false;
-  let paused = false;
-  const pause = hero.querySelector('.buy-hero-pause');
-  pause.hidden = reducedMotion.matches;
-  pause.addEventListener('click', () => {
-    paused = !paused;
-    pause.setAttribute('aria-pressed', String(paused));
-    pause.textContent = paused ? 'Bildwechsel fortsetzen' : 'Bildwechsel pausieren';
-    stop();
-    schedule();
-  });
+
 
   const hideStandby = () => {
     standby.classList.add('is-resetting');
@@ -42,7 +33,7 @@
   };
 
   const schedule = () => {
-    if (paused || scheduled || !visible || document.hidden || reducedMotion.matches) return;
+    if (scheduled || !visible || document.hidden || reducedMotion.matches) return;
     scheduled = true;
     const token = ++generation;
     const next = (index + 1) % scenes.length;
@@ -98,7 +89,6 @@
     else schedule();
   });
   reducedMotion.addEventListener('change', () => {
-    pause.hidden = reducedMotion.matches;
     stop();
     schedule();
   });
