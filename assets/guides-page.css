@@ -1,0 +1,32 @@
+
+body.guides-page #main .section-head{display:block;text-align:center;max-width:850px;margin:0 auto 44px}
+body.guides-page #main .section-head h2{margin:0 auto;text-wrap:balance}
+body.guides-page #main .section-head .eyebrow{margin:0 auto 14px}
+body.guides-page #main .section-head>p:not(.eyebrow){max-width:700px;margin:20px auto 0}
+.guides-page #ratgeber,.guides-page #ratgeber-anfragen{scroll-margin-top:110px}
+.guides-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 32px}
+.guide-card{display:flex;flex-direction:column;border-top:2px solid #6c97ab;padding:26px 0 12px;min-width:0}
+body.guides-page #main .guide-card h3{font:500 clamp(24px,2.3vw,30px)/1.22 'Playfair Display',Georgia,serif;color:#345b6e;margin:0 0 18px;overflow-wrap:normal;text-wrap:balance}
+body.guides-page #main .guide-card .eyebrow{color:#52778a;font-size:12px;margin:0 0 16px}
+.guide-card p{margin:0 0 20px}
+body.guides-page #main .guide-card .guide-topics{font-size:13px;color:#526873;margin-top:auto}
+.guide-card a{align-self:flex-start}
+body.guides-page #main>.guide-request{background:#eaf0f3}
+body.guides-page #main .guide-request-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:start}
+body.guides-page #main .guide-request h2{text-align:left;margin:0 0 24px}
+.guide-request form{background:white;padding:32px;border-radius:6px}
+.guide-request label{display:block;font-size:14px;font-weight:700;margin-bottom:16px}
+.guide-request input:not([type=checkbox]),.guide-request select{display:block;width:100%;min-width:0;min-height:48px;padding:12px;border:1px solid #bacbd3;border-radius:4px;background:white;color:#345b6e;font:inherit;font-size:16px;margin-top:8px}
+.guide-request select{margin:0 0 22px}
+.guide-request fieldset{border:0;margin:0;padding:0;min-width:0}
+.guide-request legend{font-weight:700;margin-bottom:16px}
+.guide-names{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.guide-request .guide-consent{display:flex;gap:12px;font-weight:400;align-items:start}
+.guide-consent input{flex-shrink:0;width:18px;height:18px;margin-top:4px}
+body.guides-page #main .guide-availability{font-size:14px;line-height:1.6;background:#eaf0f3;color:#345b6e;padding:16px;margin:0 0 24px}
+.guide-request button:disabled{opacity:.65;cursor:not-allowed;width:100%}
+body.guides-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin:0 auto 28px}
+.guides-page .buy-final .page-actions{justify-content:center}
+.guides-page a:focus-visible,.guides-page select:focus-visible{outline:3px solid #ff596f;outline-offset:4px}
+@media(max-width:850px){.guides-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.guides-page #main .guide-request-layout{grid-template-columns:1fr;gap:32px}}
+@media(max-width:540px){.guides-grid{grid-template-columns:1fr;gap:24px}.guide-request form{padding:24px 18px}.guide-names{grid-template-columns:1fr;gap:0}}
