@@ -31,7 +31,10 @@ async function propstack(path, key, payload) {
 async function noteType(key) {
   const types = rows(await propstack('activity_types', key));
   const matches = types.filter(type => type.name === NOTE && type.category === 'note' && validId(type.id));
-  if (matches.length !== 1) throw new Error('Guide note category missing or ambiguous');
+  if (matches.length !== 1) {
+    console.error('Guide category configuration:', JSON.stringify(types.filter(type => /ratgeber/i.test(type.name || '')).map(({id,name,category}) => ({id,name,category}))));
+    throw new Error('Guide note category missing or ambiguous');
+  }
   return Number(matches[0].id);
 }
 
