@@ -24,7 +24,12 @@ async function propstack(path, key, payload) {
     ...(payload ? {body:JSON.stringify(payload)} : {}),
     signal:AbortSignal.timeout(10000)
   });
-  if (!response.ok) throw new Error(`Propstack request failed (${response.status})`);
+  if (!response.ok) {
+    const detail = await response.text();
+    const fields = ['first_name','last_name','email','name','client','note_type_id'].filter(field => new RegExp(`\\b${field}\\b`, 'i').test(detail));
+    // Only endpoint, status and known field names; never log response values or contact details.
+    throw new Error(`Propstack ${payload ? 'POST' : 'GET'} ${path.split('?')[0].replace(/\/\d+/g, '/:id')} failed (${response.status}); validation fields: ${fields.join(',') || 'unspecified'}`);
+  }
   return response.json();
 }
 
