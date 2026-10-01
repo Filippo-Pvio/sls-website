@@ -8,7 +8,7 @@
   const scenes = ['beratung', 'kontakt', 'besichtigung'];
   const dwell = 7000;
   const fade = 1600;
-  const path = (scene) => `/assets/images/valuation-hero/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
+  const path = (scene) => `/assets/images/guides-hero/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
   let active = current;
   let standby = incoming;
   let index = 0;
