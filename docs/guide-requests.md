@@ -5,7 +5,7 @@
 - ID: VERKAUF
 - Titel: Immobilie verkaufen. Mit einem guten Gefühl.
 - PDF: SLS-Immobilie-verkaufen.pdf, 12 Seiten, Ausgabe Oktober 2026, vom Nutzer zum Versand freigegeben.
-- Propstack-Notizkategorie (category=note) und Notiztitel: SLS_RATGEBER_VERKAUF_ANGEFORDERT
+- Propstack-Notizkategorie (ID 741093, im Live-System category=for_notes) und Notiztitel: SLS_RATGEBER_VERKAUF_ANGEFORDERT
 - Die fünf weiteren Ratgeber bleiben deaktiviert. Die PDF wird später in der Versandvorlage in Propstack hinterlegt; sie ist kein öffentlicher Direktdownload auf der Website.
 
 ## Websiteablauf
@@ -24,7 +24,7 @@ Nach Einrichtung und Test des Propstack-Prozesses sind die Vorbereitungshinweise
 
 ## Konfiguration und Rechte
 
-Schlüssel-Reihenfolge: PROPSTACK_GUIDES_API_KEY, PROPSTACK_INQUIRY_API_KEY, PROPSTACK_API_KEY. Erforderlich: Aktivitätstypen lesen, Kontakte lesen/anlegen, Aktivitäten lesen, Notizen anlegen. Die Kategorie muss exakt benannt und eindeutig sein. Fehlende Rechte/Kategorie: Formular bleibt gesperrt; es wird kein Erfolg simuliert.
+Schlüssel-Reihenfolge: PROPSTACK_GUIDES_API_KEY, PROPSTACK_INQUIRY_API_KEY, PROPSTACK_API_KEY. Erforderlich: Aktivitätstypen lesen, Kontakte lesen/anlegen, Aktivitäten lesen, Notizen anlegen. ID 741093, Bezeichnung und Notiztyp werden gemeinsam gegen die gelesene Kategorie geprüft. Fehlende Rechte/Kategorie: Formular bleibt gesperrt; es wird kein Erfolg simuliert.
 
 ## Schutz und Grenzen
 

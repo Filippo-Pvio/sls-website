@@ -38,15 +38,10 @@ async function noteType(key) {
     const total = Number(result?.meta?.total_count);
     if (!fresh.length || (Number.isFinite(total) && total <= types.length) || (!Number.isFinite(total) && items.length < 100)) break;
   }
-  const matches = types.filter(type => normalise(type.name) === normalise(NOTE) && normalise(type.category) === 'note' && validId(type.id));
-  if (matches.length !== 1) {
-    const candidate = types.find(type => Number(type.id) === 741093);
-    const diagnostic = candidate ? {id:741093,name:candidate.name,category:candidate.category} : {id:741093,found:false};
-    console.error('Guide category configuration:', JSON.stringify(diagnostic));
-    const error = new Error('Guide note category missing or ambiguous');
-    error.guideConfiguration = diagnostic;
-    throw error;
-  }
+  // SLS category 741093 was checked against the live API. Its category is "for_notes";
+  // Propstack's published examples also use "note" for note categories.
+  const matches = types.filter(type => Number(type.id) === 741093 && normalise(type.name) === normalise(NOTE) && ['note','for_notes'].includes(normalise(type.category)));
+  if (matches.length !== 1) throw new Error('Guide note category missing or ambiguous');
   return Number(matches[0].id);
 }
 
@@ -157,7 +152,7 @@ export default async function handler(req, res) {
       return res.status(200).json({availableGuides:[GUIDE], token:issueToken(key), deliveryReady:false});
     } catch (error) {
       console.error('Guide request readiness check failed:', error.message);
-      return res.status(503).json({error:'Die Ratgeberanforderung wird noch eingerichtet. Bitte versuchen Sie es später erneut.', ...(error.guideConfiguration ? {guideConfiguration:error.guideConfiguration} : {})});
+      return res.status(503).json({error:'Die Ratgeberanforderung wird noch eingerichtet. Bitte versuchen Sie es später erneut.'});
     }
   }
   if (req.headers?.origin !== `https://${host}` && !(local && req.headers?.origin === `http://${host}`)) {

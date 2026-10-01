@@ -19,20 +19,20 @@ async function fixture(run,options={}) {
   assert.equal(parsed.origin,'https://api.propstack.de');
   if(options.failPath===path) return {ok:false,status:503};
   let data;
-  if(path==='activity_types')data={data:options.missingType?[]:[{id:88,name:NOTE,category:options.wrongType?'reminder':'note'}]};
+  if(path==='activity_types')data={data:options.missingType?[]:[{id:741093,name:NOTE,category:options.wrongType?'reminder':'for_notes'}]};
   else if(path==='contacts'&&init.method==='GET')data={data:options.conflict?[{id:12,email:'different@example.org'}]:contacts};
   else if(path==='contacts'&&init.method==='POST'){
    const payload=JSON.parse(init.body);writes.push({path,payload});contacts.push({id:12,email:payload.client.email});data={id:12};
   }
   else if(path==='contacts/12')data=contacts[0];
   else if(path==='activities'){
-   assert.equal(parsed.searchParams.get('client_id'),'12');assert.equal(parsed.searchParams.get('category_id'),'88');
+   assert.equal(parsed.searchParams.get('client_id'),'12');assert.equal(parsed.searchParams.get('category_id'),'741093');
    data={data:activities};
   }
   else if(path==='tasks'){
    const payload=JSON.parse(init.body);writes.push({path,payload});
    if(options.timeout){throw new Error('timeout after possible write');}
-   if(!options.missingConfirmation)activities.push({category_id:88,created_at:new Date(now).toISOString(),activatable:payload.task});
+   if(!options.missingConfirmation)activities.push({category_id:741093,created_at:new Date(now).toISOString(),activatable:payload.task});
    data=options.missingConfirmation?{}:{id:42,activity_id:43};
   }
   else throw new Error(`Unexpected ${path}`);
@@ -56,7 +56,7 @@ test('records approved guide note for existing contact, exposes no CRM IDs, leav
  assert.equal(res.code,200);assert.equal(res.body.ok,true);assert.equal(res.body.deliveryReady,false);
  assert.deepEqual(Object.keys(res.body).sort(),['deliveryReady','message','ok']);
  assert.equal(writes.length,1);const task=writes[0].payload.task;
- assert.equal(task.title,NOTE);assert.equal(task.note_type_id,88);assert.deepEqual(task.client_ids,[12]);
+ assert.equal(task.title,NOTE);assert.equal(task.note_type_id,741093);assert.deepEqual(task.client_ids,[12]);
  assert.match(task.body,/Keine Newsletter-Anmeldung/);assert.match(task.body,/SLS-Anforderungs-ID:/);
  assert.equal(task.client_source_id,undefined);assert.equal(task.is_reminder,undefined);
 }));
