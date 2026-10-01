@@ -30,3 +30,5 @@ body.guides-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin:0 a
 .guides-page a:focus-visible,.guides-page select:focus-visible{outline:3px solid #ff596f;outline-offset:4px}
 @media(max-width:850px){.guides-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.guides-page #main .guide-request-layout{grid-template-columns:1fr;gap:32px}}
 @media(max-width:540px){.guides-grid{grid-template-columns:1fr;gap:24px}.guide-request form{padding:24px 18px}.guide-names{grid-template-columns:1fr;gap:0}}
+
+body.guides-page #main .guide-privacy{font-size:14px;line-height:1.65;color:#345b6e;margin:18px 0 24px}
