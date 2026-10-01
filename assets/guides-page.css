@@ -25,6 +25,10 @@ body.guides-page #main .guide-request h2{text-align:left;margin:0 0 24px}
 .guide-consent input{flex-shrink:0;width:18px;height:18px;margin-top:4px}
 body.guides-page #main .guide-availability{font-size:14px;line-height:1.6;background:#eaf0f3;color:#345b6e;padding:16px;margin:0 0 24px}
 .guide-request button:disabled{opacity:.65;cursor:not-allowed;width:100%}
+.guide-request button{width:100%}
+.guide-request .guide-trap{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+body.guides-page #main .guide-availability.is-error{background:#fff0f2;color:#873243}
+body.guides-page #main .guide-soon{font-size:14px;font-weight:600;color:#526873;margin-bottom:0}
 body.guides-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin:0 auto 28px}
 .guides-page .buy-final .page-actions{justify-content:center}
 .guides-page a:focus-visible,.guides-page select:focus-visible{outline:3px solid #ff596f;outline-offset:4px}
