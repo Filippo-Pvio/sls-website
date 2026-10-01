@@ -82,7 +82,7 @@ function limited(req, key) {
   return entry.count > 8;
 }
 
-async function recordRequest(key, email, categoryId, requestId) {
+async function recordRequest(key, email, firstName, lastName, categoryId, requestId) {
   const query = new URLSearchParams({email, archived:'-1', with_meta:'1', per:'100'});
   const contacts = rows(await propstack(`contacts?${query}`, key));
   // A secondary/shared email must not trigger delivery to a different primary address.
@@ -91,8 +91,8 @@ async function recordRequest(key, email, categoryId, requestId) {
   }
   let contactId = Number(contacts[0]?.id);
   if (!contacts.length) {
-    // Propstack upserts by email. Send only email, so a concurrent create cannot overwrite names or preferences.
-    const contact = await propstack('contacts', key, {client:{email}});
+    // Existing contacts are reused above. Supply names only for a new contact; never change consent fields.
+    const contact = await propstack('contacts', key, {client:{email, first_name:firstName, last_name:lastName}});
     contactId = Number(contact.id);
   }
   if (!validId(contactId)) throw new Error('Contact ID missing');
@@ -124,6 +124,7 @@ async function recordRequest(key, email, categoryId, requestId) {
       '<strong>Ratgeberanforderung über die SLS Website</strong>',
       `Ratgeber: ${TITLE}`,
       'Datei: SLS-Immobilie-verkaufen.pdf · Ausgabe Oktober 2026',
+      `Angegebener Name: ${escapeHtml(firstName)} ${escapeHtml(lastName)}`,
       `E-Mail für den angeforderten Versand: ${escapeHtml(email)}`,
       `Eingang: ${new Date().toISOString()}`,
       'Quelle: /downloads/',
@@ -166,7 +167,12 @@ export default async function handler(req, res) {
   if (!req.headers?.['content-type']?.startsWith('application/json') || !req.body || typeof req.body !== 'object' || JSON.stringify(req.body).length > 3000) {
     return res.status(400).json({error:'Ungültige Anfrage.'});
   }
-  const {guide, email:rawEmail, token, website} = req.body;
+  const {guide, email:rawEmail, firstName:rawFirstName, lastName:rawLastName, token, website} = req.body;
+  const firstName = typeof rawFirstName === 'string' ? rawFirstName.trim() : '';
+  const lastName = typeof rawLastName === 'string' ? rawLastName.trim() : '';
+  if (!firstName || !lastName || firstName.length > 100 || lastName.length > 100 || /[\x00-\x1f\x7f]/.test(firstName + lastName)) {
+    return res.status(400).json({error:'Bitte geben Sie Ihren Vor- und Nachnamen an (jeweils höchstens 100 Zeichen).'});
+  }
   const email = normalise(rawEmail);
   const requestId = verifyToken(token, key);
   if (guide !== GUIDE || typeof rawEmail !== 'string' || email.length > 254 || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) || website || !requestId) {
@@ -179,7 +185,7 @@ export default async function handler(req, res) {
   const lock = sign(`${email}:${GUIDE}`, key);
   try {
     if (!pending.has(lock)) {
-      const work = (async () => recordRequest(key, email, await noteType(key), requestId))();
+      const work = (async () => recordRequest(key, email, firstName, lastName, await noteType(key), requestId))();
       pending.set(lock, work);
     }
     await pending.get(lock);

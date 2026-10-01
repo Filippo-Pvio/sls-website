@@ -6,6 +6,8 @@
  const fields = form.querySelector('fieldset');
  const button = form.querySelector('button[type="submit"]');
  const email = form.elements.email;
+ const firstName = form.elements.firstName;
+ const lastName = form.elements.lastName;
  const endpoint = '/api/propstack-guide-request';
  let token = null;
  let sending = false;
@@ -17,7 +19,7 @@
  document.querySelectorAll('[data-guide]').forEach(link => link.addEventListener('click', () => {
   if (sending || completed || ![...select.options].some(option => !option.disabled && option.value === link.dataset.guide)) return;
   select.value = link.dataset.guide;
-  (fields.disabled ? select : email).focus({preventScroll:true});
+  (fields.disabled ? select : firstName).focus({preventScroll:true});
  }));
  async function prepare() {
   try {
@@ -39,7 +41,7 @@
  form.addEventListener('submit', async event => {
   event.preventDefault();
   if (sending || completed || !token || fields.disabled || !form.reportValidity()) return;
-  const payload = {guide:select.value, email:email.value.trim(), token, website:form.elements.website.value};
+  const payload = {guide:select.value, email:email.value.trim(), firstName:firstName.value.trim(), lastName:lastName.value.trim(), token, website:form.elements.website.value};
   sending = true;
   select.disabled = true;
   fields.disabled = true;
@@ -54,6 +56,8 @@
    if (!response.ok || data.ok !== true) throw new Error(data.error || 'Ihre Anforderung konnte nicht bestätigt werden. Bitte kontaktieren Sie uns direkt.');
    completed = true;
    email.value = '';
+   firstName.value = '';
+   lastName.value = '';
    button.textContent = 'Anforderung aufgenommen';
    message(data.message);
   } catch (error) {

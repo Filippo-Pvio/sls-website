@@ -17,7 +17,7 @@ async function fixture(run,options={}) {
  global.fetch=async(url,init)=>{
   const parsed=new URL(url),path=parsed.pathname.replace('/v1/','');calls.push(path);
   assert.equal(parsed.origin,'https://api.propstack.de');
-  if(options.failPath===path) return {ok:false,status:503};
+  if(options.failPath===path) return {ok:false,status:503,text:async()=>'Service unavailable'};
   let data;
   if(path==='activity_types')data={data:options.missingType?[]:[{id:741093,name:NOTE,category:options.wrongType?'reminder':'for_notes'}]};
   else if(path==='contacts'&&init.method==='GET')data={data:options.conflict?[{id:12,email:'different@example.org'}]:contacts};
@@ -45,7 +45,7 @@ async function fixture(run,options={}) {
  };
  try{
   const ready=await request('GET');now+=2000;
-  const payload={guide:'VERKAUF',email,token:ready.body.token,website:''};
+  const payload={guide:'VERKAUF',email,firstName:'Anna',lastName:'Muster',token:ready.body.token,website:''};
   await run({request,ready,payload,writes,activities,calls,advance:ms=>now+=ms});
  }finally{global.fetch=oldFetch;Date.now=oldNow;names.forEach((n,i)=>before[i]===undefined?delete process.env[n]:process.env[n]=before[i]);}
 }
@@ -57,12 +57,12 @@ test('records approved guide note for existing contact, exposes no CRM IDs, leav
  assert.deepEqual(Object.keys(res.body).sort(),['deliveryReady','message','ok']);
  assert.equal(writes.length,1);const task=writes[0].payload.task;
  assert.equal(task.title,NOTE);assert.equal(task.note_type_id,741093);assert.deepEqual(task.client_ids,[12]);
- assert.match(task.body,/Keine Newsletter-Anmeldung/);assert.match(task.body,/SLS-Anforderungs-ID:/);
+ assert.match(task.body,/Angegebener Name: Anna Muster/);assert.match(task.body,/Keine Newsletter-Anmeldung/);assert.match(task.body,/SLS-Anforderungs-ID:/);
  assert.equal(task.client_source_id,undefined);assert.equal(task.is_reminder,undefined);
 }));
-test('new contact contains only email',()=>fixture(async({request,payload,writes})=>{
+test('new contact contains names and email without marketing flags',()=>fixture(async({request,payload,writes})=>{
  assert.equal((await request('POST',payload)).code,200);
- assert.deepEqual(writes[0],{path:'contacts',payload:{client:{email:payload.email}}});assert.equal(writes.length,2);
+ assert.deepEqual(writes[0],{path:'contacts',payload:{client:{email:payload.email,first_name:payload.firstName,last_name:payload.lastName}}});assert.equal(writes.length,2);
 },{newContact:true}));
 test('double-click and later retry do not create additional notes',()=>fixture(async({request,payload,writes})=>{
  const results=await Promise.all([request('POST',payload),request('POST',payload)]);
@@ -72,7 +72,7 @@ test('a new token within cooldown reuses the recent request',()=>fixture(async({
  await request('POST',payload);const ready=await request('GET');advance(2000);
  assert.equal((await request('POST',{...payload,token:ready.body.token})).code,200);assert.equal(writes.length,1);
 }));
-for(const update of [{guide:'ERBSCHAFT'},{guide:'UNKNOWN'},{email:'invalid'},{email:'a@b.c\nHeader:x'},{website:'spam'},{token:'tampered'}])
+for(const update of [{firstName:''},{lastName:'  '},{firstName:null},{lastName:'x'.repeat(101)},{firstName:'Anna\nInjected'},{guide:'ERBSCHAFT'},{guide:'UNKNOWN'},{email:'invalid'},{email:'a@b.c\nHeader:x'},{website:'spam'},{token:'tampered'}])
  test(`rejects invalid payload ${JSON.stringify(update)}`,()=>fixture(async({request,payload,writes})=>{
   assert.equal((await request('POST',{...payload,...update})).code,400);assert.equal(writes.length,0);
  }));
