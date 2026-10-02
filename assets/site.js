@@ -142,9 +142,28 @@ footer.innerHTML = `
         <a href="/immobilienmakler-dusseldorf/"><strong>Düsseldorf</strong><span>Königsallee 19 · 40213 Düsseldorf</span></a>
       </div>
     </div>
+  </div>
+  <div class="footer-menu-band"><div class="footer-unified-wrap">
     <div class="footer-navigation">${footerGroups}</div>
     <div class="footer-legal"><span>&copy; ${new Date().getFullYear()} SLS Immobilienpartner GmbH</span><nav aria-label="Rechtliche Informationen"><a href="https://sls.de/datenschutz/">Datenschutz</a><a href="https://sls.de/impressum/">Impressum</a></nav></div>
-  </div>`;
+  </div></div>`;
+// Resolve the real closing surface, including transparent property-page wrappers.
+function syncFooterTone() {
+  const main = document.querySelector('main');
+  let surface = main && [...main.children].reverse().find(el => el.getBoundingClientRect().height > 0 && !['SCRIPT','STYLE'].includes(el.tagName));
+  let rgb;
+  while (surface) {
+    const parts = getComputedStyle(surface).backgroundColor.match(/[\d.]+/g)?.map(Number);
+    if (parts && (parts.length === 3 || parts[3] >= 0.95)) { rgb = parts; break; }
+    surface = surface.parentElement;
+  }
+  const brightness = rgb ? (rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722) : 255;
+  footer.dataset.footerTone = brightness < 150 ? 'light' : 'dark';
+}
+syncFooterTone();
+window.addEventListener('load', syncFooterTone, { once: true });
+window.matchMedia('(max-width: 680px)').addEventListener('change', syncFooterTone);
+
 const footerMobile = window.matchMedia("(max-width: 680px)");
 const syncFooterGroups = () => footer.querySelectorAll(".footer-group").forEach(group => { group.open = !footerMobile.matches; });
 syncFooterGroups();
