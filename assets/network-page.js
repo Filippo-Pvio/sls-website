@@ -1,16 +1,36 @@
 (() => {
   const filters = document.querySelector('.network-filters');
   const cards = [...document.querySelectorAll('.network-partner')];
-  const count = document.querySelector('.network-count');
-  if (filters && count) {
-    filters.hidden = false;
+  const form = document.querySelector('.network-search');
+  const input = document.querySelector('#partner-query');
+  const reset = document.querySelector('[data-network-reset]');
+  const status = document.querySelector('.network-results');
+  const empty = document.querySelector('.network-empty');
+  let category = 'all';
+  const normalize = text => text.toLocaleLowerCase('de').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ß/g, 'ss');
+  function update() {
+    const terms = normalize(input.value.trim()).split(/\s+/).filter(Boolean);
+    cards.forEach(card => {
+      const text = normalize(card.textContent);
+      card.hidden = (category !== 'all' && card.dataset.category !== category) || !terms.every(term => text.includes(term));
+    });
+    const total = cards.filter(card => !card.hidden).length;
+    status.textContent = terms.length || category !== 'all' ? `${total} Partner gefunden` : '';
+    empty.hidden = total !== 0;
+    reset.hidden = !input.value;
+  }
+  if (filters && form && input && reset && status && empty) {
+    filters.hidden = false; form.hidden = false;
     filters.addEventListener('click', event => {
       const button = event.target.closest('button[data-filter]');
       if (!button) return;
+      category = button.dataset.filter;
       filters.querySelectorAll('button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-      cards.forEach(card => { card.hidden = button.dataset.filter !== 'all' && card.dataset.category !== button.dataset.filter; });
-      count.textContent = `${cards.filter(card => !card.hidden).length} Partner`;
+      update();
     });
+    form.addEventListener('submit', event => { event.preventDefault(); update(); });
+    input.addEventListener('input', update);
+    reset.addEventListener('click', () => { input.value = ''; update(); input.focus(); });
   }
   // Add up to three original-photo variants in the JSON configuration in netzwerk/index.html.
   const config = document.getElementById('network-hero-config');
