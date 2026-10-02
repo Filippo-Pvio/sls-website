@@ -108,3 +108,9 @@ Neue Kontakte werden mit Anrede, Vorname, Nachname und E-Mail angelegt. Bei vorh
 Die ausgewählte Anrede steht zusätzlich in der Ratgeber-/Prüfnotiz und DOI-Notiz. Propstack-Mailvorlagen müssen die dynamische Anrede (z. B. {{ anrede }}) verwenden, damit sie die gespeicherte Angabe berücksichtigen. Ein fest geschriebener Gruß wird durch dieses Website-Update nicht ersetzt. Tatsächliche Personalisierung und API-Schreibrechte für das Ergänzen bestehender Kontakte bleiben im realen Ablauf zu prüfen.
 
 API-Referenz: https://docs.propstack.de/reference/kontakte (salutation mr/ms, PUT /contacts/:id).
+
+## Zusammenführung und Veröffentlichung auf bestehender Website
+
+Am 02.10.2026 hat der Nutzer die Übernahme aller Vorschau-Änderungen auf https://sls-website-eight.vercel.app/ mit Erhalt des dortigen Fortschritts freigegeben. Basis auf main: 4cc67f646a897bf81262993c6d3afc2d7e734c84 (SIA). Die bestehende SIA-Einbindung, ihre API und Konfiguration werden durch einen Merge erhalten. In vercel.json bleiben sowohl SIA als auch Ratgeber mit eigener Funktionskonfiguration bestehen.
+
+Die vorherige reine Vorschau-Sperre des Ratgeberendpunkts ist für genau sls-website-eight.vercel.app aufgehoben. Andere Produktionsadressen, insbesondere sls.de/www.sls.de, bleiben gesperrt. Vorschau und lokale Tests bleiben verfügbar. Die ursprünglichen Veröffentlichungen und Git-Eltern bleiben als Rückkehrpunkte erhalten. Die Freigabe ersetzt keine rechtliche Gesamtprüfung des Newsletterprozesses.

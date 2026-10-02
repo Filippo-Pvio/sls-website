@@ -187,10 +187,11 @@ export default async function handler(req, res) {
     return res.status(405).json({error:'Methode nicht erlaubt.'});
   }
   const host = String(req.headers?.host || '').toLowerCase();
-  // This launch stage is intentionally restricted to the preview deployment.
+  // Public activation is limited to the existing hostname approved by the owner.
   const preview = process.env.VERCEL_ENV === 'preview' && /^[a-z0-9-]+\.vercel\.app$/.test(host);
+  const approvedPublic = process.env.VERCEL_ENV === 'production' && host === 'sls-website-eight.vercel.app';
   const local = process.env.NODE_ENV !== 'production' && /^localhost(?::\d+)?$/.test(host);
-  if (!preview && !local) return res.status(403).json({error:'Ratgeberanforderungen sind hier noch nicht freigeschaltet.'});
+  if (!preview && !approvedPublic && !local) return res.status(403).json({error:'Ratgeberanforderungen sind hier noch nicht freigeschaltet.'});
   const key = process.env.PROPSTACK_GUIDES_API_KEY || process.env.PROPSTACK_INQUIRY_API_KEY || process.env.PROPSTACK_API_KEY;
   if (!key) return res.status(503).json({error:'Die Ratgeberanforderung ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.'});
 

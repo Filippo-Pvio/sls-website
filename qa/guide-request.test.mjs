@@ -270,3 +270,17 @@ test('unconfirmed salutation update cannot trigger guide or DOI mail',()=>fixtur
  const res=await request('POST',optIn(payload));assert.equal(res.code,502);
  assert.equal(writes.length,1);assert.equal(writes[0].method,'PUT');
 },{salutation:null,ignoredUpdate:true,marketing:true}));
+
+test('approved public hostname supports readiness and requests while other production aliases stay closed',()=>fixture(async({request,payload,writes})=>{
+ process.env.VERCEL_ENV='production';
+ const allowed={host:'sls-website-eight.vercel.app',origin:'https://sls-website-eight.vercel.app'};
+ assert.equal((await request('GET',{},allowed)).code,200);
+ for(const hostname of ['sls.de','www.sls.de','unrelated.vercel.app']) {
+  assert.equal((await request('GET',{}, {host:hostname})).code,403);
+  assert.equal((await request('POST',payload,{host:hostname,origin:`https://${hostname}`})).code,403);
+ }
+ assert.equal(writes.length,0);
+ assert.equal((await request('POST',payload,{...allowed,origin:'https://foreign.example'})).code,403);
+ const res=await request('POST',payload,allowed);
+ assert.equal(res.code,200);assert.equal(writes.length,1);
+}));
