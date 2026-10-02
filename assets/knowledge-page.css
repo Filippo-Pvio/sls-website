@@ -1,0 +1,99 @@
+/* Immobilienwissen */
+.knowledge-page{background:#f7f5f1}
+.knowledge-hero{position:relative;min-height:720px;display:flex;align-items:flex-end;overflow:hidden;background:#3b535e;color:#fff}
+.knowledge-hero-scenes{position:absolute;inset:0;display:grid;grid-template-columns:1.15fr .85fr;grid-template-rows:1fr 1fr;gap:4px;opacity:.34}
+.knowledge-hero-placeholder{background:linear-gradient(135deg,#73909d,#334f5c)}
+.knowledge-hero-placeholder-a{grid-row:1/3;background:linear-gradient(145deg,#6d8792,#294652)}
+.knowledge-hero-placeholder-b{background:linear-gradient(145deg,#486875,#8da1a8)}
+.knowledge-hero-placeholder-c{background:linear-gradient(145deg,#8198a1,#365763)}
+.knowledge-hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(31,53,63,.94) 0%,rgba(42,66,76,.82) 46%,rgba(42,66,76,.28) 100%)}
+.knowledge-hero-inner{position:relative;z-index:2;padding-top:170px;padding-bottom:86px}
+.knowledge-hero h1{max-width:950px;margin:12px 0 24px;font-size:clamp(54px,6.3vw,92px);line-height:.98;letter-spacing:-.035em}
+.knowledge-hero .lead{max-width:720px;color:#edf3f4;font-size:clamp(18px,1.65vw,23px);line-height:1.55}
+.knowledge-hero .page-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.knowledge-intro{padding-block:92px}
+.knowledge-intro .split{align-items:start}
+.knowledge-intro h2{max-width:650px;font-size:clamp(42px,4.7vw,66px)}
+.knowledge-intro-copy{max-width:620px;margin-left:auto;color:var(--muted);font-size:18px;line-height:1.75}
+.knowledge-intro-copy p+p{margin-top:18px}
+.knowledge-topics{padding-block:86px}
+.knowledge-topic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:40px;border:1px solid #d8e3e8;border-radius:22px;overflow:hidden;background:#d8e3e8}
+.knowledge-topic-grid a{min-height:220px;display:flex;flex-direction:column;padding:28px;background:#fff;color:var(--ink);text-decoration:none;transition:transform .25s ease,background .25s ease}
+.knowledge-topic-grid a:hover{background:#f4f8f9}
+.knowledge-topic-grid span{color:var(--coral);font-size:12px;font-weight:800;letter-spacing:.08em}
+.knowledge-topic-grid strong{margin-top:auto;font:500 28px/1.15 "Playfair Display",Georgia,serif}
+.knowledge-topic-grid small{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.5}
+.knowledge-search{max-width:820px;margin:52px auto 0}
+.knowledge-search label{display:block;margin-bottom:10px;color:var(--ink);font-weight:750;font-size:14px}
+.knowledge-search-field{height:62px;display:flex;align-items:center;gap:13px;padding:0 20px;border:1px solid #cad8de;border-radius:999px;background:#fff;box-shadow:0 12px 35px rgba(46,72,83,.07)}
+.knowledge-search-field svg{width:21px;flex:none;color:#47758b}
+.knowledge-search-field input{width:100%;border:0;outline:0;background:transparent;color:var(--ink);font:500 16px/1.2 "Raleway",Arial,sans-serif}
+.knowledge-search-field input::placeholder{color:#819098}
+.knowledge-search-status{min-height:20px;margin:9px 20px 0;color:var(--muted);font-size:12px}
+.knowledge-faq-section{padding-top:20px;padding-bottom:100px}
+.knowledge-topic{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:clamp(50px,8vw,130px);padding:78px 0;border-top:1px solid #cbd9df}
+.knowledge-topic:first-child{border-top:0}
+.knowledge-topic-intro{position:sticky;top:120px;align-self:start}
+.knowledge-topic-intro h2{font-size:clamp(38px,4vw,56px);line-height:1.05}
+.knowledge-topic-intro>p:not(.eyebrow){max-width:430px;color:var(--muted);line-height:1.65}
+.knowledge-topic-intro .text-link{display:inline-block;margin-top:20px}
+.knowledge-page .faq{border-top:1px solid #cbd9df}
+.knowledge-page .faq-item{border-bottom:1px solid #cbd9df}
+.knowledge-page .faq-question{width:100%;display:flex;justify-content:space-between;gap:20px;padding:24px 0;border:0;background:transparent;color:var(--ink);text-align:left;font:600 clamp(19px,1.8vw,24px)/1.35 "Raleway",Arial,sans-serif;cursor:pointer}
+.knowledge-page .faq-question span{flex:none;color:#47758b;font-size:30px;font-weight:400;transition:transform .2s ease}
+.knowledge-page .faq-item.is-open .faq-question span{transform:rotate(45deg)}
+.knowledge-page .faq-answer{display:none;padding:0 44px 24px 0;color:var(--muted);line-height:1.75}
+.knowledge-page .faq-item.is-open .faq-answer{display:block}
+.knowledge-page .faq-answer p{margin:0}.knowledge-page .faq-answer a{text-decoration:underline;text-decoration-color:var(--sky);text-underline-offset:4px}
+.knowledge-topic[hidden],.knowledge-page .faq-item[hidden]{display:none!important}
+.knowledge-no-results{padding:70px 0;text-align:center}.knowledge-no-results h2{font-size:clamp(38px,4vw,56px)}.knowledge-no-results p:last-child{color:var(--muted)}
+.knowledge-guides{padding-block:92px;background:#eef3f5}
+.knowledge-guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+.knowledge-guide-grid a{min-height:240px;display:flex;flex-direction:column;padding:28px;border:1px solid #d5e0e4;border-radius:20px;background:#fff;color:var(--ink);text-decoration:none;transition:transform .25s ease,box-shadow .25s ease}
+.knowledge-guide-grid a:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(45,72,83,.09)}
+.knowledge-guide-grid span{color:var(--coral);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.knowledge-guide-grid strong{margin-top:auto;font:500 30px/1.15 "Playfair Display",Georgia,serif}
+.knowledge-guide-grid small{margin-top:12px;color:var(--muted);font-size:14px;line-height:1.55}
+.knowledge-final{padding-block:90px}
+.knowledge-final-layout{display:flex;align-items:flex-end;justify-content:space-between;gap:60px}
+.knowledge-final h2{max-width:760px;font-size:clamp(42px,5vw,68px)}
+.knowledge-final p:not(.eyebrow){max-width:650px;color:#dce6e9}
+.knowledge-final-actions{display:flex;flex-direction:column;align-items:flex-start;gap:18px;flex:none}
+.knowledge-final .text-link{color:#fff}
+@media(max-width:980px){
+ .knowledge-hero{min-height:680px}
+ .knowledge-hero-scenes{grid-template-columns:1fr 1fr}
+ .knowledge-hero-inner{padding-top:150px;padding-bottom:68px}
+ .knowledge-hero h1{font-size:clamp(44px,9vw,68px)}
+ .knowledge-intro{padding-block:70px}
+ .knowledge-intro .split,.knowledge-topic{grid-template-columns:1fr}
+ .knowledge-intro-copy{margin:24px 0 0}
+ .knowledge-topic-grid{grid-template-columns:repeat(2,1fr)}
+ .knowledge-topic-grid a{min-height:175px}
+ .knowledge-topic{gap:30px;padding:62px 0}
+ .knowledge-topic-intro{position:static}
+ .knowledge-guide-grid{grid-template-columns:1fr}
+ .knowledge-guide-grid a{min-height:180px}
+ .knowledge-final-layout{display:block}
+ .knowledge-final-actions{margin-top:30px}
+}
+@media(max-width:600px){
+ .knowledge-hero{min-height:660px}
+ .knowledge-hero-scenes{grid-template-columns:1fr;grid-template-rows:1fr;opacity:.25}
+ .knowledge-hero-placeholder-b,.knowledge-hero-placeholder-c{display:none}
+ .knowledge-hero-overlay{background:linear-gradient(180deg,rgba(39,63,73,.5),rgba(39,63,73,.95) 68%)}
+ .knowledge-hero-inner{padding-top:138px;padding-bottom:54px}
+ .knowledge-hero h1{font-size:clamp(42px,12vw,56px)}
+ .knowledge-hero .lead{font-size:17px}
+ .knowledge-hero .page-actions{display:grid}.knowledge-hero .button{text-align:center}
+ .knowledge-topics{padding-block:64px}
+ .knowledge-topic-grid{grid-template-columns:1fr}
+ .knowledge-topic-grid a{min-height:140px}
+ .knowledge-search{margin-top:36px}
+ .knowledge-search-field{height:56px;padding-inline:17px}
+ .knowledge-search-field input{font-size:14px}
+ .knowledge-topic{padding:50px 0}
+ .knowledge-page .faq-question{padding:20px 0;font-size:18px}
+ .knowledge-page .faq-answer{padding-right:20px}
+ .knowledge-guides,.knowledge-final{padding-block:68px}
+}
