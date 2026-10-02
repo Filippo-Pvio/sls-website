@@ -104,12 +104,12 @@ document.querySelector("[data-site-header]").innerHTML = `
       <div class="fullscreen-nav-top">
         <button class="offcanvas-close" type="button" data-nav-close aria-label="Menü schließen">${icon("close")}</button>
       </div>
-      <a class="offcanvas-valuation-cta" href="/immobilienbewertung/">Immobilie kostenlos bewerten</a>
       <p class="offcanvas-intro">Womit können wir helfen?</p>
       <div class="fullscreen-nav-grid">${overlaySections}</div>
       <div class="fullscreen-nav-bottom">
         <a href="/blog/">Magazin</a><a href="/presse/">Presse</a><a href="/kontakt/">Kontakt</a>
       </div>
+      <a class="offcanvas-valuation-cta" href="/immobilienbewertung/">Immobilie kostenlos bewerten</a>
     </div>
   </nav>`;
 
