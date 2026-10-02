@@ -3,6 +3,27 @@
   const root = document.querySelector("[data-knowledge-root]");
   if (!root) return;
 
+  const heroScenes = document.querySelector("[data-knowledge-hero-scenes]");
+  const heroImages = [
+    "/assets/images/knowledge/beratung.webp",
+    "/assets/images/knowledge/objekt.webp",
+    "/assets/images/knowledge/markt.webp"
+  ];
+  if (heroScenes) {
+    heroScenes.innerHTML = heroImages.map((src, index) =>
+      `<span class="knowledge-hero-scene${index === 0 ? " is-active" : ""}" style="background-image:url('${src}')"></span>`
+    ).join("");
+    const scenes = [...heroScenes.querySelectorAll(".knowledge-hero-scene")];
+    if (scenes.length > 1 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      let activeScene = 0;
+      window.setInterval(() => {
+        scenes[activeScene].classList.remove("is-active");
+        activeScene = (activeScene + 1) % scenes.length;
+        scenes[activeScene].classList.add("is-active");
+      }, 5600);
+    }
+  }
+
   const topics = [...root.querySelectorAll("[data-knowledge-topic]")];
   const noResults = root.querySelector("[data-knowledge-no-results]");
   const status = document.querySelector("[data-knowledge-search-status]");
