@@ -67,3 +67,6 @@ button:disabled { opacity:.6; cursor:wait; }
  dialog[data-compact] .content { padding-block:8px; }
  h3 { font-size:27px; }
 }
+
+/* Desktop uses a clear chat action; mobile retains the direct call shortcut. */
+@media(min-width:981px){.quickbar .quick-call{display:none}.quickbar.is-compact .launch-label{max-width:55px;opacity:1}.quickbar.is-compact .launch{padding:0 15px 0 17px}}

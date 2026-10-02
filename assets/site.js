@@ -84,8 +84,8 @@ const overlaySections = mobileNavGroups.map((group, index) => {
 
 const isEditorialHome = document.body.classList.contains("home-editorial");
 const isPropertyPreview = document.body.classList.contains("property-preview");
-const hasHeaderValuationCta = isEditorialHome || isPropertyPreview;
-const valuationCtaLabel = isPropertyPreview ? "Immobilie bewerten" : "Kostenlos bewerten";
+const hasHeaderValuationCta = true;
+const valuationCtaLabel = "Immobilie bewerten";
 
 document.querySelector("[data-site-header]").innerHTML = `
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -280,27 +280,15 @@ window.addEventListener("scroll", () => {
 
 setMenu(false);
 
-const heroValuation = document.querySelector('.hero-actions a[href="/immobilienbewertung/"]');
-if (heroValuation) {
-  const syncValuation = () => {
-    header.classList.toggle("has-scroll-cta", heroValuation.getBoundingClientRect().bottom <= 0);
-  };
-  if ("IntersectionObserver" in window) {
-    const valuationObserver = new IntersectionObserver(syncValuation, { threshold: 0 });
-    valuationObserver.observe(heroValuation);
-  } else {
-    window.addEventListener("scroll", syncValuation, { passive: true });
-    window.addEventListener("resize", syncValuation, { passive: true });
-    syncValuation();
-  }
-} else if (isPropertyPreview) {
-  const syncPropertyValuation = () => {
-    header.classList.toggle("has-scroll-cta", window.scrollY > 28);
-  };
-  window.addEventListener("scroll", syncPropertyValuation, { passive: true });
-  window.addEventListener("resize", syncPropertyValuation, { passive: true });
-  syncPropertyValuation();
-}
+// One scroll rule for every page, including direct links opened mid-page.
+const syncHeaderScroll = () => {
+  const scrolled = window.scrollY > 28;
+  header.classList.toggle('is-scrolled', scrolled);
+  header.classList.toggle('has-scroll-cta', scrolled);
+};
+window.addEventListener('scroll', syncHeaderScroll, { passive: true });
+window.addEventListener('pageshow', syncHeaderScroll);
+syncHeaderScroll();
 
 if (document.body.classList.contains("home-editorial") && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   document.body.classList.add("home-copy-motion-ready");
