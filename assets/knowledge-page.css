@@ -76,3 +76,40 @@
  .knowledge-page .faq-answer{padding-right:20px}
  .knowledge-guides,.knowledge-final{padding-block:68px}
 }
+
+/* Immobilienwissen hero scenes */
+.knowledge-page .knowledge-intro-hero{position:relative;isolation:isolate;overflow:hidden}
+.knowledge-page .knowledge-intro-hero .wrap{position:relative;z-index:2}
+.knowledge-page .knowledge-intro-hero .buy-hero-scenes{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  display:block;
+  pointer-events:none;
+}
+.knowledge-page .knowledge-intro-hero .buy-hero-scenes::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  background:linear-gradient(90deg,rgba(52,91,110,.96) 0%,rgba(52,91,110,.88) 43%,rgba(52,91,110,.56) 72%,rgba(52,91,110,.38) 100%);
+}
+.knowledge-page .knowledge-hero-scene{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  background-position:center;
+  background-size:cover;
+  transform:scale(1.025);
+  transition:opacity 1.15s ease,transform 6.2s ease;
+}
+.knowledge-page .knowledge-hero-scene.is-active{opacity:1;transform:scale(1)}
+@media(max-width:600px){
+  .knowledge-page .knowledge-intro-hero .buy-hero-scenes::after{
+    background:linear-gradient(180deg,rgba(52,91,110,.72) 0%,rgba(52,91,110,.88) 58%,rgba(52,91,110,.97) 100%);
+  }
+  .knowledge-page .knowledge-hero-scene{background-position:58% center}
+}
+@media(prefers-reduced-motion:reduce){
+  .knowledge-page .knowledge-hero-scene{transition:none;transform:none}
+}
