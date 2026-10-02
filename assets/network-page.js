@@ -15,8 +15,7 @@
   // Add up to three original-photo variants in the JSON configuration in netzwerk/index.html.
   const config = document.getElementById('network-hero-config');
   const scenes = document.querySelector('[data-network-scenes]');
-  const pause = document.querySelector('.network-pause');
-  if (!config || !scenes || !pause) return;
+  if (!config || !scenes) return;
   let images;
   try { images = JSON.parse(config.textContent).images; } catch { return; }
   if (!Array.isArray(images)) return;
@@ -34,16 +33,15 @@
     slides.forEach(image => scenes.append(image)); slides[0].classList.add('is-visible');
     if (slides.length < 2) return;
     const motion = matchMedia('(prefers-reduced-motion: reduce)');
-    let active = 0, timer = null, paused = false;
+    let active = 0, timer = null;
     function sync() {
-      clearInterval(timer); pause.hidden = motion.matches;
-      if (paused || motion.matches || document.hidden) return;
+      clearInterval(timer);
+      if (motion.matches || document.hidden) return;
       timer = setInterval(() => {
         slides[active].classList.remove('is-visible'); active = (active + 1) % slides.length;
         slides[active].classList.add('is-visible');
       }, 6500);
     }
-    pause.addEventListener('click', () => { paused = !paused; pause.textContent = paused ? 'Bildwechsel fortsetzen' : 'Bildwechsel pausieren'; sync(); });
     motion.addEventListener('change', sync); document.addEventListener('visibilitychange', sync); sync();
   });
 })();
