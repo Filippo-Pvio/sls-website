@@ -9,6 +9,7 @@ const navGroups = [
     ["Immobilie verkaufen", "/verkaufen/", "Unser Prozess von Bewertung bis Übergabe"],
     ["Immobilienbewertung", "/immobilienbewertung/", "Kostenlos und unverbindlich starten"],
     ["Referenzen", "/referenzen/", "Erfolgreich vermittelte Immobilien"],
+    ["Immobilienwissen", "/faq/", "Fragen, Antworten & Ratgeber"],
     ["Ratgeber", "/downloads/", "Wissen für Ihre Verkaufsentscheidung"]
   ]},
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
@@ -19,6 +20,7 @@ const navGroups = [
   { label: "Über SLS", href: "/ueber-uns/", kicker: "Unternehmen", items: [
     ["Über uns", "/ueber-uns/", "Wer wir sind und wie wir arbeiten"],
     ["Team", "/team/", "Ihre Ansprechpartner bei SLS"],
+    ["SLS Netzwerk", "/netzwerk/", "Fachbetriebe & Ansprechpartner rund um Immobilien"],
     ["Werte", "/werte/", "Wofür SLS steht"],
     ["Karriere", "/karriere/", "Gemeinsam Immobilien neu denken"],
     ["Magazin", "/blog/", "News & Immobilienwissen"],
@@ -60,7 +62,7 @@ const mobileNavGroups = [
 ];
 
 const overlaySections = mobileNavGroups.map((group) => {
-  const links = group.items.slice(0, 4).map(([label, href]) =>
+  const links = group.items.map(([label, href]) =>
     `<a class="overlay-sub-link" href="${href}">${label}</a>`
   ).join("");
   return `<section class="overlay-nav-section">
@@ -95,9 +97,14 @@ document.querySelector("[data-site-header]").innerHTML = `
         <button class="offcanvas-close" type="button" data-nav-close aria-label="Menü schließen">${icon("close")}</button>
       </div>
       <p class="offcanvas-intro">Womit können wir helfen?</p>
+      <button class="offcanvas-sia" type="button" data-sia-open>
+        <span class="offcanvas-sia-mark" aria-hidden="true">SIA</span>
+        <span><strong>SIA fragen</strong><small>KI-Assistenz von SLS Immobilienpartner</small></span>
+        <span class="offcanvas-sia-arrow" aria-hidden="true">↗</span>
+      </button>
       <div class="fullscreen-nav-grid">${overlaySections}</div>
       <div class="fullscreen-nav-bottom">
-        <a href="/blog/">Magazin</a><a href="/presse/">Presse</a><a href="/kontakt/">Kontakt</a>
+        <a href="/blog/">Magazin</a><a href="/netzwerk/">SLS Netzwerk</a><a href="/kontakt/">Kontakt</a>
       </div>
     </div>
   </nav>`;
@@ -108,9 +115,9 @@ document.querySelector("[data-site-footer]").innerHTML = `
       <a class="brand" href="/" aria-label="SLS Immobilienpartner Startseite"><img class="brand-logo" src="/assets/logo-sls.svg" alt="SLS Immobilienpartner" width="267" height="170"></a>
       <p>Wir verkaufen <span class="footer-owner-emphasis">Ihre Immobilie</span>, als wäre sie unsere eigene.</p>
     </div>
-    <div><h2>Eigentümer</h2><a href="/immobilienbewertung/">Immobilienbewertung</a><a href="/verkaufen/">Verkaufen</a><a href="/service/">Service</a><a href="/faq/">Fragen & Antworten</a><a href="/referenzen/">Referenzen</a></div>
+    <div><h2>Eigentümer</h2><a href="/immobilienbewertung/">Immobilienbewertung</a><a href="/verkaufen/">Verkaufen</a><a href="/service/">Service</a><a href="/faq/">Immobilienwissen</a><a href="/referenzen/">Referenzen</a></div>
     <div><h2>Interessenten</h2><a href="/kaufen/">Kaufen</a><a href="/finanzierung/">Finanzierung</a><a href="/immobilien/">Immobilien</a><a href="/downloads/">Ratgeber</a></div>
-    <div><h2>SLS</h2><a href="/ueber-uns/">Über uns</a><a href="/team/">Team</a><a href="/standorte/">Standorte</a><a href="/karriere/">Karriere</a><a href="/blog/">Blog</a></div>
+    <div><h2>SLS</h2><a href="/ueber-uns/">Über uns</a><a href="/team/">Team</a><a href="/netzwerk/">SLS Netzwerk</a><a href="/standorte/">Standorte</a><a href="/karriere/">Karriere</a><a href="/blog/">Blog</a></div>
     <div><h2>Kontakt</h2><a href="tel:+4923697428020">02369 742 80 20</a><a href="mailto:service@sls.de">service@sls.de</a><p>Ubierweg 2 · 46286 Dorsten</p><p>Königsallee 19 · 40213 Düsseldorf</p></div>
   </div>
   <div class="footer-bottom"><span>&copy; 2026 SLS Immobilienpartner GmbH</span><span><a href="https://sls.de/datenschutz/">Datenschutz</a><a href="https://sls.de/impressum/">Impressum</a></span></div>`;
@@ -194,6 +201,12 @@ const setMenu = (open, returnFocus = false) => {
 
 toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
 
+document.querySelector("[data-sia-open]")?.addEventListener("click", () => {
+  setMenu(false);
+  window.__slsSiaOpenRequested = true;
+  window.dispatchEvent(new CustomEvent("sls:sia-open"));
+});
+
 nav.addEventListener("click", (event) => {
   if (event.target.closest("a")) setMenu(false);
 });
@@ -229,53 +242,6 @@ if (heroValuation) {
   window.addEventListener("scroll", syncPropertyValuation, { passive: true });
   window.addEventListener("resize", syncPropertyValuation, { passive: true });
   syncPropertyValuation();
-}
-
-// Keep a direct call option within reach throughout the mobile site.
-{
-  const hero = document.querySelector(".hero-premium");
-  const finalCall = document.querySelector('.premium-final-cta a[href^="tel:"]');
-  const isHome = document.body.classList.contains("home-editorial");
-
-  const mobileCall = document.createElement("a");
-  mobileCall.className = "mobile-call-cta";
-  mobileCall.href = "tel:+4923697428020";
-  mobileCall.setAttribute("aria-label", "SLS telefonisch anrufen");
-  mobileCall.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.91.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg><span>Anrufen</span>';
-  document.body.appendChild(mobileCall);
-
-  let scheduled = false;
-  const syncMobileCall = () => {
-    scheduled = false;
-    const isMobile = window.matchMedia("(max-width: 760px)").matches;
-    const videoPlayingInView = isHome && [...document.querySelectorAll(".home-value-interview-media iframe")].some((frame) => {
-      const bounds = frame.getBoundingClientRect();
-      return bounds.top < window.innerHeight && bounds.bottom > 0;
-    });
-    const finalCallVisible = !!finalCall && (() => {
-      const bounds = finalCall.getBoundingClientRect();
-      return bounds.bottom > 0 && bounds.top < window.innerHeight;
-    })();
-    const homeHeroPassed = !isHome || !hero || hero.getBoundingClientRect().bottom <= 0;
-    const show = isMobile
-      && homeHeroPassed
-      && !finalCallVisible
-      && !document.body.classList.contains("menu-open")
-      && !videoPlayingInView;
-    mobileCall.hidden = !show;
-  };
-  const scheduleMobileCall = () => {
-    if (scheduled) return;
-    scheduled = true;
-    window.requestAnimationFrame(syncMobileCall);
-  };
-  window.addEventListener("scroll", scheduleMobileCall, { passive: true });
-  window.addEventListener("resize", scheduleMobileCall, { passive: true });
-  document.querySelectorAll("[data-home-interview-play], [data-home-roomtour-play]").forEach((button) => {
-    button.addEventListener("click", scheduleMobileCall);
-  });
-  new MutationObserver(scheduleMobileCall).observe(document.body, { attributes: true, attributeFilter: ["class"] });
-  scheduleMobileCall();
 }
 
 if (document.body.classList.contains("home-editorial") && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
