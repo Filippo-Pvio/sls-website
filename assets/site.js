@@ -116,18 +116,42 @@ document.querySelector("[data-site-header]").innerHTML = `
     </div>
   </nav>`;
 
-document.querySelector("[data-site-footer]").innerHTML = `
-  <div class="footer-inner">
-    <div class="footer-lead">
-      <a class="brand" href="/" aria-label="SLS Immobilienpartner Startseite"><img class="brand-logo" src="/assets/logo-sls.svg" alt="SLS Immobilienpartner" width="267" height="170"></a>
-      <p>Wir verkaufen <span class="footer-owner-emphasis">Ihre Immobilie</span>, als wäre sie unsere eigene.</p>
+const footer = document.querySelector("[data-site-footer]");
+footer.classList.add("footer-unified");
+const footerGroups = navGroups.map((group, index) => `<details class="footer-group" open>
+  <summary><h2>${group.label}</h2><span aria-hidden="true">+</span></summary>
+  <nav aria-label="Footer: ${group.label}">${group.items.map(([label, href]) => `<a href="${href}">${label}</a>`).join("")}</nav>
+</details>`).join("");
+footer.innerHTML = `
+  <div class="footer-unified-wrap">
+    <div class="footer-intro-row">
+      <div class="footer-lead">
+        <a class="brand" href="/" aria-label="SLS Immobilienpartner Startseite"><img class="brand-logo" src="/assets/logo-sls.svg" alt="SLS Immobilienpartner" width="267" height="170" loading="lazy"></a>
+        <p>Wir verkaufen <span class="footer-owner-emphasis">Ihre Immobilie</span>, als wäre sie unsere eigene.</p>
+        <nav class="footer-social" aria-label="SLS Immobilienpartner auf Social Media"><a href="https://www.instagram.com/sls_immobilienpartner/" target="_blank" rel="noopener noreferrer" aria-label="SLS Immobilienpartner auf Instagram (öffnet in neuem Tab)" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.linkedin.com/company/sls-immobilienpartner/" target="_blank" rel="noopener noreferrer" aria-label="SLS Immobilienpartner auf LinkedIn (öffnet in neuem Tab)" title="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="3"/><circle cx="7" cy="8" r="1" fill="currentColor" stroke="none"/><path d="M7 11v7m4 0v-7m0 3a3 3 0 0 1 6 0v4"/></svg></a><a href="https://www.facebook.com/people/SLS-Immobilienpartner/61562917415040/" target="_blank" rel="noopener noreferrer" aria-label="SLS Immobilienpartner auf Facebook (öffnet in neuem Tab)" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.8-.1-1.7-.2-2.6-.2-2.7 0-4.5 1.6-4.5 4.7v1.9H9V13h2.7v8z"/></svg></a><a href="https://www.youtube.com/@SLSImmobilienpartnerGmbH" target="_blank" rel="noopener noreferrer" aria-label="SLS Immobilienpartner auf YouTube (öffnet in neuem Tab)" title="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="5"/><path d="m10 9 5 3-5 3z" fill="currentColor" stroke="none"/></svg></a></nav>
+      </div>
+      <div class="footer-contact">
+        <h2>Persönlich für Sie da</h2>
+        <a class="footer-phone" href="tel:+4923697428020">02369 742 80 20</a>
+        <a href="mailto:service@sls.de">service@sls.de</a>
+        <a class="footer-contact-link" href="/kontakt/">Kontakt aufnehmen <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="footer-offices">
+        <h2>Unsere Büros</h2>
+        <a href="/immobilienmakler-dorsten/"><strong>Dorsten</strong><span>Ubierweg 2 · 46286 Dorsten</span></a>
+        <a href="/immobilienmakler-dusseldorf/"><strong>Düsseldorf</strong><span>Königsallee 19 · 40213 Düsseldorf</span></a>
+      </div>
     </div>
-    <div><h2>Eigentümer</h2><a href="/immobilienbewertung/">Immobilienbewertung</a><a href="/verkaufen/">Verkaufen</a><a href="/service/">Service</a><a href="/faq/">Immobilienwissen</a><a href="/referenzen/">Referenzen</a></div>
-    <div><h2>Interessenten</h2><a href="/kaufen/">Kaufen</a><a href="/finanzierung/">Finanzierung</a><a href="/immobilien/">Immobilien</a><a href="/downloads/">Ratgeber</a></div>
-    <div><h2>SLS Immobilienpartner</h2><a href="/ueber-uns/">Über uns</a><a href="/team/">Team</a><a href="/netzwerk/">Netzwerk von SLS Immobilienpartner</a><a href="/standorte/">Standorte</a><a href="/karriere/">Karriere</a><a href="/blog/">Magazin</a></div>
-    <div><h2>Kontakt</h2><a href="tel:+4923697428020">02369 742 80 20</a><a href="mailto:service@sls.de">service@sls.de</a><p>Ubierweg 2 · 46286 Dorsten</p><p>Königsallee 19 · 40213 Düsseldorf</p></div>
-  </div>
-  <div class="footer-bottom"><span>&copy; 2026 SLS Immobilienpartner GmbH</span><span><a href="https://sls.de/datenschutz/">Datenschutz</a><a href="https://sls.de/impressum/">Impressum</a></span></div>`;
+    <div class="footer-navigation">${footerGroups}</div>
+    <div class="footer-legal"><span>&copy; ${new Date().getFullYear()} SLS Immobilienpartner GmbH</span><nav aria-label="Rechtliche Informationen"><a href="https://sls.de/datenschutz/">Datenschutz</a><a href="https://sls.de/impressum/">Impressum</a></nav></div>
+  </div>`;
+const footerMobile = window.matchMedia("(max-width: 680px)");
+const syncFooterGroups = () => footer.querySelectorAll(".footer-group").forEach(group => { group.open = !footerMobile.matches; });
+syncFooterGroups();
+footerMobile.addEventListener("change", syncFooterGroups);
+footer.querySelectorAll(".footer-group summary").forEach(summary => summary.addEventListener("click", event => {
+  if (!footerMobile.matches) event.preventDefault();
+}));
 
 /* SIA is a global site assistant. Pages that already include it keep their existing script. */
 if (!document.querySelector('script[src="/assets/sia-widget.js"]')) {
