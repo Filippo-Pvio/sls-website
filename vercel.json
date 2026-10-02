@@ -40,6 +40,9 @@
     "api/property-page.js": {
       "includeFiles": "immobilien/index.html",
       "maxDuration": 60
+    },
+    "api/sia-ask.js": {
+      "maxDuration": 60
     }
   }
 }
