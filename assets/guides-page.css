@@ -21,8 +21,11 @@ body.guides-page #main .guide-request h2{text-align:left;margin:0 0 24px}
 .guide-request fieldset{border:0;margin:0;padding:0;min-width:0}
 .guide-request legend{font-weight:700;margin-bottom:16px}
 .guide-names{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.guide-request .guide-consent{display:flex;gap:12px;font-weight:400;align-items:start}
-.guide-consent input{flex-shrink:0;width:18px;height:18px;margin-top:4px}
+.guide-request .guide-consent{display:grid;grid-template-columns:20px minmax(0,1fr);column-gap:12px;font-weight:400;align-items:start}
+.guide-request .guide-consent input[type=checkbox]{box-sizing:border-box;display:block;align-self:start;width:20px;min-width:20px;max-width:20px;height:20px;min-height:20px;max-height:20px;padding:0;margin:1px 0 0;accent-color:#345b6e;cursor:pointer}
+.guide-request .guide-consent input:focus-visible{outline:2px solid #345b6e;outline-offset:3px}
+.guide-request .guide-consent>span{min-width:0;margin:0}
+.guide-request .guide-consent a{text-decoration:underline;text-underline-offset:3px}
 body.guides-page #main .guide-availability{font-size:14px;line-height:1.6;background:#eaf0f3;color:#345b6e;padding:16px;margin:0 0 24px}
 .guide-request button:disabled{opacity:.65;cursor:not-allowed;width:100%}
 .guide-request button{width:100%}
@@ -35,20 +38,20 @@ body.guides-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin:0 a
 @media(max-width:850px){.guides-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.guides-page #main .guide-request-layout{grid-template-columns:1fr;gap:32px}}
 @media(max-width:540px){.guides-grid{grid-template-columns:1fr;gap:24px}.guide-request form{padding:24px 18px}.guide-names{grid-template-columns:1fr;gap:0}}
 
-body.guides-page #main .guide-privacy{font-size:14px;line-height:1.65;color:#345b6e;margin:18px 0 24px}
+body.guides-page #main .guide-privacy{font-size:14px;line-height:1.65;color:#345b6e;margin:14px 0 16px}
 
 .guide-review-actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:20px}
 .guide-review-actions[hidden]{display:none}
 .guide-request .guide-review-actions button{width:auto}
 .guide-request button:focus-visible{outline:3px solid #ff596f;outline-offset:4px}
 
-body.guides-page #main .guide-marketing{font-size:14px;line-height:1.65;color:#345b6e;border-top:1px solid #d5e0e5;padding-top:20px;margin-bottom:24px}
+body.guides-page #main .guide-marketing{font-size:14px;line-height:1.55;color:#345b6e;border-top:1px solid #d5e0e5;padding-top:16px;margin-bottom:12px}
 .guide-marketing span{min-width:0}
 .guide-marketing input{accent-color:#345b6e}
 
-body.guides-page #main .guide-marketing-availability{font-size:13px;line-height:1.6;color:#345b6e;margin:-12px 0 24px}
+body.guides-page #main .guide-marketing-availability{font-size:13px;line-height:1.6;color:#345b6e;margin:0 0 20px;padding-left:32px}
 .guide-marketing:has(input:disabled){opacity:.7}
 
-body.guides-page #main .guide-privacy-ack{font-size:14px;line-height:1.65;color:#345b6e;margin:0 0 24px}
+body.guides-page #main .guide-privacy-ack{font-size:14px;line-height:1.55;color:#345b6e;margin:0 0 16px}
 .guide-privacy-ack span{min-width:0}
 .guide-privacy-ack input{accent-color:#345b6e}

@@ -10,9 +10,9 @@ async function fixture(result={ok:true,message:'Vielen Dank! Sie erhalten Ihren 
  const reviewActions={hidden:true},correctButton={disabled:false,addEventListener:(event,fn)=>callbacks.correct=fn};
  const button={disabled:true,textContent:''},fields={disabled:true};
  const select={value:'VERKAUF',disabled:false,options:[{value:'VERKAUF',disabled:false}]};
- const form={elements:{firstName:{value:'Anna',focus(){}},lastName:{value:'Muster'},email:{value:'service@example.org',focus(){}},website:{value:''},privacyAcknowledged:{checked:true,dataset:{privacyVersion:'2026-10-02-v1'},focus(){}},marketingConsent:{checked:false,dataset:{consentVersion:'2026-10-02'}}},querySelector:s=>s==='fieldset'?fields:button,addEventListener:(event,fn)=>callbacks[event]=fn,reportValidity:()=>true,setAttribute(){},removeAttribute(){}};
+ const form={elements:{firstName:{value:'Anna',focus(){}},lastName:{value:'Muster'},email:{value:'service@example.org',focus(){}},website:{value:''},privacyAcknowledged:{checked:true,dataset:{privacyVersion:'2026-10-02-v1'},focus(){}},marketingConsent:{checked:false,dataset:{consentVersion:'2026-10-02-v2'}}},querySelector:s=>s==='fieldset'?fields:button,addEventListener:(event,fn)=>callbacks[event]=fn,reportValidity:()=>true,setAttribute(){},removeAttribute(){}};
  runInNewContext(code,{document:{getElementById:id=>({'guide-form':form,'guide-select':select,'guide-availability':status,'guide-review-actions':reviewActions,'guide-correct':correctButton,'guide-marketing-availability':marketingAvailability})[id],querySelectorAll:()=>[]},window:{setTimeout:fn=>timers.push(fn)},fetch:async(url,init={})=>{
-  requests.push({url,...init});return {ok:init.method==='POST'?result.ok:ready,json:async()=>init.method==='POST'?result:ready?{availableGuides:['VERKAUF'],token:'signed-token',marketingAvailable:marketingReady,consentVersion:'2026-10-02'}:{error:'Nicht verfügbar'}};
+  requests.push({url,...init});return {ok:init.method==='POST'?result.ok:ready,json:async()=>init.method==='POST'?result:ready?{availableGuides:['VERKAUF'],token:'signed-token',marketingAvailable:marketingReady,consentVersion:'2026-10-02-v2'}:{error:'Nicht verfügbar'}};
  }});
  await new Promise(resolve=>setImmediate(resolve));timers.splice(0).forEach(fn=>fn());
  return {fields,button,select,form,status,requests,reviewActions,correctButton,correct:async()=>{callbacks.correct();await new Promise(resolve=>setImmediate(resolve));timers.splice(0).forEach(fn=>fn());},submit:()=>callbacks.submit({preventDefault(){}})};
@@ -21,7 +21,7 @@ test('form submits names with guide/email/token/trap, locks double-clicks, clear
  const f=await fixture();assert.equal(f.fields.disabled,false);
  await Promise.all([f.submit(),f.submit()]);
  assert.equal(f.requests.filter(r=>r.method==='POST').length,1);
- assert.deepEqual(JSON.parse(f.requests[1].body),{guide:'VERKAUF',email:'service@example.org',firstName:'Anna',lastName:'Muster',token:'signed-token',website:'',privacyAcknowledged:true,privacyVersion:'2026-10-02-v1',marketingConsent:false,consentVersion:'2026-10-02'});
+ assert.deepEqual(JSON.parse(f.requests[1].body),{guide:'VERKAUF',email:'service@example.org',firstName:'Anna',lastName:'Muster',token:'signed-token',website:'',privacyAcknowledged:true,privacyVersion:'2026-10-02-v1',marketingConsent:false,consentVersion:'2026-10-02-v2'});
  assert.equal(f.fields.disabled,true);assert.equal(f.form.elements.email.value,'');assert.equal(f.form.elements.firstName.value,'');assert.equal(f.form.elements.lastName.value,'');
  assert.match(f.status.textContent,/in Kürze/);await f.submit();assert.equal(f.requests.length,2);
 });
@@ -48,7 +48,7 @@ test('review retains entries and offers correction without claiming dispatch',as
 test('optional marketing consent is sent explicitly and cleared only after success',async()=>{
  const f=await fixture();f.form.elements.marketingConsent.checked=true;
  await f.submit();assert.equal(JSON.parse(f.requests[1].body).marketingConsent,true);
- assert.equal(JSON.parse(f.requests[1].body).consentVersion,'2026-10-02');
+ assert.equal(JSON.parse(f.requests[1].body).consentVersion,'2026-10-02-v2');
  assert.equal(f.form.elements.marketingConsent.checked,false);
 });
 test('marketing selection survives review and submission errors',async()=>{

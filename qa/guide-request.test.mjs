@@ -157,7 +157,7 @@ test('submitted review names are HTML escaped',()=>fixture(async({request,payloa
  assert.match(writes[0].payload.task.body,/&lt;script&gt;/);
 }));
 
-const optIn=payload=>({...payload,marketingConsent:true,consentVersion:'2026-10-02'});
+const optIn=payload=>({...payload,marketingConsent:true,consentVersion:'2026-10-02-v2'});
 test('missing newsletter category keeps only newsletter unavailable',()=>fixture(async({request,ready,payload,writes})=>{
  assert.equal(ready.body.marketingAvailable,false);
  assert.equal((await request('POST',optIn(payload))).code,503);assert.equal(writes.length,0);
@@ -174,7 +174,7 @@ test('selected consent creates the categorized automation trigger; never sends d
  assert.equal(res.body.newsletterStatus,'confirmation_requested');assert.match(res.body.message,/separate Bestätigungsmail/);
  assert.deepEqual(contacts,before);
  assert.equal(writes.length,2);
- assert.match(writes[1].payload.task.body,/Einwilligungstext, Version 2026-10-02/);
+ assert.match(writes[1].payload.task.body,/Einwilligungstext, Version 2026-10-02-v2/);
  assert.match(writes[1].payload.task.body,/Double-Opt|Bestätigung noch ausstehend/);
  assert.equal(writes[1].payload.task.note_type_id,123);
  assert.equal(writes[1].payload.task.title,'SLS_NEWSLETTER_DOI_ANGEFORDERT');
@@ -223,7 +223,7 @@ test('concurrent opt-ins create one guide and one newsletter trigger',()=>fixtur
 
 for(const update of [{privacyAcknowledged:undefined},{privacyAcknowledged:false},{privacyAcknowledged:'true'},{privacyAcknowledged:1},{privacyVersion:undefined},{privacyVersion:'old'}])test(`rejects missing or invalid privacy acknowledgement ${JSON.stringify(update)}`,()=>fixture(async({request,payload,writes,calls})=>{
  const count=calls.length;
- const res=await request('POST',{...payload,...update,marketingConsent:true,consentVersion:'2026-10-02'});
+ const res=await request('POST',{...payload,...update,marketingConsent:true,consentVersion:'2026-10-02-v2'});
  assert.equal(res.code,400);assert.equal(writes.length,0);assert.equal(calls.length,count);
 },{marketing:true}));
 test('privacy acknowledgement is recorded in the guide note without marketing permission',()=>fixture(async({request,payload,writes,contacts})=>{

@@ -88,3 +88,13 @@ Die vorherigen Website-Konfigurationen PROPSTACK_GUIDES_DOI_BROKER_ID, PROPSTACK
 service@sls.de wurde als Propstack-Nutzer 228065 aufgelöst. Vor dem damaligen Test: newsletter=null, accept_contact=true, newsletter_unsubscribed=false. POST /messages wurde mit HTTP 401 abgelehnt; es gab keinen bestätigten Versand. Die technische Notiz SLS-DOI-TEST-1115618-20261002 ist keine Einwilligung. Der vorübergehende Testzugang wurde entfernt. Die Umstellung auf Notizautomatisierung ersetzt diesen direkten API-Mailversand.
 
 Referenzen: https://docs.propstack.de/webseite/newsletter-anmeldung und https://support.propstack.de/hc/de/articles/18311864009885-Aufgaben-Termine-Notizen-E-Mails-automatisieren
+
+## Kompakter Einwilligungstext und Formularlayout
+
+02.10.2026: Der Nutzer bestätigt, dass beide Mails versandt wurden. Die Wirkung des Bestätigungslinks auf die Kontaktfelder ist damit noch nicht bestätigt.
+
+Der Newslettertext wurde auf Version `2026-10-02-v2` gekürzt. Unternehmen, E-Mail-Kanal, Themen und Dienstleistungen, Verwendung von Name/E-Mail, Freiwilligkeit unabhängig vom Ratgeber und Widerruf über den Abmeldelink bleiben ausdrücklich enthalten. Das HTML und der in Propstack dokumentierte Wortlaut verwenden dieselbe Version; veraltete Formularversionen werden bei Newsletter-Auswahl abgelehnt. Keine Änderung der Propstack-Triggerkategorien oder vorhandener Kontaktfelder.
+
+Layout: feste 20px-Checkbox-Spalte, vollständige Rücksetzung der globalen 52px-Mindesthöhe und Eingabefeld-Abstände, Textausrichtung an der ersten Zeile und kompaktere Abstände. Datenschutzlink bleibt sichtbar. Kein Ausblenden notwendiger Einwilligungsangaben hinter einem Aufklappbereich.
+
+Referenz: Datenschutzkonferenz, Orientierungshilfe Direktwerbung (Februar 2022), Abschnitte 3.1, 3.3 und 3.4: https://www.datenschutzkonferenz-online.de/media/oh/OH-Werbung_Februar%202022_final.pdf . Das ist keine rechtliche Gesamtfreigabe: Datenschutzerklärung, tatsächliches Bestätigungsformular, Nachweis und Widerrufsprozess müssen zum Ablauf passen.
