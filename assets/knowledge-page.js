@@ -5,9 +5,9 @@
 
   const heroScenes = document.querySelector("[data-knowledge-hero-scenes]");
   const heroImages = [
-    "/assets/images/knowledge/beratung.webp",
-    "/assets/images/knowledge/objekt.webp",
-    "/assets/images/knowledge/markt.webp"
+    "/assets/images/knowledge/beratung.jpg",
+    "/assets/images/knowledge/objekt.jpg",
+    "/assets/images/knowledge/markt.jpg"
   ];
   if (heroScenes) {
     heroScenes.innerHTML = heroImages.map((src, index) =>

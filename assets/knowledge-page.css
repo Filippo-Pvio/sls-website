@@ -100,10 +100,10 @@
   opacity:0;
   background-position:center;
   background-size:cover;
-  transform:scale(1.025);
-  transition:opacity 1.15s ease,transform 6.2s ease;
+  transform:none;
+  transition:opacity 1.15s ease;
 }
-.knowledge-page .knowledge-hero-scene.is-active{opacity:1;transform:scale(1)}
+.knowledge-page .knowledge-hero-scene.is-active{opacity:1}
 @media(max-width:600px){
   .knowledge-page .knowledge-intro-hero .buy-hero-scenes::after{
     background:linear-gradient(180deg,rgba(52,91,110,.72) 0%,rgba(52,91,110,.88) 58%,rgba(52,91,110,.97) 100%);
