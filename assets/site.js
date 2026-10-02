@@ -52,12 +52,19 @@ const primaryLinks = navGroups.map((group, index) => {
   </div>`;
 }).join("");
 
-const overlaySections = navGroups.map((group) => {
+const mobileNavGroups = [
+  { ...navGroups[1], mobileLabel: "Verkaufen" },
+  { ...navGroups[0], mobileLabel: "Immobilien finden" },
+  { ...navGroups[2], mobileLabel: "Standorte" },
+  { ...navGroups[3], mobileLabel: "Über SLS" }
+];
+
+const overlaySections = mobileNavGroups.map((group) => {
   const links = group.items.slice(0, 4).map(([label, href]) =>
     `<a class="overlay-sub-link" href="${href}">${label}</a>`
   ).join("");
   return `<section class="overlay-nav-section">
-    <a class="overlay-main-link" href="${group.href}">${group.label}</a>
+    <a class="overlay-main-link" href="${group.href}">${group.mobileLabel || group.label}</a>
     <div class="overlay-subgrid">${links}</div>
   </section>`;
 }).join("");
