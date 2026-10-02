@@ -2986,11 +2986,6 @@ body.home-editorial > section.section.home-faq-section{
 }
 
 
-/* SIA entry in the mobile navigation */
-.offcanvas-sia{width:100%;display:flex;align-items:center;gap:12px;margin:2px 0 24px;padding:12px 14px;border:1px solid rgba(52,91,110,.18);border-radius:16px;background:#f4f7f8;color:#345b6e;text-align:left;cursor:pointer}
-.offcanvas-sia-mark{display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:13px;background:#345b6e;color:#ff596f;font:800 14px/1 "Raleway",Arial,sans-serif;letter-spacing:.08em}
-.offcanvas-sia strong,.offcanvas-sia small{display:block}.offcanvas-sia strong{font-size:14px}.offcanvas-sia small{margin-top:3px;color:#607782;font-size:11px}.offcanvas-sia-arrow{margin-left:auto;font-size:17px}
-
 /* SLS Immobilienwissen */
 .knowledge-hero-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
 .knowledge-entry{padding-block:36px}
