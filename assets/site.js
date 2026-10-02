@@ -11,10 +11,10 @@ const navGroups = [
     ["Suchprofil anlegen", "/suchprofil/", "Passende Angebote früher erhalten"]
   ]},
   { label: "Wissen & Netzwerk", href: "/faq/", kicker: "Orientierung", items: [
-    ["Immobilienwissen", "/faq/", "Fragen & Antworten rund um Immobilien"],
-    ["Ratgeber", "/downloads/", "Wissen für Ihre Verkaufsentscheidung"],
-    ["Magazin", "/blog/", "News & Immobilienwissen"],
-    ["Netzwerk", "/netzwerk/", "Fachbetriebe rund um Immobilien"]
+    ["Immobilienwissen", "/faq/", "Fragen und Antworten"],
+    ["Ratgeber", "/downloads/", "Orientierung für Ihre Entscheidung"],
+    ["Magazin", "/blog/", "Aktuelles, Einblicke und Trends"],
+    ["Netzwerk", "/netzwerk/", "Fachbetriebe und Experten"]
   ]},
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
     ["Unsere Marktgebiete", "/standorte/", "Ruhrgebiet & Rheinland"],
