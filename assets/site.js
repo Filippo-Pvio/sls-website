@@ -1,16 +1,20 @@
 const navGroups = [
+  { label: "Verkaufen", href: "/verkaufen/", kicker: "Für Eigentümer", items: [
+    ["Immobilie verkaufen", "/verkaufen/", "Unser Prozess von Bewertung bis Übergabe"],
+    ["Immobilienbewertung", "/immobilienbewertung/", "Kostenlos und unverbindlich starten"],
+    ["Referenzen", "/referenzen/", "Erfolgreich vermittelte Immobilien"]
+  ]},
   { label: "Immobilien", href: "/immobilien/", kicker: "Finden", items: [
     ["Aktuelle Immobilien", "/immobilien/", "Häuser, Wohnungen & besondere Objekte"],
     ["Immobilie kaufen", "/kaufen/", "Vom Suchprofil bis zum Notartermin"],
     ["Finanzierung", "/finanzierung/", "Budget frühzeitig realistisch einordnen"],
     ["Suchprofil anlegen", "/suchprofil/", "Passende Angebote früher erhalten"]
   ]},
-  { label: "Verkaufen", href: "/verkaufen/", kicker: "Für Eigentümer", items: [
-    ["Immobilie verkaufen", "/verkaufen/", "Unser Prozess von Bewertung bis Übergabe"],
-    ["Immobilienbewertung", "/immobilienbewertung/", "Kostenlos und unverbindlich starten"],
-    ["Referenzen", "/referenzen/", "Erfolgreich vermittelte Immobilien"],
-    ["Immobilienwissen", "/faq/", "Fragen, Antworten & Ratgeber"],
-    ["Ratgeber", "/downloads/", "Wissen für Ihre Verkaufsentscheidung"]
+  { label: "Wissen & Netzwerk", href: "/faq/", kicker: "Orientierung", items: [
+    ["Immobilienwissen", "/faq/", "Fragen & Antworten rund um Immobilien"],
+    ["Ratgeber", "/downloads/", "Wissen für Ihre Verkaufsentscheidung"],
+    ["Magazin", "/blog/", "News & Immobilienwissen"],
+    ["SLS Netzwerk", "/netzwerk/", "Fachbetriebe & Ansprechpartner rund um Immobilien"]
   ]},
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
     ["Unsere Marktgebiete", "/standorte/", "Ruhrgebiet & Rheinland"],
@@ -20,10 +24,8 @@ const navGroups = [
   { label: "Über SLS", href: "/ueber-uns/", kicker: "Unternehmen", items: [
     ["Über uns", "/ueber-uns/", "Wer wir sind und wie wir arbeiten"],
     ["Team", "/team/", "Ihre Ansprechpartner bei SLS"],
-    ["SLS Netzwerk", "/netzwerk/", "Fachbetriebe & Ansprechpartner rund um Immobilien"],
     ["Werte", "/werte/", "Wofür SLS steht"],
     ["Karriere", "/karriere/", "Gemeinsam Immobilien neu denken"],
-    ["Magazin", "/blog/", "News & Immobilienwissen"],
     ["Presse", "/presse/", "Medien & Ansprechpartner"],
     ["Kontakt", "/kontakt/", "Direkt mit uns sprechen"]
   ]}
@@ -55,28 +57,14 @@ const primaryLinks = navGroups.map((group, index) => {
 }).join("");
 
 const mobileNavGroups = [
+  { ...navGroups[0], mobileLabel: "Verkaufen" },
+  { ...navGroups[1], mobileLabel: "Immobilien finden" },
+  { ...navGroups[2], mobileLabel: "Wissen & Netzwerk" },
+  { ...navGroups[3], mobileLabel: "Standorte" },
   {
-    ...navGroups[1],
-    mobileLabel: "Verkaufen",
-    items: navGroups[1].items.filter(([label]) => !["Immobilienwissen", "Ratgeber"].includes(label))
-  },
-  { ...navGroups[0], mobileLabel: "Immobilien finden" },
-  {
-    label: "Wissen & Netzwerk",
-    href: "/faq/",
-    mobileLabel: "Wissen & Netzwerk",
-    items: [
-      ["Immobilienwissen", "/faq/"],
-      ["Ratgeber", "/downloads/"],
-      ["Magazin", "/blog/"],
-      ["SLS Netzwerk", "/netzwerk/"]
-    ]
-  },
-  { ...navGroups[2], mobileLabel: "Standorte" },
-  {
-    ...navGroups[3],
+    ...navGroups[4],
     mobileLabel: "Über SLS",
-    items: navGroups[3].items.filter(([label]) => ["Über uns", "Team", "Werte", "Karriere", "Presse"].includes(label))
+    items: navGroups[4].items.filter(([label]) => label !== "Kontakt")
   }
 ];
 
