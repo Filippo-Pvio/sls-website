@@ -58,7 +58,11 @@ const mobileNavGroups = [
   { ...navGroups[1], mobileLabel: "Verkaufen" },
   { ...navGroups[0], mobileLabel: "Immobilien finden" },
   { ...navGroups[2], mobileLabel: "Standorte" },
-  { ...navGroups[3], mobileLabel: "Über SLS" }
+  {
+    ...navGroups[3],
+    mobileLabel: "Über SLS",
+    items: navGroups[3].items.filter(([label]) => !["Magazin", "Presse", "Kontakt"].includes(label))
+  }
 ];
 
 const overlaySections = mobileNavGroups.map((group, index) => {
