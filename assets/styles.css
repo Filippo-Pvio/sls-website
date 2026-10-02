@@ -2932,7 +2932,7 @@ body.home-editorial > section.section.home-faq-section{
     padding:18px 22px 26px;
   }
   .offcanvas-intro{
-    margin:18px 0 20px;
+    margin:18px 0 32px;
     font-size:25px;
     line-height:1.15;
   }
@@ -3080,5 +3080,20 @@ body.home-editorial > section.section.home-faq-section{
 @media (max-width:980px){
   .fullscreen-nav-bottom + .offcanvas-valuation-cta{
     border-top:0;
+  }
+}
+
+
+@media (max-width:980px){
+  .fullscreen-nav-grid .overlay-nav-section:last-child{
+    border-bottom:0;
+  }
+  .fullscreen-nav-bottom{
+    justify-content:flex-end;
+    border-top:1px solid rgba(108,151,171,.32);
+  }
+  .fullscreen-nav-bottom a{
+    margin-left:auto;
+    text-align:right;
   }
 }
