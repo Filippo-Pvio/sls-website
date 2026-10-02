@@ -144,24 +144,38 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
   }
   let restoringBrowse=null,loadFrame=0;
   function placeSearchProfileCta(){
-    const cta=document.querySelector('.sls-search-profile-cta'),grid=$('#pp-results');
+    const cta=searchProfileCta,grid=$('#pp-results');
     if(!cta||!grid)return;
-    if(favoritesView||id||demo){cta.hidden=true;return}
-    cta.hidden=false;
-    const title=cta.querySelector('strong'),copy=cta.querySelector('p');
+    const repeats=[...grid.querySelectorAll('[data-search-profile-repeat]')];
+    if(favoritesView||id||demo){cta.hidden=true;repeats.forEach(node=>node.remove());return}
     const cards=[...grid.querySelectorAll('.pp-card-shell')];
-    const noResults=cards.length===0&&!loadingMore;
-    if(noResults){
-      if(title)title.textContent='Aktuell nichts Passendes gefunden?';
-      if(copy)copy.textContent='Speichern Sie Ihre Suche. Wir informieren Sie, sobald eine passende Immobilie verfügbar ist.';
-      grid.append(cta);
-      return;
-    }
-    if(title)title.textContent='Noch nicht das Richtige dabei?';
-    if(copy)copy.textContent='Speichern Sie Ihre Suche. Wir informieren Sie, sobald eine passende Immobilie verfügbar ist.';
-    const firstRound=viewMode==='map'?6:9;
-    const target=cards[Math.min(firstRound,cards.length)-1];
-    if(target)target.insertAdjacentElement('afterend',cta);
+    const positions=[];
+    for(let count=9;count<=cards.length;count+=9)positions.push(count);
+    const finished=!hasMore&&!loadingMore&&!catalogError&&cards.length===all.length;
+    if(finished&&cards.length&&cards.length%9)positions.push(cards.length);
+    const noResults=cards.length===0&&!loadingMore&&!catalogError;
+    cta.hidden=!positions.length&&!noResults;
+    cta.querySelector('strong').textContent=noResults?'Aktuell nichts Passendes gefunden?':'Noch nicht das Richtige dabei?';
+    cta.querySelector('p').textContent='Hinterlegen Sie Ihre Wünsche – wir informieren Sie über passende Immobilien.';
+    cta.querySelector('[data-search-profile-open]').textContent='Suchprofil anlegen';
+    if(noResults){grid.append(cta);repeats.forEach(node=>node.remove());return}
+    const retained=new Set();
+    positions.forEach((position,index)=>{
+      let notice=cta;
+      if(index){
+        notice=repeats.find(node=>node.dataset.searchProfileRepeat===String(position));
+        if(!notice){
+          notice=cta.cloneNode(true);
+          notice.dataset.searchProfileRepeat=String(position);
+          notice.classList.remove('is-saved');
+          notice.querySelector('[data-search-profile-note]').textContent='';
+        }
+        retained.add(notice);
+      }
+      notice.hidden=false;
+      cards[position-1].insertAdjacentElement('afterend',notice);
+    });
+    repeats.filter(node=>!retained.has(node)).forEach(node=>node.remove());
   }
 
   function renderList(updateMap=true){

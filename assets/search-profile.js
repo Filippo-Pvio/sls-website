@@ -14,10 +14,12 @@
     return parts.join(' · ');
   }
 
+  const mountedSources=new Set();
   function mount(root){
     const sourceId=root.dataset.searchProfileSource;
     const source=document.getElementById(sourceId);
-    if(!source)return;
+    if(!source||mountedSources.has(sourceId))return;
+    mountedSources.add(sourceId);
 
     const readCriteria=()=>{
       const form=new FormData(source);
@@ -48,21 +50,26 @@
     </form>`;
     document.body.append(dialog);
 
-    const open=root.querySelector('[data-search-profile-open]');
+    let activeRoot=root;
     const status=dialog.querySelector('.sls-search-profile-status');
     const form=dialog.querySelector('form');
     let criteria={};
 
     dialog.querySelector('[data-profile-close]').addEventListener('click',()=>dialog.close());
-    open.addEventListener('click',()=>{
+    // One dialog per search form also serves notices inserted during infinite scrolling.
+    document.addEventListener('click',event=>{
+      const open=event.target.closest('[data-search-profile-open]');
+      const triggerRoot=open?.closest('[data-search-profile-source]');
+      if(triggerRoot?.dataset.searchProfileSource!==sourceId)return;
+      activeRoot=triggerRoot;
       if(!source.reportValidity())return;
       criteria=readCriteria();
       if(!criteria.type&&!criteria.city&&!criteria.price&&!criteria.minArea&&!criteria.rooms){
         status.textContent='';
-        root.querySelector('[data-search-profile-note]').textContent='Bitte wählen Sie zuerst mindestens ein Suchkriterium aus.';
+        activeRoot.querySelector('[data-search-profile-note]').textContent='Bitte wählen Sie zuerst mindestens ein Suchkriterium aus.';
         return;
       }
-      root.querySelector('[data-search-profile-note]').textContent='';
+      activeRoot.querySelector('[data-search-profile-note]').textContent='';
       dialog.querySelector('[data-profile-criteria]').textContent=criteriaText(criteria);
       dialog.showModal();
     });
@@ -83,8 +90,8 @@
         const data=await response.json().catch(()=>({}));
         if(!response.ok)throw new Error(data.error||'Der Suchauftrag konnte nicht gespeichert werden.');
         status.textContent=data.duplicate?'Dieser Suchauftrag ist bereits für Sie gespeichert.':'Vielen Dank. Ihr Suchauftrag wurde in Propstack gespeichert.';
-        root.classList.add('is-saved');
-        root.querySelector('[data-search-profile-note]').textContent='Ihr Suchauftrag ist gespeichert. Wir melden uns bei passenden Immobilien.';
+        activeRoot.classList.add('is-saved');
+        activeRoot.querySelector('[data-search-profile-note]').textContent='Ihr Suchauftrag ist gespeichert. Wir melden uns bei passenden Immobilien.';
         setTimeout(()=>dialog.close(),1800);
       }catch(error){status.textContent=error.message}
       finally{submit.disabled=false}
