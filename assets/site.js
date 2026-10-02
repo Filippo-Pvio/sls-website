@@ -19,15 +19,15 @@ const navGroups = [
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
     ["Unsere Marktgebiete", "/standorte/", "Ruhrgebiet & Rheinland"],
     ["Büro Dorsten", "/immobilienmakler-dorsten/", "Unser Büro im Ruhrgebiet"],
-    ["Büro Düsseldorf", "/immobilienmakler-dusseldorf/", "Unser Büro im Rheinland"]
+    ["Büro Düsseldorf", "/immobilienmakler-dusseldorf/", "Unser Büro im Rheinland"],
+    ["Kontakt", "/kontakt/", "Direkt mit uns sprechen"]
   ]},
   { label: "Über uns", href: "/ueber-uns/", kicker: "Unternehmen", items: [
     ["Über uns", "/ueber-uns/", "Wer wir sind und wie wir arbeiten"],
     ["Team", "/team/", "Ihre Ansprechpartner bei SLS Immobilienpartner"],
     ["Werte", "/werte/", "Wofür SLS Immobilienpartner steht"],
     ["Karriere", "/karriere/", "Gemeinsam Immobilien neu denken"],
-    ["Presse", "/presse/", "Medien & Ansprechpartner"],
-    ["Kontakt", "/kontakt/", "Direkt mit uns sprechen"]
+    ["Presse", "/presse/", "Medien & Ansprechpartner"]
   ]}
 ];
 
