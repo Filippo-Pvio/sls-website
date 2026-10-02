@@ -55,13 +55,28 @@ const primaryLinks = navGroups.map((group, index) => {
 }).join("");
 
 const mobileNavGroups = [
-  { ...navGroups[1], mobileLabel: "Verkaufen" },
+  {
+    ...navGroups[1],
+    mobileLabel: "Verkaufen",
+    items: navGroups[1].items.filter(([label]) => !["Immobilienwissen", "Ratgeber"].includes(label))
+  },
   { ...navGroups[0], mobileLabel: "Immobilien finden" },
+  {
+    label: "Wissen & Netzwerk",
+    href: "/faq/",
+    mobileLabel: "Wissen & Netzwerk",
+    items: [
+      ["Immobilienwissen", "/faq/"],
+      ["Ratgeber", "/downloads/"],
+      ["Magazin", "/blog/"],
+      ["SLS Netzwerk", "/netzwerk/"]
+    ]
+  },
   { ...navGroups[2], mobileLabel: "Standorte" },
   {
     ...navGroups[3],
     mobileLabel: "Über SLS",
-    items: navGroups[3].items.filter(([label]) => !["Magazin", "Presse", "Kontakt"].includes(label))
+    items: navGroups[3].items.filter(([label]) => ["Über uns", "Team", "Werte", "Karriere", "Presse"].includes(label))
   }
 ];
 
@@ -107,7 +122,7 @@ document.querySelector("[data-site-header]").innerHTML = `
       <p class="offcanvas-intro">Womit können wir helfen?</p>
       <div class="fullscreen-nav-grid">${overlaySections}</div>
       <div class="fullscreen-nav-bottom">
-        <a href="/blog/">Magazin</a><a href="/presse/">Presse</a><a href="/kontakt/">Kontakt</a>
+        <a href="/kontakt/">Kontakt</a>
       </div>
       <a class="offcanvas-valuation-cta" href="/immobilienbewertung/">Immobilie kostenlos bewerten</a>
     </div>
