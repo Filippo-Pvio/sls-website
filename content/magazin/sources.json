@@ -1,0 +1,21 @@
+{
+  "boris": {"title":"BORIS-NRW: Amtliche Grundstücksmarktinformationen", "url":"https://www.boris.nrw.de/boris-nrw/"},
+  "destatispreise": {"title":"Statistisches Bundesamt: Bau- und Immobilienpreise", "url":"https://www.destatis.de/DE/Themen/Wirtschaft/Preise/Baupreise-Immobilienpreisindex/_inhalt.html"},
+  "baupreise": {"title":"Statistisches Bundesamt: Bau- und Immobilienpreise", "url":"https://www.destatis.de/DE/Themen/Wirtschaft/Preise/Baupreise-Immobilienpreisindex/_inhalt.html"},
+  "destatiswohnen": {"title":"Statistisches Bundesamt: Die Babyboomer", "url":"https://www.destatis.de/DE/Methoden/WISTA-Wirtschaft-und-Statistik/2024/01/die-babyboomer-012024.pdf?__blob=publicationFile"},
+  "bundesbank": {"title":"Deutsche Bundesbank: Indikatoren zum Wohnimmobilienmarkt", "url":"https://www.bundesbank.de/de/statistiken/indikatorensaetze/indikatorensystem-wohnimmobilienmarkt"},
+  "bundesbankzins": {"title":"Deutsche Bundesbank: Zinssätze für Wohnungsbaukredite", "url":"https://www.bundesbank.de/de/statistiken/indikatorensaetze/indikatorensystem-wohnimmobilienmarkt/zinssaetze-fuer-wohnungsbaukredite-an-private-haushalte-in-deutschland-615312"},
+  "bafin": {"title":"BaFin: Hintergrund zu Kapitalpuffern", "url":"https://bafin.de/SharedDocs/Veroeffentlichungen/DE/Meldung/2022/meldung_2022_01_31_Antizyklischer_Kapitalpuffer.html"},
+  "kfw308": {"title":"KfW: Jung kauft Alt – Produkt 308, aktuelle Voraussetzungen und Konditionen", "url":"https://www.kfw.de/inlandsfoerderung/Privatpersonen/Bestehende-Immobilie/Förderprodukte/Wohneigentum-für-Familien-Bestandserwerb-(308)/"},
+  "bgb489": {"title":"§ 489 BGB: Ordentliches Kündigungsrecht bei Darlehen", "url":"https://www.gesetze-im-internet.de/bgb/__489.html"},
+  "bgb490": {"title":"§ 490 BGB: Außerordentliches Kündigungsrecht", "url":"https://www.gesetze-im-internet.de/bgb/__490.html"},
+  "bgb573": {"title":"§ 573 BGB: Ordentliche Kündigung des Vermieters", "url":"https://www.gesetze-im-internet.de/bgb/__573.html"},
+  "bgb577a": {"title":"§ 577a BGB: Kündigungsbeschränkung bei Wohnungsumwandlung", "url":"https://www.gesetze-im-internet.de/bgb/__577a.html"},
+  "bgb311b": {"title":"§ 311b BGB: Notarielle Form bei Grundstücksverträgen", "url":"https://www.gesetze-im-internet.de/bgb/__311b.html"},
+  "bgb2038": {"title":"§ 2038 BGB: Gemeinschaftliche Verwaltung des Nachlasses", "url":"https://www.gesetze-im-internet.de/bgb/__2038.html"},
+  "gebaeude": {"title":"Gebäudeenergierecht: Amtliche Gesetzesfassung", "url":"https://www.gesetze-im-internet.de/geg/"},
+  "woflv": {"title":"Wohnflächenverordnung: Anwendungsbereich und Berechnungsregeln", "url":"https://www.gesetze-im-internet.de/woflv/"},
+  "erbbaurecht": {"title":"Erbbaurechtsgesetz: Amtliche Gesetzesfassung", "url":"https://www.gesetze-im-internet.de/erbbauv/"},
+  "uwg": {"title":"§ 5 UWG: Irreführende geschäftliche Handlungen", "url":"https://www.gesetze-im-internet.de/uwg_2004/__5.html"},
+  "gesetze": {"title":"Gesetze im Internet: Amtliche Bundesgesetze und Verordnungen", "url":"https://www.gesetze-im-internet.de/"}
+}

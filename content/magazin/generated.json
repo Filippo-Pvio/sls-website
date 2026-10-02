@@ -1,0 +1,334 @@
+[
+  {
+    "path": "blog/index.html",
+    "url": "/blog/"
+  },
+  {
+    "path": "blog/seite/2/index.html",
+    "url": "/blog/seite/2/"
+  },
+  {
+    "path": "blog/seite/3/index.html",
+    "url": "/blog/seite/3/"
+  },
+  {
+    "path": "blog/seite/4/index.html",
+    "url": "/blog/seite/4/"
+  },
+  {
+    "path": "blog/seite/5/index.html",
+    "url": "/blog/seite/5/"
+  },
+  {
+    "path": "blog/seite/6/index.html",
+    "url": "/blog/seite/6/"
+  },
+  {
+    "path": "blog/seite/7/index.html",
+    "url": "/blog/seite/7/"
+  },
+  {
+    "path": "blog/seite/8/index.html",
+    "url": "/blog/seite/8/"
+  },
+  {
+    "path": "blog/themen/verkaufen-bewerten/index.html",
+    "url": "/blog/themen/verkaufen-bewerten/"
+  },
+  {
+    "path": "blog/themen/verkaufen-bewerten/seite/2/index.html",
+    "url": "/blog/themen/verkaufen-bewerten/seite/2/"
+  },
+  {
+    "path": "blog/themen/kaufen-finanzieren/index.html",
+    "url": "/blog/themen/kaufen-finanzieren/"
+  },
+  {
+    "path": "blog/themen/kaufen-finanzieren/seite/2/index.html",
+    "url": "/blog/themen/kaufen-finanzieren/seite/2/"
+  },
+  {
+    "path": "blog/themen/erben-lebenssituationen/index.html",
+    "url": "/blog/themen/erben-lebenssituationen/"
+  },
+  {
+    "path": "blog/themen/modernisieren-energie/index.html",
+    "url": "/blog/themen/modernisieren-energie/"
+  },
+  {
+    "path": "blog/themen/markt-region/index.html",
+    "url": "/blog/themen/markt-region/"
+  },
+  {
+    "path": "blog/themen/markt-region/seite/2/index.html",
+    "url": "/blog/themen/markt-region/seite/2/"
+  },
+  {
+    "path": "blog/themen/markt-region/seite/3/index.html",
+    "url": "/blog/themen/markt-region/seite/3/"
+  },
+  {
+    "path": "wahlsieg-linke-berlin-immobilienmarkt-nrw/index.html",
+    "url": "/wahlsieg-linke-berlin-immobilienmarkt-nrw/"
+  },
+  {
+    "path": "immobilienverkauf-kaufangebote-vergleichen/index.html",
+    "url": "/immobilienverkauf-kaufangebote-vergleichen/"
+  },
+  {
+    "path": "ki-immobilienanzeigen-digitales-home-staging/index.html",
+    "url": "/ki-immobilienanzeigen-digitales-home-staging/"
+  },
+  {
+    "path": "jung-kauft-alt-2026-kfw-foerderung/index.html",
+    "url": "/jung-kauft-alt-2026-kfw-foerderung/"
+  },
+  {
+    "path": "immobilie-richtig-bewerten/index.html",
+    "url": "/immobilie-richtig-bewerten/"
+  },
+  {
+    "path": "babyboomer-immobilienmarkt-silver-tsunami-2026/index.html",
+    "url": "/babyboomer-immobilienmarkt-silver-tsunami-2026/"
+  },
+  {
+    "path": "strasse-von-hormus-bauzinsen-immobilienmarkt-2026/index.html",
+    "url": "/strasse-von-hormus-bauzinsen-immobilienmarkt-2026/"
+  },
+  {
+    "path": "haus-verkaufen-trotz-kredit-2026/index.html",
+    "url": "/haus-verkaufen-trotz-kredit-2026/"
+  },
+  {
+    "path": "baufinanzierung-2027-kapitalpuffer-immobilienpreise/index.html",
+    "url": "/baufinanzierung-2027-kapitalpuffer-immobilienpreise/"
+  },
+  {
+    "path": "hausuebernahme-ehepartner-auszahlen-scheidung/index.html",
+    "url": "/hausuebernahme-ehepartner-auszahlen-scheidung/"
+  },
+  {
+    "path": "baukosten-schock-sanierung-vor-immobilienverkauf-2026/index.html",
+    "url": "/baukosten-schock-sanierung-vor-immobilienverkauf-2026/"
+  },
+  {
+    "path": "immobilienverkauf-trotz-hoher-zinsen-2026/index.html",
+    "url": "/immobilienverkauf-trotz-hoher-zinsen-2026/"
+  },
+  {
+    "path": "erbimmobilie-verkaufen-2026/index.html",
+    "url": "/erbimmobilie-verkaufen-2026/"
+  },
+  {
+    "path": "kaeuferverhalten-immobilien-2026/index.html",
+    "url": "/kaeuferverhalten-immobilien-2026/"
+  },
+  {
+    "path": "immobilie-verkaufen-2026-finanzierbarkeit-preisfaktor/index.html",
+    "url": "/immobilie-verkaufen-2026-finanzierbarkeit-preisfaktor/"
+  },
+  {
+    "path": "kaeufermarkt-verkaeufermarkt-2026-immobilienmarkt/index.html",
+    "url": "/kaeufermarkt-verkaeufermarkt-2026-immobilienmarkt/"
+  },
+  {
+    "path": "bestandsimmobilie-verkaufen-2026/index.html",
+    "url": "/bestandsimmobilie-verkaufen-2026/"
+  },
+  {
+    "path": "immobilienverkauf-unterlagen-2026/index.html",
+    "url": "/immobilienverkauf-unterlagen-2026/"
+  },
+  {
+    "path": "luxusimmobilie-zu-teuer-vermarktungsdauer/index.html",
+    "url": "/luxusimmobilie-zu-teuer-vermarktungsdauer/"
+  },
+  {
+    "path": "immobilienverkauf-dauer-2026-zinsen/index.html",
+    "url": "/immobilienverkauf-dauer-2026-zinsen/"
+  },
+  {
+    "path": "immobilienpreise-2026-krieg-zinsen-inflation/index.html",
+    "url": "/immobilienpreise-2026-krieg-zinsen-inflation/"
+  },
+  {
+    "path": "bauzinsen-2026-auswirkungen-immobilienkaeufer/index.html",
+    "url": "/bauzinsen-2026-auswirkungen-immobilienkaeufer/"
+  },
+  {
+    "path": "5-tipps-immobilie-kaufen-chancen-verbessern/index.html",
+    "url": "/5-tipps-immobilie-kaufen-chancen-verbessern/"
+  },
+  {
+    "path": "reform-heizungsgesetz-2026-aenderungen-heizungstausch/index.html",
+    "url": "/reform-heizungsgesetz-2026-aenderungen-heizungstausch/"
+  },
+  {
+    "path": "immobilienverkauf-2026-5-groesste-irrtuemer/index.html",
+    "url": "/immobilienverkauf-2026-5-groesste-irrtuemer/"
+  },
+  {
+    "path": "immobilienmarkt-2026-preise-nachfrage-deutschland/index.html",
+    "url": "/immobilienmarkt-2026-preise-nachfrage-deutschland/"
+  },
+  {
+    "path": "bgh-eigenbedarf-urteil-chancen-investoren/index.html",
+    "url": "/bgh-eigenbedarf-urteil-chancen-investoren/"
+  },
+  {
+    "path": "scheidung-und-immobilie-was-eigentuemer-2026-wissen-muessen/index.html",
+    "url": "/scheidung-und-immobilie-was-eigentuemer-2026-wissen-muessen/"
+  },
+  {
+    "path": "wie-ki-den-immobilienverkauf-veraendert/index.html",
+    "url": "/wie-ki-den-immobilienverkauf-veraendert/"
+  },
+  {
+    "path": "5-fehler-bei-der-immobilienbewertung/index.html",
+    "url": "/5-fehler-bei-der-immobilienbewertung/"
+  },
+  {
+    "path": "immobilienmarkt-2025-prognose-chancen-risiken/index.html",
+    "url": "/immobilienmarkt-2025-prognose-chancen-risiken/"
+  },
+  {
+    "path": "immobilienverkauf-checkliste-fehler-vermeiden/index.html",
+    "url": "/immobilienverkauf-checkliste-fehler-vermeiden/"
+  },
+  {
+    "path": "digitale-immobiliensuche-2025-wie-kaeufer-wirklich-suchen/index.html",
+    "url": "/digitale-immobiliensuche-2025-wie-kaeufer-wirklich-suchen/"
+  },
+  {
+    "path": "ezb-belaesst-zinsen-unveraendert-was-bedeutet-das/index.html",
+    "url": "/ezb-belaesst-zinsen-unveraendert-was-bedeutet-das/"
+  },
+  {
+    "path": "investmentmarkt-2025-vielfalt-statt-einheitlichkeit/index.html",
+    "url": "/investmentmarkt-2025-vielfalt-statt-einheitlichkeit/"
+  },
+  {
+    "path": "wohnflaeche-warum-quadratmeter-nicht-quadratmeter-ist/index.html",
+    "url": "/wohnflaeche-warum-quadratmeter-nicht-quadratmeter-ist/"
+  },
+  {
+    "path": "waermewende-2025-was-eigentuemer-und-investoren-jetzt-wissen-sollten/index.html",
+    "url": "/waermewende-2025-was-eigentuemer-und-investoren-jetzt-wissen-sollten/"
+  },
+  {
+    "path": "der-richtige-zeitpunkt-fuer-den-immobilienverkauf-marktanalyse-und-tipps/index.html",
+    "url": "/der-richtige-zeitpunkt-fuer-den-immobilienverkauf-marktanalyse-und-tipps/"
+  },
+  {
+    "path": "donald-trumps-neue-zollpolitik-was-sie-fuer-deutschland-und-die-bauzinsen-bedeutet/index.html",
+    "url": "/donald-trumps-neue-zollpolitik-was-sie-fuer-deutschland-und-die-bauzinsen-bedeutet/"
+  },
+  {
+    "path": "schuldenbremse-was-bedeutet-das-fuer-die-immobilienbranche/index.html",
+    "url": "/schuldenbremse-was-bedeutet-das-fuer-die-immobilienbranche/"
+  },
+  {
+    "path": "ezb-senkt-leitzins-was-bedeutet-das-fuer-immobilienbesitzer/index.html",
+    "url": "/ezb-senkt-leitzins-was-bedeutet-das-fuer-immobilienbesitzer/"
+  },
+  {
+    "path": "bundestagswahl-2025-auswirkungen-auf-die-immobilienbranche-und-die-positionen-der-parteien/index.html",
+    "url": "/bundestagswahl-2025-auswirkungen-auf-die-immobilienbranche-und-die-positionen-der-parteien/"
+  },
+  {
+    "path": "gesetzesaenderungen-2025-was-immobilienbesitzer-und-kaeufer-jetzt-wissen-muessen/index.html",
+    "url": "/gesetzesaenderungen-2025-was-immobilienbesitzer-und-kaeufer-jetzt-wissen-muessen/"
+  },
+  {
+    "path": "erbbaurecht-eine-moderne-loesung-mit-tradition-und-neuer-relevanz/index.html",
+    "url": "/erbbaurecht-eine-moderne-loesung-mit-tradition-und-neuer-relevanz/"
+  },
+  {
+    "path": "https-sls-de-jahreswechsel-2025-ein-wendepunkt-fuer-den-immobilienmarkt/index.html",
+    "url": "/https-sls-de-jahreswechsel-2025-ein-wendepunkt-fuer-den-immobilienmarkt/"
+  },
+  {
+    "path": "wohneigentum-im-ruhrgebiet-warum-die-region-so-attraktiv-ist/index.html",
+    "url": "/wohneigentum-im-ruhrgebiet-warum-die-region-so-attraktiv-ist/"
+  },
+  {
+    "path": "die-renaissance-der-bestandsimmobilie-warum-der-altbau-wieder-gefragt-ist/index.html",
+    "url": "/die-renaissance-der-bestandsimmobilie-warum-der-altbau-wieder-gefragt-ist/"
+  },
+  {
+    "path": "entwicklungen-auf-dem-deutschen-immobilienmarkt/index.html",
+    "url": "/entwicklungen-auf-dem-deutschen-immobilienmarkt/"
+  },
+  {
+    "path": "wiederwahl-trump-auswirkungen-deutschen-immobilienmarkt/index.html",
+    "url": "/wiederwahl-trump-auswirkungen-deutschen-immobilienmarkt/"
+  },
+  {
+    "path": "immobilien-trends-2024-die-meistverkauften-objekte-auf-dem-markt/index.html",
+    "url": "/immobilien-trends-2024-die-meistverkauften-objekte-auf-dem-markt/"
+  },
+  {
+    "path": "waermepumpen-im-spannungsfeld-diskussionen-um-nachhaltigkeit-und-effizienz/index.html",
+    "url": "/waermepumpen-im-spannungsfeld-diskussionen-um-nachhaltigkeit-und-effizienz/"
+  },
+  {
+    "path": "immobilienmarkt-aktuell-zeichen-der-stabilisierung-und-die-folgen-fuer-eigentuemer-und-kaeufer/index.html",
+    "url": "/immobilienmarkt-aktuell-zeichen-der-stabilisierung-und-die-folgen-fuer-eigentuemer-und-kaeufer/"
+  },
+  {
+    "path": "immobilien-mit-schlechter-energiebilanz-was-eigentuemer-und-kaeufer-jetzt-beachten-sollten/index.html",
+    "url": "/immobilien-mit-schlechter-energiebilanz-was-eigentuemer-und-kaeufer-jetzt-beachten-sollten/"
+  },
+  {
+    "path": "investoren-kehren-auf-den-deutschen-immobilienmarkt-zurueck-neue-chancen-und-risiken/index.html",
+    "url": "/investoren-kehren-auf-den-deutschen-immobilienmarkt-zurueck-neue-chancen-und-risiken/"
+  },
+  {
+    "path": "zinswende-und-was-sie-fuer-eigentuemer-bedeutet/index.html",
+    "url": "/zinswende-und-was-sie-fuer-eigentuemer-bedeutet/"
+  },
+  {
+    "path": "der-richtige-zeitpunkt-fuer-den-verkauf-einer-immobilie/index.html",
+    "url": "/der-richtige-zeitpunkt-fuer-den-verkauf-einer-immobilie/"
+  },
+  {
+    "path": "der-dorstener-immobilienmarkt-entwicklung-prognosen-und-ausblick/index.html",
+    "url": "/der-dorstener-immobilienmarkt-entwicklung-prognosen-und-ausblick/"
+  },
+  {
+    "path": "immobilien-als-altersvorsorge-sichere-anlage-fuer-ihre-zukunft/index.html",
+    "url": "/immobilien-als-altersvorsorge-sichere-anlage-fuer-ihre-zukunft/"
+  },
+  {
+    "path": "immobilienfinanzierung-fuer-selbststaendige-wie-sie-erfolgreich-finanzieren/index.html",
+    "url": "/immobilienfinanzierung-fuer-selbststaendige-wie-sie-erfolgreich-finanzieren/"
+  },
+  {
+    "path": "fortgeschrittene-strategien-zur-optimierung-ihres-immobilien-investmentportfolios/index.html",
+    "url": "/fortgeschrittene-strategien-zur-optimierung-ihres-immobilien-investmentportfolios/"
+  },
+  {
+    "path": "immobilien-als-kapitalanlage-ein-leitfaden-fuer-einsteiger/index.html",
+    "url": "/immobilien-als-kapitalanlage-ein-leitfaden-fuer-einsteiger/"
+  },
+  {
+    "path": "der-ultimative-leitfaden-zum-immobilienkauf-fuer-erstkaeufer/index.html",
+    "url": "/der-ultimative-leitfaden-zum-immobilienkauf-fuer-erstkaeufer/"
+  },
+  {
+    "path": "renovierung-und-modernisierung-so-steigern-sie-den-wert-ihrer-immobilie/index.html",
+    "url": "/renovierung-und-modernisierung-so-steigern-sie-den-wert-ihrer-immobilie/"
+  },
+  {
+    "path": "sinkende-tilgungssaetze-bei-baufinanzierungen-worauf-immobilienkaeufer-jetzt-achten-sollten/index.html",
+    "url": "/sinkende-tilgungssaetze-bei-baufinanzierungen-worauf-immobilienkaeufer-jetzt-achten-sollten/"
+  },
+  {
+    "path": "willkommen/index.html",
+    "url": "/willkommen/"
+  },
+  {
+    "path": "blog/redaktion/index.html",
+    "url": "/blog/redaktion/"
+  }
+]

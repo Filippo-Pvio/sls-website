@@ -7,7 +7,9 @@
     "preview": "node qa/server.mjs",
     "qa": "QA_INCLUDE_TABLET=true playwright test",
     "qa:static": "node qa/static-check.mjs",
-    "qa:search": "node qa/search-map-check.mjs"
+    "qa:search": "node qa/search-map-check.mjs",
+    "build:magazine": "node scripts/build-magazine.mjs",
+    "qa:magazine": "python3 scripts/check-magazine.py"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0"
