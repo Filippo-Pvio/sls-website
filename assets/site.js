@@ -97,14 +97,9 @@ document.querySelector("[data-site-header]").innerHTML = `
         <button class="offcanvas-close" type="button" data-nav-close aria-label="Menü schließen">${icon("close")}</button>
       </div>
       <p class="offcanvas-intro">Womit können wir helfen?</p>
-      <button class="offcanvas-sia" type="button" data-sia-open>
-        <span class="offcanvas-sia-mark" aria-hidden="true">SIA</span>
-        <span><strong>SIA fragen</strong><small>KI-Assistenz von SLS Immobilienpartner</small></span>
-        <span class="offcanvas-sia-arrow" aria-hidden="true">↗</span>
-      </button>
       <div class="fullscreen-nav-grid">${overlaySections}</div>
       <div class="fullscreen-nav-bottom">
-        <a href="/blog/">Magazin</a><a href="/netzwerk/">SLS Netzwerk</a><a href="/kontakt/">Kontakt</a>
+        <a href="/blog/">Magazin</a><a href="/presse/">Presse</a><a href="/kontakt/">Kontakt</a>
       </div>
     </div>
   </nav>`;
@@ -201,11 +196,6 @@ const setMenu = (open, returnFocus = false) => {
 
 toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
 
-document.querySelector("[data-sia-open]")?.addEventListener("click", () => {
-  setMenu(false);
-  window.__slsSiaOpenRequested = true;
-  window.dispatchEvent(new CustomEvent("sls:sia-open"));
-});
 
 nav.addEventListener("click", (event) => {
   if (event.target.closest("a")) setMenu(false);
