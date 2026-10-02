@@ -2217,7 +2217,7 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
 /* One-tap call option after the mobile homepage hero. */
 .mobile-call-cta { display:none; }
 @media(max-width:760px) {
-  .home-editorial .mobile-call-cta:not([hidden]) {
+  .mobile-call-cta:not([hidden]) {
     position:fixed;
     left:16px;
     bottom:calc(20px + env(safe-area-inset-bottom, 0px));
@@ -2238,14 +2238,14 @@ body.home-editorial > main > section.section.review-platforms-section.section-wh
     white-space:nowrap;
     animation:mobile-call-enter .24s ease-out both;
   }
-  .home-editorial .mobile-call-cta svg { width:22px; height:22px; flex:none; }
-  .home-editorial .mobile-call-cta span { display:none; }
-  .home-editorial .mobile-call-cta:focus-visible { outline:3px solid var(--coral); outline-offset:3px; }
+  .mobile-call-cta svg { width:22px; height:22px; flex:none; }
+  .mobile-call-cta span { display:none; }
+  .mobile-call-cta:focus-visible { outline:3px solid var(--coral); outline-offset:3px; }
   body.menu-open .mobile-call-cta { display:none!important; }
 }
 .mobile-call-cta[hidden] { display:none!important; }
 @keyframes mobile-call-enter { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-@media(prefers-reduced-motion:reduce) { .home-editorial .mobile-call-cta { animation:none!important; } }
+@media(prefers-reduced-motion:reduce) { .mobile-call-cta { animation:none!important; } }
 
 /* Desktop: direct category navigation, accessible submenus and right-hand valuation CTA. */
 @media (min-width:981px) {
