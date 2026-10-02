@@ -24,3 +24,10 @@ body.network-page #main>.network-hero{background:#345b6e!important;min-height:54
 .network-page .network-search button{border-radius:24px;font-size:14px;padding:12px 19px}
 .network-page .network-search button[data-network-reset]{color:#274958}
 @media(max-width:600px){.network-page .network-search>div{flex-wrap:nowrap}.network-page .network-search input{flex-basis:auto;padding:12px 8px;width:100%}.network-page .network-search button{padding:12px;font-size:13px}.network-page .network-search button[data-network-reset]{font-size:0;padding:12px}.network-page .network-search button[data-network-reset]:after{font-size:20px;line-height:14px}}
+
+/* Match the magazine's warm section, white search field and left label. */
+body.network-page #main>.network-directory{background:#fff9f3!important;color:#345b6e}
+.network-page .network-search{color:#345b6e}
+.network-page .network-search label{color:#345b6e;text-align:start}
+.network-page .network-search>div{background:#fff}
+.network-page .network-search input{color:#0b1112}
