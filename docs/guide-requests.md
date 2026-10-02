@@ -53,41 +53,30 @@ Prüfnotizen werden separat von Versandnotizen dedupliziert. Gleichzeitige Anfra
 
 **Propstack-Prozess einrichten:** Nur die Kategorie 741093 / SLS_RATGEBER_VERKAUF_ANGEFORDERT als Versand-Auslöser verwenden, niemals jede neue Notiz. Prüfnotizen bleiben ausgeschlossen. Nach persönlicher Klärung Bestandsdaten und neuere Anforderungen prüfen, eventuell Namen manuell berichtigen und einmalig die Versandnotiz anlegen, sofern noch keine korrigierte Anforderung diese erzeugt hat. Prüfnotiz anschließend als geklärt kennzeichnen. Die Website löst keine früheren Prüfnotizen automatisch auf und stoppt keine bereits laufenden Versandprozesse.
 
-## Freiwillige Newsletter-Anmeldung (Double-Opt-in)
+## Freiwillige Newsletter-Anmeldung über Propstack-Automatisierung
 
-Stand 02.10.2026: Website-Code und Tests vorbereitet. Noch kein Bestätigungs-Textbaustein in Propstack vorhanden (Nutzerangabe). Die Marketing-Checkbox bleibt bis zur geprüften Konfiguration deaktiviert; Ratgeberanforderungen funktionieren unabhängig davon.
+Stand 02.10.2026: Der Nutzer hat die Notiz und die Versandautomatisierung in Propstack eingerichtet. Die Website verwendet nun die **Notizkategorie** `SLS_NEWSLETTER_DOI_ANGEFORDERT` als Trigger. Der Name wird vollständig und eindeutig unter den Aktivitätstypen `note`/`for_notes` aufgelöst. Fehlt die Kategorie, ist sie mehrdeutig oder nicht lesbar, bleibt die Newsletter-Checkbox gesperrt; die Ratgeberanforderung bleibt verfügbar.
 
 Die Checkbox ist freiwillig, nicht vorangekreuzt und nicht erforderlich. Serverseitig werden ausschließlich echte Booleans und bei Zustimmung die aktuelle Textversion akzeptiert. Der genaue Wortlaut steht in lib/guide-consent.mjs und wird durch einen Test mit dem HTML abgeglichen. Ohne Zustimmung bleiben bestehende Einstellungen unverändert. Namensabweichungen blockieren auch die Newsletter-Anmeldung.
 
-Nach Freischaltung wird bei passender Kontaktzuordnung eine **unkategorisierte** Nachweisnotiz SLS_NEWSLETTER_DOI_ANGEFORDERT mit Name, Adresse, Zeitpunkt, Quelle und genauem Einwilligungstext angelegt. Sie ist keine bestätigte Einwilligung und darf keinen Marketingprozess auslösen. Danach sendet POST /messages den konfigurierten, werbefreien Bestätigungstext über das ausgewählte Propstack-Konto. SLS_NEWSLETTER_DOI_VERSAND_BESTAETIGT dokumentiert nur die API-Versandannahme, keine Zustellung und keine Zustimmung. Unklarer Versand wird nicht blind wiederholt; der Ratgeber-Erfolg bleibt davon getrennt.
+Bei Zustimmung und passender Kontaktzuordnung erstellt die Website eine kategorisierte Notiz mit Name, E-Mail, Zeitpunkt, Quelle, genauem Einwilligungstext samt Version und Anforderungskennung. Die Propstack-Automatisierung soll daraufhin ausschließlich Textbaustein **1115618** über **service@sls.de** senden. Die Website sendet keine Nachricht über /messages und erstellt keinen vermeintlichen Versandbeleg. `confirmation_requested` bestätigt nur die gespeicherte Triggernotiz, weder Zustellung noch Double-Opt-in.
 
-Die Website setzt **weder newsletter noch accept_contact** beim Absenden. Diese beiden Felder dürfen erst durch die tatsächliche Bestätigung in Propstack gesetzt werden. Der normale Ratgeberprozess darf sie ebenfalls nicht setzen. Bestehende Newsletter-Abmeldungen werden durch einen Ratgeberdownload nicht aufgehoben. Eine neue aktive Anmeldung erfordert wieder eine Bestätigung.
+Die Website setzt **weder newsletter noch accept_contact** beim Absenden. Diese Felder dürfen erst durch die tatsächliche Bestätigung in Propstack gesetzt werden. Auch der Ratgeberprozess darf sie nicht setzen. Immobilienmailings werden nicht durch die Website aktiviert. Bestehende Einstellungen werden nicht zurückgesetzt. Eine neue Anmeldung nach Abmeldung benötigt erneut eine Bestätigung.
 
-### Noch erforderliche Einrichtung in Propstack
+Wiederholungen derselben Anforderung sowie gleichartige Anforderungen innerhalb von zehn Minuten werden anhand gespeicherter Notizen unterdrückt. Frühere unkategorisierte DOI-Absichten lösen keinen automatischen Neuversand aus; sie werden als klärungsbedürftig behandelt. Bei ungewisser Notizanlage verhindert zusätzlich eine instanzlokale Sperre blinde Wiederholung für dieselbe Anforderungskennung. Die bereits beschriebenen Grenzen über mehrere Instanzen gelten weiterhin.
 
-1. Textbaustein „SLS – Newsletter-Anmeldung bestätigen“ erstellen. Entwurf: docs/newsletter-bestaetigung.txt. Der Entwurf nutzt {{ kontakt_profil_button }} für das Bestätigungsformular. Absenderkonto ausdrücklich auswählen; nicht automatisch einen beliebigen Betreuer verwenden.
-2. Das Bestätigungsformular auf die konkrete Einwilligung aus lib/guide-consent.mjs abstimmen: ausschließlich E-Mail-Tipps und Angebote zu Immobilienverkauf, Immobilienbewertung und entsprechenden SLS-Dienstleistungen. Newsletter-Zustimmung separat erfassen. Keine zusätzliche Telefonwerbung und keine automatische Aktivierung von Immobilienmailings/Suchprofilen.
-3. Achtung: Der dokumentierte Standardlink {{ kontakt_link }} aktiviert laut Propstack zusätzlich „Immobilienmailings gewünscht“. Diesen Link nicht ungeprüft einsetzen. Falls das Profilformular die beiden gewünschten Felder nicht getrennt von Immobilienmailings setzen kann, ist vor Freischaltung eine passende Konfiguration mit Propstack zu klären.
-4. Marketingserie ausschließlich für bestätigte Newsletter-Anmeldungen mit newsletter=true UND accept_contact=true starten. Die Formularklick-Notiz und der Ratgeberdownload sind keine Freigabe. Abmeldung muss weitere Marketingmails stoppen; Abmeldelink in jeder Marketingmail. Umfang der gespeicherten E-Mail-Einwilligung bleibt maßgeblich, auch wenn „Kontakterlaubnis“ im CRM allgemeiner heißt.
-5. Aktuelle Datenschutzerklärung um den tatsächlichen Ratgeber-/Newsletterablauf, Propstack-Verarbeitung, Rechtsgrundlagen, Nachweisführung, Speicherfristen und Widerruf ergänzen. Die produktive Seite sls.de/datenschutz wurde in dieser Änderung nicht bearbeitet.
-6. Mit der freigegebenen Testadresse vor und nach Bestätigung prüfen: vorher unveränderte Felder; danach newsletter=true und accept_contact=true, Immobilienmailings unverändert. Bestätigungsnachweis und Abmeldung testen. Erst nach diesem Test die Vorschau-Konfiguration freigeben.
+### Einrichtung und Abschlussprüfung in Propstack
 
-### Vorschau-Konfiguration
+- Auslöser: ausschließlich Kategorie `SLS_NEWSLETTER_DOI_ANGEFORDERT`. Folgeaktivität: Bestätigungsmail aus Textbaustein 1115618, Absender service@sls.de. Keine Werbeserie und keine Kontaktfreigabe allein durch die Notizanlage oder den Mailversand.
+- Der dokumentierte Standardlink `{{ kontakt_link }}` aktiviert auch Immobilienmailings. Das tatsächliche Bestätigungsformular muss auf die ausgewählte Einwilligung abgestimmt sein; Vorlage docs/newsletter-bestaetigung.txt nutzt `{{ kontakt_profil_button }}`. Der Nutzer hat die Einrichtung bestätigt, die konkrete Linkwirkung wurde von uns noch nicht geprüft.
+- Marketing nur bei passender bestätigter Einwilligung, newsletter=true, accept_contact=true und ohne wirksame Abmeldung. Bestätigungsnachweis speichern und Abmeldung berücksichtigen.
+- Abschlussprüfung mit der freigegebenen Adresse service@sls.de: Ratgeber plus Bestätigungsmail, vor Bestätigung unveränderte Felder, danach die vereinbarten Einstellungen und unveränderte Immobilienmailings. Auch Abmeldung prüfen. Die Website kann weder Posteingang noch eine durch den Empfänger bestätigte Einwilligung simulieren.
+- Produktive Datenschutzerklärung um den tatsächlichen Ratgeber-/Newsletterablauf ergänzen. Die produktive Seite sls.de/datenschutz wurde hier nicht bearbeitet.
 
-- PROPSTACK_GUIDES_DOI_BROKER_ID: ID des ausdrücklich gewählten Absenderkontos.
-- PROPSTACK_GUIDES_DOI_SNIPPET_ID: ID des geprüften Bestätigungs-Textbausteins.
-- PROPSTACK_GUIDES_DOI_VERIFIED=true: erst nach Prüfung des tatsächlichen Bestätigungsformulars, Feldänderungen und Widerrufs. Ohne diese Freigabe und beide gültigen IDs wird die Checkbox nicht aktiviert und die API nimmt keine Newsletter-Anmeldung an.
+Die vorherigen Website-Konfigurationen PROPSTACK_GUIDES_DOI_BROKER_ID, PROPSTACK_GUIDES_DOI_SNIPPET_ID und PROPSTACK_GUIDES_DOI_VERIFIED werden nicht mehr ausgewertet: Versand und Bestätigung liegen jetzt im vom Nutzer eingerichteten Propstack-Prozess. Die gesamte Website-Integration bleibt auf Vorschau/localhost beschränkt.
 
-Das allgemeine Kontakt-API-Recht allein beweist keine Versandberechtigung. Der verwendete API-Schlüssel braucht zusätzlich Nachrichtenversand über das gewählte Konto. Es wurden keine neuen Umgebungsvariablen gesetzt und kein Newsletterversand live ausgeführt.
+### Vorheriger direkter Versandversuch
 
-Referenzen: https://docs.propstack.de/webseite/newsletter-anmeldung und https://support.propstack.de/hc/de/articles/18364147809565-Kontakterlaubnis-DSGVO-Speicherberechtigung-einholen
+service@sls.de wurde als Propstack-Nutzer 228065 aufgelöst. Vor dem damaligen Test: newsletter=null, accept_contact=true, newsletter_unsubscribed=false. POST /messages wurde mit HTTP 401 abgelehnt; es gab keinen bestätigten Versand. Die technische Notiz SLS-DOI-TEST-1115618-20261002 ist keine Einwilligung. Der vorübergehende Testzugang wurde entfernt. Die Umstellung auf Notizautomatisierung ersetzt diesen direkten API-Mailversand.
 
-## Textbaustein und Absender hinterlegt
-
-Nutzerangabe: Textbaustein 1115618, Absender service@sls.de. Als serverseitige Konfiguration hinterlegt; der Absender wird über /brokers eindeutig anhand dieser E-Mail aufgelöst. Der Bestätigungsablauf ist damit noch nicht automatisch verifiziert. PROPSTACK_GUIDES_DOI_VERIFIED bleibt erforderlich.
-
-Live-Prüfung 02.10.2026: service@sls.de wurde eindeutig als Propstack-Nutzer 228065 aufgelöst. Textbaustein 1115618 ist konfiguriert. Der feste Testempfänger war service@sls.de. Vor dem Test: newsletter=null (Keine Angabe), accept_contact=true, newsletter_unsubscribed=false. Bestehende Kontakterlaubnis wurde nicht zurückgesetzt.
-
-Der Testversand über POST /messages wurde mit HTTP 401 abgelehnt. Deshalb kein bestätigter Versand, kein Test des Bestätigungslinks und keine Freischaltung. Der verwendete Website-API-Zugang konnte Nutzer/Kontakte lesen und eine Testnotiz anlegen, ist für diesen Versand aber nicht autorisiert. Die Versandberechtigung des verwendeten API-Schlüssels/Absenderkontos muss in Propstack geklärt werden. Die technische Testnotiz SLS-DOI-TEST-1115618-20261002 ist ausdrücklich keine Website-Einwilligung. Es wurde keine Kontaktzustimmung geändert.
-
-Der vorübergehende token-geschützte Testzugang wurde nach dem fehlgeschlagenen Versand wieder aus dem aktuellen Stand entfernt. Die alte Vorschau-Version sperrt ihn zusätzlich automatisch nach zwei Stunden. Bei einem erneuten Versandtest nach Korrektur der Berechtigung vorher in Propstack prüfen, dass keine Bestätigungsmail zu diesem Versuch angelegt wurde.
+Referenzen: https://docs.propstack.de/webseite/newsletter-anmeldung und https://support.propstack.de/hc/de/articles/18311864009885-Aufgaben-Termine-Notizen-E-Mails-automatisieren

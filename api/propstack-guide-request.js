@@ -182,7 +182,8 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       await noteType(key);
-      return res.status(200).json({availableGuides:[GUIDE], token:issueToken(key), deliveryReady:true, marketingAvailable:Boolean(newsletterConfig()), consentVersion:GUIDE_MARKETING_CONSENT_VERSION});
+      const marketingConfig = await newsletterConfig(key, propstack).catch(() => null);
+      return res.status(200).json({availableGuides:[GUIDE], token:issueToken(key), deliveryReady:true, marketingAvailable:Boolean(marketingConfig), consentVersion:GUIDE_MARKETING_CONSENT_VERSION});
     } catch (error) {
       console.error('Guide request readiness check failed:', error.message);
       return res.status(503).json({error:'Die Ratgeberanforderung wird noch eingerichtet. Bitte versuchen Sie es später erneut.'});
@@ -198,8 +199,6 @@ export default async function handler(req, res) {
   if (typeof marketingConsent !== 'boolean' || (marketingConsent && consentVersion !== GUIDE_MARKETING_CONSENT_VERSION)) {
     return res.status(400).json({error:'Bitte laden Sie das Formular erneut, um Ihre Newsletter-Auswahl zu bestätigen.'});
   }
-  const marketingConfig = newsletterConfig();
-  if (marketingConsent && !marketingConfig) return res.status(503).json({error:'Die Newsletter-Anmeldung ist noch nicht verfügbar. Sie können den Ratgeber ohne Newsletter-Anmeldung anfordern.'});
   const firstName = typeof rawFirstName === 'string' ? rawFirstName.trim() : '';
   const lastName = typeof rawLastName === 'string' ? rawLastName.trim() : '';
   if (!firstName || !lastName || firstName.length > 100 || lastName.length > 100 || /[\x00-\x1f\x7f]/.test(firstName + lastName)) {
@@ -214,6 +213,8 @@ export default async function handler(req, res) {
     res.setHeader('Retry-After', '900');
     return res.status(429).json({error:'Bitte warten Sie einige Minuten, bevor Sie erneut anfragen.'});
   }
+  const marketingConfig = marketingConsent ? await newsletterConfig(key, propstack).catch(() => null) : null;
+  if (marketingConsent && !marketingConfig) return res.status(503).json({error:'Die Newsletter-Anmeldung ist noch nicht verfügbar. Sie können den Ratgeber ohne Newsletter-Anmeldung anfordern.'});
   const lock = sign(`${email}:${GUIDE}`, key);
   // Serialize all requests for an address, but do not reuse the result for different names.
   const previous = pending.get(lock);

@@ -11,8 +11,7 @@ async function fixture(run,options={}) {
  let now=oldNow();
  Object.assign(process.env,{VERCEL_ENV:'preview',NODE_ENV:'production',PROPSTACK_API_KEY:'fixture-only'});
  delete process.env.PROPSTACK_INQUIRY_API_KEY;delete process.env.PROPSTACK_GUIDES_API_KEY;
- if(options.marketing) Object.assign(process.env,{PROPSTACK_GUIDES_DOI_BROKER_ID:'11',PROPSTACK_GUIDES_DOI_SNIPPET_ID:'22',PROPSTACK_GUIDES_DOI_VERIFIED:'true'});
- else for(const name of names.slice(5)) delete process.env[name];
+ for(const name of names.slice(5)) delete process.env[name];
  Date.now=()=>now;
  const email=`${randomUUID()}@example.org`,writes=[],activities=[],contacts=options.newContact?[]:[{id:12,email,first_name:options.firstName ?? 'Anna',last_name:options.lastName ?? 'Muster'}];
  const calls=[];
@@ -21,7 +20,7 @@ async function fixture(run,options={}) {
   assert.equal(parsed.origin,'https://api.propstack.de');
   if(options.failPath===path) return {ok:false,status:503,text:async()=>'Service unavailable'};
   let data;
-  if(path==='activity_types')data={data:options.missingType?[]:[{id:741093,name:NOTE,category:options.wrongType?'reminder':'for_notes'}]};
+  if(path==='activity_types')data={data:options.missingType?[]:[{id:741093,name:NOTE,category:options.wrongType?'reminder':'for_notes'},...(options.marketing?[{id:123,name:'SLS_NEWSLETTER_DOI_ANGEFORDERT',category:'for_notes'}]:[])]};
   else if(path==='contacts'&&init.method==='GET')data={data:options.conflict?[{id:12,email:'different@example.org'}]:contacts};
   else if(path==='contacts'&&init.method==='POST'){
    const payload=JSON.parse(init.body);writes.push({path,payload});contacts.push({id:12,...payload.client});data={id:12};
@@ -38,7 +37,7 @@ async function fixture(run,options={}) {
   }
   else if(path==='tasks'){
    const payload=JSON.parse(init.body);writes.push({path,payload});
-   if(options.timeout){throw new Error('timeout after possible write');}
+   if(options.timeout || (options.newsletterTimeout && payload.task.note_type_id===123)){throw new Error('timeout after possible write');}
    if(!options.missingConfirmation)activities.push({category_id:payload.task.note_type_id ?? null,created_at:new Date(now).toISOString(),activatable:payload.task});
    data=options.missingConfirmation?{}:{id:42,activity_id:43};
   }
@@ -159,7 +158,7 @@ test('submitted review names are HTML escaped',()=>fixture(async({request,payloa
 }));
 
 const optIn=payload=>({...payload,marketingConsent:true,consentVersion:'2026-10-02'});
-test('newsletter stays unavailable until sender, template and verified flow are configured',()=>fixture(async({request,ready,payload,writes})=>{
+test('missing newsletter category keeps only newsletter unavailable',()=>fixture(async({request,ready,payload,writes})=>{
  assert.equal(ready.body.marketingAvailable,false);
  assert.equal((await request('POST',optIn(payload))).code,503);assert.equal(writes.length,0);
  assert.equal((await request('POST',payload)).code,200);
@@ -168,20 +167,20 @@ for(const update of [{marketingConsent:'true'},{marketingConsent:1},{marketingCo
  test(`rejects ambiguous or stale consent ${JSON.stringify(update)}`,()=>fixture(async({request,payload,writes})=>{
   assert.equal((await request('POST',{...payload,...update})).code,400);assert.equal(writes.length,0);
  },{marketing:true}));
-test('selected consent records evidence and sends only configured DOI email; never activates contact fields',()=>fixture(async({request,ready,payload,writes,contacts})=>{
+test('selected consent creates the categorized automation trigger; never sends directly or activates contact fields',()=>fixture(async({request,ready,payload,writes,contacts})=>{
  assert.equal(ready.body.marketingAvailable,true);
  contacts[0].newsletter=false;contacts[0].accept_contact=false;const before=structuredClone(contacts);
  const res=await request('POST',optIn(payload));
  assert.equal(res.body.newsletterStatus,'confirmation_requested');assert.match(res.body.message,/separate Bestätigungsmail/);
  assert.deepEqual(contacts,before);
- assert.equal(writes.length,4);
+ assert.equal(writes.length,2);
  assert.match(writes[1].payload.task.body,/Einwilligungstext, Version 2026-10-02/);
  assert.match(writes[1].payload.task.body,/Double-Opt|Bestätigung noch ausstehend/);
- assert.equal(writes[1].payload.task.note_type_id,undefined);
- assert.deepEqual(writes[2],{path:'messages',payload:{message:{broker_id:11,snippet_id:22,to:[payload.email],client_ids:[12]}}});
- assert.equal(writes[3].payload.task.title,'SLS_NEWSLETTER_DOI_VERSAND_BESTAETIGT');
+ assert.equal(writes[1].payload.task.note_type_id,123);
+ assert.equal(writes[1].payload.task.title,'SLS_NEWSLETTER_DOI_ANGEFORDERT');
+ assert.equal(writes.filter(w=>w.path==='messages').length,0);
  assert.ok(writes.every(w=>w.path!=='contacts'));
- await request('POST',optIn(payload));assert.equal(writes.length,4);
+ await request('POST',optIn(payload));assert.equal(writes.length,2);
 },{marketing:true}));
 test('unchecked consent preserves existing newsletter settings and creates no DOI email',()=>fixture(async({request,payload,writes,contacts})=>{
  contacts[0].newsletter=true;contacts[0].accept_contact=true;const before=structuredClone(contacts);
@@ -191,7 +190,8 @@ test('unchecked consent preserves existing newsletter settings and creates no DO
 test('newsletter can be requested after an earlier guide-only request without resending guide',()=>fixture(async({request,payload,writes})=>{
  await request('POST',payload);await request('POST',optIn(payload));
  assert.equal(writes.filter(w=>w.payload.task?.note_type_id===741093).length,1);
- assert.equal(writes.filter(w=>w.path==='messages').length,1);
+ assert.equal(writes.filter(w=>w.payload.task?.note_type_id===123).length,1);
+ assert.equal(writes.filter(w=>w.path==='messages').length,0);
 },{marketing:true}));
 test('name mismatch records selection for review but sends no DOI or guide and changes no contact flags',()=>fixture(async({request,payload,writes})=>{
  const result=await request('POST',optIn({...payload,firstName:'Andere'}));
@@ -199,11 +199,24 @@ test('name mismatch records selection for review but sends no DOI or guide and c
  assert.equal(writes.length,1);assert.equal(writes[0].payload.task.note_type_id,undefined);
  assert.match(writes[0].payload.task.body,/Newsletter-Anmeldung bleibt bis zur Klärung/);
 },{marketing:true}));
-test('uncertain DOI send preserves guide success and avoids blind repeat',()=>fixture(async({request,payload,writes})=>{
+test('uncertain trigger write preserves guide success and avoids blind repeat',()=>fixture(async({request,payload,writes})=>{
  for(let i=0;i<2;i++){
   const result=await request('POST',optIn(payload));
   assert.equal(result.code,200);assert.equal(result.body.status,'recorded');assert.equal(result.body.newsletterStatus,'needs_check');
   assert.match(result.body.message,/Ratgeberanforderung ist bereits aufgenommen/);
  }
- assert.equal(writes.filter(w=>w.path==='messages').length,1);
-},{marketing:true,messageTimeout:true}));
+ assert.equal(writes.filter(w=>w.payload.task?.note_type_id===123).length,1);
+ assert.equal(writes.filter(w=>w.path==='messages').length,0);
+},{marketing:true,newsletterTimeout:true}));
+
+test('old uncategorized intention is not reported as an automation trigger',()=>fixture(async({request,payload,writes,activities})=>{
+ await request('POST',optIn(payload));
+ const activity=activities.find(a=>a.category_id===123);
+ activity.category_id=null;delete activity.activatable.note_type_id;
+ const res=await request('POST',optIn(payload));
+ assert.equal(res.body.newsletterStatus,'needs_check');assert.equal(writes.length,2);
+},{marketing:true}));
+test('concurrent opt-ins create one guide and one newsletter trigger',()=>fixture(async({request,payload,writes})=>{
+ const res=await Promise.all([request('POST',optIn(payload)),request('POST',optIn(payload))]);
+ assert.ok(res.every(r=>r.body.newsletterStatus==='confirmation_requested'));assert.equal(writes.length,2);
+},{marketing:true}));
