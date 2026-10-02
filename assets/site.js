@@ -14,7 +14,7 @@ const navGroups = [
     ["Immobilienwissen", "/faq/", "Fragen & Antworten rund um Immobilien"],
     ["Ratgeber", "/downloads/", "Wissen für Ihre Verkaufsentscheidung"],
     ["Magazin", "/blog/", "News & Immobilienwissen"],
-    ["Netzwerk von SLS Immobilienpartner", "/netzwerk/", "Fachbetriebe & Ansprechpartner rund um Immobilien"]
+    ["Netzwerk", "/netzwerk/", "Fachbetriebe rund um Immobilien"]
   ]},
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
     ["Unsere Marktgebiete", "/standorte/", "Ruhrgebiet & Rheinland"],
