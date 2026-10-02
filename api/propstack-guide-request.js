@@ -1,9 +1,11 @@
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
+import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION} from '../lib/guide-consent.mjs';
+import {newsletterConfig, requestNewsletter} from '../lib/guide-newsletter.mjs';
 
 const GUIDE = 'VERKAUF';
 const NOTE = 'SLS_RATGEBER_VERKAUF_ANGEFORDERT';
 const TITLE = 'Immobilie verkaufen. Mit einem guten Gefühl.';
-const received = 'Vielen Dank. Ihre Ratgeberanforderung wurde aufgenommen. Der E-Mail-Versand wird derzeit vorbereitet.';
+const received = 'Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.';
 const REVIEW = 'SLS_RATGEBER_VERKAUF_PRUEFUNG';
 const reviewMessage = 'Ihre Anforderung wurde gespeichert. Wir konnten Ihre Angaben jedoch nicht eindeutig zuordnen. Bitte prüfen Sie Ihren Vor- und Nachnamen sowie Ihre E-Mail-Adresse. Sind die Angaben korrekt, kontaktieren Sie uns bitte kurz zur Klärung.';
 const normaliseName = value => String(value || '').normalize('NFC').trim().replace(/\s+/gu, ' ').toLocaleLowerCase('de-DE');
@@ -85,7 +87,7 @@ function limited(req, key) {
   return entry.count > 8;
 }
 
-async function recordRequest(key, email, firstName, lastName, categoryId, requestId) {
+async function recordRequest(key, email, firstName, lastName, categoryId, requestId, marketingConsent = false) {
   const query = new URLSearchParams({email, archived:'-1', with_meta:'1', per:'100'});
   const contacts = rows(await propstack(`contacts?${query}`, key));
   // A secondary/shared email must not trigger delivery to a different primary address.
@@ -107,7 +109,7 @@ async function recordRequest(key, email, firstName, lastName, categoryId, reques
     || normaliseName(verified.last_name) !== normaliseName(lastName);
   const outcome = needsReview ? 'review_required' : 'recorded';
   // Separate review notes have no dispatch category. Never overwrite a contact to force a match.
-  const fingerprint = sign(JSON.stringify([email, normaliseName(firstName), normaliseName(lastName), outcome]), key);
+  const fingerprint = sign(JSON.stringify([email, normaliseName(firstName), normaliseName(lastName), outcome, needsReview && marketingConsent]), key);
   const activityQuery = new URLSearchParams({client_id:String(contactId), item_type:'note', expand:'1', order:'desc', per:'100'});
   if (!needsReview) activityQuery.set('category_id', String(categoryId));
   const activities = rows(await propstack(`activities?${activityQuery}`, key));
@@ -123,7 +125,7 @@ async function recordRequest(key, email, firstName, lastName, categoryId, reques
     const recent = Number.isFinite(created) && Date.now() - created >= 0 && Date.now() - created < 10 * 60 * 1000;
     return sameRequest || recent;
   });
-  if (alreadyRecorded) return outcome;
+  if (alreadyRecorded) return {outcome, contactId};
 
   const retryKey = sign(`${fingerprint}:${requestId}`, key);
   if (uncertain.has(retryKey)) throw new Error('Previous note write needs reconciliation');
@@ -147,14 +149,19 @@ async function recordRequest(key, email, firstName, lastName, categoryId, reques
       `E-Mail für den angeforderten Versand: ${escapeHtml(email)}`,
       `Eingang: ${new Date().toISOString()}`,
       'Quelle: /downloads/',
-      'Zweck: Bearbeitung und Versand des ausdrücklich angeforderten Ratgebers. Keine Newsletter-Anmeldung und keine allgemeine Werbeeinwilligung.',
-      'Datenschutzhinweis im Formular: Ratgeberanforderung, Version 2026-10-01.',
+      'Zweck dieser Ratgebernotiz: Bearbeitung und Versand des ausdrücklich angeforderten Ratgebers. Diese Notiz ist kein Nachweis einer bestätigten Newsletter-Anmeldung.',
+      ...(marketingConsent ? [
+        'Freiwillige Marketing-Checkbox: aktiviert. Double-Opt-in noch nicht bestätigt; keine Marketingfreigabe durch die Formularübermittlung.',
+        `Einwilligungstext (Version ${GUIDE_MARKETING_CONSENT_VERSION}): ${escapeHtml(GUIDE_MARKETING_CONSENT_TEXT)}`,
+        ...(needsReview ? ['Auch die Newsletter-Anmeldung bleibt bis zur Klärung der Namensabweichung zurückgestellt.'] : [])
+      ] : ['Freiwillige Marketing-Checkbox: nicht aktiviert. Keine neue Werbeeinwilligung; bestehende Einstellungen bleiben unverändert.']),
+      'Datenschutzhinweis im Formular: Ratgeberanforderung, Version 2026-10-02.',
       marker
     ].join('<br>')
   }});
   if (!validId(result?.id || result?.activity_id)) throw new Error('Note confirmation missing');
   uncertain.delete(retryKey);
-  return outcome;
+  return {outcome, contactId};
 }
 
 export default async function handler(req, res) {
@@ -175,7 +182,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       await noteType(key);
-      return res.status(200).json({availableGuides:[GUIDE], token:issueToken(key), deliveryReady:false});
+      return res.status(200).json({availableGuides:[GUIDE], token:issueToken(key), deliveryReady:true, marketingAvailable:Boolean(newsletterConfig()), consentVersion:GUIDE_MARKETING_CONSENT_VERSION});
     } catch (error) {
       console.error('Guide request readiness check failed:', error.message);
       return res.status(503).json({error:'Die Ratgeberanforderung wird noch eingerichtet. Bitte versuchen Sie es später erneut.'});
@@ -187,7 +194,12 @@ export default async function handler(req, res) {
   if (!req.headers?.['content-type']?.startsWith('application/json') || !req.body || typeof req.body !== 'object' || JSON.stringify(req.body).length > 3000) {
     return res.status(400).json({error:'Ungültige Anfrage.'});
   }
-  const {guide, email:rawEmail, firstName:rawFirstName, lastName:rawLastName, token, website} = req.body;
+  const {guide, email:rawEmail, firstName:rawFirstName, lastName:rawLastName, token, website, marketingConsent = false, consentVersion} = req.body;
+  if (typeof marketingConsent !== 'boolean' || (marketingConsent && consentVersion !== GUIDE_MARKETING_CONSENT_VERSION)) {
+    return res.status(400).json({error:'Bitte laden Sie das Formular erneut, um Ihre Newsletter-Auswahl zu bestätigen.'});
+  }
+  const marketingConfig = newsletterConfig();
+  if (marketingConsent && !marketingConfig) return res.status(503).json({error:'Die Newsletter-Anmeldung ist noch nicht verfügbar. Sie können den Ratgeber ohne Newsletter-Anmeldung anfordern.'});
   const firstName = typeof rawFirstName === 'string' ? rawFirstName.trim() : '';
   const lastName = typeof rawLastName === 'string' ? rawLastName.trim() : '';
   if (!firstName || !lastName || firstName.length > 100 || lastName.length > 100 || /[\x00-\x1f\x7f]/.test(firstName + lastName)) {
@@ -207,12 +219,26 @@ export default async function handler(req, res) {
   const previous = pending.get(lock);
   const work = (async () => {
     if (previous) await previous.catch(() => {});
-    return recordRequest(key, email, firstName, lastName, await noteType(key), requestId);
+    const result = await recordRequest(key, email, firstName, lastName, await noteType(key), requestId, marketingConsent);
+    let newsletterStatus = marketingConsent ? 'review_required' : 'not_requested';
+    if (marketingConsent && result.outcome === 'recorded') {
+      try {
+        newsletterStatus = await requestNewsletter({key, contactId:result.contactId, email, firstName, lastName, requestId, config:marketingConfig, propstack});
+      } catch (error) {
+        console.error('Newsletter confirmation request needs checking:', error.message);
+        // Guide dispatch was already recorded. Do not present a total failure or encourage resending it.
+        newsletterStatus = 'needs_check';
+      }
+    }
+    return {outcome:result.outcome, newsletterStatus};
   })();
   pending.set(lock, work);
   try {
-    const outcome = await work;
-    return res.status(200).json({ok:true, status:outcome, message:outcome === 'review_required' ? reviewMessage : received, deliveryReady:false});
+    const {outcome, newsletterStatus} = await work;
+    const newsletterMessage = newsletterStatus === 'confirmation_requested'
+      ? ' Für weitere Tipps und Angebote erhalten Sie eine separate Bestätigungsmail. Bitte bestätigen Sie darin Ihre Anmeldung.'
+      : newsletterStatus === 'needs_check' ? ' Ihre zusätzliche Newsletter-Anmeldung konnte noch nicht bestätigt werden. Bitte kontaktieren Sie uns hierzu; Ihre Ratgeberanforderung ist bereits aufgenommen.' : '';
+    return res.status(200).json({ok:true, status:outcome, newsletterStatus, message:outcome === 'review_required' ? reviewMessage : received + newsletterMessage, deliveryReady:true});
   } catch (error) {
     console.error('Guide request could not be confirmed:', error.message);
     return res.status(502).json({error:'Ihre Anforderung konnte gerade nicht bestätigt werden. Bitte kontaktieren Sie uns direkt, bevor Sie sie erneut absenden.'});

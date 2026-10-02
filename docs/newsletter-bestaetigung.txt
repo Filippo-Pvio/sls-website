@@ -1,0 +1,21 @@
+Textbaustein-Name: SLS – Newsletter-Anmeldung bestätigen
+Betreff: Bitte bestätigen Sie Ihre Anmeldung zu den SLS Immobilientipps
+
+Guten Tag,
+
+Sie haben auf unserer Website angegeben, dass Sie von SLS Immobilienpartner regelmäßig per E-Mail Tipps rund um Immobilienverkauf und Immobilienbewertung sowie Informationen und Angebote zu den entsprechenden SLS-Dienstleistungen erhalten möchten.
+
+Bitte öffnen Sie über den folgenden Button das Bestätigungsformular und bestätigen Sie dort Ihre Newsletter-Anmeldung:
+
+{{ kontakt_profil_button }}
+
+Erst nach Ihrer Bestätigung wird Ihre Anmeldung aktiviert. Ihren angeforderten Ratgeber erhalten Sie unabhängig davon.
+
+Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, über den Abmeldelink in jeder Marketing-E-Mail oder per E-Mail an service@sls.de.
+
+Falls Sie diese Anmeldung nicht veranlasst haben, müssen Sie nichts tun. Ohne Bestätigung wird durch diese Anmeldung kein Newsletter freigeschaltet.
+
+Freundliche Grüße
+Ihr Team von SLS Immobilienpartner
+
+Datenschutzhinweise: https://sls.de/datenschutz/

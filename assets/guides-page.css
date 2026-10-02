@@ -41,3 +41,10 @@ body.guides-page #main .guide-privacy{font-size:14px;line-height:1.65;color:#345
 .guide-review-actions[hidden]{display:none}
 .guide-request .guide-review-actions button{width:auto}
 .guide-request button:focus-visible{outline:3px solid #ff596f;outline-offset:4px}
+
+body.guides-page #main .guide-marketing{font-size:14px;line-height:1.65;color:#345b6e;border-top:1px solid #d5e0e5;padding-top:20px;margin-bottom:24px}
+.guide-marketing span{min-width:0}
+.guide-marketing input{accent-color:#345b6e}
+
+body.guides-page #main .guide-marketing-availability{font-size:13px;line-height:1.6;color:#345b6e;margin:-12px 0 24px}
+.guide-marketing:has(input:disabled){opacity:.7}

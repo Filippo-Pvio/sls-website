@@ -10,6 +10,8 @@
  const lastName = form.elements.lastName;
  const reviewActions = document.getElementById('guide-review-actions');
  const correctButton = document.getElementById('guide-correct');
+ const marketingConsent = form.elements.marketingConsent;
+ const marketingAvailability = document.getElementById('guide-marketing-availability');
  const endpoint = '/api/propstack-guide-request';
  let token = null;
  let sending = false;
@@ -30,12 +32,16 @@
    const data = await response.json();
    if (!response.ok || !data.availableGuides?.includes('VERKAUF') || !data.token) throw new Error(data.error || 'Die Ratgeberanforderung ist gerade nicht verfügbar. Bitte versuchen Sie es später erneut.');
    token = data.token;
+   const marketingAvailable = data.marketingAvailable === true && data.consentVersion === marketingConsent.dataset.consentVersion;
+   marketingConsent.disabled = !marketingAvailable;
+   if (!marketingAvailable) marketingConsent.checked = false;
+   marketingAvailability.textContent = marketingAvailable ? 'Ihre Anmeldung wird erst nach Ihrer Bestätigung per E-Mail aktiviert.' : 'Die Newsletter-Anmeldung wird noch eingerichtet. Ihren Ratgeber können Sie bereits anfordern.';
    window.setTimeout(() => {
     fields.disabled = false;
     button.disabled = false;
     button.textContent = 'Ratgeber anfordern';
     select.disabled = false;
-    message(correction ? 'Bitte prüfen und korrigieren Sie Ihre Angaben. Senden Sie die Anforderung anschließend erneut ab.' : 'Der E-Mail-Versand wird derzeit eingerichtet. Sie können Ihre Anforderung bereits hinterlegen.');
+    message(correction ? 'Bitte prüfen und korrigieren Sie Ihre Angaben. Senden Sie die Anforderung anschließend erneut ab.' : 'Sie erhalten den ausgewählten Ratgeber per E-Mail.' + (marketingAvailable ? ' Weitere Tipps und Angebote können Sie freiwillig abonnieren.' : ''));
     if (correction) {
      reviewActions.hidden = true;
      firstName.focus({preventScroll:true});
@@ -56,7 +62,7 @@
  form.addEventListener('submit', async event => {
   event.preventDefault();
   if (sending || completed || !token || fields.disabled || !form.reportValidity()) return;
-  const payload = {guide:select.value, email:email.value.trim(), firstName:firstName.value.trim(), lastName:lastName.value.trim(), token, website:form.elements.website.value};
+  const payload = {guide:select.value, email:email.value.trim(), firstName:firstName.value.trim(), lastName:lastName.value.trim(), token, website:form.elements.website.value, marketingConsent:!marketingConsent.disabled && marketingConsent.checked, consentVersion:marketingConsent.dataset.consentVersion};
   sending = true;
   select.disabled = true;
   fields.disabled = true;
@@ -80,6 +86,7 @@
    email.value = '';
    firstName.value = '';
    lastName.value = '';
+   marketingConsent.checked = false;
    button.textContent = 'Anforderung aufgenommen';
    message(data.message);
   } catch (error) {

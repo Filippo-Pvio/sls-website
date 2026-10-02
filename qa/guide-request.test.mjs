@@ -5,12 +5,14 @@ import handler from '../api/propstack-guide-request.js';
 
 const NOTE='SLS_RATGEBER_VERKAUF_ANGEFORDERT';
 const host='sls-guide-test.vercel.app';
-const names=['VERCEL_ENV','NODE_ENV','PROPSTACK_API_KEY','PROPSTACK_INQUIRY_API_KEY','PROPSTACK_GUIDES_API_KEY'];
+const names=['VERCEL_ENV','NODE_ENV','PROPSTACK_API_KEY','PROPSTACK_INQUIRY_API_KEY','PROPSTACK_GUIDES_API_KEY','PROPSTACK_GUIDES_DOI_BROKER_ID','PROPSTACK_GUIDES_DOI_SNIPPET_ID','PROPSTACK_GUIDES_DOI_VERIFIED'];
 async function fixture(run,options={}) {
  const before=names.map(n=>process.env[n]), oldFetch=global.fetch, oldNow=Date.now;
  let now=oldNow();
  Object.assign(process.env,{VERCEL_ENV:'preview',NODE_ENV:'production',PROPSTACK_API_KEY:'fixture-only'});
  delete process.env.PROPSTACK_INQUIRY_API_KEY;delete process.env.PROPSTACK_GUIDES_API_KEY;
+ if(options.marketing) Object.assign(process.env,{PROPSTACK_GUIDES_DOI_BROKER_ID:'11',PROPSTACK_GUIDES_DOI_SNIPPET_ID:'22',PROPSTACK_GUIDES_DOI_VERIFIED:'true'});
+ else for(const name of names.slice(5)) delete process.env[name];
  Date.now=()=>now;
  const email=`${randomUUID()}@example.org`,writes=[],activities=[],contacts=options.newContact?[]:[{id:12,email,first_name:options.firstName ?? 'Anna',last_name:options.lastName ?? 'Muster'}];
  const calls=[];
@@ -28,6 +30,11 @@ async function fixture(run,options={}) {
   else if(path==='activities'){
    assert.equal(parsed.searchParams.get('client_id'),'12');assert.ok([null,'741093'].includes(parsed.searchParams.get('category_id')));
    data={data:activities};
+  }
+  else if(path==='messages'){
+   writes.push({path,payload:JSON.parse(init.body)});
+   if(options.messageTimeout) throw new Error('message result uncertain');
+   data={ok:true,id:99};
   }
   else if(path==='tasks'){
    const payload=JSON.parse(init.body);writes.push({path,payload});
@@ -53,11 +60,11 @@ async function fixture(run,options={}) {
 test('records approved guide note for existing contact, exposes no CRM IDs, leaves preferences alone',()=>fixture(async({request,ready,payload,writes})=>{
  assert.equal(ready.code,200);assert.deepEqual(ready.body.availableGuides,['VERKAUF']);
  const res=await request('POST',payload);
- assert.equal(res.code,200);assert.equal(res.body.ok,true);assert.equal(res.body.deliveryReady,false);
- assert.deepEqual(Object.keys(res.body).sort(),['deliveryReady','message','ok','status']);
+ assert.equal(res.code,200);assert.equal(res.body.ok,true);assert.equal(res.body.deliveryReady,true);
+ assert.deepEqual(Object.keys(res.body).sort(),['deliveryReady','message','newsletterStatus','ok','status']);
  assert.equal(writes.length,1);const task=writes[0].payload.task;
  assert.equal(task.title,NOTE);assert.equal(task.note_type_id,741093);assert.deepEqual(task.client_ids,[12]);
- assert.match(task.body,/Angegebener Name: Anna Muster/);assert.match(task.body,/Keine Newsletter-Anmeldung/);assert.match(task.body,/SLS-Anforderungs-ID:/);
+ assert.match(task.body,/Angegebener Name: Anna Muster/);assert.match(task.body,/kein Nachweis einer bestätigten Newsletter-Anmeldung/);assert.match(task.body,/SLS-Anforderungs-ID:/);
  assert.equal(task.client_source_id,undefined);assert.equal(task.is_reminder,undefined);
 }));
 test('new contact contains names and email without marketing flags',()=>fixture(async({request,payload,writes})=>{
@@ -150,3 +157,53 @@ test('submitted review names are HTML escaped',()=>fixture(async({request,payloa
  assert.doesNotMatch(writes[0].payload.task.body,/<script>/);
  assert.match(writes[0].payload.task.body,/&lt;script&gt;/);
 }));
+
+const optIn=payload=>({...payload,marketingConsent:true,consentVersion:'2026-10-02'});
+test('newsletter stays unavailable until sender, template and verified flow are configured',()=>fixture(async({request,ready,payload,writes})=>{
+ assert.equal(ready.body.marketingAvailable,false);
+ assert.equal((await request('POST',optIn(payload))).code,503);assert.equal(writes.length,0);
+ assert.equal((await request('POST',payload)).code,200);
+}));
+for(const update of [{marketingConsent:'true'},{marketingConsent:1},{marketingConsent:null},{marketingConsent:true},{marketingConsent:true,consentVersion:'old'}])
+ test(`rejects ambiguous or stale consent ${JSON.stringify(update)}`,()=>fixture(async({request,payload,writes})=>{
+  assert.equal((await request('POST',{...payload,...update})).code,400);assert.equal(writes.length,0);
+ },{marketing:true}));
+test('selected consent records evidence and sends only configured DOI email; never activates contact fields',()=>fixture(async({request,ready,payload,writes,contacts})=>{
+ assert.equal(ready.body.marketingAvailable,true);
+ contacts[0].newsletter=false;contacts[0].accept_contact=false;const before=structuredClone(contacts);
+ const res=await request('POST',optIn(payload));
+ assert.equal(res.body.newsletterStatus,'confirmation_requested');assert.match(res.body.message,/separate Bestätigungsmail/);
+ assert.deepEqual(contacts,before);
+ assert.equal(writes.length,4);
+ assert.match(writes[1].payload.task.body,/Einwilligungstext, Version 2026-10-02/);
+ assert.match(writes[1].payload.task.body,/Double-Opt|Bestätigung noch ausstehend/);
+ assert.equal(writes[1].payload.task.note_type_id,undefined);
+ assert.deepEqual(writes[2],{path:'messages',payload:{message:{broker_id:11,snippet_id:22,to:[payload.email],client_ids:[12]}}});
+ assert.equal(writes[3].payload.task.title,'SLS_NEWSLETTER_DOI_VERSAND_BESTAETIGT');
+ assert.ok(writes.every(w=>w.path!=='contacts'));
+ await request('POST',optIn(payload));assert.equal(writes.length,4);
+},{marketing:true}));
+test('unchecked consent preserves existing newsletter settings and creates no DOI email',()=>fixture(async({request,payload,writes,contacts})=>{
+ contacts[0].newsletter=true;contacts[0].accept_contact=true;const before=structuredClone(contacts);
+ const result=await request('POST',{...payload,marketingConsent:false});
+ assert.equal(result.body.newsletterStatus,'not_requested');assert.equal(writes.length,1);assert.deepEqual(contacts,before);
+},{marketing:true}));
+test('newsletter can be requested after an earlier guide-only request without resending guide',()=>fixture(async({request,payload,writes})=>{
+ await request('POST',payload);await request('POST',optIn(payload));
+ assert.equal(writes.filter(w=>w.payload.task?.note_type_id===741093).length,1);
+ assert.equal(writes.filter(w=>w.path==='messages').length,1);
+},{marketing:true}));
+test('name mismatch records selection for review but sends no DOI or guide and changes no contact flags',()=>fixture(async({request,payload,writes})=>{
+ const result=await request('POST',optIn({...payload,firstName:'Andere'}));
+ assert.equal(result.body.status,'review_required');assert.equal(result.body.newsletterStatus,'review_required');
+ assert.equal(writes.length,1);assert.equal(writes[0].payload.task.note_type_id,undefined);
+ assert.match(writes[0].payload.task.body,/Newsletter-Anmeldung bleibt bis zur Klärung/);
+},{marketing:true}));
+test('uncertain DOI send preserves guide success and avoids blind repeat',()=>fixture(async({request,payload,writes})=>{
+ for(let i=0;i<2;i++){
+  const result=await request('POST',optIn(payload));
+  assert.equal(result.code,200);assert.equal(result.body.status,'recorded');assert.equal(result.body.newsletterStatus,'needs_check');
+  assert.match(result.body.message,/Ratgeberanforderung ist bereits aufgenommen/);
+ }
+ assert.equal(writes.filter(w=>w.path==='messages').length,1);
+},{marketing:true,messageTimeout:true}));
