@@ -1,0 +1,54 @@
+const { chromium } = require('playwright');
+const assert = require('node:assert/strict');
+const path = require('node:path');
+const output=path.resolve('qa-artifacts/sia');
+require('node:fs').mkdirSync(output,{recursive:true});
+(async()=>{
+ const browser=await chromium.launch({headless:true,channel:'chrome'});
+ const result=[];
+ for(const [name,width,height] of [['desktop',1440,1000],['mobile',390,844]]){
+  const page=await browser.newPage({viewport:{width,height}});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  let calls=0;
+  await page.route('**/api/sia-ask',async route=>{
+   calls++; const body=route.request().postDataJSON();assert.ok(body.question.length>3);
+   if(calls===3)return route.fulfill({status:502,contentType:'application/json',body:JSON.stringify({error:'failed'})});
+   return route.fulfill({contentType:'application/json',body:JSON.stringify({provider:calls===2?'Wissensbasis von SLS Immobilienpartner':'OpenAI',answer:'Verkauf und Wohnungssuche lassen sich parallel vorbereiten. Planen Sie einen zeitlichen Spielraum ein.\n\nIhr SLS Immobilienpartner kann Sie bei der Abstimmung des Verkaufsablaufs unterstützen. [1]',sources:[{number:1,title:'Verkaufsbegleitung',text:'Geprüfte Unternehmensinformationen.',url:'/quellen/verkaufsbegleitung.html'},{number:2,title:'<img src=x onerror=alert(1)>',text:'Unsichere Verweise werden nicht verlinkt.',url:'javascript:alert(1)'}]})});
+  });
+  await page.goto('http://127.0.0.1:4186/',{waitUntil:'domcontentloaded'});
+  await page.getByRole('button',{name:'SIA fragen'}).waitFor();
+  assert.equal(calls,0);
+  await page.screenshot({path:path.join(output,name+'-homepage.png')});
+  await page.getByRole('button',{name:'SIA fragen'}).click();
+  await page.getByRole('dialog').waitFor();
+  await page.screenshot({path:path.join(output,name+'-sia.png')});
+  await page.getByLabel('Ihre Nachricht an SIA').fill('Kann ich mein Haus verkaufen und eine Mietwohnung suchen?');
+  await page.getByRole('button',{name:'Senden',exact:true}).click();
+  await page.getByText('KI-Antwort · OpenAI',{exact:true}).waitFor();
+  await page.getByText('Verwendete Quellen',{exact:true}).click();
+  assert.equal(await page.locator('sls-sia a[href^="javascript:"]').count(),0);
+  assert.equal(await page.locator('sls-sia img').count(),0);
+  assert.equal(await page.locator('sls-sia a[href="https://frag-sls.vercel.app/quellen/verkaufsbegleitung.html"]').count(),1);
+  await page.screenshot({path:path.join(output,name+'-answer.png')});
+  const box=await page.getByRole('dialog').boundingBox();assert.ok(box.x>=0&&box.y>=0&&box.x+box.width<=width+1&&box.y+box.height<=height+1);
+  await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').isVisible(),false);
+  assert.ok(await page.getByRole('button',{name:'SIA fragen'}).evaluate(el=>el.getRootNode().activeElement===el));
+  await page.getByRole('button',{name:'SIA fragen'}).click();
+  await page.getByLabel('Ihre Nachricht an SIA').fill('Welche Kosten entstehen?');await page.getByRole('button',{name:'Senden',exact:true}).click();
+  await page.getByText('Antwort aus der Wissensbasis von SLS Immobilienpartner',{exact:true}).waitFor();
+  await page.getByLabel('Ihre Nachricht an SIA').fill('Bitte nochmals prüfen');await page.getByRole('button',{name:'Senden',exact:true}).click();
+  await page.getByRole('status').filter({hasText:'SIA konnte gerade keine Antwort abrufen'}).waitFor();
+  assert.equal(await page.getByLabel('Ihre Nachricht an SIA').inputValue(),'Bitte nochmals prüfen');
+  await page.getByRole('button',{name:'SIA schließen'}).click();
+  await page.goto('http://127.0.0.1:4186/downloads/',{waitUntil:'domcontentloaded'});
+  assert.equal(await page.locator('sls-sia').count(),0);
+  assert.ok(await page.locator('form').count()>0);
+  result.push({name,passes:'launch, modal, AI, sources, safe text, fallback, failure, close/focus, guide page',pageErrors:errors});
+  await page.close();
+ }
+ const page=await browser.newPage();
+ await page.route('**/api/sia-config',r=>r.fulfill({contentType:'application/json',body:'{"enabled":false}'}));
+ await page.goto('http://127.0.0.1:4186/',{waitUntil:'networkidle'});assert.equal(await page.locator('sls-sia').count(),0);
+ result.push({productionGuard:'launcher absent when config disables preview'});
+ console.log(JSON.stringify(result,null,2));await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

@@ -43,6 +43,9 @@
     },
     "api/propstack-guide-request.js": {
       "maxDuration": 60
+    },
+    "api/sia-ask.js": {
+      "maxDuration": 60
     }
   }
 }
