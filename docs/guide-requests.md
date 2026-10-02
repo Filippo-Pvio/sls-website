@@ -81,3 +81,9 @@ Die Website setzt **weder newsletter noch accept_contact** beim Absenden. Diese 
 Das allgemeine Kontakt-API-Recht allein beweist keine Versandberechtigung. Der verwendete API-Schlüssel braucht zusätzlich Nachrichtenversand über das gewählte Konto. Es wurden keine neuen Umgebungsvariablen gesetzt und kein Newsletterversand live ausgeführt.
 
 Referenzen: https://docs.propstack.de/webseite/newsletter-anmeldung und https://support.propstack.de/hc/de/articles/18364147809565-Kontakterlaubnis-DSGVO-Speicherberechtigung-einholen
+
+## Textbaustein und Absender hinterlegt
+
+Nutzerangabe: Textbaustein 1115618, Absender service@sls.de. Als serverseitige Konfiguration hinterlegt; der Absender wird über /brokers eindeutig anhand dieser E-Mail aufgelöst. Der Bestätigungsablauf ist damit noch nicht automatisch verifiziert. PROPSTACK_GUIDES_DOI_VERIFIED bleibt erforderlich.
+
+Ein zeitlich begrenzter, token-geschützter Testzugang /api/guide-doi-check steht ausschließlich im bestehenden Vorschau-Branch bereit. Er kann nur den festgelegten Bestätigungstext an die bereits freigegebene Testadresse service@sls.de senden, einmal je Testmarker. Er ändert keine Kontaktfelder und protokolliert ausdrücklich einen technischen Test statt einer tatsächlichen Website-Einwilligung. GET liefert nur die Zustimmungsfelder des Testkontakts. Nach dem Test wird der Zugang entfernt; er läuft außerdem automatisch ab.
