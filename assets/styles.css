@@ -2923,3 +2923,64 @@ body.home-editorial > section.section.home-faq-section{
 .property-preview .site-footer a:hover,
 .property-preview .site-footer a:focus-visible{color:#fff;opacity:.78}
 .property-preview .site-footer .footer-bottom{border-top-color:rgba(255,255,255,.28);color:rgba(255,255,255,.78)}
+
+
+/* Mobile navigation readability and hierarchy */
+@media (max-width:980px){
+  .fullscreen-nav{
+    width:min(94vw,620px);
+    padding:18px 22px 26px;
+  }
+  .offcanvas-intro{
+    margin:18px 0 6px;
+    font-size:25px;
+    line-height:1.15;
+  }
+  .overlay-nav-section{
+    padding:2px 0 8px;
+  }
+  .overlay-main-link{
+    padding:16px 0 8px;
+    font-size:22px;
+    line-height:1.15;
+    letter-spacing:-.01em;
+  }
+  .overlay-subgrid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:0;
+    margin:0 0 10px;
+  }
+  .overlay-sub-link{
+    min-height:38px;
+    display:flex;
+    align-items:center;
+    padding:8px 0;
+    color:#52636b;
+    font-size:14px;
+    font-weight:600;
+    line-height:1.3;
+  }
+  .fullscreen-nav-bottom{
+    gap:8px 20px;
+    margin-top:12px;
+    padding-top:16px;
+  }
+  .fullscreen-nav-bottom a{
+    min-height:34px;
+    display:flex;
+    align-items:center;
+    font-size:13px;
+    font-weight:600;
+  }
+}
+@media (max-width:480px){
+  .fullscreen-nav{
+    width:100vw;
+    padding-left:20px;
+    padding-right:20px;
+  }
+  .offcanvas-intro{font-size:24px;}
+  .overlay-main-link{font-size:21px;}
+  .overlay-sub-link{font-size:14px;}
+}
