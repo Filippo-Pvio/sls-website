@@ -10,7 +10,7 @@ async function fixture(result={ok:true,message:'Vielen Dank! Sie erhalten Ihren 
  const reviewActions={hidden:true},correctButton={disabled:false,addEventListener:(event,fn)=>callbacks.correct=fn};
  const button={disabled:true,textContent:''},fields={disabled:true};
  const select={value:'VERKAUF',disabled:false,options:[{value:'VERKAUF',disabled:false}]};
- const form={elements:{firstName:{value:'Anna',focus(){}},lastName:{value:'Muster'},email:{value:'service@example.org',focus(){}},website:{value:''},marketingConsent:{checked:false,dataset:{consentVersion:'2026-10-02'}}},querySelector:s=>s==='fieldset'?fields:button,addEventListener:(event,fn)=>callbacks[event]=fn,reportValidity:()=>true,setAttribute(){},removeAttribute(){}};
+ const form={elements:{firstName:{value:'Anna',focus(){}},lastName:{value:'Muster'},email:{value:'service@example.org',focus(){}},website:{value:''},privacyAcknowledged:{checked:true,dataset:{privacyVersion:'2026-10-02-v1'},focus(){}},marketingConsent:{checked:false,dataset:{consentVersion:'2026-10-02'}}},querySelector:s=>s==='fieldset'?fields:button,addEventListener:(event,fn)=>callbacks[event]=fn,reportValidity:()=>true,setAttribute(){},removeAttribute(){}};
  runInNewContext(code,{document:{getElementById:id=>({'guide-form':form,'guide-select':select,'guide-availability':status,'guide-review-actions':reviewActions,'guide-correct':correctButton,'guide-marketing-availability':marketingAvailability})[id],querySelectorAll:()=>[]},window:{setTimeout:fn=>timers.push(fn)},fetch:async(url,init={})=>{
   requests.push({url,...init});return {ok:init.method==='POST'?result.ok:ready,json:async()=>init.method==='POST'?result:ready?{availableGuides:['VERKAUF'],token:'signed-token',marketingAvailable:marketingReady,consentVersion:'2026-10-02'}:{error:'Nicht verfügbar'}};
  }});
@@ -21,7 +21,7 @@ test('form submits names with guide/email/token/trap, locks double-clicks, clear
  const f=await fixture();assert.equal(f.fields.disabled,false);
  await Promise.all([f.submit(),f.submit()]);
  assert.equal(f.requests.filter(r=>r.method==='POST').length,1);
- assert.deepEqual(JSON.parse(f.requests[1].body),{guide:'VERKAUF',email:'service@example.org',firstName:'Anna',lastName:'Muster',token:'signed-token',website:'',marketingConsent:false,consentVersion:'2026-10-02'});
+ assert.deepEqual(JSON.parse(f.requests[1].body),{guide:'VERKAUF',email:'service@example.org',firstName:'Anna',lastName:'Muster',token:'signed-token',website:'',privacyAcknowledged:true,privacyVersion:'2026-10-02-v1',marketingConsent:false,consentVersion:'2026-10-02'});
  assert.equal(f.fields.disabled,true);assert.equal(f.form.elements.email.value,'');assert.equal(f.form.elements.firstName.value,'');assert.equal(f.form.elements.lastName.value,'');
  assert.match(f.status.textContent,/in Kürze/);await f.submit();assert.equal(f.requests.length,2);
 });
@@ -71,4 +71,23 @@ test('missing DOI configuration disables only newsletter signup, not the guide r
  assert.equal(f.fields.disabled,false);assert.equal(f.form.elements.marketingConsent.disabled,true);
  f.form.elements.marketingConsent.checked=true;
  await f.submit();assert.equal(JSON.parse(f.requests[1].body).marketingConsent,false);
+});
+
+test('privacy acknowledgement is required, unchecked and separate from optional marketing',async()=>{
+ const html=await readFile(new URL('../downloads/index.html',import.meta.url),'utf8');
+ const {GUIDE_PRIVACY_ACK_VERSION,GUIDE_PRIVACY_ACK_TEXT,GUIDE_PRIVACY_URL}=await import('../lib/guide-consent.mjs');
+ const input=html.match(/<input[^>]*id="guide-privacy-ack"[^>]*>/)[0];
+ assert.match(input,/\srequired(?:\s|>)/);assert.doesNotMatch(input,/\schecked(?:\s|=|>)/);
+ assert.ok(input.includes(`data-privacy-version="${GUIDE_PRIVACY_ACK_VERSION}"`));
+ const label=html.match(/<label class="guide-consent guide-privacy-ack"[\s\S]*?<\/label>/)[0];
+ assert.ok(label.includes(`href="${GUIDE_PRIVACY_URL}"`));
+ assert.ok(label.replace(/<[^>]+>/g,'').includes(GUIDE_PRIVACY_ACK_TEXT));
+ const f=await fixture();f.form.elements.privacyAcknowledged.checked=false;
+ await f.submit();assert.equal(f.requests.length,1);assert.match(f.status.textContent,/Kenntnis genommen/);
+});
+test('privacy acknowledgement survives errors and review, and clears on success',async()=>{
+ for(const result of [{ok:true,status:'review_required',message:'Bitte prüfen'},{ok:false,error:'Nicht bestätigt'}]){
+  const f=await fixture(result);await f.submit();assert.equal(f.form.elements.privacyAcknowledged.checked,true);
+ }
+ const f=await fixture();await f.submit();assert.equal(f.form.elements.privacyAcknowledged.checked,false);
 });

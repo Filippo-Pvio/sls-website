@@ -10,6 +10,7 @@
  const lastName = form.elements.lastName;
  const reviewActions = document.getElementById('guide-review-actions');
  const correctButton = document.getElementById('guide-correct');
+ const privacyAcknowledged = form.elements.privacyAcknowledged;
  const marketingConsent = form.elements.marketingConsent;
  const marketingAvailability = document.getElementById('guide-marketing-availability');
  const endpoint = '/api/propstack-guide-request';
@@ -62,7 +63,12 @@
  form.addEventListener('submit', async event => {
   event.preventDefault();
   if (sending || completed || !token || fields.disabled || !form.reportValidity()) return;
-  const payload = {guide:select.value, email:email.value.trim(), firstName:firstName.value.trim(), lastName:lastName.value.trim(), token, website:form.elements.website.value, marketingConsent:!marketingConsent.disabled && marketingConsent.checked, consentVersion:marketingConsent.dataset.consentVersion};
+  if (!privacyAcknowledged.checked) {
+   message('Bitte bestätigen Sie, dass Sie die Datenschutzerklärung zur Kenntnis genommen haben.', true);
+   privacyAcknowledged.focus();
+   return;
+  }
+  const payload = {privacyAcknowledged:privacyAcknowledged.checked, privacyVersion:privacyAcknowledged.dataset.privacyVersion, guide:select.value, email:email.value.trim(), firstName:firstName.value.trim(), lastName:lastName.value.trim(), token, website:form.elements.website.value, marketingConsent:!marketingConsent.disabled && marketingConsent.checked, consentVersion:marketingConsent.dataset.consentVersion};
   sending = true;
   select.disabled = true;
   fields.disabled = true;
@@ -86,6 +92,7 @@
    email.value = '';
    firstName.value = '';
    lastName.value = '';
+   privacyAcknowledged.checked = false;
    marketingConsent.checked = false;
    button.textContent = 'Anforderung aufgenommen';
    message(data.message);

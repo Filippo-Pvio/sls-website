@@ -53,6 +53,14 @@ Prüfnotizen werden separat von Versandnotizen dedupliziert. Gleichzeitige Anfra
 
 **Propstack-Prozess einrichten:** Nur die Kategorie 741093 / SLS_RATGEBER_VERKAUF_ANGEFORDERT als Versand-Auslöser verwenden, niemals jede neue Notiz. Prüfnotizen bleiben ausgeschlossen. Nach persönlicher Klärung Bestandsdaten und neuere Anforderungen prüfen, eventuell Namen manuell berichtigen und einmalig die Versandnotiz anlegen, sofern noch keine korrigierte Anforderung diese erzeugt hat. Prüfnotiz anschließend als geklärt kennzeichnen. Die Website löst keine früheren Prüfnotizen automatisch auf und stoppt keine bereits laufenden Versandprozesse.
 
+## Zwei getrennte Checkboxen
+
+Die Pflicht-Checkbox lautet „Ich habe die Datenschutzerklärung zur Kenntnis genommen.“ und verlinkt https://sls.de/datenschutz/. Sie ist initial nicht angekreuzt. Ohne `privacyAcknowledged=true` und die aktuelle `privacyVersion` (`2026-10-02-v1`) lehnt die API die Anforderung ab, bevor Kontakte oder Notizen geschrieben werden. Browservalidierung allein reicht nicht aus.
+
+Die vorhandene Ratgeber- bzw. Prüfnotiz dokumentiert die aktive Kenntnisnahme mit Wortlaut, Version, Datenschutzlink und Eingangszeitpunkt. Die Kenntnisnahme ist keine Werbeeinwilligung. Sie ändert weder Newsletter, Kontakterlaubnis noch DSGVO-Speicherstatus. Für sie ist keine zusätzliche Propstack-Automatisierung nötig. Die bestehende Ratgeberkategorie 741093 bleibt unverändert.
+
+Die zweite Checkbox bleibt freiwillig und initial leer. Nur ihre aktive Auswahl erzeugt bei passender Kontaktzuordnung zusätzlich die kategorisierte DOI-Notiz. In Propstack müssen Newsletter/Kontakterlaubnis weiterhin erst nach tatsächlicher Bestätigung aktiviert werden. Versand und Linkwirkung wurden nicht durch diese Checkbox-Änderung getestet.
+
 ## Freiwillige Newsletter-Anmeldung über Propstack-Automatisierung
 
 Stand 02.10.2026: Der Nutzer hat die Notiz und die Versandautomatisierung in Propstack eingerichtet. Die Website verwendet nun die **Notizkategorie** `SLS_NEWSLETTER_DOI_ANGEFORDERT` als Trigger. Der Name wird vollständig und eindeutig unter den Aktivitätstypen `note`/`for_notes` aufgelöst. Fehlt die Kategorie, ist sie mehrdeutig oder nicht lesbar, bleibt die Newsletter-Checkbox gesperrt; die Ratgeberanforderung bleibt verfügbar.

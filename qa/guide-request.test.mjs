@@ -51,7 +51,7 @@ async function fixture(run,options={}) {
  };
  try{
   const ready=await request('GET');now+=2000;
-  const payload={guide:'VERKAUF',email,firstName:'Anna',lastName:'Muster',token:ready.body.token,website:''};
+  const payload={guide:'VERKAUF',email,firstName:'Anna',lastName:'Muster',token:ready.body.token,website:'',privacyAcknowledged:true,privacyVersion:'2026-10-02-v1'};
   await run({request,ready,payload,writes,activities,calls,contacts,advance:ms=>now+=ms});
  }finally{global.fetch=oldFetch;Date.now=oldNow;names.forEach((n,i)=>before[i]===undefined?delete process.env[n]:process.env[n]=before[i]);}
 }
@@ -220,3 +220,20 @@ test('concurrent opt-ins create one guide and one newsletter trigger',()=>fixtur
  const res=await Promise.all([request('POST',optIn(payload)),request('POST',optIn(payload))]);
  assert.ok(res.every(r=>r.body.newsletterStatus==='confirmation_requested'));assert.equal(writes.length,2);
 },{marketing:true}));
+
+for(const update of [{privacyAcknowledged:undefined},{privacyAcknowledged:false},{privacyAcknowledged:'true'},{privacyAcknowledged:1},{privacyVersion:undefined},{privacyVersion:'old'}])test(`rejects missing or invalid privacy acknowledgement ${JSON.stringify(update)}`,()=>fixture(async({request,payload,writes,calls})=>{
+ const count=calls.length;
+ const res=await request('POST',{...payload,...update,marketingConsent:true,consentVersion:'2026-10-02'});
+ assert.equal(res.code,400);assert.equal(writes.length,0);assert.equal(calls.length,count);
+},{marketing:true}));
+test('privacy acknowledgement is recorded in the guide note without marketing permission',()=>fixture(async({request,payload,writes,contacts})=>{
+ const before=structuredClone(contacts);
+ await request('POST',payload);
+ assert.equal(writes.length,1);assert.deepEqual(contacts,before);
+ const body=writes[0].payload.task.body;
+ assert.match(body,/Pflicht-Checkbox aktiv bestätigt.*2026-10-02-v1/);
+ assert.match(body,/Ich habe die Datenschutzerklärung zur Kenntnis genommen/);
+ assert.match(body,/https:\/\/sls.de\/datenschutz\//);
+ assert.match(body,/keine Newsletter-Einwilligung/);
+ assert.equal(writes[0].payload.task.note_type_id,741093);
+}));

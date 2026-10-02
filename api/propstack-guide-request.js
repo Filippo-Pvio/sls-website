@@ -1,5 +1,5 @@
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
-import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION} from '../lib/guide-consent.mjs';
+import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION, GUIDE_PRIVACY_ACK_VERSION, GUIDE_PRIVACY_ACK_TEXT, GUIDE_PRIVACY_URL} from '../lib/guide-consent.mjs';
 import {newsletterConfig, requestNewsletter} from '../lib/guide-newsletter.mjs';
 
 const GUIDE = 'VERKAUF';
@@ -155,7 +155,9 @@ async function recordRequest(key, email, firstName, lastName, categoryId, reques
         `Einwilligungstext (Version ${GUIDE_MARKETING_CONSENT_VERSION}): ${escapeHtml(GUIDE_MARKETING_CONSENT_TEXT)}`,
         ...(needsReview ? ['Auch die Newsletter-Anmeldung bleibt bis zur Klärung der Namensabweichung zurückgestellt.'] : [])
       ] : ['Freiwillige Marketing-Checkbox: nicht aktiviert. Keine neue Werbeeinwilligung; bestehende Einstellungen bleiben unverändert.']),
-      'Datenschutzhinweis im Formular: Ratgeberanforderung, Version 2026-10-02.',
+      `Pflicht-Checkbox aktiv bestätigt (Kenntnisnahme, Version ${GUIDE_PRIVACY_ACK_VERSION}): ${escapeHtml(GUIDE_PRIVACY_ACK_TEXT)}`,
+      `Datenschutzerklärung: ${GUIDE_PRIVACY_URL}`,
+      'Die Kenntnisnahme bezieht sich auf die Ratgeberanforderung. Sie ist keine Newsletter-Einwilligung und erteilt keine allgemeine Kontakterlaubnis. Bestehende Kontakt- und DSGVO-Einstellungen bleiben unverändert.',
       marker
     ].join('<br>')
   }});
@@ -195,7 +197,10 @@ export default async function handler(req, res) {
   if (!req.headers?.['content-type']?.startsWith('application/json') || !req.body || typeof req.body !== 'object' || JSON.stringify(req.body).length > 3000) {
     return res.status(400).json({error:'Ungültige Anfrage.'});
   }
-  const {guide, email:rawEmail, firstName:rawFirstName, lastName:rawLastName, token, website, marketingConsent = false, consentVersion} = req.body;
+  const {guide, email:rawEmail, firstName:rawFirstName, lastName:rawLastName, token, website, marketingConsent = false, consentVersion, privacyAcknowledged, privacyVersion} = req.body;
+  if (privacyAcknowledged !== true || privacyVersion !== GUIDE_PRIVACY_ACK_VERSION) {
+    return res.status(400).json({error:'Bitte bestätigen Sie die Kenntnisnahme der Datenschutzerklärung. Falls das Formular länger geöffnet war, laden Sie die Seite erneut.'});
+  }
   if (typeof marketingConsent !== 'boolean' || (marketingConsent && consentVersion !== GUIDE_MARKETING_CONSENT_VERSION)) {
     return res.status(400).json({error:'Bitte laden Sie das Formular erneut, um Ihre Newsletter-Auswahl zu bestätigen.'});
   }
