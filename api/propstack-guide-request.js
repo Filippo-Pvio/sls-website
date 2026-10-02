@@ -7,7 +7,7 @@ const NOTE = 'SLS_RATGEBER_VERKAUF_ANGEFORDERT';
 const TITLE = 'Immobilie verkaufen. Mit einem guten Gefühl.';
 const received = 'Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.';
 const REVIEW = 'SLS_RATGEBER_VERKAUF_PRUEFUNG';
-const reviewMessage = 'Ihre Anforderung wurde gespeichert. Wir konnten Ihre Angaben jedoch nicht eindeutig zuordnen. Bitte prüfen Sie Ihren Vor- und Nachnamen sowie Ihre E-Mail-Adresse. Sind die Angaben korrekt, kontaktieren Sie uns bitte kurz zur Klärung.';
+const reviewMessage = 'Ihre Anforderung wurde gespeichert. Wir konnten Ihre Angaben jedoch nicht eindeutig zuordnen. Bitte prüfen Sie Ihre Anrede, Ihren Vor- und Nachnamen sowie Ihre E-Mail-Adresse. Sind die Angaben korrekt, kontaktieren Sie uns bitte kurz zur Klärung.';
 const normaliseName = value => String(value || '').normalize('NFC').trim().replace(/\s+/gu, ' ').toLocaleLowerCase('de-DE');
 const normalise = value => String(value || '').trim().toLowerCase();
 const validId = value => Number.isSafeInteger(Number(value)) && Number(value) > 0;
@@ -22,18 +22,18 @@ function rows(result) {
   throw new Error('Unexpected Propstack list response');
 }
 
-async function propstack(path, key, payload) {
+async function propstack(path, key, payload, method = payload ? 'POST' : 'GET') {
   const response = await fetch(`https://api.propstack.de/v1/${path}`, {
-    method: payload ? 'POST' : 'GET',
+    method,
     headers: {'X-API-KEY':key, ...(payload ? {'Content-Type':'application/json'} : {})},
     ...(payload ? {body:JSON.stringify(payload)} : {}),
     signal:AbortSignal.timeout(10000)
   });
   if (!response.ok) {
     const detail = await response.text();
-    const fields = ['first_name','last_name','email','name','client','note_type_id'].filter(field => new RegExp(`\\b${field}\\b`, 'i').test(detail));
+    const fields = ['first_name','last_name','email','name','client','note_type_id','salutation'].filter(field => new RegExp(`\\b${field}\\b`, 'i').test(detail));
     // Only endpoint, status and known field names; never log response values or contact details.
-    throw new Error(`Propstack ${payload ? 'POST' : 'GET'} ${path.split('?')[0].replace(/\/\d+/g, '/:id')} failed (${response.status}); validation fields: ${fields.join(',') || 'unspecified'}`);
+    throw new Error(`Propstack ${method} ${path.split('?')[0].replace(/\/\d+/g, '/:id')} failed (${response.status}); validation fields: ${fields.join(',') || 'unspecified'}`);
   }
   return response.json();
 }
@@ -87,7 +87,7 @@ function limited(req, key) {
   return entry.count > 8;
 }
 
-async function recordRequest(key, email, firstName, lastName, categoryId, requestId, marketingConsent = false) {
+async function recordRequest(key, email, firstName, lastName, salutation, categoryId, requestId, marketingConsent = false) {
   const query = new URLSearchParams({email, archived:'-1', with_meta:'1', per:'100'});
   const contacts = rows(await propstack(`contacts?${query}`, key));
   // A secondary/shared email must not trigger delivery to a different primary address.
@@ -97,19 +97,31 @@ async function recordRequest(key, email, firstName, lastName, categoryId, reques
   let contactId = Number(contacts[0]?.id);
   if (!contacts.length) {
     // Existing contacts are reused above. Supply names only for a new contact; never change consent fields.
-    const contact = await propstack('contacts', key, {client:{email, first_name:firstName, last_name:lastName}});
+    const contact = await propstack('contacts', key, {client:{email, first_name:firstName, last_name:lastName, salutation}});
     contactId = Number(contact.id);
   }
   if (!validId(contactId)) throw new Error('Contact ID missing');
-  const verified = await propstack(`contacts/${contactId}`, key);
+  let verified = await propstack(`contacts/${contactId}`, key);
   if (Number(verified.id) !== contactId || normalise(verified.email) !== email) throw new Error('Contact verification failed');
 
-  const needsReview = !normaliseName(verified.first_name) || !normaliseName(verified.last_name)
+  let needsReview = !normaliseName(verified.first_name) || !normaliseName(verified.last_name)
     || normaliseName(verified.first_name) !== normaliseName(firstName)
     || normaliseName(verified.last_name) !== normaliseName(lastName);
+  const storedSalutation = normalise(verified.salutation);
+  needsReview ||= Boolean(storedSalutation && storedSalutation !== salutation);
+  if (!needsReview && !storedSalutation) {
+    // Only fill a missing salutation for a uniquely matched person. Never patch names,
+    // consent, or an existing conflicting salutation based on an unauthenticated form.
+    await propstack(`contacts/${contactId}`, key, {client:{salutation}}, 'PUT');
+    verified = await propstack(`contacts/${contactId}`, key);
+    if (Number(verified.id) !== contactId || normalise(verified.email) !== email
+      || normaliseName(verified.first_name) !== normaliseName(firstName)
+      || normaliseName(verified.last_name) !== normaliseName(lastName)
+      || normalise(verified.salutation) !== salutation) throw new Error('Contact salutation verification failed');
+  }
   const outcome = needsReview ? 'review_required' : 'recorded';
   // Separate review notes have no dispatch category. Never overwrite a contact to force a match.
-  const fingerprint = sign(JSON.stringify([email, normaliseName(firstName), normaliseName(lastName), outcome, needsReview && marketingConsent]), key);
+  const fingerprint = sign(JSON.stringify([email, normaliseName(firstName), normaliseName(lastName), salutation, outcome, needsReview && marketingConsent]), key);
   const activityQuery = new URLSearchParams({client_id:String(contactId), item_type:'note', expand:'1', order:'desc', per:'100'});
   if (!needsReview) activityQuery.set('category_id', String(categoryId));
   const activities = rows(await propstack(`activities?${activityQuery}`, key));
@@ -139,12 +151,13 @@ async function recordRequest(key, email, firstName, lastName, categoryId, reques
       '<strong>Ratgeberanforderung über die SLS Website</strong>',
       ...(needsReview ? [
         '<strong>PRÜFUNG ERFORDERLICH – KEIN VERSAND FREIGEGEBEN</strong>',
-        'Die angegebenen Namen stimmen nicht eindeutig mit dem vorhandenen Kontakt überein. Kontakt unverändert. Keine Versand-Triggernotiz angelegt.',
-        'Vor personalisiertem Versand Angaben mit der anfordernden Person klären. Danach Kontakt und neuere Anforderungen prüfen, gegebenenfalls Namen manuell berichtigen und Versand einmalig freigeben. Diese Prüfnotiz allein darf keinen Versand auslösen.',
+        'Anrede oder Namen stimmen nicht eindeutig mit dem vorhandenen Kontakt überein. Kontakt unverändert. Keine Versand-Triggernotiz angelegt.',
+        'Vor personalisiertem Versand Angaben mit der anfordernden Person klären. Danach Kontakt und neuere Anforderungen prüfen, gegebenenfalls Anrede oder Namen manuell berichtigen und Versand einmalig freigeben. Diese Prüfnotiz allein darf keinen Versand auslösen.',
         reviewMarker
       ] : []),
       `Ratgeber: ${TITLE}`,
       'Datei: SLS-Immobilie-verkaufen.pdf · Ausgabe Oktober 2026',
+      `Angegebene Anrede: ${salutation === 'mr' ? 'Herr' : 'Frau'}`,
       `Angegebener Name: ${escapeHtml(firstName)} ${escapeHtml(lastName)}`,
       `E-Mail für den angeforderten Versand: ${escapeHtml(email)}`,
       `Eingang: ${new Date().toISOString()}`,
@@ -197,13 +210,14 @@ export default async function handler(req, res) {
   if (!req.headers?.['content-type']?.startsWith('application/json') || !req.body || typeof req.body !== 'object' || JSON.stringify(req.body).length > 3000) {
     return res.status(400).json({error:'Ungültige Anfrage.'});
   }
-  const {guide, email:rawEmail, firstName:rawFirstName, lastName:rawLastName, token, website, marketingConsent = false, consentVersion, privacyAcknowledged, privacyVersion} = req.body;
+  const {guide, salutation, email:rawEmail, firstName:rawFirstName, lastName:rawLastName, token, website, marketingConsent = false, consentVersion, privacyAcknowledged, privacyVersion} = req.body;
   if (privacyAcknowledged !== true || privacyVersion !== GUIDE_PRIVACY_ACK_VERSION) {
     return res.status(400).json({error:'Bitte bestätigen Sie die Kenntnisnahme der Datenschutzerklärung. Falls das Formular länger geöffnet war, laden Sie die Seite erneut.'});
   }
   if (typeof marketingConsent !== 'boolean' || (marketingConsent && consentVersion !== GUIDE_MARKETING_CONSENT_VERSION)) {
     return res.status(400).json({error:'Bitte laden Sie das Formular erneut, um Ihre Newsletter-Auswahl zu bestätigen.'});
   }
+  if (!['mr','ms'].includes(salutation)) return res.status(400).json({error:'Bitte wählen Sie Ihre Anrede aus.'});
   const firstName = typeof rawFirstName === 'string' ? rawFirstName.trim() : '';
   const lastName = typeof rawLastName === 'string' ? rawLastName.trim() : '';
   if (!firstName || !lastName || firstName.length > 100 || lastName.length > 100 || /[\x00-\x1f\x7f]/.test(firstName + lastName)) {
@@ -225,11 +239,11 @@ export default async function handler(req, res) {
   const previous = pending.get(lock);
   const work = (async () => {
     if (previous) await previous.catch(() => {});
-    const result = await recordRequest(key, email, firstName, lastName, await noteType(key), requestId, marketingConsent);
+    const result = await recordRequest(key, email, firstName, lastName, salutation, await noteType(key), requestId, marketingConsent);
     let newsletterStatus = marketingConsent ? 'review_required' : 'not_requested';
     if (marketingConsent && result.outcome === 'recorded') {
       try {
-        newsletterStatus = await requestNewsletter({key, contactId:result.contactId, email, firstName, lastName, requestId, config:marketingConfig, propstack});
+        newsletterStatus = await requestNewsletter({key, contactId:result.contactId, email, firstName, lastName, salutation, requestId, config:marketingConfig, propstack});
       } catch (error) {
         console.error('Newsletter confirmation request needs checking:', error.message);
         // Guide dispatch was already recorded. Do not present a total failure or encourage resending it.

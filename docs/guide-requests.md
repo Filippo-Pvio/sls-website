@@ -98,3 +98,13 @@ Der Newslettertext wurde auf Version `2026-10-02-v2` gekürzt. Unternehmen, E-Ma
 Layout: feste 20px-Checkbox-Spalte, vollständige Rücksetzung der globalen 52px-Mindesthöhe und Eingabefeld-Abstände, Textausrichtung an der ersten Zeile und kompaktere Abstände. Datenschutzlink bleibt sichtbar. Kein Ausblenden notwendiger Einwilligungsangaben hinter einem Aufklappbereich.
 
 Referenz: Datenschutzkonferenz, Orientierungshilfe Direktwerbung (Februar 2022), Abschnitte 3.1, 3.3 und 3.4: https://www.datenschutzkonferenz-online.de/media/oh/OH-Werbung_Februar%202022_final.pdf . Das ist keine rechtliche Gesamtfreigabe: Datenschutzerklärung, tatsächliches Bestätigungsformular, Nachweis und Widerrufsprozess müssen zum Ablauf passen.
+
+## Anrede für personalisierte Propstack-Mails
+
+Das Ratgeberformular enthält die Pflichtauswahl Anrede vor den Namen, zunächst „Bitte wählen“. Herr wird als `salutation=mr`, Frau als `salutation=ms` übergeben. Die API akzeptiert nur diese Werte und prüft sie vor Kontaktänderungen.
+
+Neue Kontakte werden mit Anrede, Vorname, Nachname und E-Mail angelegt. Bei vorhandenen Kontakten mit eindeutig passender primärer E-Mail und Namen wird ausschließlich eine fehlende Anrede per PUT /contacts/:id ergänzt. Anschließend werden ID, E-Mail, Namen und Anrede erneut gelesen und geprüft, bevor Versandnotizen entstehen. Stimmen vorhandene Anrede oder Namen nicht überein, bleibt der Kontakt unverändert und eine Prüfnotiz ohne Versandkategorie wird angelegt. Newsletter-, Kontakt- und DSGVO-Felder werden nicht geschrieben.
+
+Die ausgewählte Anrede steht zusätzlich in der Ratgeber-/Prüfnotiz und DOI-Notiz. Propstack-Mailvorlagen müssen die dynamische Anrede (z. B. {{ anrede }}) verwenden, damit sie die gespeicherte Angabe berücksichtigen. Ein fest geschriebener Gruß wird durch dieses Website-Update nicht ersetzt. Tatsächliche Personalisierung und API-Schreibrechte für das Ergänzen bestehender Kontakte bleiben im realen Ablauf zu prüfen.
+
+API-Referenz: https://docs.propstack.de/reference/kontakte (salutation mr/ms, PUT /contacts/:id).

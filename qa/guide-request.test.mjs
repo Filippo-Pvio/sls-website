@@ -13,7 +13,7 @@ async function fixture(run,options={}) {
  delete process.env.PROPSTACK_INQUIRY_API_KEY;delete process.env.PROPSTACK_GUIDES_API_KEY;
  for(const name of names.slice(5)) delete process.env[name];
  Date.now=()=>now;
- const email=`${randomUUID()}@example.org`,writes=[],activities=[],contacts=options.newContact?[]:[{id:12,email,first_name:options.firstName ?? 'Anna',last_name:options.lastName ?? 'Muster'}];
+ const email=`${randomUUID()}@example.org`,writes=[],activities=[],contacts=options.newContact?[]:[{id:12,email,salutation:options.salutation===undefined?'ms':options.salutation,first_name:options.firstName ?? 'Anna',last_name:options.lastName ?? 'Muster'}];
  const calls=[];
  global.fetch=async(url,init)=>{
   const parsed=new URL(url),path=parsed.pathname.replace('/v1/','');calls.push(path);
@@ -24,6 +24,11 @@ async function fixture(run,options={}) {
   else if(path==='contacts'&&init.method==='GET')data={data:options.conflict?[{id:12,email:'different@example.org'}]:contacts};
   else if(path==='contacts'&&init.method==='POST'){
    const payload=JSON.parse(init.body);writes.push({path,payload});contacts.push({id:12,...payload.client});data={id:12};
+  }
+  else if(path==='contacts/12'&&init.method==='PUT'){
+   const payload=JSON.parse(init.body);writes.push({path,payload,method:init.method});
+   if(!options.ignoredUpdate) Object.assign(contacts[0],payload.client);
+   data=contacts[0];
   }
   else if(path==='contacts/12')data=contacts[0];
   else if(path==='activities'){
@@ -51,7 +56,7 @@ async function fixture(run,options={}) {
  };
  try{
   const ready=await request('GET');now+=2000;
-  const payload={guide:'VERKAUF',email,firstName:'Anna',lastName:'Muster',token:ready.body.token,website:'',privacyAcknowledged:true,privacyVersion:'2026-10-02-v1'};
+  const payload={salutation:'ms',guide:'VERKAUF',email,firstName:'Anna',lastName:'Muster',token:ready.body.token,website:'',privacyAcknowledged:true,privacyVersion:'2026-10-02-v1'};
   await run({request,ready,payload,writes,activities,calls,contacts,advance:ms=>now+=ms});
  }finally{global.fetch=oldFetch;Date.now=oldNow;names.forEach((n,i)=>before[i]===undefined?delete process.env[n]:process.env[n]=before[i]);}
 }
@@ -68,7 +73,7 @@ test('records approved guide note for existing contact, exposes no CRM IDs, leav
 }));
 test('new contact contains names and email without marketing flags',()=>fixture(async({request,payload,writes})=>{
  assert.equal((await request('POST',payload)).code,200);
- assert.deepEqual(writes[0],{path:'contacts',payload:{client:{email:payload.email,first_name:payload.firstName,last_name:payload.lastName}}});assert.equal(writes.length,2);
+ assert.deepEqual(writes[0],{path:'contacts',payload:{client:{email:payload.email,first_name:payload.firstName,last_name:payload.lastName,salutation:payload.salutation}}});assert.equal(writes.length,2);
 },{newContact:true}));
 test('double-click and later retry do not create additional notes',()=>fixture(async({request,payload,writes})=>{
  const results=await Promise.all([request('POST',payload),request('POST',payload)]);
@@ -237,3 +242,31 @@ test('privacy acknowledgement is recorded in the guide note without marketing pe
  assert.match(body,/keine Newsletter-Einwilligung/);
  assert.equal(writes[0].payload.task.note_type_id,741093);
 }));
+
+for(const salutation of [undefined,null,'','Herr','other',true])test(`invalid salutation ${salutation} cannot write contacts or trigger notes`,()=>fixture(async({request,payload,writes})=>{
+ const result=await request('POST',{...payload,salutation});assert.equal(result.code,400);assert.equal(writes.length,0);
+}));
+test('missing salutation is updated and verified before dispatch, without changing any other field',()=>fixture(async({request,payload,writes,contacts,calls})=>{
+ contacts[0].newsletter=false;contacts[0].accept_contact=false;const before=structuredClone(contacts[0]);
+ const res=await request('POST',payload);assert.equal(res.body.status,'recorded');
+ assert.deepEqual(writes[0],{path:'contacts/12',method:'PUT',payload:{client:{salutation:'ms'}}});
+ assert.equal(writes[1].payload.task.note_type_id,741093);
+ assert.deepEqual(contacts[0],{...before,salutation:'ms'});
+ assert.equal(calls.filter(p=>p==='contacts/12').length,3);
+ assert.match(writes[1].payload.task.body,/Angegebene Anrede: Frau/);
+},{salutation:null}));
+test('salutation conflict creates review note only, with no contact change or DOI',()=>fixture(async({request,payload,writes,contacts})=>{
+ const before=structuredClone(contacts);
+ const res=await request('POST',optIn(payload));assert.equal(res.body.status,'review_required');
+ assert.deepEqual(contacts,before);assert.equal(writes.length,1);assert.equal(writes[0].payload.task.note_type_id,undefined);
+ assert.match(writes[0].payload.task.body,/Anrede oder Namen/);
+},{salutation:'mr',marketing:true}));
+test('name conflict cannot fill even a missing salutation',()=>fixture(async({request,payload,writes,contacts})=>{
+ const before=structuredClone(contacts);
+ const res=await request('POST',{...payload,firstName:'Andere'});assert.equal(res.body.status,'review_required');
+ assert.deepEqual(contacts,before);assert.equal(writes.length,1);assert.equal(writes[0].path,'tasks');
+},{salutation:null}));
+test('unconfirmed salutation update cannot trigger guide or DOI mail',()=>fixture(async({request,payload,writes})=>{
+ const res=await request('POST',optIn(payload));assert.equal(res.code,502);
+ assert.equal(writes.length,1);assert.equal(writes[0].method,'PUT');
+},{salutation:null,ignoredUpdate:true,marketing:true}));
