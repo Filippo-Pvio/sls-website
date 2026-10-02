@@ -9,7 +9,10 @@
   const root = host.attachShadow({ mode: 'open' });
   root.innerHTML = `
     <link rel="stylesheet" href="/assets/sia-widget.css">
-    <button class="launch" type="button" aria-haspopup="dialog" aria-expanded="false"><strong>SIA</strong><span>fragen</span></button>
+    <div class="quickbar" role="group" aria-label="SLS Schnellkontakt">
+      <button class="launch" type="button" aria-haspopup="dialog" aria-expanded="false"><strong>SIA</strong><span class="launch-label">fragen</span></button>
+      <a class="quick-call" href="tel:+4923697428020" aria-label="SLS telefonisch anrufen"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.91.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></a>
+    </div>
     <dialog aria-labelledby="sia-title">
       <header><span class="brand" aria-hidden="true">SIA</span><div class="identity"><h2 id="sia-title"><b>S</b>LS <b>I</b>mmobilien <b>A</b>ssistenz</h2><span class="sub">KI-ASSISTENZ</span></div><button class="close" type="button" aria-label="SIA schließen" autofocus>×</button></header>
       <div class="content">
@@ -24,6 +27,18 @@
   document.body.append(host);
   const $ = s => root.querySelector(s);
   const dialog = $('dialog'), launch = $('.launch'), field = $('textarea'), status = $('.status');
+  const quickbar = $('.quickbar');
+  let compactTimer = 0;
+  const compactQuickbar = () => {
+    quickbar?.classList.add('is-compact');
+    try { sessionStorage.setItem('sls-sia-quickbar-seen', '1'); } catch {}
+  };
+  try {
+    if (sessionStorage.getItem('sls-sia-quickbar-seen') === '1') quickbar?.classList.add('is-compact');
+    else compactTimer = window.setTimeout(compactQuickbar, 3200);
+  } catch {
+    compactTimer = window.setTimeout(compactQuickbar, 3200);
+  }
   let busy = false;
   let viewportFrame = 0;
   let restorePage = null;
@@ -65,7 +80,10 @@
       if (dialog.open) updateViewport();
     });
   }
-  launch.addEventListener('click', () => {
+  const openSia = () => {
+    window.clearTimeout(compactTimer);
+    compactQuickbar();
+    if (dialog.open) return;
     lockPage();
     updateViewport();
     dialog.showModal();
@@ -74,7 +92,13 @@
     window.visualViewport?.addEventListener('resize', scheduleViewportUpdate);
     window.visualViewport?.addEventListener('scroll', scheduleViewportUpdate);
     window.addEventListener('resize', scheduleViewportUpdate);
-  });
+  };
+  launch.addEventListener('click', openSia);
+  window.addEventListener('sls:sia-open', openSia);
+  if (window.__slsSiaOpenRequested) {
+    window.__slsSiaOpenRequested = false;
+    openSia();
+  }
   dialog.addEventListener('focusin', scheduleViewportUpdate);
   dialog.addEventListener('focusout', scheduleViewportUpdate);
   $('.close').addEventListener('click', () => dialog.close());
