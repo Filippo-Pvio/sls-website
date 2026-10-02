@@ -61,13 +61,17 @@ const mobileNavGroups = [
   { ...navGroups[3], mobileLabel: "Über SLS" }
 ];
 
-const overlaySections = mobileNavGroups.map((group) => {
+const overlaySections = mobileNavGroups.map((group, index) => {
+  const panelId = `mobile-nav-panel-${index}`;
   const links = group.items.map(([label, href]) =>
     `<a class="overlay-sub-link" href="${href}">${label}</a>`
   ).join("");
   return `<section class="overlay-nav-section">
-    <a class="overlay-main-link" href="${group.href}">${group.mobileLabel || group.label}</a>
-    <div class="overlay-subgrid">${links}</div>
+    <button class="overlay-main-toggle" type="button" aria-expanded="false" aria-controls="${panelId}">
+      <span>${group.mobileLabel || group.label}</span>
+      <span class="overlay-main-toggle-icon" aria-hidden="true">+</span>
+    </button>
+    <div class="overlay-subgrid" id="${panelId}" hidden>${links}</div>
   </section>`;
 }).join("");
 
@@ -96,6 +100,7 @@ document.querySelector("[data-site-header]").innerHTML = `
       <div class="fullscreen-nav-top">
         <button class="offcanvas-close" type="button" data-nav-close aria-label="Menü schließen">${icon("close")}</button>
       </div>
+      <a class="offcanvas-valuation-cta" href="/immobilienbewertung/">Immobilie kostenlos bewerten</a>
       <p class="offcanvas-intro">Womit können wir helfen?</p>
       <div class="fullscreen-nav-grid">${overlaySections}</div>
       <div class="fullscreen-nav-bottom">
@@ -195,6 +200,19 @@ const setMenu = (open, returnFocus = false) => {
 };
 
 toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
+
+nav.querySelectorAll(".overlay-main-toggle").forEach((button) => {
+  button.addEventListener("click", () => {
+    const willOpen = button.getAttribute("aria-expanded") !== "true";
+    nav.querySelectorAll(".overlay-main-toggle").forEach((other) => {
+      const panel = document.getElementById(other.getAttribute("aria-controls"));
+      const open = other === button && willOpen;
+      other.setAttribute("aria-expanded", String(open));
+      other.querySelector(".overlay-main-toggle-icon").textContent = open ? "−" : "+";
+      if (panel) panel.hidden = !open;
+    });
+  });
+});
 
 
 nav.addEventListener("click", (event) => {
