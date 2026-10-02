@@ -5,17 +5,25 @@ import { runInNewContext } from 'node:vm';
 
 const code = await readFile(new URL('../assets/sia-widget.js', import.meta.url), 'utf8');
 
-async function fixture(withViewport = true) {
+async function fixture(withViewport = true, mobile = true) {
   function element() {
-    const listeners = new Map(), properties = new Map(), attributes = new Map();
+    const listeners = new Map(), properties = new Map(), priorities = new Map(), attributes = new Map();
     return {
       listeners, properties, attributes, focusCalls: [], value: '', scrollTop: 0,
       addEventListener(type, fn) { if (!listeners.has(type)) listeners.set(type, new Set()); listeners.get(type).add(fn); },
       removeEventListener(type, fn) { listeners.get(type)?.delete(fn); },
       emit(type) { listeners.get(type)?.forEach(fn => fn()); },
       setAttribute(name, value) { attributes.set(name, value); },
+      removeAttribute(name) { attributes.delete(name); },
+      toggleAttribute(name, enabled) { if (enabled) attributes.set(name, ''); else attributes.delete(name); },
+      replaceChildren() {},
       focus(options) { this.focusCalls.push(options); },
-      style: { setProperty(name, value) { properties.set(name, value); } },
+      style: {
+        setProperty(name, value, priority = '') { properties.set(name, value); priorities.set(name, priority); },
+        getPropertyValue(name) { return properties.get(name) ?? ''; },
+        getPropertyPriority(name) { return priorities.get(name) ?? ''; },
+        removeProperty(name) { properties.delete(name); priorities.delete(name); },
+      },
       showModal() { this.open = true; },
       close() { this.open = false; this.emit('close'); },
     };
@@ -23,20 +31,24 @@ async function fixture(withViewport = true) {
   const nodes = new Map(), suggestions = [element(), element()];
   const get = selector => { if (!nodes.has(selector)) nodes.set(selector, element()); return nodes.get(selector); };
   const root = { innerHTML: '', querySelector: get, querySelectorAll: () => suggestions };
-  const frames = new Map(); let id = 0;
+  const frames = new Map(), scrollCalls = []; let id = 0;
+  const body = Object.assign(element(), { append() {} });
   const viewport = Object.assign(element(), { height: 780, offsetTop: 0 });
   const window = Object.assign(element(), {
-    innerHeight: 780,
+    innerHeight: 780, scrollX: 0, scrollY: 1250,
+    matchMedia: () => ({ matches: mobile }),
+    scrollTo(options) { scrollCalls.push(options); },
     visualViewport: withViewport ? viewport : undefined,
     requestAnimationFrame(fn) { frames.set(++id, fn); return id; },
     cancelAnimationFrame(id) { frames.delete(id); },
   });
   await runInNewContext(code, {
     window,
-    document: { querySelector: () => null, createElement: () => ({ attachShadow: () => root }), body: { append() {} } },
-    fetch: async () => ({ ok: true, json: async () => ({ enabled: true }) }),
+    document: { querySelector: () => null, createElement: () => ({ attachShadow: () => root }), body },
+    fetch: async url => ({ ok: true, json: async () => url === '/api/sia-config' ? { enabled: true } : { provider: 'OpenAI', answer: 'Antwort', sources: [] } }),
+    AbortController, setTimeout, clearTimeout,
   });
-  return { get, root, suggestions, viewport, window, frames, flush() { for (const [key, fn] of frames) { frames.delete(key); fn(); } } };
+  return { get, root, body, scrollCalls, suggestions, viewport, window, frames, flush() { for (const [key, fn] of frames) { frames.delete(key); fn(); } } };
 }
 
 test('opening SIA never focuses the input; closing restores the launcher without scrolling', async () => {
@@ -86,4 +98,55 @@ test('viewport fallback supports resizing and suggestions still allow intentiona
   assert.match(f.get('textarea').value, /Mietwohnung/);
   assert.equal(f.get('textarea').focusCalls.length, 1);
   assert.equal(f.get('textarea').focusCalls[0].preventScroll, true);
+});
+
+
+test('mobile dialog locks the background at its current scroll position and restores existing styles on close', async () => {
+  const f = await fixture();
+  f.body.style.setProperty('overflow', 'clip', 'important');
+  f.body.style.setProperty('color', 'red');
+  f.get('.launch').emit('click');
+  assert.equal(f.body.properties.get('position'), 'fixed');
+  assert.equal(f.body.properties.get('top'), '-1250px');
+  f.root.activeElement = f.get('textarea');
+  f.viewport.height = 360;
+  f.get('dialog').emit('focusin'); f.viewport.emit('resize'); f.flush();
+  assert.equal(f.get('dialog').attributes.has('data-keyboard-open'), true);
+  assert.equal(f.get('dialog').attributes.has('data-compact'), true);
+  assert.equal(f.body.properties.get('top'), '-1250px');
+  f.get('dialog').close();
+  assert.equal(f.body.properties.has('position'), false);
+  assert.equal(f.body.properties.has('top'), false);
+  assert.equal(f.body.properties.get('overflow'), 'clip');
+  assert.equal(f.body.style.getPropertyPriority('overflow'), 'important');
+  assert.equal(f.body.properties.get('color'), 'red');
+  assert.equal(f.scrollCalls.at(-1).top, 1250);
+  assert.equal(f.scrollCalls.at(-1).behavior, 'instant');
+  f.root.activeElement = null; f.viewport.height = 780;
+  f.get('.launch').emit('click');
+  assert.equal(f.get('dialog').attributes.has('data-keyboard-open'), false);
+  assert.equal(f.get('dialog').attributes.has('data-compact'), false);
+});
+
+test('desktop dialog does not change the page scroll position or body styles', async () => {
+  const f = await fixture(true, false);
+  f.get('.launch').emit('click');
+  assert.equal(f.body.properties.size, 0);
+  f.get('dialog').close();
+  assert.equal(f.scrollCalls.length, 0);
+});
+
+
+test('an arriving answer keeps keyboard focus and a follow-up draft intact', async () => {
+  const f = await fixture();
+  f.get('.launch').emit('click');
+  f.get('textarea').value = 'Was kostet der Verkauf?';
+  const submit = [...f.get('form').listeners.get('submit')][0];
+  const response = submit({ preventDefault() {} });
+  f.root.activeElement = f.get('textarea');
+  f.get('textarea').value = 'Und welche Unterlagen brauche ich?';
+  await response;
+  assert.equal(f.get('.answer').textContent, 'Antwort');
+  assert.equal(f.get('.result').focusCalls.length, 0);
+  assert.equal(f.get('textarea').value, 'Und welche Unterlagen brauche ich?');
 });

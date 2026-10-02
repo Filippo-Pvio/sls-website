@@ -26,11 +26,36 @@
   const dialog = $('dialog'), launch = $('.launch'), field = $('textarea'), status = $('.status');
   let busy = false;
   let viewportFrame = 0;
+  let restorePage = null;
+  const mobileLayout = window.matchMedia('(max-width: 600px), (hover: none) and (pointer: coarse)');
+  function lockPage() {
+    if (restorePage || !mobileLayout.matches) return;
+    const { scrollX, scrollY } = window;
+    const style = document.body.style;
+    const properties = ['position', 'top', 'left', 'width', 'overflow'];
+    const saved = properties.map(name => [name, style.getPropertyValue(name), style.getPropertyPriority(name)]);
+    // Keep Safari from scrolling the underlying page to centre the focused input.
+    style.setProperty('position', 'fixed');
+    style.setProperty('top', `${-scrollY}px`);
+    style.setProperty('left', `${-scrollX}px`);
+    style.setProperty('width', '100%');
+    style.setProperty('overflow', 'hidden');
+    restorePage = () => {
+      for (const [name, value, priority] of saved) {
+        if (value) style.setProperty(name, value, priority);
+        else style.removeProperty(name);
+      }
+      window.scrollTo({ left: scrollX, top: scrollY, behavior: 'instant' });
+      restorePage = null;
+    };
+  }
   // Mobile keyboards resize/pan the visual viewport independently of the page.
   function updateViewport() {
     const viewport = window.visualViewport;
     dialog.style.setProperty('--sia-viewport-height', `${viewport?.height ?? window.innerHeight}px`);
     dialog.style.setProperty('--sia-viewport-top', `${viewport?.offsetTop ?? 0}px`);
+    dialog.toggleAttribute('data-compact', (viewport?.height ?? window.innerHeight) < 500);
+    dialog.toggleAttribute('data-keyboard-open', root.activeElement === field && !!viewport && window.innerHeight - viewport.height > 120);
     dialog.scrollTop = 0;
   }
   function scheduleViewportUpdate() {
@@ -41,6 +66,7 @@
     });
   }
   launch.addEventListener('click', () => {
+    lockPage();
     updateViewport();
     dialog.showModal();
     launch.setAttribute('aria-expanded', 'true');
@@ -49,6 +75,7 @@
     window.visualViewport?.addEventListener('scroll', scheduleViewportUpdate);
     window.addEventListener('resize', scheduleViewportUpdate);
   });
+  dialog.addEventListener('focusin', scheduleViewportUpdate);
   dialog.addEventListener('focusout', scheduleViewportUpdate);
   $('.close').addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => {
@@ -57,6 +84,7 @@
     window.removeEventListener('resize', scheduleViewportUpdate);
     window.cancelAnimationFrame(viewportFrame);
     viewportFrame = 0;
+    restorePage?.();
     launch.setAttribute('aria-expanded', 'false');
     launch.focus({ preventScroll: true });
   });
@@ -92,8 +120,12 @@
       $('.sources').hidden = !data.sources.length; $('.sources').open = false;
       $('.result').hidden = false;
       status.textContent = data.provider === 'OpenAI' ? 'Ihre Antwort ist da.' : 'Die KI-Antwort ist derzeit nicht verfügbar. Hier finden Sie Informationen aus der Wissensbasis.';
-      field.value = '';
-      if (dialog.open) { $('.result').focus({ preventScroll: true }); $('.content').scrollTop = 0; }
+      if (field.value.trim() === question) field.value = '';
+      if (dialog.open) {
+        // An arriving answer must not dismiss the keyboard while someone is typing.
+        if (root.activeElement !== field) $('.result').focus({ preventScroll: true });
+        $('.content').scrollTop = 0;
+      }
     } catch {
       status.textContent = 'SIA konnte gerade keine Antwort abrufen. Bitte versuchen Sie es erneut oder wenden Sie sich persönlich an Ihren SLS Immobilienpartner.';
     } finally {
