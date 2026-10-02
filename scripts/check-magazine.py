@@ -26,3 +26,7 @@ assert all((root/a['slug']/'index.html').exists() for a in articles)
 assert len(json.loads((root/'assets/magazine-search.json').read_text()))==65
 assert not errors,errors
 print('PASS: 83 pages, 65 retained article routes, internal links, images, H1, canonical URLs and structured data')
+for entry in pages:
+ text=(root/entry['path']).read_text()
+ assert not re.search(r'\bSLS\b(?! Immobilienpartner)',text),entry['path']
+print('PASS: full brand name on all magazine pages')

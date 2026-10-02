@@ -14,17 +14,17 @@ const navGroups = [
     ["Immobilienwissen", "/faq/", "Fragen & Antworten rund um Immobilien"],
     ["Ratgeber", "/downloads/", "Wissen für Ihre Verkaufsentscheidung"],
     ["Magazin", "/blog/", "News & Immobilienwissen"],
-    ["SLS Netzwerk", "/netzwerk/", "Fachbetriebe & Ansprechpartner rund um Immobilien"]
+    ["Netzwerk von SLS Immobilienpartner", "/netzwerk/", "Fachbetriebe & Ansprechpartner rund um Immobilien"]
   ]},
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
     ["Unsere Marktgebiete", "/standorte/", "Ruhrgebiet & Rheinland"],
     ["Büro Dorsten", "/immobilienmakler-dorsten/", "Unser Büro im Ruhrgebiet"],
     ["Büro Düsseldorf", "/immobilienmakler-dusseldorf/", "Unser Büro im Rheinland"]
   ]},
-  { label: "Über SLS", href: "/ueber-uns/", kicker: "Unternehmen", items: [
+  { label: "Über uns", href: "/ueber-uns/", kicker: "Unternehmen", items: [
     ["Über uns", "/ueber-uns/", "Wer wir sind und wie wir arbeiten"],
-    ["Team", "/team/", "Ihre Ansprechpartner bei SLS"],
-    ["Werte", "/werte/", "Wofür SLS steht"],
+    ["Team", "/team/", "Ihre Ansprechpartner bei SLS Immobilienpartner"],
+    ["Werte", "/werte/", "Wofür SLS Immobilienpartner steht"],
     ["Karriere", "/karriere/", "Gemeinsam Immobilien neu denken"],
     ["Presse", "/presse/", "Medien & Ansprechpartner"],
     ["Kontakt", "/kontakt/", "Direkt mit uns sprechen"]
@@ -63,7 +63,7 @@ const mobileNavGroups = [
   { ...navGroups[3], mobileLabel: "Standorte" },
   {
     ...navGroups[4],
-    mobileLabel: "Über SLS",
+    mobileLabel: "Über uns",
     items: navGroups[4].items.filter(([label]) => label !== "Kontakt")
   }
 ];
@@ -124,7 +124,7 @@ document.querySelector("[data-site-footer]").innerHTML = `
     </div>
     <div><h2>Eigentümer</h2><a href="/immobilienbewertung/">Immobilienbewertung</a><a href="/verkaufen/">Verkaufen</a><a href="/service/">Service</a><a href="/faq/">Immobilienwissen</a><a href="/referenzen/">Referenzen</a></div>
     <div><h2>Interessenten</h2><a href="/kaufen/">Kaufen</a><a href="/finanzierung/">Finanzierung</a><a href="/immobilien/">Immobilien</a><a href="/downloads/">Ratgeber</a></div>
-    <div><h2>SLS</h2><a href="/ueber-uns/">Über uns</a><a href="/team/">Team</a><a href="/netzwerk/">SLS Netzwerk</a><a href="/standorte/">Standorte</a><a href="/karriere/">Karriere</a><a href="/blog/">Magazin</a></div>
+    <div><h2>SLS Immobilienpartner</h2><a href="/ueber-uns/">Über uns</a><a href="/team/">Team</a><a href="/netzwerk/">Netzwerk von SLS Immobilienpartner</a><a href="/standorte/">Standorte</a><a href="/karriere/">Karriere</a><a href="/blog/">Magazin</a></div>
     <div><h2>Kontakt</h2><a href="tel:+4923697428020">02369 742 80 20</a><a href="mailto:service@sls.de">service@sls.de</a><p>Ubierweg 2 · 46286 Dorsten</p><p>Königsallee 19 · 40213 Düsseldorf</p></div>
   </div>
   <div class="footer-bottom"><span>&copy; 2026 SLS Immobilienpartner GmbH</span><span><a href="https://sls.de/datenschutz/">Datenschutz</a><a href="https://sls.de/impressum/">Impressum</a></span></div>`;
