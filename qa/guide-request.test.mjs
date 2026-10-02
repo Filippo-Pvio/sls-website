@@ -12,7 +12,7 @@ async function fixture(run,options={}) {
  Object.assign(process.env,{VERCEL_ENV:'preview',NODE_ENV:'production',PROPSTACK_API_KEY:'fixture-only'});
  delete process.env.PROPSTACK_INQUIRY_API_KEY;delete process.env.PROPSTACK_GUIDES_API_KEY;
  Date.now=()=>now;
- const email=`${randomUUID()}@example.org`,writes=[],activities=[],contacts=options.newContact?[]:[{id:12,email}];
+ const email=`${randomUUID()}@example.org`,writes=[],activities=[],contacts=options.newContact?[]:[{id:12,email,first_name:options.firstName ?? 'Anna',last_name:options.lastName ?? 'Muster'}];
  const calls=[];
  global.fetch=async(url,init)=>{
   const parsed=new URL(url),path=parsed.pathname.replace('/v1/','');calls.push(path);
@@ -22,17 +22,17 @@ async function fixture(run,options={}) {
   if(path==='activity_types')data={data:options.missingType?[]:[{id:741093,name:NOTE,category:options.wrongType?'reminder':'for_notes'}]};
   else if(path==='contacts'&&init.method==='GET')data={data:options.conflict?[{id:12,email:'different@example.org'}]:contacts};
   else if(path==='contacts'&&init.method==='POST'){
-   const payload=JSON.parse(init.body);writes.push({path,payload});contacts.push({id:12,email:payload.client.email});data={id:12};
+   const payload=JSON.parse(init.body);writes.push({path,payload});contacts.push({id:12,...payload.client});data={id:12};
   }
   else if(path==='contacts/12')data=contacts[0];
   else if(path==='activities'){
-   assert.equal(parsed.searchParams.get('client_id'),'12');assert.equal(parsed.searchParams.get('category_id'),'741093');
+   assert.equal(parsed.searchParams.get('client_id'),'12');assert.ok([null,'741093'].includes(parsed.searchParams.get('category_id')));
    data={data:activities};
   }
   else if(path==='tasks'){
    const payload=JSON.parse(init.body);writes.push({path,payload});
    if(options.timeout){throw new Error('timeout after possible write');}
-   if(!options.missingConfirmation)activities.push({category_id:741093,created_at:new Date(now).toISOString(),activatable:payload.task});
+   if(!options.missingConfirmation)activities.push({category_id:payload.task.note_type_id ?? null,created_at:new Date(now).toISOString(),activatable:payload.task});
    data=options.missingConfirmation?{}:{id:42,activity_id:43};
   }
   else throw new Error(`Unexpected ${path}`);
@@ -46,7 +46,7 @@ async function fixture(run,options={}) {
  try{
   const ready=await request('GET');now+=2000;
   const payload={guide:'VERKAUF',email,firstName:'Anna',lastName:'Muster',token:ready.body.token,website:''};
-  await run({request,ready,payload,writes,activities,calls,advance:ms=>now+=ms});
+  await run({request,ready,payload,writes,activities,calls,contacts,advance:ms=>now+=ms});
  }finally{global.fetch=oldFetch;Date.now=oldNow;names.forEach((n,i)=>before[i]===undefined?delete process.env[n]:process.env[n]=before[i]);}
 }
 
@@ -54,7 +54,7 @@ test('records approved guide note for existing contact, exposes no CRM IDs, leav
  assert.equal(ready.code,200);assert.deepEqual(ready.body.availableGuides,['VERKAUF']);
  const res=await request('POST',payload);
  assert.equal(res.code,200);assert.equal(res.body.ok,true);assert.equal(res.body.deliveryReady,false);
- assert.deepEqual(Object.keys(res.body).sort(),['deliveryReady','message','ok']);
+ assert.deepEqual(Object.keys(res.body).sort(),['deliveryReady','message','ok','status']);
  assert.equal(writes.length,1);const task=writes[0].payload.task;
  assert.equal(task.title,NOTE);assert.equal(task.note_type_id,741093);assert.deepEqual(task.client_ids,[12]);
  assert.match(task.body,/Angegebener Name: Anna Muster/);assert.match(task.body,/Keine Newsletter-Anmeldung/);assert.match(task.body,/SLS-Anforderungs-ID:/);
@@ -102,4 +102,51 @@ test('production is not enabled by the preview implementation',()=>fixture(async
 test('rate limit caps repeated requests',()=>fixture(async({request,payload})=>{
  for(let i=0;i<8;i++)assert.equal((await request('POST',payload)).code,200);
  assert.equal((await request('POST',payload)).code,429);
+}));
+
+test('different name records only a review note, preserves contact, and discloses no stored identity',()=>fixture(async({request,payload,writes,contacts})=>{
+ const before=structuredClone(contacts);
+ const res=await request('POST',{...payload,firstName:'Eva',lastName:'Anders'});
+ assert.equal(res.code,200);assert.equal(res.body.status,'review_required');
+ assert.match(res.body.message,/nicht eindeutig zuordnen/);
+ assert.doesNotMatch(JSON.stringify(res.body),/Anna|Muster|741093|contactId/);
+ assert.deepEqual(contacts,before);assert.equal(writes.length,1);
+ const task=writes[0].payload.task;
+ assert.equal(task.title,'SLS_RATGEBER_VERKAUF_PRUEFUNG');assert.equal(task.note_type_id,undefined);
+ assert.deepEqual(task.client_ids,[12]);assert.match(task.body,/KEIN VERSAND FREIGEGEBEN/);
+ assert.match(task.body,/Eva Anders/);
+}));
+test('case, repeated spaces and canonically equivalent Unicode match',()=>fixture(async({request,payload,writes})=>{
+ const res=await request('POST',{...payload,firstName:'  anna   maria ',lastName:'MU\u0308LLER'});
+ assert.equal(res.body.status,'recorded');assert.equal(writes[0].payload.task.note_type_id,741093);
+},{firstName:'Anna Maria',lastName:'Müller'}));
+test('missing stored names require review',()=>fixture(async({request,payload,writes})=>{
+ assert.equal((await request('POST',payload)).body.status,'review_required');
+ assert.equal(writes[0].payload.task.note_type_id,undefined);
+},{firstName:''}));
+test('a review retry is deduplicated but corrected matching names can create the dispatch note',()=>fixture(async({request,payload,writes})=>{
+ const mismatch={...payload,firstName:'Eva'};
+ await request('POST',mismatch);await request('POST',mismatch);
+ assert.equal(writes.length,1);
+ assert.equal((await request('POST',payload)).body.status,'recorded');
+ assert.equal(writes.length,2);assert.equal(writes[1].payload.task.note_type_id,741093);
+}));
+test('a recent dispatch note cannot hide a different-name request',()=>fixture(async({request,payload,writes})=>{
+ await request('POST',payload);
+ assert.equal((await request('POST',{...payload,lastName:'Anders'})).body.status,'review_required');
+ assert.equal(writes.length,2);assert.equal(writes[1].payload.task.note_type_id,undefined);
+}));
+test('concurrent different names receive their own result',()=>fixture(async({request,payload,writes})=>{
+ const results=await Promise.all([request('POST',{...payload,firstName:'Eva'}),request('POST',payload)]);
+ assert.deepEqual(results.map(r=>r.body.status),['review_required','recorded']);assert.equal(writes.length,2);
+}));
+for(const failure of ['timeout','missingConfirmation'])test(`review ${failure}: cannot report saved or blindly retry`,()=>fixture(async({request,payload,writes})=>{
+ const mismatch={...payload,firstName:'Eva'};
+ assert.equal((await request('POST',mismatch)).code,502);
+ assert.equal((await request('POST',mismatch)).code,502);assert.equal(writes.length,1);
+},{[failure]:true}));
+test('submitted review names are HTML escaped',()=>fixture(async({request,payload,writes})=>{
+ await request('POST',{...payload,firstName:'<script>alert(1)</script>'});
+ assert.doesNotMatch(writes[0].payload.task.body,/<script>/);
+ assert.match(writes[0].payload.task.body,/&lt;script&gt;/);
 }));

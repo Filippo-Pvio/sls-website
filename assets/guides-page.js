@@ -8,6 +8,8 @@
  const email = form.elements.email;
  const firstName = form.elements.firstName;
  const lastName = form.elements.lastName;
+ const reviewActions = document.getElementById('guide-review-actions');
+ const correctButton = document.getElementById('guide-correct');
  const endpoint = '/api/propstack-guide-request';
  let token = null;
  let sending = false;
@@ -21,7 +23,8 @@
   select.value = link.dataset.guide;
   (fields.disabled ? select : firstName).focus({preventScroll:true});
  }));
- async function prepare() {
+ async function prepare(correction = false) {
+  token = null;
   try {
    const response = await fetch(endpoint, {headers:{Accept:'application/json'}, cache:'no-store'});
    const data = await response.json();
@@ -31,13 +34,25 @@
     fields.disabled = false;
     button.disabled = false;
     button.textContent = 'Ratgeber anfordern';
-    message('Der E-Mail-Versand wird derzeit eingerichtet. Sie können Ihre Anforderung bereits hinterlegen.');
+    select.disabled = false;
+    message(correction ? 'Bitte prüfen und korrigieren Sie Ihre Angaben. Senden Sie die Anforderung anschließend erneut ab.' : 'Der E-Mail-Versand wird derzeit eingerichtet. Sie können Ihre Anforderung bereits hinterlegen.');
+    if (correction) {
+     reviewActions.hidden = true;
+     firstName.focus({preventScroll:true});
+    }
    }, 1600);
   } catch (error) {
+   if (correction) correctButton.disabled = false;
    button.textContent = 'Derzeit nicht verfügbar';
    message(error.message || 'Die Ratgeberanforderung ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.', true);
   }
  }
+ correctButton.addEventListener('click', () => {
+  if (sending || completed || correctButton.disabled) return;
+  correctButton.disabled = true;
+  button.textContent = 'Wird vorbereitet …';
+  prepare(true);
+ });
  form.addEventListener('submit', async event => {
   event.preventDefault();
   if (sending || completed || !token || fields.disabled || !form.reportValidity()) return;
@@ -54,6 +69,13 @@
    });
    const data = await response.json();
    if (!response.ok || data.ok !== true) throw new Error(data.error || 'Ihre Anforderung konnte nicht bestätigt werden. Bitte kontaktieren Sie uns direkt.');
+   if (data.status === 'review_required') {
+    reviewActions.hidden = false;
+    correctButton.disabled = false;
+    button.textContent = 'Anforderung zur Prüfung gespeichert';
+    message(data.message);
+    return;
+   }
    completed = true;
    email.value = '';
    firstName.value = '';

@@ -4,6 +4,9 @@ const GUIDE = 'VERKAUF';
 const NOTE = 'SLS_RATGEBER_VERKAUF_ANGEFORDERT';
 const TITLE = 'Immobilie verkaufen. Mit einem guten Gefühl.';
 const received = 'Vielen Dank. Ihre Ratgeberanforderung wurde aufgenommen. Der E-Mail-Versand wird derzeit vorbereitet.';
+const REVIEW = 'SLS_RATGEBER_VERKAUF_PRUEFUNG';
+const reviewMessage = 'Ihre Anforderung wurde gespeichert. Wir konnten Ihre Angaben jedoch nicht eindeutig zuordnen. Bitte prüfen Sie Ihren Vor- und Nachnamen sowie Ihre E-Mail-Adresse. Sind die Angaben korrekt, kontaktieren Sie uns bitte kurz zur Klärung.';
+const normaliseName = value => String(value || '').normalize('NFC').trim().replace(/\s+/gu, ' ').toLocaleLowerCase('de-DE');
 const normalise = value => String(value || '').trim().toLowerCase();
 const validId = value => Number.isSafeInteger(Number(value)) && Number(value) > 0;
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -99,29 +102,45 @@ async function recordRequest(key, email, firstName, lastName, categoryId, reques
   const verified = await propstack(`contacts/${contactId}`, key);
   if (Number(verified.id) !== contactId || normalise(verified.email) !== email) throw new Error('Contact verification failed');
 
-  const activityQuery = new URLSearchParams({client_id:String(contactId), category_id:String(categoryId), item_type:'note', expand:'1', order:'desc', per:'100'});
+  const needsReview = !normaliseName(verified.first_name) || !normaliseName(verified.last_name)
+    || normaliseName(verified.first_name) !== normaliseName(firstName)
+    || normaliseName(verified.last_name) !== normaliseName(lastName);
+  const outcome = needsReview ? 'review_required' : 'recorded';
+  // Separate review notes have no dispatch category. Never overwrite a contact to force a match.
+  const fingerprint = sign(JSON.stringify([email, normaliseName(firstName), normaliseName(lastName), outcome]), key);
+  const activityQuery = new URLSearchParams({client_id:String(contactId), item_type:'note', expand:'1', order:'desc', per:'100'});
+  if (!needsReview) activityQuery.set('category_id', String(categoryId));
   const activities = rows(await propstack(`activities?${activityQuery}`, key));
   const marker = `SLS-Anforderungs-ID: ${requestId}`;
+  const reviewMarker = `SLS-Prüfkennung: ${fingerprint}`;
   const alreadyRecorded = activities.some(activity => {
     const task = activity.activatable || activity.task || activity;
-    if (Number(activity.category_id ?? task.note_type_id) !== categoryId) return false;
+    if (needsReview) {
+      if ((task.title || activity.title) !== REVIEW || !String(task.body || activity.body || '').includes(reviewMarker)) return false;
+    } else if (Number(activity.category_id ?? task.note_type_id) !== categoryId) return false;
     const sameRequest = String(task.body || activity.body || '').includes(marker);
     const created = Date.parse(activity.created_at || task.created_at || '');
     const recent = Number.isFinite(created) && Date.now() - created >= 0 && Date.now() - created < 10 * 60 * 1000;
     return sameRequest || recent;
   });
-  if (alreadyRecorded) return;
+  if (alreadyRecorded) return outcome;
 
-  const retryKey = sign(`${email}:${requestId}`, key);
+  const retryKey = sign(`${fingerprint}:${requestId}`, key);
   if (uncertain.has(retryKey)) throw new Error('Previous note write needs reconciliation');
   // Retrying a timed-out write automatically could launch the future email process twice.
   uncertain.set(retryKey, Date.now() + 30 * 60 * 1000);
   const result = await propstack('tasks', key, {task:{
-    title:NOTE,
-    note_type_id:categoryId,
+    title:needsReview ? REVIEW : NOTE,
+    ...(needsReview ? {} : {note_type_id:categoryId}),
     client_ids:[contactId],
     body:[
       '<strong>Ratgeberanforderung über die SLS Website</strong>',
+      ...(needsReview ? [
+        '<strong>PRÜFUNG ERFORDERLICH – KEIN VERSAND FREIGEGEBEN</strong>',
+        'Die angegebenen Namen stimmen nicht eindeutig mit dem vorhandenen Kontakt überein. Kontakt unverändert. Keine Versand-Triggernotiz angelegt.',
+        'Vor personalisiertem Versand Angaben mit der anfordernden Person klären. Danach Kontakt und neuere Anforderungen prüfen, gegebenenfalls Namen manuell berichtigen und Versand einmalig freigeben. Diese Prüfnotiz allein darf keinen Versand auslösen.',
+        reviewMarker
+      ] : []),
       `Ratgeber: ${TITLE}`,
       'Datei: SLS-Immobilie-verkaufen.pdf · Ausgabe Oktober 2026',
       `Angegebener Name: ${escapeHtml(firstName)} ${escapeHtml(lastName)}`,
@@ -135,6 +154,7 @@ async function recordRequest(key, email, firstName, lastName, categoryId, reques
   }});
   if (!validId(result?.id || result?.activity_id)) throw new Error('Note confirmation missing');
   uncertain.delete(retryKey);
+  return outcome;
 }
 
 export default async function handler(req, res) {
@@ -183,17 +203,20 @@ export default async function handler(req, res) {
     return res.status(429).json({error:'Bitte warten Sie einige Minuten, bevor Sie erneut anfragen.'});
   }
   const lock = sign(`${email}:${GUIDE}`, key);
+  // Serialize all requests for an address, but do not reuse the result for different names.
+  const previous = pending.get(lock);
+  const work = (async () => {
+    if (previous) await previous.catch(() => {});
+    return recordRequest(key, email, firstName, lastName, await noteType(key), requestId);
+  })();
+  pending.set(lock, work);
   try {
-    if (!pending.has(lock)) {
-      const work = (async () => recordRequest(key, email, firstName, lastName, await noteType(key), requestId))();
-      pending.set(lock, work);
-    }
-    await pending.get(lock);
-    return res.status(200).json({ok:true, message:received, deliveryReady:false});
+    const outcome = await work;
+    return res.status(200).json({ok:true, status:outcome, message:outcome === 'review_required' ? reviewMessage : received, deliveryReady:false});
   } catch (error) {
     console.error('Guide request could not be confirmed:', error.message);
     return res.status(502).json({error:'Ihre Anforderung konnte gerade nicht bestätigt werden. Bitte kontaktieren Sie uns direkt, bevor Sie sie erneut absenden.'});
   } finally {
-    pending.delete(lock);
+    if (pending.get(lock) === work) pending.delete(lock);
   }
 }
