@@ -1,16 +1,9 @@
 /* Immobilienwissen */
 .knowledge-page{background:#f7f5f1}
-.knowledge-hero{position:relative;min-height:720px;display:flex;align-items:flex-end;overflow:hidden;background:#3b535e;color:#fff}
-.knowledge-hero-scenes{position:absolute;inset:0;display:grid;grid-template-columns:1.15fr .85fr;grid-template-rows:1fr 1fr;gap:4px;opacity:.34}
-.knowledge-hero-placeholder{background:linear-gradient(135deg,#73909d,#334f5c)}
-.knowledge-hero-placeholder-a{grid-row:1/3;background:linear-gradient(145deg,#6d8792,#294652)}
-.knowledge-hero-placeholder-b{background:linear-gradient(145deg,#486875,#8da1a8)}
-.knowledge-hero-placeholder-c{background:linear-gradient(145deg,#8198a1,#365763)}
-.knowledge-hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(31,53,63,.94) 0%,rgba(42,66,76,.82) 46%,rgba(42,66,76,.28) 100%)}
-.knowledge-hero-inner{position:relative;z-index:2;padding-top:170px;padding-bottom:86px}
-.knowledge-hero h1{max-width:950px;margin:12px 0 24px;font-size:clamp(54px,6.3vw,92px);line-height:.98;letter-spacing:-.035em}
-.knowledge-hero .lead{max-width:720px;color:#edf3f4;font-size:clamp(18px,1.65vw,23px);line-height:1.55}
-.knowledge-hero .page-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.knowledge-page .knowledge-intro-hero{background:#345b6e}
+.knowledge-page .knowledge-intro-hero .buy-hero-scenes:empty{display:none}
+.knowledge-page .knowledge-intro-hero h1{max-width:760px}
+.knowledge-page .knowledge-intro-hero .lead{max-width:600px}
 .knowledge-intro{padding-block:92px}
 .knowledge-intro .split{align-items:start}
 .knowledge-intro h2{max-width:650px;font-size:clamp(42px,4.7vw,66px)}
@@ -60,12 +53,7 @@
 .knowledge-final p:not(.eyebrow){max-width:650px;color:#dce6e9}
 .knowledge-final-actions{display:flex;flex-direction:column;align-items:flex-start;gap:18px;flex:none}
 .knowledge-final .text-link{color:#fff}
-@media(max-width:980px){
- .knowledge-hero{min-height:680px}
- .knowledge-hero-scenes{grid-template-columns:1fr 1fr}
- .knowledge-hero-inner{padding-top:150px;padding-bottom:68px}
- .knowledge-hero h1{font-size:clamp(44px,9vw,68px)}
- .knowledge-intro{padding-block:70px}
+@media(max-width:980px){ .knowledge-intro{padding-block:70px}
  .knowledge-intro .split,.knowledge-topic{grid-template-columns:1fr}
  .knowledge-intro-copy{margin:24px 0 0}
  .knowledge-topic-grid{grid-template-columns:repeat(2,1fr)}
@@ -77,16 +65,7 @@
  .knowledge-final-layout{display:block}
  .knowledge-final-actions{margin-top:30px}
 }
-@media(max-width:600px){
- .knowledge-hero{min-height:660px}
- .knowledge-hero-scenes{grid-template-columns:1fr;grid-template-rows:1fr;opacity:.25}
- .knowledge-hero-placeholder-b,.knowledge-hero-placeholder-c{display:none}
- .knowledge-hero-overlay{background:linear-gradient(180deg,rgba(39,63,73,.5),rgba(39,63,73,.95) 68%)}
- .knowledge-hero-inner{padding-top:138px;padding-bottom:54px}
- .knowledge-hero h1{font-size:clamp(42px,12vw,56px)}
- .knowledge-hero .lead{font-size:17px}
- .knowledge-hero .page-actions{display:grid}.knowledge-hero .button{text-align:center}
- .knowledge-topics{padding-block:64px}
+@media(max-width:600px){ .knowledge-topics{padding-block:64px}
  .knowledge-topic-grid{grid-template-columns:1fr}
  .knowledge-topic-grid a{min-height:140px}
  .knowledge-search{margin-top:36px}
