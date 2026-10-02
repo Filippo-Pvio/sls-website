@@ -3026,7 +3026,7 @@ body.home-editorial > section.section.home-faq-section{
     justify-content:center;
     width:100%;
     min-height:48px;
-    margin:14px 0 22px;
+    margin:18px 0 0;
     padding:12px 18px;
     border-radius:999px;
     background:var(--coral);
