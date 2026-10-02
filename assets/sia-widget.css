@@ -6,15 +6,15 @@ button,textarea,a { font:inherit; }
 button,a { -webkit-tap-highlight-color:transparent; }
 button { cursor:pointer; }
 :focus-visible { outline:3px solid #345B6E; outline-offset:4px; }
-.launch { position:fixed; right:24px; bottom:calc(24px + env(safe-area-inset-bottom,0px)); z-index:995; border:1px solid #345B6E; border-radius:40px; padding:13px 20px; background:#345B6E; color:white; box-shadow:0 6px 24px #345b6e30; display:flex; align-items:center; gap:12px; font-size:15px; font-weight:700; }
+.launch { position:fixed; right:24px; bottom:calc(24px + env(safe-area-inset-bottom,0px)); z-index:995; border:2px solid #FF596F; border-radius:40px; padding:13px 20px; background:#345B6E; color:white; box-shadow:0 0 0 2px #fff,0 6px 24px #18333f40; display:flex; align-items:center; gap:12px; font-size:15px; font-weight:700; }
 .launch strong { color:#FF596F; font-size:20px; letter-spacing:.08em; }
 :host-context(body.menu-open) .launch { visibility:hidden; }
-dialog { width:min(510px,calc(100vw - 32px)); max-width:none; height:min(740px,calc(100dvh - 48px)); max-height:none; inset:auto 24px 24px auto; margin:0; padding:0; border:1px solid #d6e1e7; border-radius:22px; background:#fff; color:#345B6E; box-shadow:0 24px 90px #18333f40; font:15px/1.6 Raleway,Arial,sans-serif; }
+dialog { position:fixed; overflow:hidden; width:min(510px,calc(100vw - 32px)); max-width:none; height:min(740px,calc(100dvh - 48px)); max-height:none; inset:auto 24px 24px auto; margin:0; padding:0; border:1px solid #d6e1e7; border-radius:22px; background:#fff; color:#345B6E; box-shadow:0 24px 90px #18333f40; font:15px/1.6 Raleway,Arial,sans-serif; }
 dialog[open] { display:flex; flex-direction:column; }
 dialog::backdrop { background:#243e493b; }
-header { display:flex; align-items:center; gap:16px; padding:22px 24px; background:#EAF0F3; border-bottom:1px solid #d6e1e7; }
+header { flex:none; display:flex; align-items:center; gap:16px; padding:22px 24px; background:#EAF0F3; border-bottom:1px solid #d6e1e7; }
 .brand { color:#FF596F; font-weight:850; font-size:32px; letter-spacing:.06em; line-height:1; }
-.identity { flex:1; }
+.identity { flex:1; min-width:0; }
 h2 { font-size:14px; margin:0; font-weight:750; }
 h2 b { color:#c62c49; }
 .sub { font-size:11px; color:#536a75; letter-spacing:.05em; }
@@ -35,17 +35,17 @@ summary { cursor:pointer; font-weight:750; padding:5px 0; }
 a { color:#345B6E; text-underline-offset:3px; }
 .disclaimer { padding:14px; background:#f5f7f8; border-radius:10px; font-size:12px; }
 .contact { display:flex; flex-wrap:wrap; gap:14px; font-size:13px; font-weight:700; margin-top:14px; }
-form { border-top:1px solid #d6e1e7; padding:16px 24px 18px; background:#fff; }
+form { flex:none; border-top:1px solid #d6e1e7; padding:16px 24px 18px; background:#fff; }
 label { display:block; font-size:12px; font-weight:750; margin-bottom:6px; }
 .input-row { display:flex; align-items:flex-end; gap:8px; }
-textarea { resize:none; min-width:0; width:100%; height:67px; border:1px solid #c4d3db; border-radius:10px; padding:10px 12px; color:#345B6E; background:#fff; font-size:15px; line-height:1.5; }
+textarea { resize:none; min-width:0; width:100%; height:67px; border:1px solid #c4d3db; border-radius:10px; padding:10px 12px; color:#345B6E; background:#fff; font-size:16px; line-height:1.5; }
 .send { height:45px; border:0; border-radius:10px; padding:0 15px; color:#fff; background:#345B6E; font-weight:700; }
 button:disabled { opacity:.6; cursor:wait; }
 .privacy { font-size:10px; line-height:1.45; color:#607782; margin:10px 0 0; }
 .status { font-size:13px; margin:0 0 12px; }
 @media(max-width:600px) {
  .launch { right:16px; bottom:calc(20px + env(safe-area-inset-bottom,0px)); padding:12px 16px; height:52px; }
- dialog { width:100%; height:100dvh; inset:0; border:0; border-radius:0; }
- header { padding:16px 18px; } .content { padding:20px; } form { padding:12px 18px calc(14px + env(safe-area-inset-bottom,0px)); }
+ dialog { width:100%; height:var(--sia-viewport-height,100dvh); inset:var(--sia-viewport-top,0px) 0 auto; border:0; border-radius:0; }
+ header { padding:calc(16px + env(safe-area-inset-top,0px)) 18px 16px; } .content { padding:20px; } form { padding:12px 18px calc(14px + env(safe-area-inset-bottom,0px)); }
  h3 { font-size:27px; }
 }

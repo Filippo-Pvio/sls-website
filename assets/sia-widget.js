@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/assets/sia-widget.css">
     <button class="launch" type="button" aria-haspopup="dialog" aria-expanded="false"><strong>SIA</strong><span>fragen</span></button>
     <dialog aria-labelledby="sia-title">
-      <header><span class="brand" aria-hidden="true">SIA</span><div class="identity"><h2 id="sia-title"><b>S</b>LS <b>I</b>mmobilien <b>A</b>ssistenz</h2><span class="sub">KI-ASSISTENZ</span></div><button class="close" type="button" aria-label="SIA schließen">×</button></header>
+      <header><span class="brand" aria-hidden="true">SIA</span><div class="identity"><h2 id="sia-title"><b>S</b>LS <b>I</b>mmobilien <b>A</b>ssistenz</h2><span class="sub">KI-ASSISTENZ</span></div><button class="close" type="button" aria-label="SIA schließen" autofocus>×</button></header>
       <div class="content">
         <section class="intro"><h3>Ein guter Anfang für Ihren nächsten Schritt.</h3><p>Ich bin SIA, die KI-Assistenz von SLS Immobilienpartner. Hier finden Sie Orientierung rund um Verkauf, Kauf und Ihre Immobilie.</p><div class="suggestions"><button type="button">Verkauf und Wohnungssuche koordinieren</button><button type="button">Kosten bei SLS Immobilienpartner</button></div></section>
         <p class="status" role="status" aria-live="polite"></p>
@@ -25,12 +25,44 @@
   const $ = s => root.querySelector(s);
   const dialog = $('dialog'), launch = $('.launch'), field = $('textarea'), status = $('.status');
   let busy = false;
-  launch.addEventListener('click', () => { dialog.showModal(); launch.setAttribute('aria-expanded', 'true'); field.focus(); });
+  let viewportFrame = 0;
+  // Mobile keyboards resize/pan the visual viewport independently of the page.
+  function updateViewport() {
+    const viewport = window.visualViewport;
+    dialog.style.setProperty('--sia-viewport-height', `${viewport?.height ?? window.innerHeight}px`);
+    dialog.style.setProperty('--sia-viewport-top', `${viewport?.offsetTop ?? 0}px`);
+    dialog.scrollTop = 0;
+  }
+  function scheduleViewportUpdate() {
+    if (!dialog.open || viewportFrame) return;
+    viewportFrame = window.requestAnimationFrame(() => {
+      viewportFrame = 0;
+      if (dialog.open) updateViewport();
+    });
+  }
+  launch.addEventListener('click', () => {
+    updateViewport();
+    dialog.showModal();
+    launch.setAttribute('aria-expanded', 'true');
+    $('.close').focus({ preventScroll: true });
+    window.visualViewport?.addEventListener('resize', scheduleViewportUpdate);
+    window.visualViewport?.addEventListener('scroll', scheduleViewportUpdate);
+    window.addEventListener('resize', scheduleViewportUpdate);
+  });
+  dialog.addEventListener('focusout', scheduleViewportUpdate);
   $('.close').addEventListener('click', () => dialog.close());
-  dialog.addEventListener('close', () => { launch.setAttribute('aria-expanded', 'false'); launch.focus(); });
+  dialog.addEventListener('close', () => {
+    window.visualViewport?.removeEventListener('resize', scheduleViewportUpdate);
+    window.visualViewport?.removeEventListener('scroll', scheduleViewportUpdate);
+    window.removeEventListener('resize', scheduleViewportUpdate);
+    window.cancelAnimationFrame(viewportFrame);
+    viewportFrame = 0;
+    launch.setAttribute('aria-expanded', 'false');
+    launch.focus({ preventScroll: true });
+  });
   root.querySelectorAll('.suggestions button').forEach((button, index) => button.addEventListener('click', () => {
     field.value = index === 0 ? 'Kann ich mein Haus verkaufen und gleichzeitig eine Mietwohnung suchen?' : 'Welche Kosten entstehen bei SLS Immobilienpartner?';
-    field.focus();
+    field.focus({ preventScroll: true });
   }));
   function sourceCard(source) {
     const box = document.createElement('div'); box.className = 'source';
