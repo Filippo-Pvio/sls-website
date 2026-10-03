@@ -156,3 +156,14 @@
     padding-top: 18px;
   }
 }
+
+/* Match the compact portrait cards used on the team and office pages. */
+.home-editorial #home-team-track > .person-card{background:transparent;border:0;border-radius:14px;overflow:visible}
+.home-editorial #home-team-track > .person-card img{border-radius:14px;transition:transform .25s ease}
+.home-editorial #home-team-track > .person-card > div{padding:14px 0 0}
+.home-editorial #home-team-track > .person-card h3{font:500 24px/1.2 "Playfair Display",Georgia,serif;color:#345b6e;margin:0 0 6px}
+.home-editorial #home-team-track > .person-card p{font-size:14px;line-height:1.5;color:#5b707a;margin:0}
+.home-editorial #home-team-track > .person-card:hover img{transform:translateY(-3px)}
+.home-editorial #home-team-track > .person-card:hover h3,.home-editorial #home-team-track > .person-card:focus-visible h3{text-decoration:underline;text-underline-offset:5px}
+.home-editorial #home-team-track > .person-card:focus-visible{outline:2px solid #345b6e;outline-offset:-2px}
+@media(prefers-reduced-motion:reduce){.home-editorial #home-team-track > .person-card img{transition:none}.home-editorial #home-team-track > .person-card:hover img{transform:none}}
