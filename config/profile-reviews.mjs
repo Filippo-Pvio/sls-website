@@ -3,7 +3,7 @@ export const profileReviewAssignments = {
   'filippo-livera': {
     name: 'Filippo Livera',
     aliases: ['Filippo Livera', 'Herr Livera', 'Herrn Livera'],
-    approvedReviewUri: null,
+    approvedReviewUri: 'https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2xWS2QwOW5UeTFuYUdOWlNUbG9NMFJhZGxsaWIwRRAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOlVKd09nTy1naGNZSTloM0Radllib0E%7C0cz7ul-nTba%7C',
     approvedReviewId: null
   }
 };

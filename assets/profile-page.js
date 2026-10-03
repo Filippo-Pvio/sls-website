@@ -57,15 +57,13 @@
       const data = await response.json();
       const companyUrl = safeGoogleUrl(data.company?.url);
       if (!data.available || !companyUrl || !Number.isFinite(data.company.rating)) return;
-      section.querySelector('[data-google-rating]').textContent = `${data.company.rating.toLocaleString('de-DE', {maximumFractionDigits:1})} / 5`;
-      section.querySelector('[data-google-count]').textContent = `${Number(data.company.count).toLocaleString('de-DE')} Bewertungen`;
-      section.querySelector('[data-google-reviews-link]').href = companyUrl;
       const review = data.personalReview;
       const original = safeGoogleUrl(review?.googleMapsUri);
       if (review?.text && original) {
         section.querySelector('[data-review-heading]').textContent = 'Persönliche Erfahrungen mit Filippo Livera.';
-        section.querySelector('[data-review-context]').textContent = 'Eine ausgewählte Kundenstimme zu Filippo Livera. Die Gesamtbewertung bezieht sich auf SLS Immobilienpartner.';
+        section.querySelector('[data-review-context]').textContent = 'Eine ausgewählte Google-Bewertung zur persönlichen Beratung.';
         section.querySelector('[data-review-text]').textContent = review.text;
+        section.querySelector('.profile-google-label').textContent = 'Google-Bewertung';
         const stars = section.querySelector('[data-review-stars]');
         stars.textContent = '★'.repeat(Math.min(5, Math.max(0, Math.round(review.rating))));
         stars.setAttribute('aria-label', `${review.rating} von 5 Sternen`);
@@ -77,7 +75,7 @@
         section.querySelector('[data-personal-review]').hidden = false;
       }
       section.hidden = false;
-    } catch { /* Keep the optional section hidden when Google is unavailable. */ }
+    } catch { /* Keep the verified editorial excerpt when the live connection is unavailable. */ }
   }
   // Fetch once per visit near the section, without storing Google content in the browser.
   if ('IntersectionObserver' in window) {

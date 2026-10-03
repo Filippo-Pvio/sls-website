@@ -1,9 +1,21 @@
-# Mitarbeiterprofile: Google-Bewertungen und Videos
+# Persönliche Profilbewertung – aktueller Stand
 
-Die Musterseite ist /team/filippo-livera/. Auf dieser Seite wird die vorhandene
-Google-Gesamtbewertung live geladen und ausdrücklich als Unternehmensbewertung
-gekennzeichnet. Ohne bestätigte persönliche Bewertung erscheint kein persönliches
-Kundenzitat. Bei Ausfällen bleibt die gesamte optionale Bewertungssektion verborgen.
+Auf Filippos Profil steht ausschließlich die persönliche Google-Kundenstimme von
+Bettina Alzner, die auf der bisherigen SLS-Website mit fünf Sternen veröffentlicht
+und direkt zur Google-Bewertung verlinkt ist. Der unveränderte Auszug umfasst 24
+Wörter; weitere Kürzung ist durch Auslassungszeichen markiert. Es wird kein Datum
+erfunden. Die Unternehmensbewertung und der Gesamtdurchschnitt sind entfernt.
+
+Quelle: https://sls.de/immobilienmakler-duesseldorf/
+Original: https://maps.app.goo.gl/iAwqDabn7UrioGfdA
+
+Der redaktionell übernommene Auszug ist aktuell keine Live-Synchronisierung.
+Der vollständige automatische Google-Abruf benötigt weiterhin OAuth-Zugang zum
+Google-Unternehmensprofil. Bei freigegebenen Live-Daten wird der Auszug ersetzt.
+
+Das Videocover kommt über /api/youtube-thumbnail direkt vom im YouTube-Metadatum
+og:image hinterlegten maxresdefault-Bild, mit YouTubes hqdefault als Rückfall nur
+bei nicht vorhandener maximaler Auflösung. Keine anderen Szenen als Ersatzbilder.
 
 ## Vollständige Google-Bewertungsliste
 
