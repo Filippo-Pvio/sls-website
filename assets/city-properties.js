@@ -1,6 +1,7 @@
+import {matchesMarketCity} from './market-city-match.mjs';
 import {propertyCardHtml} from './property-card.mjs';
 
-const validCity = (item, city) => typeof item?.city === 'string' && item.city.trim().toLocaleLowerCase('de-DE') === city.toLocaleLowerCase('de-DE');
+const validCity = matchesMarketCity;
 const unique = items => [...new Map(items.map(item => [String(item.id), item])).values()];
 const https = value => { try { return new URL(value).protocol === 'https:'; } catch { return false; } };
 // Keep the last selection per city for this browser tab, without tracking visitors.
@@ -47,7 +48,7 @@ async function load(section, kind) {
   const grid = section.querySelector(kind === 'active' ? '[data-city-active]' : '[data-city-references]');
   grid.setAttribute('aria-busy','true');
   try {
-    const endpoint = kind === 'active' ? `/api/propstack-properties?city=${encodeURIComponent(city)}&per=3` : '/api/propstack-sold-references';
+    const endpoint = kind === 'active' ? `/api/propstack-properties?city=${encodeURIComponent(city)}&marketCity=1&per=3` : '/api/propstack-sold-references';
     const response = await fetch(endpoint, {signal: AbortSignal.timeout(20000)});
     if (!response.ok) throw new Error('Feed unavailable');
     const data = await response.json();
@@ -56,6 +57,10 @@ async function load(section, kind) {
     const candidates = unique(rows.filter(item => validCity(item,city) && /^\d+$/.test(String(item.id)) && typeof item.title === 'string' && (kind === 'active' || https(item.image))));
     const items = kind === 'active' ? candidates.slice(0,3) : selectReferences(candidates,city);
     if (!items.length) {
+      if (kind === 'references') {
+        section.querySelector('h2').textContent = `Ihr Verkauf in ${city}. Persönlich begleitet.`;
+        section.querySelector('.city-section-head > p').textContent = 'Sprechen Sie mit uns über Ihr Vorhaben und unsere Vorgehensweise bei der Vermarktung.';
+      }
       status.textContent = kind === 'active' ? `Derzeit sind keine Immobilienangebote in ${city} verfügbar. Hinterlegen Sie Ihre Wünsche in einem Suchprofil.` : `Aktuell sind keine Referenzbilder aus ${city} verfügbar. Gerne geben wir Ihnen im persönlichen Gespräch Einblicke in unsere Arbeit.`;
       return;
     }
@@ -65,6 +70,10 @@ async function load(section, kind) {
     if (kind === 'references') status.hidden = true;
     animate([...grid.children]);
   } catch {
+    if (kind === 'references') {
+      section.querySelector('h2').textContent = `Ihr Verkauf in ${city}. Persönlich begleitet.`;
+      section.querySelector('.city-section-head > p').textContent = 'Sprechen Sie mit uns über Ihr Vorhaben und unsere Vorgehensweise bei der Vermarktung.';
+    }
     status.textContent = kind === 'active' ? 'Die aktuellen Angebote können gerade nicht geladen werden. Bitte versuchen Sie es über die Immobilienübersicht erneut oder sprechen Sie uns direkt an.' : 'Die Referenzen können gerade nicht geladen werden. Gerne stellen wir Ihnen unsere Arbeit im persönlichen Gespräch vor.';
     const link = document.createElement('a'); link.href = '#kontakt'; link.textContent = ' Kontakt aufnehmen'; status.append(link);
   } finally { grid.setAttribute('aria-busy','false'); }

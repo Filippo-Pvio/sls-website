@@ -124,6 +124,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
   function captureQuery(){
     const q=new URLSearchParams();
     for(const [key,value] of new FormData($('#pp-form')))if(String(value).trim())q.set(key,String(value).trim());
+    if(url.searchParams.get('marketCity')==='1' && q.get('city')===url.searchParams.get('city')) q.set('marketCity','1');
     q.set('sort',$('#pp-sort').value);return q;
   }
   async function resetBrowse(){

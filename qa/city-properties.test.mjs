@@ -1,14 +1,16 @@
+import {queryProperties} from '../lib/property-catalog.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
+import {matchesMarketCity} from '../assets/market-city-match.mjs';
 import {propertyCardHtml} from '../assets/property-card.mjs';
-const source=readFileSync(new URL('../assets/city-properties.js',import.meta.url),'utf8').replace(/^import .*;\n/,'');
+const source=readFileSync(new URL('../assets/city-properties.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 async function run(kind,rows,{fail=false,storage}={}){
- const status={textContent:'',append(){}},grid={children:[],setAttribute(){},replaceChildren(...nodes){this.children=nodes}};
- const section={dataset:{cityProperties:'Dorsten'},querySelector:s=>s==='[role="status"]'?status:s==='[data-city-active]'?(kind==='active'?grid:null):grid};
+ const status={textContent:'',append(){}},heading={textContent:''},grid={children:[],setAttribute(){},replaceChildren(...nodes){this.children=nodes}};
+ const section={dataset:{cityProperties:'Dorsten'},querySelector:s=>s==='h2'||s==='.city-section-head > p'?heading:s==='[role="status"]'?status:s==='[data-city-active]'?(kind==='active'?grid:null):grid};
  const document={querySelectorAll:()=>[section],createElement:()=>({append(){}})};
- vm.runInNewContext(source,{document,URL,AbortSignal,sessionStorage:storage,matchMedia:()=>({matches:true}),propertyCardHtml,fetch:async()=>({ok:!fail,json:async()=>kind==='active'?{items:rows}:{references:rows}})});
+ vm.runInNewContext(source,{matchesMarketCity,document,URL,AbortSignal,sessionStorage:storage,matchMedia:()=>({matches:true}),propertyCardHtml,fetch:async()=>({ok:!fail,json:async()=>kind==='active'?{items:rows}:{references:rows}})});
  await new Promise(resolve=>setImmediate(resolve));
  return {status,grid};
 }
@@ -44,4 +46,19 @@ test('small pools and unavailable storage still show valid references',async()=>
  const storage={getItem:()=>{throw Error('blocked')},setItem:()=>{throw Error('blocked')}};
  assert.equal((await run('references',[item],{storage})).grid.children.length,1);
  assert.equal((await run('references',[item,{...item,id:'2'}],{storage})).grid.children.length,2);
+});
+
+test('market matching supports district labels without substring collisions',()=>{
+ assert.equal(matchesMarketCity({city:'Dorsten-Lembeck'},'Dorsten'),true);
+ assert.equal(matchesMarketCity({city:'Lembeck'},'Dorsten'),true);
+ assert.equal(matchesMarketCity({city:'Duesseldorf'},'Düsseldorf'),true);
+ assert.equal(matchesMarketCity({city:'Haltern'},'Haltern am See'),true);
+ assert.equal(matchesMarketCity({city:'Essenbach'},'Essen'),false);
+ assert.equal(matchesMarketCity({city:'Borken',zip:'34582'},'Borken'),false);
+});
+
+test('city listing destination uses the same match before pagination',()=>{
+ const rows=[{...item,city:'Dorsten - Lembeck'}, {...item,id:'2',city:'Lembeck'}, {...item,id:'3',city:'Dorstenberg'}];
+ assert.equal(queryProperties(rows,{city:'Dorsten',marketCity:'1'}).length,2);
+ assert.equal(queryProperties([{...item,city:'Essenbach'}],{city:'Essen',marketCity:'1'}).length,0);
 });
