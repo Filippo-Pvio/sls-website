@@ -49,14 +49,47 @@ test("mobile navigation opens, closes and survives viewport changes", async ({ p
   await expect(nav).not.toHaveAttribute("inert");
 });
 
-test("contact form is operable but does not claim delivery", async ({ page }) => {
+test("contact form adapts to the topic and records callback preference", async ({ page }) => {
+  let submitted;
+  await page.route("**/api/propstack-contact-request", async route => {
+    if (route.request().method() === "GET") return route.fulfill({json:{token:"fixture-token",availableTopics:["sale","search","valuation","general"],callbackAvailable:true}});
+    submitted = route.request().postDataJSON();
+    await route.fulfill({json:{ok:true}});
+  });
   await page.goto("/kontakt/");
-  await page.selectOption("#request", { label: "Immobilie bewerten" });
-  await page.fill("#name", "QA Test");
-  await page.fill("#phone", "02369 7428020");
-  await page.fill("#email", "qa@example.com");
-  await page.check("#privacy");
-  await page.click('button[type="submit"]');
-  await expect(page.locator("[data-form-status]")).toBeVisible();
-  await expect(page.locator("[data-form-status]")).toContainText("nichts versendet");
+  await page.locator('input[name="topic"][value="valuation"]').check({force:true});
+  await expect(page.locator("#contact-form-title")).toContainText("Wert Ihrer Immobilie");
+  await page.locator('[name="firstName"]').fill("Anna");
+  await page.locator('[name="lastName"]').fill("Muster");
+  await page.locator('[name="email"]').fill("qa@example.org");
+  await expect(page.locator("#contact-callback")).toBeHidden();
+  await page.locator('[name="method"][value="callback"]').check();
+  await expect(page.locator("#contact-callback")).toBeVisible();
+  await page.locator('[name="phone"]').fill("02369 7428020");
+  await page.locator('[name="window"]').selectOption("late");
+  await page.locator('[name="privacy"]').check();
+  await page.locator('#contact-form [type="submit"]').click();
+  await expect(page.locator("#contact-status")).toContainText("Rückrufwunsch");
+  expect(submitted).toMatchObject({topic:"valuation",method:"callback",window:"late",privacy:true});
+  await expect(page.locator('#contact-form [type="submit"]')).toBeDisabled();
+});
+
+test("contact email option omits callback fields and general message is required", async ({ page }) => {
+  let submitted;
+  await page.route("**/api/propstack-contact-request", async route => {
+    if (route.request().method() === "GET") return route.fulfill({json:{token:"fixture-token",availableTopics:["sale","search","valuation","general"],callbackAvailable:true}});
+    submitted=route.request().postDataJSON();await route.fulfill({json:{ok:true}});
+  });
+  await page.goto("/kontakt/");
+  await page.locator('input[name="topic"][value="general"]').check({force:true});
+  await expect(page.locator('[name="message"]')).toHaveAttribute("required", "");
+  await expect(page.locator("#contact-place-label")).toBeHidden();
+  await page.locator('[name="firstName"]').fill("Anna");
+  await page.locator('[name="lastName"]').fill("Muster");
+  await page.locator('[name="email"]').fill("qa@example.org");
+  await page.locator('[name="message"]').fill("Bitte beantworten Sie meine Frage per E-Mail.");
+  await page.locator('[name="privacy"]').check();
+  await page.locator('#contact-form [type="submit"]').click();
+  await expect(page.locator("#contact-status")).toContainText("per E-Mail");
+  expect(submitted.phone).toBeUndefined();expect(submitted.window).toBeUndefined();
 });

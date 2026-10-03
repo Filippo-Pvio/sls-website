@@ -37,6 +37,9 @@
     }
   ],
   "functions": {
+    "api/propstack-contact-request.js": {
+      "maxDuration": 60
+    },
     "api/property-page.js": {
       "includeFiles": "immobilien/index.html",
       "maxDuration": 60
