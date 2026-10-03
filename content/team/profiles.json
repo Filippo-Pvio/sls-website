@@ -87,7 +87,11 @@
       "Interessen zusammenführen"
     ],
     "source": "https://sls.de/andreas-busch/",
-    "heroScenes": [],
+    "heroScenes": [
+      "profile-andreas/rheinland",
+      "profile-andreas/beratung",
+      "profile-andreas/vermarktung"
+    ],
     "videos": [],
     "focusCopy": [
       "Regionale Erfahrung hilft, Lagen und Nachfrage im Großraum Düsseldorf einzuschätzen.",
