@@ -18,8 +18,8 @@ const navGroups = [
   ]},
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
     ["Unsere Marktgebiete", "/standorte/", "Ruhrgebiet & Rheinland"],
-    ["Büro Dorsten", "/immobilienmakler-dorsten/", "Unser Büro im Ruhrgebiet"],
-    ["Büro Düsseldorf", "/immobilienmakler-dusseldorf/", "Unser Büro im Rheinland"],
+    ["Büro Dorsten", "/buero-dorsten/", "Unser Büro im Ruhrgebiet"],
+    ["Büro Düsseldorf", "/buero-duesseldorf/", "Unser Büro im Rheinland"],
     ["Kontakt", "/kontakt/", "Direkt mit uns sprechen"]
   ]},
   { label: "Über uns", href: "/ueber-uns/", kicker: "Unternehmen", items: [
@@ -138,8 +138,8 @@ footer.innerHTML = `
       </div>
       <div class="footer-offices">
         <h2>Unsere Büros</h2>
-        <a href="/immobilienmakler-dorsten/"><strong>Dorsten</strong><span>Ubierweg 2 · 46286 Dorsten</span></a>
-        <a href="/immobilienmakler-dusseldorf/"><strong>Düsseldorf</strong><span>Königsallee 19 · 40213 Düsseldorf</span></a>
+        <a href="/buero-dorsten/"><strong>Dorsten</strong><span>Ubierweg 2 · 46286 Dorsten</span></a>
+        <a href="/buero-duesseldorf/"><strong>Düsseldorf</strong><span>Königsallee 19 · 40213 Düsseldorf</span></a>
       </div>
     </div>
   </div>
