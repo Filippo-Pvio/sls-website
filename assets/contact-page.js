@@ -43,7 +43,7 @@
       if(!response.ok||!result.ok)throw new Error(result.error||'Ihre Nachricht konnte gerade nicht übermittelt werden.');
       completed=true;form.querySelectorAll('input,textarea,select').forEach(field=>field.disabled=true);
       showStatus(body.method==='callback'?'Vielen Dank! Ihre Anfrage und Ihr Rückrufwunsch sind eingegangen. Unser Team berücksichtigt Ihren bevorzugten Zeitraum bei der Planung.':'Vielen Dank! Ihre Nachricht ist eingegangen. Unser Team meldet sich bei Ihnen per E-Mail.','success');status.focus();submit.textContent='Nachricht eingegangen';
-    }catch(error){showStatus(error.message||'Ihre Nachricht konnte gerade nicht übermittelt werden. Bitte kontaktieren Sie uns direkt.','error');status.focus();submit.innerHTML='Nachricht senden <span aria-hidden="true">↗</span>';}
+    }catch(error){showStatus(error.message||'Ihre Nachricht konnte gerade nicht übermittelt werden. Bitte kontaktieren Sie uns direkt.','error');status.focus();submit.textContent='Nachricht senden';}
     finally{busy=false;submit.disabled=completed;}
   });
   document.querySelector('#contact-ask-sia').addEventListener('click',()=>{if(document.querySelector('sls-sia'))window.dispatchEvent(new Event('sls:sia-open'));else{document.querySelector('#anfrage').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});form.elements.message.focus();}});

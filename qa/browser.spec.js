@@ -57,7 +57,7 @@ test("contact form adapts to the topic and records callback preference", async (
     await route.fulfill({json:{ok:true}});
   });
   await page.goto("/kontakt/");
-  await page.locator('input[name="topic"][value="valuation"]').check({force:true});
+  await page.locator('select[name="topic"]').selectOption("valuation");
   await expect(page.locator("#contact-form-title")).toContainText("Wert Ihrer Immobilie");
   await page.locator('[name="firstName"]').fill("Anna");
   await page.locator('[name="lastName"]').fill("Muster");
@@ -81,7 +81,7 @@ test("contact email option omits callback fields and general message is required
     submitted=route.request().postDataJSON();await route.fulfill({json:{ok:true}});
   });
   await page.goto("/kontakt/");
-  await page.locator('input[name="topic"][value="general"]').check({force:true});
+  await page.locator('select[name="topic"]').selectOption("general");
   await expect(page.locator('[name="message"]')).toHaveAttribute("required", "");
   await expect(page.locator("#contact-place-label")).toBeHidden();
   await page.locator('[name="firstName"]').fill("Anna");
