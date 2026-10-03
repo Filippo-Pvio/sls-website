@@ -20,3 +20,5 @@ for city in data:
  page=page.replace(old,esc(city['text']))
  (ROOT/slug/'index.html').write_text(page)
 print(f'{len(data)} Stadtseiten aktualisiert; Dorsten bleibt Layoutvorlage.')
+import runpy
+runpy.run_path(str(ROOT/'scripts/market-page-images.py'))['apply_images']()

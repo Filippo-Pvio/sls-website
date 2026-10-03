@@ -5,10 +5,14 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (!current || !incoming) return;
 
-  const scenes = ['beratung', 'kontakt', 'besichtigung'];
+  const customScenes = (hero.dataset.heroScenes || '').split(',').filter(Boolean);
+  const mobileWidths = (hero.dataset.heroWidths || '').split(',');
+  const scenes = customScenes.length ? customScenes : ['beratung', 'kontakt', 'besichtigung'];
   const dwell = 7000;
   const fade = 1600;
-  const path = (scene) => `/assets/images/sell-hero/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
+  const path = (scene) => customScenes.length
+    ? `/assets/images/${scene}-${window.innerWidth <= 900 ? (mobileWidths[scenes.indexOf(scene)] || 900) : 1536}.webp`
+    : `/assets/images/sell-hero/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
   let active = current;
   let standby = incoming;
   let index = 0;

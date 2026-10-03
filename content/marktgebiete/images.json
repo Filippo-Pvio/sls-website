@@ -1,0 +1,602 @@
+{
+  "immobilienmakler-dorsten": {
+    "hero": [
+      "sell-hero/beratung",
+      "guides-hero/kontakt",
+      "netzwerk/bauplanung"
+    ],
+    "content": {
+      "scene": "guides-hero/beratung",
+      "alt": "Persönliche Beratung zu Immobilienunterlagen",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      864
+    ],
+    "heroWidths": [
+      900,
+      900,
+      960
+    ]
+  },
+  "immobilienmakler-bochum": {
+    "hero": [
+      "valuation-hero/beratung",
+      "hero-scenes/consultation",
+      "netzwerk/beratung"
+    ],
+    "content": {
+      "scene": "guides-hero/besichtigung",
+      "alt": "Makler im Gespräch mit Interessenten",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      900,
+      960
+    ]
+  },
+  "immobilienmakler-borken": {
+    "hero": [
+      "buy-hero/beratung",
+      "hero-scenes/handshake",
+      "netzwerk/garten"
+    ],
+    "content": {
+      "scene": "guides-hero/kontakt",
+      "alt": "Persönliche Beratung von Eigentümern",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      900,
+      960
+    ]
+  },
+  "immobilienmakler-bottrop": {
+    "hero": [
+      "buy-hero/besichtigung",
+      "hero-scenes/presentation",
+      "references-hero/beratung"
+    ],
+    "content": {
+      "scene": "hero-scenes/consultation",
+      "alt": "Beratungsgespräch mit einem Immobilienmakler",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-castrop-rauxel": {
+    "hero": [
+      "finance-hero/planung",
+      "hero-scenes/viewing",
+      "references-hero/besichtigung"
+    ],
+    "content": {
+      "scene": "hero-scenes/handshake",
+      "alt": "Persönliche Begleitung beim Immobilienverkauf",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-coesfeld": {
+    "hero": [
+      "guides-hero/beratung",
+      "magazin/region-dorsten",
+      "references-hero/kontakt"
+    ],
+    "content": {
+      "scene": "hero-scenes/presentation",
+      "alt": "Besprechung der Immobilienunterlagen",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      768,
+      900
+    ]
+  },
+  "immobilienmakler-datteln": {
+    "hero": [
+      "guides-hero/besichtigung",
+      "magazin/region-markt",
+      "search-hero/besichtigung"
+    ],
+    "content": {
+      "scene": "hero-scenes/viewing",
+      "alt": "Maklerin bei einer Immobilienbesichtigung",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      768,
+      900
+    ]
+  },
+  "immobilienmakler-dortmund": {
+    "hero": [
+      "guides-hero/kontakt",
+      "magazin/region-ruhrgebiet",
+      "sell-hero/besichtigung"
+    ],
+    "content": {
+      "scene": "magazin/region-dorsten",
+      "alt": "Makler mit Unterlagen im Büro",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 768
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      768,
+      900
+    ]
+  },
+  "immobilienmakler-essen": {
+    "hero": [
+      "hero-scenes/consultation",
+      "netzwerk/bauplanung",
+      "valuation-hero/besichtigung"
+    ],
+    "content": {
+      "scene": "magazin/region-markt",
+      "alt": "Makler bei der Vorbereitung einer Immobilienpräsentation",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 768
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      960,
+      900
+    ]
+  },
+  "immobilienmakler-gladbeck": {
+    "hero": [
+      "hero-scenes/handshake",
+      "netzwerk/beratung",
+      "sell-hero/beratung"
+    ],
+    "content": {
+      "scene": "magazin/region-ruhrgebiet",
+      "alt": "Maklerin bei der Immobilienberatung",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 768
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      960,
+      900
+    ]
+  },
+  "immobilienmakler-haltern-am-see": {
+    "hero": [
+      "hero-scenes/presentation",
+      "netzwerk/garten",
+      "valuation-hero/beratung"
+    ],
+    "content": {
+      "scene": "netzwerk/bauplanung",
+      "alt": "Besprechung von Plänen vor einer Immobilie",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 960
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      960,
+      900
+    ]
+  },
+  "immobilienmakler-herten": {
+    "hero": [
+      "hero-scenes/viewing",
+      "references-hero/beratung",
+      "buy-hero/beratung"
+    ],
+    "content": {
+      "scene": "netzwerk/beratung",
+      "alt": "Maklerin erläutert die Räume bei einer Besichtigung",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 960
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-marl": {
+    "hero": [
+      "magazin/region-dorsten",
+      "references-hero/besichtigung",
+      "buy-hero/besichtigung"
+    ],
+    "content": {
+      "scene": "netzwerk/garten",
+      "alt": "Besprechung von Immobilienunterlagen im Garten",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 960
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      768,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-recklinghausen": {
+    "hero": [
+      "magazin/region-markt",
+      "references-hero/kontakt",
+      "finance-hero/planung"
+    ],
+    "content": {
+      "scene": "references-hero/beratung",
+      "alt": "Aufnahme einer Immobilie aus der Vogelperspektive",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      768,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-schermbeck": {
+    "hero": [
+      "magazin/region-ruhrgebiet",
+      "search-hero/besichtigung",
+      "guides-hero/beratung"
+    ],
+    "content": {
+      "scene": "references-hero/besichtigung",
+      "alt": "Makler und Eigentümer vor einem verkauften Haus",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      768,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-unna": {
+    "hero": [
+      "netzwerk/bauplanung",
+      "sell-hero/besichtigung",
+      "guides-hero/besichtigung"
+    ],
+    "content": {
+      "scene": "references-hero/kontakt",
+      "alt": "Persönliche Begleitung nach dem Immobilienverkauf",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      960,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-witten": {
+    "hero": [
+      "netzwerk/beratung",
+      "valuation-hero/besichtigung",
+      "guides-hero/kontakt"
+    ],
+    "content": {
+      "scene": "search-hero/besichtigung",
+      "alt": "Gemeinsame Immobilienbesichtigung",
+      "size": [
+        1536,
+        864
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      960,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-dusseldorf": {
+    "hero": [
+      "netzwerk/garten",
+      "sell-hero/beratung",
+      "hero-scenes/consultation"
+    ],
+    "content": {
+      "scene": "sell-hero/besichtigung",
+      "alt": "Professionelle Fotografie bei der Immobilienaufnahme",
+      "size": [
+        1536,
+        864
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      960,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-meerbusch": {
+    "hero": [
+      "references-hero/beratung",
+      "valuation-hero/beratung",
+      "hero-scenes/handshake"
+    ],
+    "content": {
+      "scene": "valuation-hero/besichtigung",
+      "alt": "Besprechung der Immobilienbewertung",
+      "size": [
+        1536,
+        864
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-mettmann": {
+    "hero": [
+      "references-hero/besichtigung",
+      "buy-hero/beratung",
+      "hero-scenes/presentation"
+    ],
+    "content": {
+      "scene": "sell-hero/beratung",
+      "alt": "Beratung zur Preisstrategie einer Immobilie",
+      "size": [
+        1536,
+        864
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-moers": {
+    "hero": [
+      "references-hero/kontakt",
+      "buy-hero/besichtigung",
+      "hero-scenes/viewing"
+    ],
+    "content": {
+      "scene": "valuation-hero/beratung",
+      "alt": "Eigentümer im persönlichen Beratungsgespräch",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      1024
+    ],
+    "heroWidths": [
+      900,
+      900,
+      900
+    ]
+  },
+  "immobilienmakler-krefeld": {
+    "hero": [
+      "search-hero/besichtigung",
+      "finance-hero/planung",
+      "magazin/region-dorsten"
+    ],
+    "content": {
+      "scene": "buy-hero/beratung",
+      "alt": "Immobilienberatung vor einem Wohnhaus",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      864
+    ],
+    "heroWidths": [
+      900,
+      900,
+      768
+    ]
+  },
+  "immobilienmakler-ratingen": {
+    "hero": [
+      "sell-hero/besichtigung",
+      "guides-hero/beratung",
+      "magazin/region-markt"
+    ],
+    "content": {
+      "scene": "buy-hero/besichtigung",
+      "alt": "Besprechung mit Kaufinteressenten",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      864
+    ],
+    "heroWidths": [
+      900,
+      900,
+      768
+    ]
+  },
+  "immobilienmakler-viersen": {
+    "hero": [
+      "valuation-hero/besichtigung",
+      "guides-hero/besichtigung",
+      "magazin/region-ruhrgebiet"
+    ],
+    "content": {
+      "scene": "finance-hero/planung",
+      "alt": "Gemeinsame Planung rund um die Immobilie",
+      "size": [
+        1536,
+        1024
+      ],
+      "mobileWidth": 900
+    },
+    "heroSize": [
+      1536,
+      864
+    ],
+    "heroWidths": [
+      900,
+      900,
+      768
+    ]
+  }
+}
