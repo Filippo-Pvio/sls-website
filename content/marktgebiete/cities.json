@@ -5,7 +5,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Innenstadt an der Lippe, ländliches Leben in Lembeck und Rhade: Dorsten verbindet städtisches Wohnen mit viel Raum im Grünen.",
+    "text": "In Dorsten liegt die Innenstadt direkt an der Lippe. Wer ein dörfliches Wohnumfeld sucht, findet mit Lembeck und Rhade eigenständige Ortskerne abseits des Zentrums.",
     "source": "https://www.dorsten.de/wirtschaft-und-wohnen/planung-and-umwelt/dorfentwicklung"
   },
   {
@@ -14,8 +14,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Hochschulen und gewachsene Stadtteile prägen Bochum. Zwischen Wattenscheid und dem Universitätscampus zeigt die Stadt ganz unterschiedliche Seiten des Ruhrgebiets.",
-    "source": "https://www.bochum.de/Wissenschaft"
+    "text": "Bochums Wohngebiete erzählen auch Bergbaugeschichte: In der Siedlung Borgholzwiese in Wiemelhausen gehören Gärten zu den historischen Wohnungen. Daneben stehen die städtischen Wohnlagen rund um das Ehrenfeld.",
+    "source": "https://www.bochum.de/Denkmalschutz-%2F-Denkmalpflege%2FDenkmalliste-der-Stadt-Bochum%2FSiedlungen%2FBorgholzwiese"
   },
   {
     "city": "Borken",
@@ -23,8 +23,8 @@
     "regions": [
       "muensterland"
     ],
-    "text": "In Borken treffen das Stadtleben im Westmünsterland und die Landschaft des Naturparks Hohe Mark aufeinander. Wälder, Wiesen und Felder gehören hier dazu.",
-    "source": "https://www.borken.de/de/kultur-tourismus/Tourismus/Tourismus.php"
+    "text": "Borkens Zentrum und Gemen sind kompakt bebaut. In den äußeren Ortsteilen liegen Wohnhäuser und Höfe dagegen oft zwischen Feldern – mit entsprechend anderen Wegen im Alltag.",
+    "source": "https://www.borken.de/de-wAssets/docs/Leben-in-Borken/Mobilitaet/Anhang_01_Bestandsanalyse.pdf"
   },
   {
     "city": "Bottrop",
@@ -32,7 +32,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Bottrop-Mitte und Kirchhellen stehen für zwei Seiten der Stadt: das Leben im Ruhrgebiet und den dörflichen Charakter im Norden.",
+    "text": "Zentrumsnah in Bottrop-Mitte oder dörflicher in Kirchhellen: Im Norden Bottrops liegen Wohngebiete und landwirtschaftliche Flächen dicht beieinander.",
     "source": "https://www.bottrop.de/downloads/daten-karten/statistik/stadtprofil/Stadtprofil-2024.pdf"
   },
   {
@@ -41,8 +41,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Zwischen Bochum und Dortmund liegt Castrop-Rauxel, die „Europastadt im Grünen“. Die Bergbaugeschichte ist unter anderem an den erhaltenen Fördertürmen der Zeche Erin sichtbar.",
-    "source": "https://www.castrop-rauxel.de/100jahre"
+    "text": "Castrop-Rauxel hat mehrere Ortszentren statt nur einer Mitte. Neben der Altstadt bieten etwa Ickern und Habinghorst eigene Einkaufsbereiche für die umliegenden Wohngebiete.",
+    "source": "https://www.castrop-rauxel.de/sites/default/files/2024-04/Fortschreibung_2016_Zentren-_und_Einzelhandelskonzept.pdf"
   },
   {
     "city": "Coesfeld",
@@ -50,8 +50,8 @@
     "regions": [
       "muensterland"
     ],
-    "text": "Die Berkel zieht sich durch Coesfeld und ist Teil des Stadtbilds. Entlang des Wassers begegnen sich Innenstadt und grüne Freiräume.",
-    "source": "https://www.coesfeld.de/stadt/aktuelles/artikel/erste-vorbereitungen-fuer-die-umgestaltung-der-fuerstenwiesen"
+    "text": "Zur Stadt Coesfeld gehört auch Lette mit seinem eigenen Dorfkern. Damit reicht die Auswahl vom Wohnen nahe der Innenstadt bis zum Leben in einer kleineren Dorfgemeinschaft.",
+    "source": "https://www.coesfeld.de/planung/stadtplanung-und-entwicklung/dorfinnenentwicklungskonzept-diek-lette"
   },
   {
     "city": "Datteln",
@@ -59,8 +59,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "In Datteln treffen vier Kanäle aufeinander. Wasserwege und ihre Ufer geben der Stadt einen besonderen Charakter im nördlichen Ruhrgebiet.",
-    "source": "https://www.datteln.de/"
+    "text": "Neben den zusammenhängenden Wohngebieten der Kernstadt gehören Ahsen und Horneburg zu Datteln. Die beiden Dörfer liegen abseits des Zentrums und bieten ein deutlich kleineres, überschaubares Wohnumfeld.",
+    "source": "https://de.wikipedia.org/wiki/Datteln"
   },
   {
     "city": "Dortmund",
@@ -68,8 +68,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Am PHOENIX See lässt sich Dortmunds Wandel besonders gut erkennen: Aus einem früheren Industrieareal wurde ein Ort zum Wohnen und für Freizeit am Wasser.",
-    "source": "https://www.dortmund.de/themen/freizeit-und-kultur/parks-seen-und-zoo/phoenix-see/"
+    "text": "Am PHOENIX See in Hörde sind auf einem früheren Stahlwerksgelände neue Wohnlagen am Wasser entstanden. Sie ergänzen Dortmunds ältere Wohnviertel um moderne Häuser und Wohnungen.",
+    "source": "https://www.dortmund.de/themen/freizeit-und-kultur/parks-seen-und-zoo/phoenix-see/leben-am-see/"
   },
   {
     "city": "Essen",
@@ -77,7 +77,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Essen reicht vom Stadtleben im Zentrum bis an den Baldeneysee. Im Süden gehören Wasser und die Landschaft entlang der Ruhr zum Bild der Stadt.",
+    "text": "In Essens Süden liegen Wohngebiete wie Heisingen und Werden nahe am Baldeneysee und an der Ruhr. Das Umfeld unterscheidet sich deutlich von den dicht bebauten Straßen im Zentrum.",
     "source": "https://www.essen.de/leben/planen_bauen_und_wohnen/essen_plant_und_baut_/stadtplanung/entwicklungskonzept_baldeneysee_.de.html"
   },
   {
@@ -86,8 +86,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Mit Wittringen hat Gladbeck einen Ort, an dem Freizeit und Kultur zusammenkommen. Das Wasserschloss und die umliegenden Grünanlagen gehören fest zur Stadt.",
-    "source": "https://www.gladbeck.de/inhalt/kultur"
+    "text": "In Gladbeck finden sich neben Wohnungen im Zentrum auch ältere Siedlungshäuser und Einfamilienhausgebiete. Die Gartenstadtsiedlungen sind dabei ein wichtiger Teil des örtlichen Wohnangebots.",
+    "source": "https://www.gladbeck.de/inhalt/konzepte-und-projekte"
   },
   {
     "city": "Haltern am See",
@@ -95,8 +95,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Der Stausee gibt Haltern am See seinen unverwechselbaren Bezug zum Wasser. Spazierwege am Ufer und die Altstadt machen unterschiedliche Seiten der Stadt erlebbar.",
-    "source": "https://www.haltern.de/Inhalte/Startseite/Verwaltung_Politik/Verwaltung/Buergerservice/index.asp?id=12264&seite=angebot"
+    "text": "In Haltern reicht das Wohnangebot über die Innenstadt und die Seen hinaus: Auch Hullern und Lippramsdorf gehören zur Stadt, mit eigenen Dorfkernen und Wohngebieten im ländlichen Umfeld.",
+    "source": "https://de.wikipedia.org/wiki/Haltern_am_See"
   },
   {
     "city": "Herten",
@@ -104,7 +104,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Schlosspark und Backumer Tal bieten in Herten viel Platz im Grünen. Der Schlosspark liegt direkt am Rand der Innenstadt.",
+    "text": "In Herten liegt der Schlosspark unmittelbar neben der Innenstadt. Wer zentral wohnt, kann deshalb auch nah an einer großen Grünanlage sein – ohne dafür an den Stadtrand zu ziehen.",
     "source": "https://www.herten.de/zbh/stadtgruen"
   },
   {
@@ -113,8 +113,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Marl ist eng mit der Geschichte der Chemieindustrie verbunden. Neben dem großen Arbeitsstandort Chemiepark gehören die einzelnen Wohnstadtteile zum Leben der Stadt.",
-    "source": "https://lieblingsort.marl.de/chemiezone.html"
+    "text": "In Alt-Marl liegen Wohngebiete rund um den historischen Ortskern. Polsum am westlichen Stadtrand ist deutlich dörflicher; Drewer bietet dagegen Wohnlagen nahe dem Marler Zentrum.",
+    "source": "https://marl.de/fileadmin/dokumente/Pressestelle2015/aemter/61/isek_Band_1_Teil_9.pdf"
   },
   {
     "city": "Recklinghausen",
@@ -122,8 +122,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Die Altstadt ist Recklinghausens „Gute Stube“. Hier konzentrieren sich Geschäfte und Stadtleben innerhalb des historischen Stadtkerns.",
-    "source": "https://recklinghausen.de/Inhalte/Startseite/Leben_Wohnen/Stadtentwicklung_Teilraeumliche_Konzepte/Masterplan_Altstadt/index.asp?highmain=6&highsub=3&highsubsub=0"
+    "text": "Rund um Recklinghausens Altstadt liegen Wohnen und Einkaufen nah beieinander. Suderwich hat daneben einen eigenen alten Dorfkern, umgeben von Wohnstraßen mit Ein- und Mehrfamilienhäusern.",
+    "source": "https://www.recklinghausen.de/inhalte/startseite/leben_wohnen/Dokumente/Integriertes%20Handlungskonzept%20Wohnen.pdf"
   },
   {
     "city": "Schermbeck",
@@ -131,7 +131,7 @@
     "regions": [
       "niederrhein"
     ],
-    "text": "Schermbeck liegt im Naturpark Hohe Mark, zwischen Niederrhein und Münsterland. Die Landschaft rund um die Gemeinde gehört wesentlich zu ihrem Charakter.",
+    "text": "Die Geschäfte im Schermbecker Zentrum konzentrieren sich rund um die Mittelstraße. Außerhalb des Hauptorts liegen Dörfer wie Gahlen und kleinere Siedlungen zwischen Wiesen und Feldern.",
     "source": "https://www.schermbeck.de/system/files/2025-10/schermbeck_klein_3.auflage.pdf"
   },
   {
@@ -140,8 +140,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Historische Häuser und Geschäfte prägen Unnas Altstadt. In den Straßen der Innenstadt liegen Stadtgeschichte und heutiges Alltagsleben dicht beieinander.",
-    "source": "https://www.unna.de/denkmalschutz"
+    "text": "In Unnas Altstadt wohnt man zwischen historischen Häusern und Geschäften. Weiter östlich liegen Dörfer wie Lünern und Hemmerde, in denen das Wohnumfeld deutlich ländlicher ist.",
+    "source": "https://www.unna.de/handlungskonzeptwohnen2014"
   },
   {
     "city": "Witten",
@@ -149,8 +149,8 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Witten ist Universitätsstadt an der Ruhr. Das Flusstal und Stadtteile wie Herbede mit Fachwerk und Ruhrsandstein geben der Stadt ihr eigenes Gesicht.",
-    "source": "https://www.witten.de/rathaus-service/"
+    "text": "Herbede hat mit der Meesmannstraße eine eigene Einkaufsstraße und liegt jenseits der Ruhr, abseits der Wittener Innenstadt. Zum Stadtteil gehören auch kleinere Wohnorte wie Vormholz und Durchholz.",
+    "source": "https://de.wikipedia.org/wiki/Herbede"
   },
   {
     "city": "Düsseldorf",
@@ -158,8 +158,8 @@
     "regions": [
       "rheinland"
     ],
-    "text": "Von Gerresheim und Grafenberg bis zur Innenstadt: Düsseldorf vereint 50 Stadtteile. Neben dem Leben in der Großstadt gehören auch grüne und dörflich geprägte Ecken dazu.",
-    "source": "https://www.duesseldorf.de/bv"
+    "text": "Düsseldorf bietet auch innerhalb eines Stadtbezirks große Unterschiede: In Bilk stehen städtische Straßenzüge und Mehrfamilienhäuser, während Hamm und Volmerswerth ihren dörflichen Aufbau bewahrt haben.",
+    "source": "https://www.duesseldorf.de/bv/03/"
   },
   {
     "city": "Meerbusch",
@@ -168,8 +168,8 @@
       "rheinland",
       "niederrhein"
     ],
-    "text": "Büderich, Osterath, Lank-Latum und fünf weitere Stadtteile bilden Meerbusch. Ihre gewachsenen Ortskerne und die Landschaft am Rhein prägen die Stadt.",
-    "source": "https://meerbusch.de/leben-in-meerbusch/stadtportrait"
+    "text": "Schon innerhalb von Büderich reicht das Wohnumfeld von den Villen im Meerer Busch bis zum ländlichen Niederdonk. Andere Stadtteile wie Osterath und Lank-Latum haben eigene Ortskerne mit Geschäften.",
+    "source": "https://meerbusch.de/leben-in-meerbusch/stadtportrait/meerbuscher-stadtteile"
   },
   {
     "city": "Mettmann",
@@ -177,8 +177,8 @@
     "regions": [
       "rheinland"
     ],
-    "text": "Das Neandertal gehört zu Mettmanns bekanntesten Orten. Von der Stadt führt der Weg in eine Landschaft, die Natur und Menschheitsgeschichte zusammenbringt.",
-    "source": "https://www.mettmann.de/web/kunst-kultur/neanderthal-museum/"
+    "text": "Neben den Wohnlagen rund um Mettmanns Zentrum gibt es die Siedlung Obschwarzbach. Dort stehen seit den 1970er-Jahren Häuser mit Gärten; das Umfeld ist deutlich weniger städtisch als in der Innenstadt.",
+    "source": "https://www.mettmann.de/web/buergerfreundliche-loesung-fuer-obschwarzbach/"
   },
   {
     "city": "Moers",
@@ -186,8 +186,8 @@
     "regions": [
       "niederrhein"
     ],
-    "text": "Schlosspark und Wallanlagen liegen direkt an der Moerser Innenstadt. So gehören grüne Spazierwege und das Leben im Zentrum hier eng zusammen.",
-    "source": "https://www.moers.de/veranstaltungen/geheimnisvoller-schlosspark-6"
+    "text": "Zu Moers gehören auch die Zechenhäuser in Meerbeck. Diese ältere Siedlungsbebauung bietet ein anderes Wohnumfeld als die Straßen rund um die Innenstadt mit ihren Geschäften und dem angrenzenden Schlosspark.",
+    "source": "https://www.moers.de/system/files/2024-04/Handlungskonzept%20Wohnen%20Neu_Meerbeck%20vom%2028.09.2022.pdf"
   },
   {
     "city": "Krefeld",
@@ -195,8 +195,8 @@
     "regions": [
       "niederrhein"
     ],
-    "text": "In Uerdingen zeigt sich Krefeld von seiner Rheinseite. Der Stadtteil am Fluss ergänzt das Bild der Stadt um einen eigenen historischen Ortskern.",
-    "source": "https://www.krefeld.de/C1256D44002DA374/html/5BC7018D3AC73BE3C1257F4500405B2D/$file/Integriertes%20Handlungskonzept%20Uerdingen10_1.pdf"
+    "text": "In Krefeld konzentriert sich das Alltagsleben nicht allein auf die Innenstadt. Uerdingen am Rhein und Hüls haben eigene Ortszentren mit Geschäften für die umliegenden Wohngebiete.",
+    "source": "https://www.krefeld.de/C1257CBD001F275F/files/fnpneu_begruendung.pdf/$file/fnpneu_begruendung.pdf?OpenElement="
   },
   {
     "city": "Ratingen",
@@ -204,8 +204,8 @@
     "regions": [
       "rheinland"
     ],
-    "text": "Im Ratinger Stadtkern ist die Geschichte der Stadt bis heute sichtbar. Ein Rundgang innerhalb der historischen Stadtmauern führt mitten durch die Innenstadt.",
-    "source": "https://www.stadt-ratingen.de/kultur-und-tourismus/tourismus/ratingen-entdecken/stadtrundgang-innenstadt"
+    "text": "In Ratingen liegen Einkaufsmöglichkeiten nicht nur in der Innenstadt. Auch Lintorf hat ein eigenes Zentrum, auf das sich die umliegenden Wohngebiete im Alltag orientieren.",
+    "source": "https://www.stadt-ratingen.de/fileadmin/user_upload/Bilder/61/Stadtentwicklung/Einzelhandelskonzept_Ratingen.pdf"
   },
   {
     "city": "Viersen",
@@ -213,7 +213,7 @@
     "regions": [
       "niederrhein"
     ],
-    "text": "Alt-Viersen, Dülken, Süchteln und Boisheim: Vier Stadtteile mit eigener Geschichte bilden gemeinsam Viersen und bewahren dabei ihren jeweiligen Charakter.",
-    "source": "https://www.viersen.de/system/files/2024-12/wegweiser_-_viersen.pdf"
+    "text": "Alt-Viersen, Dülken und Süchteln haben jeweils eigene Zentren. Im kleineren Boisheim stehen vor allem Einfamilienhäuser und Doppelhaushälften, umgeben von Feldern und kleineren Waldflächen.",
+    "source": "https://www.viersen.de/system/files/2024-07/04_handlungskonzept_wohnen.pdf"
   }
 ]
