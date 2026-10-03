@@ -1,3 +1,4 @@
+import {propertyCardHtml} from './property-card.mjs';
 import {objectPath,buildPropertySeo} from './property-seo.mjs';
 (() => {
   const $=s=>document.querySelector(s);
@@ -106,13 +107,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
   const photo=(src,alt,loading="lazy")=>src?`<img src="${esc(src)}" alt="${esc(alt)}" loading="${loading}"${loading==="eager"?' fetchpriority="low"':''}>`:'<span class="pp-fallback">SLS Immobilienpartner</span>';
   const previewLink=p=>productionRoute?objectPath(p):`/immobilien-test/?objekt=${encodeURIComponent(p.id)}${demo?'&demo=1':''}`;
   const energyNotRequired=energy=>/^(?:wird\s+)?nicht\s+benötigt[.!]?$/i.test(String(energy.availability||'').trim());
-  const card=p=>{
-    const energy=p.energy||{};
-    const energyLine=energyNotRequired(energy)?'Energieausweis wird nicht benötigt':energy.kind&&energy.value!=null&&energy.fuel&&energy.buildingYear&&energy.rating
-      ?`${esc(energy.kind)} · ${esc(new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(energy.value))} kWh/(m²·a) · ${esc(energy.fuel)} · ${energy.yearFromCertificate?'Baujahr':'Baujahr lt. Objektdaten'} ${esc(energy.buildingYear)} · Klasse ${esc(energy.rating)}`
-      :'Energieangaben auf Anfrage';
-    return `<article class="pp-card-shell" data-property-id="${esc(p.id)}"><a class="pp-card" href="${previewLink(p)}"><div class="pp-image">${photo(p.images?.[0],p.title)}<span class="pp-chip">${esc(p.status||'Verfügbar')}</span></div><div class="pp-card-content"><span class="pp-city">${p.reference?`${esc(p.reference)} · `:''}${esc(p.city)}</span><h2>${esc(p.title)}</h2><div class="pp-stats"><span>${area(p.area)}</span>${p.rooms!=null?`<span>${esc(p.rooms)} Zimmer</span>`:''}<span>${esc(p.type)}</span></div><span class="pp-price">${format(p.price)}</span>${p.courtage?`<small class="pp-card-courtage">Käuferprovision: ${esc(p.courtage)}</small>`:''}<small class="pp-card-energy">${energyLine}</small></div></a>${favoriteButton(p)}</article>`;
-  };
+  const card=p=>propertyCardHtml(p,{href:previewLink(p),favorite:favoriteButton(p)});
   const fact=(label,value)=>value==null||value===''?'':`<div class="pp-fact${String(label).split(/\s+/).some(word=>word.length>=18)?' pp-fact-wide':''}"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
   const activeFilters=()=>{
     const form=new FormData($('#pp-form'));
@@ -285,6 +280,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
     document.body.insertAdjacentHTML('beforeend','<dialog id="pp-filter-dialog" class="pp-search-dialog" aria-labelledby="pp-filter-title"><div class="pp-dialog-top"><h2 id="pp-filter-title">Immobilien filtern</h2><button type="button" data-close-dialog aria-label="Filter schließen">×</button></div><div id="pp-filter-slot"></div></dialog><dialog id="pp-sort-dialog" class="pp-search-dialog" aria-labelledby="pp-sort-title"><div class="pp-dialog-top"><h2 id="pp-sort-title">Sortieren</h2><button type="button" data-close-dialog aria-label="Sortierung schließen">×</button></div><label for="pp-mobile-sort-select">Reihenfolge</label><select id="pp-mobile-sort-select"></select></dialog>');
     const form=$('#pp-form'),placeholder=document.createComment('filter form');form.before(placeholder);
     restoringBrowse=history.state?.ppBrowse||null;
+    if(!restoringBrowse && url.searchParams.has('city')) form.elements.city.value=url.searchParams.get('city');
     if(restoringBrowse){
       browsePage=Math.max(1,Number(restoringBrowse.batches)||1);
       viewMode=restoringBrowse.view==='map'?'map':'list';
