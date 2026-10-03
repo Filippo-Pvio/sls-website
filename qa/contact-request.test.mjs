@@ -15,6 +15,7 @@ async function fixture(run,options={}) {
   if(path==='activity_types') data={data:titles.filter(t=>t!==options.missing).map((name,i)=>({id:100+i,name,category:'for_notes'}))};
   else if(path==='contacts'&&init.method==='GET')data={data:contacts};
   else if(path==='contacts'&&init.method==='POST'){const payload=JSON.parse(init.body);writes.push({path,payload});contacts.push({id:17,...payload.client});data=contacts[0];}
+  else if(path==='contacts/17'&&init.method==='PUT'){const payload=JSON.parse(init.body);writes.push({path,payload});if(!options.rejectSalutation)Object.assign(contacts[0],payload.client);data={ok:true,id:17};}
   else if(path==='contacts/17')data=contacts[0];
   else if(path==='activities')data={data:notes};
   else if(path==='tasks'){
@@ -77,3 +78,18 @@ test('missing buyer finder trigger prevents writes and invalid property data is 
  for(const patch of [{area:-1},{propertyType:'unknown'},{place:''},{rooms:0},{price:'NaN'}])assert.equal((await request('POST',{...body,...patch})).code,400);
  assert.equal(writes.length,0);
 },{missing:'Website | Käuferfinder | Eigentümeranfrage',newContact:true}));
+
+test('new contact receives the selected salutation and records it in the note',()=>fixture(async({request,payload,writes,notes})=>{
+ assert.equal((await request('POST',{...payload,salutation:'mr'})).code,200);
+ assert.equal(writes[0].payload.client.salutation,'mr');assert.ok(notes[0].activatable.body.includes('Anrede: Herr'));
+},{newContact:true}));
+test('existing verified contact receives only the explicitly selected salutation',()=>fixture(async({request,payload,writes,notes})=>{
+ assert.equal((await request('POST',{...payload,salutation:'ms'})).code,200);
+ assert.deepEqual(writes[0],{path:'contacts/17',payload:{client:{salutation:'ms'}}});assert.ok(notes[0].activatable.body.includes('Anrede: Frau'));
+}));
+test('invalid salutation is rejected before any CRM writes',()=>fixture(async({request,payload,writes})=>{
+ assert.equal((await request('POST',{...payload,salutation:'unknown'})).code,400);assert.equal(writes.length,0);
+}));
+test('unconfirmed salutation update cannot report successful submission',()=>fixture(async({request,payload,notes})=>{
+ assert.equal((await request('POST',{...payload,salutation:'ms'})).code,502);assert.equal(notes.length,0);
+},{rejectSalutation:true}));

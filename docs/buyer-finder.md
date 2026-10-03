@@ -12,7 +12,7 @@ Callback additionally uses the existing note activity type:
 
 `Website Kontakt – Rückruf gewünscht`
 
-Automations and assignment are configured by SLS in Propstack. The website creates these notes on the verified contact, including property type, place, area, rooms, optional price, message, contact channel, optional callback window and privacy confirmation. It does not create a property, deal or actual callback task; SLS's note-based automation does that. No existing contact identity or consent is overwritten.
+Automations and assignment are configured by SLS in Propstack. The website creates these notes on the verified contact, including property type, place, area, rooms, optional price, message, contact channel, optional callback window and privacy confirmation. It does not create a property, deal or actual callback task; SLS's note-based automation does that. An explicitly selected salutation (Herr/mr or Frau/ms) is stored on new contacts and updated on an existing uniquely verified contact. With Keine Angabe no existing salutation is changed. Other existing contact identity and consent remain unchanged. The selected salutation is also recorded in both notes.
 
 The online submit becomes available only when the contact API confirms the exact note type (and callback type if requested). If missing, form steps remain usable but online submission is disabled with direct business contact information. No live sample contact or note was created for verification.
 

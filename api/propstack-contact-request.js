@@ -14,8 +14,8 @@ function requestId(token,key) {
   if (expected.length!==actual.length || !timingSafeEqual(expected,actual)) return null;
   const age=Date.now()-Number(time); return age>=1000 && age<30*60*1000 ? id : null;
 }
-async function propstack(path,key,payload) {
-  const r=await fetch(`https://api.propstack.de/v1/${path}`,{method:payload?'POST':'GET',headers:{'X-API-KEY':key,...(payload?{'Content-Type':'application/json'}:{})},...(payload?{body:JSON.stringify(payload)}:{}),signal:AbortSignal.timeout(10000)});
+async function propstack(path,key,payload,method) {
+  const r=await fetch(`https://api.propstack.de/v1/${path}`,{method:method || (payload?'POST':'GET'),headers:{'X-API-KEY':key,...(payload?{'Content-Type':'application/json'}:{})},...(payload?{body:JSON.stringify(payload)}:{}),signal:AbortSignal.timeout(10000)});
   if(!r.ok) {const error=new Error(`Propstack ${payload?'POST':'GET'} ${path.split('?')[0].replace(/\/\d+/g,'/:id')} failed (${r.status})`);error.writeRejected=r.status>=400&&r.status<500;throw error;}
   return r.json();
 }
@@ -40,11 +40,16 @@ async function record(key,request,id,categories) {
     if(contacts.length!==1 || normalise(contacts[0].email)!==request.email || normalise(contacts[0].first_name)!==normalise(request.firstName) || normalise(contacts[0].last_name)!==normalise(request.lastName))return {status:409,error:'Ihre Angaben konnten nicht eindeutig zugeordnet werden. Bitte prüfen Sie Ihren Namen und Ihre E-Mail-Adresse oder kontaktieren Sie uns direkt.'};
     contactId=Number(contacts[0].id);
   } else {
-    const contact=await propstack('contacts',key,{client:{first_name:request.firstName,last_name:request.lastName,email:request.email,...(request.phone?{phone:request.phone}:{})}});contactId=Number(contact.id);
+    const contact=await propstack('contacts',key,{client:{first_name:request.firstName,last_name:request.lastName,email:request.email,...(request.salutation?{salutation:request.salutation}:{}),...(request.phone?{phone:request.phone}:{})}});contactId=Number(contact.id);
   }
   if(!validId(contactId))throw new Error('Contact confirmation missing');
-  const verified=await propstack(`contacts/${contactId}`,key);
+  let verified=await propstack(`contacts/${contactId}`,key);
   if(Number(verified.id)!==contactId || normalise(verified.email)!==request.email || normalise(verified.first_name)!==normalise(request.firstName) || normalise(verified.last_name)!==normalise(request.lastName))throw new Error('Contact verification failed');
+  if(request.salutation && verified.salutation!==request.salutation){
+    await propstack(`contacts/${contactId}`,key,{client:{salutation:request.salutation}},'PUT');
+    verified=await propstack(`contacts/${contactId}`,key);
+    if(Number(verified.id)!==contactId || verified.salutation!==request.salutation)throw new Error('Salutation verification failed');
+  }
   const activities=[];
   for(let page=1;page<=10;page++){
     const items=rows(await propstack(`activities?${new URLSearchParams({client_id:String(contactId),item_type:'note',expand:'1',order:'desc',per:'100',page:String(page)})}`,key));activities.push(...items);if(items.length<100)break;
