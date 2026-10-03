@@ -58,6 +58,9 @@
       "regions": [
         "fra1"
       ]
+    },
+    "api/buyer-demand.js": {
+      "maxDuration": 60
     }
   }
 }
