@@ -41,3 +41,4 @@ body.career-page>main>section.career-final{padding:28px 0}.career-page .career-f
 @media(max-width:540px){.career-opportunities{gap:18px}.career-area summary{padding:18px 0}body.career-page #main .career-area h3{font-size:23px}.career-area-copy{padding-right:0}.career-upload label{gap:12px}.career-file-picker{padding:10px 14px;white-space:nowrap}.career-upload-title{font-size:14px}.career-additional>summary{flex-wrap:wrap}.career-page .career-final h2{font-size:24px}}
 
 .career-file-count{font-size:12px;font-weight:400;color:#5b707a}.career-additional>summary{flex-wrap:wrap}
+body.career-page #main .career-final h2{font-size:clamp(24px,2.3vw,32px);line-height:1.3;margin:0 auto;max-width:1000px}
