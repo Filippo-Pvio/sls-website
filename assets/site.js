@@ -149,6 +149,8 @@ footer.innerHTML = `
   </div></div>`;
 // Resolve the real closing surface, including transparent property-page wrappers.
 function syncFooterTone() {
+  const preferred = footer.dataset.footerPreference;
+  if (preferred === 'light' || preferred === 'dark') { footer.dataset.footerTone = preferred; return; }
   const main = document.querySelector('main');
   let surface = main && [...main.children].reverse().find(el => el.getBoundingClientRect().height > 0 && !['SCRIPT','STYLE'].includes(el.tagName));
   let rgb;
