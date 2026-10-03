@@ -4,11 +4,11 @@ import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import {propertyCardHtml} from '../assets/property-card.mjs';
 const source=readFileSync(new URL('../assets/city-properties.js',import.meta.url),'utf8').replace(/^import .*;\n/,'');
-async function run(kind,rows,{fail=false}={}){
+async function run(kind,rows,{fail=false,storage}={}){
  const status={textContent:'',append(){}},grid={children:[],setAttribute(){},replaceChildren(...nodes){this.children=nodes}};
  const section={dataset:{cityProperties:'Dorsten'},querySelector:s=>s==='[role="status"]'?status:s==='[data-city-active]'?(kind==='active'?grid:null):grid};
  const document={querySelectorAll:()=>[section],createElement:()=>({append(){}})};
- vm.runInNewContext(source,{document,URL,AbortSignal,matchMedia:()=>({matches:true}),propertyCardHtml,fetch:async()=>({ok:!fail,json:async()=>kind==='active'?{items:rows}:{references:rows}})});
+ vm.runInNewContext(source,{document,URL,AbortSignal,sessionStorage:storage,matchMedia:()=>({matches:true}),propertyCardHtml,fetch:async()=>({ok:!fail,json:async()=>kind==='active'?{items:rows}:{references:rows}})});
  await new Promise(resolve=>setImmediate(resolve));
  return {status,grid};
 }
@@ -30,4 +30,18 @@ test('reference failures and nonlocal results do not invent local examples',asyn
 test('shared cards preserve energy and commission and escape feed text',()=>{
  const html=propertyCardHtml({...item,title:'<script>bad</script>',courtage:'3,57%',energy:{kind:'Bedarfsausweis',value:100,fuel:'Gas',buildingYear:1990,rating:'D'}},{heading:'h3'});
  assert.match(html,/<h3>&lt;script&gt;/);assert.match(html,/Käuferprovision/);assert.match(html,/100 kWh/);assert.doesNotMatch(html,/<script>/);
+});
+
+test('reload avoids both previous references when alternatives exist and removes count',async()=>{
+ let saved='[]';const storage={getItem:()=>saved,setItem:(_key,value)=>{saved=value}};
+ const rows=Array.from({length:6},(_,i)=>({...item,id:String(i+1)}));
+ const first=await run('references',rows,{storage});const previous=JSON.parse(saved);
+ const next=await run('references',rows,{storage});
+ assert.equal(JSON.parse(saved).filter(id=>previous.includes(id)).length,0);
+ assert.equal(next.grid.children.length,2);assert.equal(first.status.textContent,'');assert.equal(first.status.hidden,true);
+});
+test('small pools and unavailable storage still show valid references',async()=>{
+ const storage={getItem:()=>{throw Error('blocked')},setItem:()=>{throw Error('blocked')}};
+ assert.equal((await run('references',[item],{storage})).grid.children.length,1);
+ assert.equal((await run('references',[item,{...item,id:'2'}],{storage})).grid.children.length,2);
 });
