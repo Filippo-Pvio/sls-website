@@ -16,7 +16,8 @@ async function profiles(key){
     }else{
       for(let n=2,last=first.rows.length;last===100;n++){if(n>250)throw new Error('pagination_limit');const p=await page(n);append(p.rows);last=p.rows.length;}
     }
-    console.info('SLS buyer demand snapshot',JSON.stringify({profiles:all.length,active:all.filter(p=>p.active===true).length,buy:all.filter(p=>p.marketing_type==='BUY').length,fields:all.length?Object.keys(all[0]):[]}));
+    const distribution={};for(const label of ['BUY','RENT','UNSET','OTHER']){const selected=all.filter(p=>{const type=String(p.marketing_type??'').trim();return label==='UNSET'?!type:label==='OTHER'?type&&!['BUY','RENT'].includes(type):type===label;});const clients=rows=>new Set(rows.filter(p=>Number.isSafeInteger(Number(p.client_id))&&Number(p.client_id)>0).map(p=>String(p.client_id))).size;distribution[label]={profiles:selected.length,activeProfiles:selected.filter(p=>p.active===true).length,clients:clients(selected),activeClients:clients(selected.filter(p=>p.active===true))};}const activeAll=all.filter(p=>p.active===true),unique=rows=>new Set(rows.filter(p=>Number.isSafeInteger(Number(p.client_id))&&Number(p.client_id)>0).map(p=>String(p.client_id))).size;
+    console.info('SLS buyer demand distribution',JSON.stringify({profiles:all.length,clients:unique(all),activeClients:unique(activeAll),activeBuyOrUnsetClients:unique(activeAll.filter(p=>p.marketing_type==='BUY'||!String(p.marketing_type??'').trim())),distribution}));
     snapshot={rows:all,checkedAt:new Date().toISOString(),until:Date.now()+300000};return snapshot;
   })().finally(()=>{inflight=null;});return inflight;
 }
