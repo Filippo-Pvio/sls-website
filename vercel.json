@@ -49,6 +49,9 @@
     },
     "api/sia-ask.js": {
       "maxDuration": 60
+    },
+    "api/profile-reviews.js": {
+      "maxDuration": 60
     }
   }
 }
