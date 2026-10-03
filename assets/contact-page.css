@@ -1,4 +1,5 @@
 .contact-page{--contact-blue:#345b6e;--contact-red:#ff526b;background:#f4f1ed}
+.contact-page .button{border-radius:999px}
 .contact-page .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .contact-page .contact-intro{position:relative;min-height:660px;display:flex;align-items:center;isolation:isolate;overflow:hidden;background:#345b6e!important}
 .contact-page .contact-intro .buy-hero-scenes{position:absolute;inset:0 0 0 43%;width:auto;z-index:-2;overflow:hidden}
@@ -44,6 +45,8 @@
 .contact-page .contact-method{margin-top:28px}.contact-page .contact-method legend{font-size:14px;font-weight:600;margin-bottom:12px}
 .contact-page .contact-method label{display:inline-flex;align-items:center;gap:8px;padding:12px 15px;margin:0 5px 8px 0;border:1px solid #c9d4d9;border-radius:8px;font-size:14px;cursor:pointer}
 .contact-page .contact-method label:has(input:checked){background:#eaf0f3;border-color:#345b6e}
+.contact-page .contact-method input[type=radio]{flex:0 0 18px;width:18px;height:18px;min-height:18px;padding:0;margin:0;appearance:auto}
+.contact-page .contact-callback .contact-fields{grid-template-columns:1fr}
 .contact-page input[type=radio],.contact-page input[type=checkbox]{accent-color:#345b6e}
 .contact-page .contact-callback{padding:0 20px 16px;background:#edf2f4;border-radius:10px;margin-top:12px;overflow:hidden}
 .contact-page .contact-time-hint{font-size:12px;color:#607783;margin:12px 0 0}
