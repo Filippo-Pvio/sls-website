@@ -14,7 +14,7 @@ for p in profiles:
   scene=scenes[0];attrs=f'data-hero-scenes="{e(",".join(scenes))}" data-hero-widths="900,900,900"'
   images=f'<img class="hero-scene hero-scene-current is-visible" data-scene="{e(scene)}" src="/assets/images/{scene}-1536.webp" srcset="/assets/images/{scene}-900.webp 900w, /assets/images/{scene}-1536.webp 1536w" sizes="100vw" width="1536" height="1024" alt="" fetchpriority="high"><img class="hero-scene hero-scene-next" alt="" decoding="async">'
  else:
-  attrs='';images=f'<img class="hero-scene hero-scene-current is-visible" src="{portrait}" width="768" height="768" alt="" fetchpriority="high">'
+  attrs='';images=f'<img class="profile-hero-backdrop" src="{portrait}" alt="" width="768" height="768"><img class="hero-scene hero-scene-current is-visible" src="{portrait}" width="768" height="768" alt="" fetchpriority="high">'
  media=''
  if p['videos']:
   videoCards=''
