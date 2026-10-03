@@ -5,7 +5,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Dorstens Innenstadt liegt an der Lippe. Lembeck und Rhade im Norden bieten Wohnen rund um eigene Dorfkerne und in ländlicher Umgebung.",
+    "text": "Dorstens Innenstadt liegt an der Lippe. In Lembeck und Rhade im Norden der Stadt wohnt man in ländlicher Umgebung rund um die alten Dorfkerne.",
     "source": "https://www.dorsten.de/wirtschaft-und-wohnen/planung-and-umwelt/dorfentwicklung"
   },
   {
@@ -14,7 +14,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Bochum ist Hochschulstadt und hat zugleich viele ältere Wohnsiedlungen. In Wiemelhausen zeigt die Borgholzwiese, wie eng Wohnen und Gärten schon zur Bergbauzeit verbunden waren.",
+    "text": "Bochum ist Hochschulstadt mit einer langen Bergbaugeschichte. Zum Wohnangebot gehören auch ehemalige Bergarbeitersiedlungen mit Gärten.",
     "source": "https://www.bochum.de/Denkmalschutz-%2F-Denkmalpflege%2FDenkmalliste-der-Stadt-Bochum%2FSiedlungen%2FBorgholzwiese"
   },
   {
@@ -23,7 +23,7 @@
     "regions": [
       "muensterland"
     ],
-    "text": "In Borken liegen die Wohngebiete rund um die Innenstadt und Gemen nah beieinander. Weiter außerhalb stehen viele Häuser und Höfe zwischen den Feldern des Westmünsterlands.",
+    "text": "Zu Borken gehören neben der Innenstadt und Gemen auch ländliche Ortsteile. Dort findet man Häuser und Höfe inmitten der Felder des Westmünsterlands.",
     "source": "https://www.borken.de/de-wAssets/docs/Leben-in-Borken/Mobilitaet/Anhang_01_Bestandsanalyse.pdf"
   },
   {
@@ -50,7 +50,7 @@
     "regions": [
       "muensterland"
     ],
-    "text": "In Coesfeld führt die Berkel mitten durch die Innenstadt. Wer außerhalb des Zentrums wohnen möchte, findet im Ortsteil Lette einen eigenen Dorfkern.",
+    "text": "Die Berkel fließt durch Coesfelds Innenstadt. Im Ortsteil Lette liegen Wohngebiete rund um einen eigenen Dorfkern.",
     "source": "https://www.coesfeld.de/planung/stadtplanung-und-entwicklung/dorfinnenentwicklungskonzept-diek-lette"
   },
   {
@@ -68,7 +68,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "In Dortmund-Hörde wurde aus einem Stahlwerksgelände ein Wohngebiet am PHOENIX See. Hier stehen moderne Häuser und Wohnungen direkt am Wasser.",
+    "text": "Rund um den PHOENIX See in Dortmund-Hörde sind auf einem früheren Stahlwerksgelände moderne Häuser und Wohnungen entstanden.",
     "source": "https://www.dortmund.de/themen/freizeit-und-kultur/parks-seen-und-zoo/phoenix-see/leben-am-see/"
   },
   {
@@ -86,7 +86,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "In Gladbeck gehören Gartenstadtsiedlungen zum Wohnen ebenso dazu wie Einfamilienhausgebiete und Wohnungen im Zentrum.",
+    "text": "Historische Gartenstadtsiedlungen sind typisch für Gladbecks Wohnbebauung. Daneben gibt es Einfamilienhausgebiete und Wohnungen im Stadtzentrum.",
     "source": "https://www.gladbeck.de/inhalt/konzepte-und-projekte"
   },
   {
@@ -95,7 +95,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "In Haltern am See liegen Altstadt und Stausee nah beieinander. Zur Stadt gehören außerdem eigenständige Orte wie Hullern und Lippramsdorf.",
+    "text": "In Haltern am See liegen Altstadt und Stausee nah beieinander. Auch die dörflich geprägten Ortsteile Hullern und Lippramsdorf gehören zur Stadt.",
     "source": "https://de.wikipedia.org/wiki/Haltern_am_See"
   },
   {
@@ -149,7 +149,7 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "text": "Witten liegt an der Ruhr und ist zugleich Universitätsstadt. Mit Herbede gehört auch ein Stadtteil mit eigenem Ortskern und der Einkaufsstraße Meesmannstraße dazu.",
+    "text": "Witten ist Universitätsstadt an der Ruhr. Im Stadtteil Herbede bildet die Meesmannstraße mit ihren Geschäften den Mittelpunkt des Ortskerns.",
     "source": "https://de.wikipedia.org/wiki/Herbede"
   },
   {
@@ -168,7 +168,7 @@
       "rheinland",
       "niederrhein"
     ],
-    "text": "In Meerbusch liegen Villenviertel wie der Meerer Busch und ländliche Gegenden wie Niederdonk innerhalb desselben Stadtteils. Osterath und Lank-Latum haben eigene Ortskerne.",
+    "text": "In Meerbusch-Büderich liegen sowohl das Villenviertel Meerer Busch als auch das ländliche Niederdonk. Osterath und Lank-Latum haben jeweils eigene Ortskerne.",
     "source": "https://meerbusch.de/leben-in-meerbusch/stadtportrait/meerbuscher-stadtteile"
   },
   {
@@ -186,7 +186,7 @@
     "regions": [
       "niederrhein"
     ],
-    "text": "In Moers wird bis heute in den ehemaligen Zechenhäusern von Meerbeck gewohnt. Rund um die Innenstadt liegen Wohnstraßen nahe den Geschäften und dem Schlosspark.",
+    "text": "Die Zechenhäuser in Meerbeck sind ein markanter Teil der Wohnbebauung von Moers. Wer nahe der Innenstadt wohnt, hat auch die Geschäfte und den Schlosspark in der Umgebung.",
     "source": "https://www.moers.de/system/files/2024-04/Handlungskonzept%20Wohnen%20Neu_Meerbeck%20vom%2028.09.2022.pdf"
   },
   {
@@ -195,7 +195,7 @@
     "regions": [
       "niederrhein"
     ],
-    "text": "Krefeld reicht bis an den Rhein: In Uerdingen liegt der historische Ortskern nahe am Fluss. Auch Hüls hat sich als eigenständiger Ort innerhalb der Stadt erhalten.",
+    "text": "Krefeld reicht bis an den Rhein: In Uerdingen liegt der historische Ortskern nahe am Fluss. Auch im Stadtteil Hüls ist der alte Ortskern erhalten.",
     "source": "https://www.krefeld.de/C1257CBD001F275F/files/fnpneu_begruendung.pdf/$file/fnpneu_begruendung.pdf?OpenElement="
   },
   {
@@ -213,7 +213,7 @@
     "regions": [
       "niederrhein"
     ],
-    "text": "Viersen hat mit Alt-Viersen, Dülken und Süchteln mehrere Zentren. Im kleineren Boisheim überwiegen Einfamilienhäuser und Doppelhaushälften am Rand von Feldern und Waldflächen.",
+    "text": "Viersen hat mit Alt-Viersen, Dülken und Süchteln mehrere Zentren. Im kleineren Boisheim überwiegen Einfamilienhäuser und Doppelhaushälften; rund um den Ort liegen Felder und kleinere Waldflächen.",
     "source": "https://www.viersen.de/system/files/2024-07/04_handlungskonzept_wohnen.pdf"
   }
 ]
