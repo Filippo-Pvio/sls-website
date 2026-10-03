@@ -30,7 +30,7 @@ export default async function handler(req, res) {
   }
   const personal = selectProfileReview(reviews, profile);
   res.status(200).json({
-    available:true,
+    available:true, profileName:profile.name,
     company:{name:data.name, rating:data.rating, count:data.userRatingCount, url:data.googleMapsUri},
     personalReview:personal,
     // Places supplies a limited selection, not the entire review history.

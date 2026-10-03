@@ -24,3 +24,18 @@ test('full Google list follows pagination, preserves review text, and maps stars
   assert.equal(result.reviews.length,2); assert.equal(result.reviews[0].text,'Danke Herrn Livera!');assert.equal(result.reviews[0].rating,5);assert.equal(result.count,395);
   assert.match(calls[2],/pageToken=next-page/);
 });
+
+test('a customer author is not the employee and shared surnames remain distinct', () => {
+  const gina = profileReviewAssignments['gina-kuennecke'];
+  assert.equal(matchesProfile({author:'Gina K.', text:'Herr Offermann hat uns betreut.'},gina),false);
+  assert.equal(matchesProfile({text:'Vielen Dank Frau Gina Künnecke!'},gina),true);
+  assert.equal(matchesProfile({text:'Danke Frau Sahlmen'},profileReviewAssignments['dennis-sahlmen']),false);
+  assert.equal(matchesProfile({text:'Danke Herrn Sahlmen'},profileReviewAssignments['daniela-sahlmen']),false);
+});
+test('all profiles are addressable and only pinned personal reviews are selected', () => {
+  assert.equal(Object.keys(profileReviewAssignments).length,21);
+  for (const person of Object.values(profileReviewAssignments)) {
+    assert.equal(matchesProfile({text:person.name},person),true);
+    assert.equal(selectProfileReview([{text:person.name, googleMapsUri:'https://www.google.com/other'}],person),null);
+  }
+});

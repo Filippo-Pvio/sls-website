@@ -48,7 +48,7 @@
   const section = document.querySelector('[data-profile-reviews]');
   if (!section) return;
   const safeGoogleUrl = raw => {
-    try { const url = new URL(raw); return url.protocol === 'https:' && (url.hostname === 'google.com' || url.hostname.endsWith('.google.com') || url.hostname === 'share.google') ? url.href : null; } catch { return null; }
+    try { const url = new URL(raw); return url.protocol === 'https:' && (url.hostname === 'google.com' || url.hostname.endsWith('.google.com') || url.hostname === 'share.google' || url.hostname === 'maps.app.goo.gl') ? url.href : null; } catch { return null; }
   };
   async function loadReviews() {
     try {
@@ -60,10 +60,12 @@
       const review = data.personalReview;
       const original = safeGoogleUrl(review?.googleMapsUri);
       if (review?.text && original) {
-        section.querySelector('[data-review-heading]').textContent = 'Persönliche Erfahrungen mit Filippo Livera.';
+        const name = section.dataset.profileName || data.profileName || 'Filippo Livera';
+        section.querySelector('[data-review-heading]').textContent = `Erfahrungen mit ${name}.`;
         section.querySelector('[data-review-context]').textContent = 'Eine ausgewählte Google-Bewertung zur persönlichen Beratung.';
-        section.querySelector('[data-review-text]').textContent = review.text;
-        section.querySelector('.profile-google-label').textContent = 'Google-Bewertung';
+        const words = review.text.trim().split(/\s+/);
+        section.querySelector('[data-review-text]').textContent = `„${words.slice(0,25).join(' ')}${words.length > 25 ? ' …' : ''}“`;
+        section.querySelector('.profile-google-label').textContent = 'Google-Bewertung · Auszug';
         const stars = section.querySelector('[data-review-stars]');
         stars.textContent = '★'.repeat(Math.min(5, Math.max(0, Math.round(review.rating))));
         stars.setAttribute('aria-label', `${review.rating} von 5 Sternen`);
@@ -73,8 +75,8 @@
         section.querySelector('[data-review-original]').href = original;
         if (review.individualLink === false) section.querySelector('[data-review-original]').textContent = 'Bewertung auf Google nachlesen';
         section.querySelector('[data-personal-review]').hidden = false;
+        section.hidden = false;
       }
-      section.hidden = false;
     } catch { /* Keep the verified editorial excerpt when the live connection is unavailable. */ }
   }
   // Fetch once per visit near the section, without storing Google content in the browser.
