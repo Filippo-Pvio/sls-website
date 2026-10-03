@@ -2,10 +2,6 @@
 .market-city-page .city-hero{min-height:580px;display:flex;align-items:center}
 .market-city-page .city-hero .hero-scene{transform:none!important;filter:none}
 .market-city-page .city-hero .lead{max-width:640px}
-.market-city-page .city-navigation{background:#fff;border-bottom:1px solid #d4dfe3}
-.market-city-page .city-navigation .wrap{display:flex;flex-wrap:wrap;gap:0 28px;padding-block:14px}
-.market-city-page .city-navigation a{display:inline-flex;align-items:center;min-height:44px;padding:8px 0;color:#345b6e;text-decoration:none;border-bottom:2px solid transparent;font-size:14px;font-weight:600}
-.market-city-page .city-navigation a:hover{border-color:#b9606c}
 .market-city-page #main>.city-white{background:#fff}
 .market-city-page .city-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start}
 .market-city-page .city-split h2,.market-city-page .city-section-head h2{margin-top:0}
@@ -39,11 +35,33 @@
 .market-city-page .city-back{display:inline-flex;min-height:44px;align-items:center;color:#fff;text-decoration:underline;text-underline-offset:5px}
 .market-city-page #main section[id]{scroll-margin-top:110px}
 .market-city-page #main a:focus-visible,.market-city-page summary:focus-visible{outline:3px solid #b9606c;outline-offset:5px}
-@media(max-width:900px){.market-city-page .city-split{grid-template-columns:1fr;gap:30px}.market-city-page .city-locations{grid-template-columns:1fr;gap:24px}.market-city-page .city-hero{min-height:520px}.market-city-page .city-navigation .wrap{gap:0 22px}.market-city-page .city-section-head{margin-bottom:30px}}
-@media(max-width:540px){.market-city-page .city-hero{min-height:540px}.market-city-page .city-navigation a{font-size:13px}.market-city-page h3{font-size:24px}.market-city-page .city-split .page-actions{gap:16px}.market-city-page .city-contact h2{font-size:34px}}
 
-.market-city-page .city-navigation .wrap{width:min(calc(100% - 96px),1120px);margin-inline:auto}
-@media(max-width:850px){.market-city-page .city-navigation .wrap{width:calc(100% - 48px)}}
-@media(max-width:540px){.market-city-page .city-navigation .wrap{width:calc(100% - 32px)}}
 body.market-city-page #main>.city-contact .lead{color:#fff!important}
 @media(max-width:760px){body.market-city-page #main>.city-hero::after{background:linear-gradient(180deg,rgba(40,65,78,.86),rgba(40,65,78,.72) 55%,rgba(40,65,78,.58))}}
+/* Reuse the site's open editorial rhythm, with motion progressively enhanced. */
+.market-city-page .city-feature{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.market-city-page .city-image{margin:0;overflow:hidden;border-radius:3px;aspect-ratio:4/5}
+.market-city-page .city-image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:none}
+.market-city-page .city-feature-copy h2{margin-top:0}
+.market-city-page .city-feature-copy .city-intro{font-size:20px}
+.market-city-page .city-section-head{max-width:760px;margin:0 auto 48px;text-align:center}
+.market-city-page .city-locations{gap:40px}
+.market-city-page .city-locations article{padding-top:28px}
+.market-city-page .city-process{display:grid;grid-template-columns:.85fr 1.15fr;gap:80px;align-items:start}
+.market-city-page .city-process-intro{position:sticky;top:140px}
+.market-city-page .city-process-intro h2{margin-top:0}
+.market-city-page .city-steps li{padding-bottom:38px}
+.market-city-page .city-steps li>span{transition:background .35s,color .35s;border:1px solid #b8cbd3;border-radius:50%;width:46px;height:46px;display:flex;align-items:center;font-size:16px;justify-content:center;background:#fff}
+.market-city-page .city-steps li.is-reached>span{background:#345b6e;color:#fff;border-color:#345b6e}
+.market-city-page .city-presentation{list-style:none;padding:0;margin:24px 0}
+.market-city-page .city-presentation li{padding:14px 0 14px 24px;border-top:1px solid #b8cbd3;position:relative}
+.market-city-page .city-presentation li:before{content:'✓';position:absolute;left:0;color:#a94353}
+.market-city-page .city-buyer{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.market-city-page .city-buyer h2{margin-top:0}
+.market-city-page .city-faq{max-width:860px;margin-inline:auto}
+.market-city-page .city-motion-ready{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.market-city-page .city-motion-ready.is-visible{opacity:1;transform:none}
+@media(min-width:851px){.market-city-page .city-locations article:nth-child(2){transition-delay:90ms}.market-city-page .city-locations article:nth-child(3){transition-delay:180ms}}
+@media(max-width:850px){.market-city-page .city-feature,.market-city-page .city-process,.market-city-page .city-buyer{grid-template-columns:1fr;gap:32px}.market-city-page .city-locations{grid-template-columns:1fr;gap:28px}.market-city-page .city-process-intro{position:static}.market-city-page .city-image{aspect-ratio:3/2}.market-city-page .city-feature-reverse .city-image{order:2}.market-city-page .city-section-head{margin-bottom:32px}.market-city-page .city-hero{min-height:520px}}
+@media(max-width:540px){.market-city-page .city-hero{min-height:540px}.market-city-page h3{font-size:24px}.market-city-page .city-contact h2{font-size:34px}}
+@media(prefers-reduced-motion:reduce){.market-city-page .city-motion-ready{opacity:1;transform:none;transition:none}.market-city-page .city-steps li>span{transition:none}}
