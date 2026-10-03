@@ -52,6 +52,12 @@
     },
     "api/profile-reviews.js": {
       "maxDuration": 60
+    },
+    "api/career-application.js": {
+      "maxDuration": 60,
+      "regions": [
+        "fra1"
+      ]
     }
   }
 }
