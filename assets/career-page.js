@@ -9,6 +9,9 @@
     const input=form.elements[field],file=input.files[0];
     form.querySelector(`[data-file-info="${field}"]`).textContent=file?`${file.name} · ${(file.size/1024/1024).toLocaleString('de-DE',{maximumFractionDigits:2})} MB`:'Noch keine Datei ausgewählt';
     form.querySelector(`[data-file-remove="${field}"]`).hidden=!file;
+    const count=fields.slice(1).filter(name=>form.elements[name].files.length>0).length;
+    const badge=form.querySelector('[data-additional-count]');
+    if(badge){badge.hidden=!count;badge.textContent=`${count} ${count===1?'Datei':'Dateien'} ausgewählt`;}
   }
   fields.forEach(field=>{
     form.elements[field].addEventListener('change',()=>{
