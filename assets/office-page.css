@@ -1,8 +1,8 @@
 body.office-page>main>section.section{padding:52px 0}
 .office-page .button{border-radius:999px}
 body.office-page #main>.office-intro{position:relative;min-height:540px;display:flex;align-items:center;isolation:isolate;overflow:hidden;background:#345b6e!important}
-.office-page .office-intro .buy-hero-scenes{position:absolute;inset:0 0 0 30%;width:auto;z-index:-2;overflow:hidden}
-.office-intro::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#345b6e 37%,#345b6eeb 46%,#345b6e14 74%)}
+.office-page .office-intro .buy-hero-scenes{position:absolute;inset:0;width:auto;z-index:-2;overflow:hidden}
+
 .office-hero-copy{max-width:590px}.office-page .office-intro .hero-scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--office-scene-position,50% 25%);opacity:0;transition:opacity 1.6s ease}.office-intro .hero-scene.is-visible{opacity:1}.office-intro .hero-scene.is-resetting{transition:none}
 body.office-page #main .office-intro h1{font-size:clamp(42px,4.5vw,66px);line-height:1.08;color:#fff}.office-intro .lead{font-size:21px}
 .office-split,.office-section-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}.office-section-head{margin-bottom:32px}.office-page .office-section-head p{margin:0;max-width:440px;color:#5b707a}.office-page h2{margin-top:0}body.office-page>main>section.section h2{font-size:clamp(32px,3.7vw,50px);line-height:1.12}
@@ -11,7 +11,7 @@ body.office-page #main .office-intro h1{font-size:clamp(42px,4.5vw,66px);line-he
 .office-service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:34px}.office-service{border-top:1px solid #b9cbd3;padding:20px 0 8px;transition:transform .2s}.office-service:hover{transform:translateY(-4px)}.office-service h3{font-size:26px;margin:0 0 12px}.office-service p{font-size:16px;color:#5b707a;min-height:0;margin:0 0 12px}
 .office-faq details{border-bottom:1px solid #c7d4d9;padding:20px 0}.office-faq details:first-child{padding-top:0}.office-faq summary{cursor:pointer;font-size:18px;font-weight:600;color:#345b6e}.office-faq details p{margin:18px 0 0;font-size:16px;color:#5b707a}
 body.office-page #main>.office-final{background:#345b6e!important;text-align:center}.office-final h2{margin:0 auto}.office-final .lead{max-width:600px;margin:20px auto 28px}.office-final .button{background:#fff;color:#345b6e;border:0}
-@media(max-width:850px){body.office-page #main>.office-intro{min-height:500px;padding-top:140px}.office-page .office-intro .buy-hero-scenes{inset:0}.office-intro::after{background:linear-gradient(90deg,#28414eed,#28414ea6)}.office-split,.office-section-head,.office-location-grid{grid-template-columns:1fr;gap:24px}.office-people{gap:20px}.office-person{flex:0 0 260px}.office-map{min-height:330px}.office-map-cover{min-height:330px}.office-map iframe{height:360px;min-height:360px}.office-service-grid{gap:20px}}
+@media(max-width:850px){body.office-page #main>.office-intro{min-height:500px;padding-top:140px}.office-page .office-intro .buy-hero-scenes{inset:0}.office-split,.office-section-head,.office-location-grid{grid-template-columns:1fr;gap:24px}.office-people{gap:20px}.office-person{flex:0 0 260px}.office-map{min-height:330px}.office-map-cover{min-height:330px}.office-map iframe{height:360px;min-height:360px}.office-service-grid{gap:20px}}
 @media(max-width:540px){body.office-page>main>section.section{padding:36px 0}body.office-page #main>.office-intro{min-height:470px;padding-top:130px}body.office-page #main .office-intro h1{font-size:43px}.office-intro .lead{font-size:18px}.office-people{margin-right:-16px;padding-right:16px}.office-person{flex-basis:78%;max-width:300px}.office-service-grid{grid-template-columns:1fr;gap:14px}.office-service p{min-height:0}.office-page .page-actions{gap:18px}.office-section-head{margin-bottom:24px}}
 @media(prefers-reduced-motion:reduce){.office-intro .hero-scene,.office-service{transition:none}.office-people{scroll-behavior:auto}}
 
@@ -27,12 +27,12 @@ body.office-page #main>.office-final{background:#345b6e!important;text-align:cen
 @media(prefers-reduced-motion:reduce){.office-person img{transition:none}.office-person:hover img{transform:none}}
 
 /* Keep each subject framed independently as the carousel changes. */
-.office-page .office-intro .hero-scene[data-scene="magazin/region-dorsten"]{--office-scene-position:54% 18%}
-.office-page .office-intro .hero-scene[data-scene="sell-hero/beratung"]{--office-scene-position:54% 20%}
-.office-page .office-intro .hero-scene[data-scene="guides-hero/kontakt"]{--office-scene-position:52% 18%}
+.office-page .office-intro .hero-scene[data-scene="magazin/region-dorsten"]{--office-scene-position:54% 0%}
+.office-page .office-intro .hero-scene[data-scene="sell-hero/beratung"]{--office-scene-position:54% 0%}
+.office-page .office-intro .hero-scene[data-scene="guides-hero/kontakt"]{--office-scene-position:52% 0%}
 .office-page .office-intro .hero-scene[data-scene="contact/duesseldorf-koe"]{--office-scene-position:38% 20%}
-.office-page .office-intro .hero-scene[data-scene="marktgebiete/rheinland"]{--office-scene-position:37% 15%}
-.office-page .office-intro .hero-scene[data-scene="references-hero/besichtigung"]{--office-scene-position:35% 18%}
+.office-page .office-intro .hero-scene[data-scene="marktgebiete/rheinland"]{--office-scene-position:37% 0%}
+.office-page .office-intro .hero-scene[data-scene="references-hero/besichtigung"]{--office-scene-position:35% 0%}
 @media(max-width:850px){
 .office-page .office-intro .hero-scene[data-scene="magazin/region-dorsten"]{--office-scene-position:54% 25%}
 .office-page .office-intro .hero-scene[data-scene="sell-hero/beratung"]{--office-scene-position:54% 25%}
