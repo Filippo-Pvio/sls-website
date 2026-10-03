@@ -64,3 +64,16 @@ test('rejects missing callback phone, arbitrary time, missing consent and cross-
  for(const patch of [{method:'callback',phone:'',window:'morning'},{method:'callback',window:'night'},{privacy:false},{topic:'general',message:''}])assert.equal((await request('POST',{...payload,...patch})).code,400);
  assert.equal((await request('POST',payload,{origin:'https://other.example'})).code,403);assert.equal(writes.length,0);
 }));
+test('buyer finder stores structured property details under exact trigger, with callback',()=>fixture(async({request,payload,notes})=>{
+ const body={...payload,topic:'buyerfinder',place:'40213 Düsseldorf',propertyType:'apartment',area:'92.5',rooms:'3',price:'',method:'callback',window:'evening'};
+ assert.equal((await request('POST',body)).code,200);
+ assert.deepEqual(notes.map(x=>x.activatable.title),['Website | Käuferfinder | Eigentümeranfrage',CALLBACK_TITLE]);
+ assert.ok(notes[0].activatable.body.includes('Wohnfläche: 92.5 m²'));assert.ok(notes[0].activatable.body.includes('Preisvorstellung: Noch offen'));assert.ok(notes[0].activatable.body.includes('18–20 Uhr'));assert.ok(notes[0].activatable.body.includes('Quelle: /kaeuferfinder/'));
+}));
+test('missing buyer finder trigger prevents writes and invalid property data is rejected',()=>fixture(async({request,payload,writes,ready})=>{
+ assert.ok(!ready.body.availableTopics.includes('buyerfinder'));
+ const body={...payload,topic:'buyerfinder',place:'Dorsten',propertyType:'house',area:120,rooms:4,price:400000};
+ assert.equal((await request('POST',body)).code,503);
+ for(const patch of [{area:-1},{propertyType:'unknown'},{place:''},{rooms:0},{price:'NaN'}])assert.equal((await request('POST',{...body,...patch})).code,400);
+ assert.equal(writes.length,0);
+},{missing:'Website | Käuferfinder | Eigentümeranfrage',newContact:true}));

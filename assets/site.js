@@ -2,6 +2,7 @@ const navGroups = [
   { label: "Verkaufen", href: "/verkaufen/", kicker: "Für Eigentümer", items: [
     ["Immobilie verkaufen", "/verkaufen/", "Unser Prozess von Bewertung bis Übergabe"],
     ["Immobilienbewertung", "/immobilienbewertung/", "Kostenlos und unverbindlich starten"],
+    ["Käufer finden", "/kaeuferfinder/", "Nachfrage für Ihre Immobilie persönlich prüfen"],
     ["Referenzen", "/referenzen/", "Erfolgreich vermittelte Immobilien"]
   ]},
   { label: "Immobilien", href: "/immobilien/", kicker: "Finden", items: [
