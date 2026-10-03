@@ -57,3 +57,6 @@
 .contact-page .contact-topic-select label{font-size:14px;font-weight:600}
 .contact-page .contact-topic-select select{width:100%;min-width:0;min-height:52px;padding:13px 14px;border:1px solid #c9d4d9;border-radius:8px;background:#fbfcfc;color:#345b6e;font:400 16px/1.5 Raleway,Arial,sans-serif;cursor:pointer}
 .contact-page .contact-topic-select select:focus{outline:2px solid #345b6e;outline-offset:2px}
+
+.contact-page .contact-office>img.contact-office-mischa{object-position:65% center}
+.contact-page .contact-office>img.contact-office-filippo{object-position:60% center}
