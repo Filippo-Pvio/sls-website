@@ -65,7 +65,10 @@ async function load(section, kind) {
       return;
     }
     if (kind === 'active') grid.innerHTML = items.map(item => propertyCardHtml(item,{heading:'h3'})).join('');
-    else grid.replaceChildren(...items.map(referenceCard));
+    else {
+      grid.replaceChildren(...items.map(referenceCard));
+      if (items.length === 1) section.querySelector('.city-section-head > p').textContent = 'Ein Beispiel unserer Arbeit vor Ort: Diese Immobilie hat mit SLS Immobilienpartner einen neuen Eigentümer gefunden.';
+    }
     status.textContent = kind === 'active' ? `Eine Auswahl aktueller Immobilien in ${city}.` : '';
     if (kind === 'references') status.hidden = true;
     animate([...grid.children]);
