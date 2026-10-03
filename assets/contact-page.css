@@ -61,3 +61,7 @@ body.contact-page>main>section.section{padding:60px 0}
 
 .contact-page .contact-office>img.contact-office-mischa{object-position:55% center}
 .contact-page .contact-office>img.contact-office-duesseldorf{object-position:37% center}
+
+body.contact-page>main>section.contact-finish h2{font-size:clamp(30px,3.5vw,48px);line-height:1.12}
+body.contact-page>main>section.contact-finish .lead{font-size:18px;line-height:1.6;margin:16px auto 22px}
+body.contact-page>main>section.contact-finish .button{border:0}
