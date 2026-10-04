@@ -4,7 +4,7 @@ Dieses Verzeichnis ist das Vercel-Root-Directory des bestehenden Projekts `frag-
 
 Allgemeine Immobilienfragen werden mit aktuellen Quellen recherchiert. Unternehmensfragen verwenden die bestätigte Wissensbasis. Bei fehlenden Angaben ist eine kurze Rückfrage erlaubt; bis zu drei vollständige Gesprächspaare werden berücksichtigt. GET `/api/ask` liefert die Fähigkeiten für das Website-Widget. Die Website verwaltet weiterhin das Tageslimit; Rückfragen zählen nicht als beantwortete Fragen.
 
-169 lokale Regressionstests bestehen. Echte Modellantworten müssen nach dem Deployment geprüft werden. Die folgenden Abschnitte dokumentieren den vorherigen Stand des unverändert übernommenen Unternehmensmoduls.
+169 lokale Regressionstests bestehen. Live geprüft am 04.10.2026: allgemeine Bergbaufrage mit Gesetzesquellen, kurze Rückfrage ohne Kontingentabzug und kontextbezogene Unternehmensantwort. Die Recherche nutzt `SIA_RESEARCH_MODEL` (Standard `gpt-5.4-mini`), die Zuordnung weiterhin `gpt-4.1-mini`; beide verwenden denselben vorhandenen API-Schlüssel. Die folgenden Abschnitte dokumentieren den vorherigen Stand des unverändert übernommenen Unternehmensmoduls.
 
 ---
 

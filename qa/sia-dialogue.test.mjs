@@ -19,7 +19,7 @@ test('planner sends context as conversation, immutable instructions and no store
 });
 test('web response requires citations from trusted domains and turns them into internal source buttons',async()=>{
  const result=await answerGeneral('Was bedeutet der Begriff?',{env,fetcher:async(url,options)=>{
-  const body=JSON.parse(options.body);assert.equal(body.tool_choice,'required');assert.ok(body.tools[0].filters.allowed_domains.includes('bra.nrw.de'));assert.equal(body.store,false);return Response.json(grounded());
+  const body=JSON.parse(options.body);assert.equal(body.model,'gpt-5.4-mini');assert.equal(body.reasoning.effort,'low');assert.equal(body.tool_choice,'required');assert.ok(body.tools[0].filters.allowed_domains.includes('bra.nrw.de'));assert.equal(body.store,false);return Response.json(grounded());
  }}); assert.equal(result.reason,'general_web');assert.equal(result.sources[0].number,1);assert.equal(result.answer,'Eine verständliche Erklärung. [1]');assert.deepEqual(result.citations,[{number:1,start:30,end:33}]);
  for(const url of ['https://bra.nrw.de.evil.test/a','javascript:alert(1)','https://user:password@bra.nrw.de/a','http://bra.nrw.de/a'])assert.equal(trustedUrl(url),null);
  assert.throws(()=>extractGroundedAnswer(output('Erklärung ohne Quellen')));
