@@ -3287,3 +3287,37 @@ html body:not(.magazine-article):not(.property-preview) main :is(.office-split,.
 html body:not(.magazine-article):not(.property-preview) main .section>.wrap>h2+p{
   margin-top:0!important;margin-bottom:var(--space-content)!important;
 }
+
+/* Shared form presentation. Field rules and CRM payloads are owned by each form. */
+html body :is(.contact-fields,.career-fields,.pp-form-grid,.buy-criteria,.sls-search-profile-fields) label,
+html body .guide-request label:not(.guide-consent),
+html body .contact-topic-select label{
+  font-size:14px!important;font-weight:600!important;color:#345b6e;line-height:1.5;
+}
+html body :is(.contact-fields,.career-fields,.buy-criteria,.sls-search-profile-fields) label{gap:8px!important}
+html body :is(.buyer-form .contact-fields,.pp-form-grid) label>span{margin-bottom:8px!important}
+html body .pp-form-grid label>span span{display:inline;margin:0!important}
+html body :is(.contact-fields,.career-fields,.pp-form-grid,.buy-criteria,.sls-search-profile-fields,.contact-topic-select,.guide-request)
+:is(input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),select,textarea){
+  box-sizing:border-box;width:100%;min-width:0;min-height:52px!important;
+  padding:13px 14px!important;border:1px solid #c9d4d9!important;border-radius:8px!important;
+  background:#fbfcfc!important;color:#345b6e;font:400 16px/1.5 Raleway,Arial,sans-serif!important;
+}
+html body :is(.contact-fields,.career-fields,.pp-form-grid,.buy-criteria,.sls-search-profile-fields,.contact-topic-select,.guide-request)
+:is(input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),select,textarea):focus-visible{
+  outline:2px solid #345b6e!important;outline-offset:2px!important;
+}
+html body :is(.contact-fields,.career-fields) :is(small,.career-optional){font-size:13px!important;font-weight:400!important;color:#647b86}
+html body .guide-request label:not(.guide-consent)>span{display:block;margin-bottom:8px}
+html body .guide-request label:not(.guide-consent)>:is(input,select){margin-top:0}
+html body :is(.contact-method,.buyer-method){display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0}
+html body :is(.contact-method,.buyer-method) legend{width:100%;font:600 14px/1.5 Raleway,Arial,sans-serif!important;margin:0 0 12px!important;padding:0}
+html body :is(.contact-method,.buyer-method) label{display:inline-flex;align-items:center;gap:8px;padding:12px 15px;margin:0!important;border:1px solid #c9d4d9;border-radius:8px;font-size:14px;line-height:1.5;color:#345b6e;cursor:pointer}
+html body :is(.contact-method,.buyer-method) label:has(input:checked){background:#eaf0f3;border-color:#345b6e}
+html body :is(.contact-method,.buyer-method) input[type=radio]{flex:0 0 18px;width:18px;height:18px;min-height:18px;padding:0;margin:0;accent-color:#345b6e}
+html body :is(.contact-privacy,.career-privacy,.pp-consent,.sls-search-profile-consent,.guide-consent){font-size:13px;line-height:1.6;gap:12px}
+html body :is(.contact-time-hint,.buyer-hint,.career-form-note,.form-required-note,.contact-submit>p){font-size:13px!important;line-height:1.6;color:#647b86}
+html body :is(.contact-status,#buyer-status,.career-status,.sls-search-profile-status,.pp-data-note){font-size:14px;line-height:1.6;color:#345b6e}
+html body :is(.contact-status,#buyer-status,.career-status,.sls-search-profile-status,.pp-data-note).is-error{padding:14px 16px;border:1px solid #d39e9e;border-radius:8px;color:#8b3434;background:#fff4f3}
+html body :is(.contact-status,#buyer-status,.career-status,.sls-search-profile-status,.pp-data-note).is-success{padding:14px 16px;border:1px solid #b9cdd6;border-radius:8px;background:#edf5ef;color:#345b48}
+@media(max-width:540px){html body :is(.contact-method,.buyer-method){flex-direction:column}html body :is(.contact-method,.buyer-method) label{display:flex;width:100%;box-sizing:border-box}}

@@ -39,13 +39,13 @@
       <p>Wir informieren Sie, sobald eine passende Immobilie verfügbar ist.</p>
       <p class="sls-search-profile-criteria" data-profile-criteria></p>
       <div class="sls-search-profile-fields">
-        <label>Vorname *<input name="firstName" autocomplete="given-name" required></label>
-        <label>Nachname *<input name="lastName" autocomplete="family-name" required></label>
-        <label>E-Mail *<input name="email" type="email" autocomplete="email" required></label>
-        <label>Telefon *<input name="phone" type="tel" autocomplete="tel" required></label>
+        <label><span>Vorname <span aria-hidden="true">*</span></span><input name="firstName" autocomplete="given-name" required></label>
+        <label><span>Nachname <span aria-hidden="true">*</span></span><input name="lastName" autocomplete="family-name" required></label>
+        <label><span>E-Mail <span aria-hidden="true">*</span></span><input name="email" type="email" autocomplete="email" required></label>
+        <label><span>Telefon <span aria-hidden="true">*</span></span><input name="phone" type="tel" autocomplete="tel" required></label>
       </div>
-      <label class="sls-search-profile-consent"><input type="checkbox" name="privacy" required><span>Ich habe die <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meiner Daten zur Einrichtung meines Suchauftrags ein. *</span></label>
-      <p class="sls-search-profile-status" role="status" aria-live="polite"></p>
+      <label class="sls-search-profile-consent"><input type="checkbox" name="privacy" required><span>Ich habe die <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meiner Daten zur Einrichtung meines Suchauftrags ein. <span aria-hidden="true">*</span></span></label>
+      <p class="form-required-note">* Pflichtfelder.</p><p class="sls-search-profile-status" role="status" aria-live="polite"></p>
       <button class="pp-button sls-search-profile-submit" type="submit">Suchauftrag speichern</button>
     </form>`;
     document.body.append(dialog);
