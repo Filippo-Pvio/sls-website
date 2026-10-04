@@ -3205,3 +3205,83 @@ html body .offcanvas-valuation-cta{
 @media(max-width:1049px){
   html body .site-header .floating-scroll-cta{min-height:40px!important;padding:10px 12px!important}
 }
+
+/* Shared editorial rhythm: sections, introductions and related content. */
+:root{
+  --space-heading:20px;--space-copy:16px;--space-content:32px;
+  --space-grid:32px;--space-split:48px;--space-section:64px;
+  --space-section-compact:40px;--content-card-height:220px;
+}
+html body:not(.magazine-article):not(.property-preview)>main>section.section:not(:has(h1)):not(.trust-section-prominent){
+  padding-block:var(--space-section)!important;
+}
+html body:not(.magazine-article):not(.property-preview)>main>section.section-compact:not(:has(h1)){
+  padding-block:var(--space-section-compact)!important;
+}
+html body :is(.home-process-intro,.buy-process-intro,.finance-process-intro) h2{
+  font-size:clamp(36px,4.2vw,56px)!important;line-height:1.08!important;
+  margin-top:0!important;margin-bottom:var(--space-heading)!important;
+}
+html body main :is(.section-head,.office-section-head,.about-section-head,.team-group-head,.profile-section-head,.city-section-head){
+  margin-bottom:var(--space-content)!important;
+  column-gap:var(--space-split)!important;
+  row-gap:var(--space-heading)!important;
+  align-items:start;
+}
+html body main :is(.section-head,.office-section-head,.about-section-head,.team-group-head,.profile-section-head,.city-section-head) h2{
+  margin-top:0!important;margin-bottom:var(--space-heading)!important;
+}
+html body main :is(.section-head,.office-section-head,.about-section-head,.team-group-head,.profile-section-head,.city-section-head)>p:not(.eyebrow){
+  margin-top:0!important;margin-bottom:0!important;
+}
+html body main :is(.about-copy,.profile-bio,.career-together-grid,.office-split,.city-split,.network-intro-layout)>p:not(.eyebrow){
+  margin-bottom:var(--space-copy)!important;
+}
+html body main :is(.about-copy,.profile-bio)>p:last-child{margin-bottom:0!important}
+html body main :is(.about-split,.office-split,.office-location-grid,.profile-about-grid,.career-together-grid,.career-application-grid,.network-intro-layout,.city-split,.guide-request-layout,.buyer-process,.buyer-form-layout){
+  gap:var(--space-split)!important;align-items:start;
+}
+html body main :is(.about-values-grid,.profile-focus-grid,.office-service-grid,.career-culture-grid,.career-area-grid,.finance-basics-grid,.guides-grid,.card-grid,.network-partners){
+  gap:var(--space-grid)!important;align-items:stretch;
+}
+html body main :is(.office-service-grid,.career-culture-grid){margin-top:var(--space-content)!important}
+html body main :is(.about-value,.profile-focus-grid>article,.office-service,.career-culture-grid>article,.career-area-grid>article,.finance-basics-grid>article,.guide-card,.info-card){
+  min-height:var(--content-card-height);
+  padding-top:24px!important;
+}
+html body main :is(.about-value,.profile-focus-grid>article,.office-service,.career-culture-grid>article,.career-area-grid>article,.finance-basics-grid>article,.guide-card,.info-card) h3{
+  margin-top:0!important;margin-bottom:12px!important;line-height:1.2;
+  min-height:2.4em;
+}
+html body main :is(.about-value,.profile-focus-grid>article,.office-service,.career-culture-grid>article,.career-area-grid>article,.finance-basics-grid>article,.guide-card,.info-card)>p{
+  margin-top:0!important;margin-bottom:var(--space-copy)!important;
+}
+html body main :is(.about-value,.profile-focus-grid>article,.office-service,.career-culture-grid>article,.career-area-grid>article,.finance-basics-grid>article,.guide-card,.info-card)>p:last-child{margin-bottom:0!important}
+html body main :is(.team-member,.about-person) h3,html body main .office-person h4{
+  margin-top:16px!important;margin-bottom:6px!important;line-height:1.2;
+}
+html body main :is(.buy-process-layout,.finance-process-layout){gap:var(--space-content)!important}
+html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish) h2{
+  margin-top:0!important;margin-bottom:var(--space-heading)!important;
+}
+html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish)> .wrap >p:not(.eyebrow){
+  margin-top:0!important;margin-bottom:24px!important;
+}
+html body.home-editorial .home-marketing-lead{padding-block:0 var(--space-content)!important}
+html body.home-editorial .home-process-flow{margin-top:var(--space-content)!important}
+@media(max-width:850px){
+  :root{--space-split:24px;--space-grid:24px;--space-content:24px}
+  html body main :is(.about-value,.profile-focus-grid>article,.office-service,.career-culture-grid>article,.career-area-grid>article,.finance-basics-grid>article,.guide-card,.info-card){min-height:0}
+  html body main :is(.about-value,.profile-focus-grid>article,.office-service,.career-culture-grid>article,.career-area-grid>article,.finance-basics-grid>article,.guide-card,.info-card) h3{min-height:0}
+}
+@media(max-width:540px){
+  :root{--space-heading:16px;--space-section:40px;--space-section-compact:32px}
+}
+
+html body:not(.magazine-article):not(.property-preview) main .section>.wrap>h2,
+html body:not(.magazine-article):not(.property-preview) main :is(.office-split,.about-split,.city-split,.city-feature,.profile-bio,.buyer-form-intro)>div>h2{
+  margin-top:0!important;margin-bottom:var(--space-heading)!important;
+}
+html body:not(.magazine-article):not(.property-preview) main .section>.wrap>h2+p{
+  margin-top:0!important;margin-bottom:var(--space-content)!important;
+}
