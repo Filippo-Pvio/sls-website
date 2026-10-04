@@ -603,7 +603,11 @@
       "Prozesse verbessern"
     ],
     "source": "https://sls.de/arne-wilke/",
-    "heroScenes": [],
+    "heroScenes": [
+      "arne-hero/arne-1",
+      "arne-hero/arne-2",
+      "arne-hero/arne-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Gesprächsabläufe helfen, Eigentümer beim Erstkontakt zielgerichtet zu unterstützen.",
