@@ -539,7 +539,11 @@
       "Die Marke konsistent vermitteln"
     ],
     "source": "https://sls.de/daniela-sahlmen/",
-    "heroScenes": [],
+    "heroScenes": [
+      "daniela-hero/daniela-1",
+      "daniela-hero/daniela-2",
+      "daniela-hero/daniela-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Für Medien ist sie Ansprechpartnerin rund um Themen von SLS Immobilienpartner.",
