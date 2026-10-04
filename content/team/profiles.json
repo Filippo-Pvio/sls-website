@@ -270,7 +270,11 @@
       "Interessen abgleichen"
     ],
     "source": "https://sls.de/dustin-offermann/",
-    "heroScenes": [],
+    "heroScenes": [
+      "dustin-hero/dustin-1",
+      "dustin-hero/dustin-2",
+      "dustin-hero/dustin-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Objektmerkmale und Marktbedingungen werden zu einer nachvollziehbaren Einschätzung verbunden.",
