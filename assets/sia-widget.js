@@ -18,10 +18,11 @@
       <div class="content">
         <section class="intro"><h3>Was möchten Sie über Immobilien wissen?</h3><p>Ich helfe Ihnen, Ihren nächsten Schritt einzuordnen.</p><div class="suggestions" role="group" aria-label="Thema für Ihre Frage wählen"><button type="button">Verkaufen</button><button type="button">Bewerten</button><button type="button">Kaufen</button><button type="button">Finanzieren</button><button class="why-sls" type="button">Warum SLS Immobilienpartner?</button></div></section>
         <p class="status" role="status" aria-live="polite"></p>
-        <section class="result" hidden tabindex="-1" aria-label="Antwort von SIA"><p class="question"></p><span class="origin"></span><div class="answer"></div><details class="sources"><summary>Verwendete Quellen</summary><div class="source-list"></div></details></section>
+        <section class="result" hidden tabindex="-1" aria-label="Antwort von SIA"><p class="question"></p><span class="origin"></span><div class="answer"></div><details class="sources"><summary>Grundlage dieser Antwort</summary><div class="source-list"></div></details></section>
         <div class="contact"><a href="/kontakt/">Mit unserem Team sprechen</a></div>
       </div>
       <form><label for="sia-question">Ihre Frage an SIA</label><div class="input-row"><textarea id="sia-question" name="question" rows="2" minlength="3" maxlength="1200" required placeholder="Ihre Frage an SIA …" aria-describedby="sia-privacy"></textarea><button class="send" type="submit">Senden</button></div><p class="privacy" id="sia-privacy">SIA ist eine KI und kann Fehler machen. Bitte keine personenbezogenen oder vertraulichen Angaben eingeben. Fragen werden zur Verarbeitung an OpenAI übermittelt.</p><button class="notes-open" type="button" aria-controls="sia-notes" aria-expanded="false">Hinweise zu KI und Datenschutz</button></form>
+      <section class="source-view" hidden aria-labelledby="sia-source-title"><h3 id="sia-source-title" tabindex="-1"></h3><p class="source-meta"></p><div class="source-text"></div><button class="source-back" type="button">Zurück zur Antwort</button></section>
       <section class="notes" id="sia-notes" hidden aria-labelledby="sia-notes-title">
         <h3 id="sia-notes-title" tabindex="-1">Hinweise zu SIA</h3>
         <h4>Eine erste Orientierung</h4><p>SIA ist der KI-Assistent von SLS Immobilienpartner. Die Antworten dienen der allgemeinen Information rund um Immobilien. Sie können fehlerhaft, unvollständig oder nicht aktuell sein.</p>
@@ -147,13 +148,38 @@
     field.value = topicQuestions[index];
     field.focus({ preventScroll: true });
   }));
+  let sourceTrigger = null, sourceScroll = 0;
+  function showSource(source, trigger) {
+    sourceTrigger = trigger;
+    sourceScroll = $('.content').scrollTop;
+    $('#sia-source-title').textContent = `[${source.number ?? ''}] ${source.title || 'Quelle'}`;
+    $('.source-meta').textContent = source.snapshotDate ? `Stand der Grundlage: ${source.snapshotDate}` : 'Grundlage aus der SIA-Wissensbasis';
+    $('.source-text').textContent = typeof source.text === 'string' && source.text.trim() ? source.text : 'Zu dieser Grundlage ist derzeit kein Quellentext verfügbar.';
+    $('.source-view').hidden = false;
+    $('.source-view').scrollTop = 0;
+    $('.content').hidden = true;
+    $('form').hidden = true;
+    $('#sia-source-title').focus({ preventScroll: true });
+    scheduleViewportUpdate();
+  }
+  function hideSource(restoreFocus = true) {
+    if (!sourceTrigger) return;
+    $('.source-view').hidden = true;
+    $('.content').hidden = false;
+    $('form').hidden = false;
+    $('.content').scrollTop = sourceScroll;
+    if (restoreFocus) sourceTrigger.focus({ preventScroll: true });
+    sourceTrigger = null;
+    scheduleViewportUpdate();
+  }
+  $('.source-back').addEventListener('click', () => hideSource());
+  dialog.addEventListener('close', () => hideSource(false));
   function sourceCard(source) {
     const box = document.createElement('div'); box.className = 'source';
-    const title = document.createElement('strong'); title.textContent = `[${source.number ?? ''}] ${source.title || 'Quelle'}`; box.append(title);
-    if (typeof source.text === 'string') { const text = document.createElement('p'); text.textContent = source.text; box.append(text); }
-    if (typeof source.url === 'string' && /^\/quellen\/[a-z0-9-]+\.html$/.test(source.url)) {
-      const link = document.createElement('a'); link.textContent = 'Quelle öffnen ↗'; link.href = 'https://frag-sls.vercel.app' + source.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; box.append(link);
-    }
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'source-open';
+    button.textContent = `[${source.number ?? ''}] ${source.title || 'Quelle'}`;
+    button.addEventListener('click', () => showSource(source, button));
+    box.append(button);
     return box;
   }
   $('form').addEventListener('submit', async event => {

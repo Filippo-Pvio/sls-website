@@ -102,3 +102,14 @@ label{font-size:14px;font-weight:600;margin-bottom:8px}
 
 .suggestions .why-sls{grid-column:1/-1;min-height:44px;font-size:13px;font-weight:500;border-color:#e0e7eb;background:#f8fafb}
 .suggestions .why-sls:hover{background:#EAF0F3}
+
+/* Read the actual source within SIA, without navigating away. */
+.source{padding:0;background:transparent;border-bottom:1px solid #e0e7eb;border-radius:0}
+.source-open{display:block;width:100%;padding:12px 0;text-align:left;border:0;background:transparent;color:#345B6E;font-size:13px;line-height:1.6;font-weight:600}
+.source-open:hover{text-decoration:underline;text-underline-offset:3px}
+.source-view{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:24px}
+.source-view h3{font-size:27px;line-height:1.25;margin-bottom:12px;overflow-wrap:anywhere}
+.source-meta{font-size:12px;color:#607782}
+.source-text{font-size:15px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
+.source-back{min-height:52px;padding:14px 24px;background:#345B6E;color:#fff;border:0;border-radius:14px;font-weight:600;margin-top:24px}
+@media(max-width:600px), (hover:none) and (pointer:coarse){.source-view{padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px))}}

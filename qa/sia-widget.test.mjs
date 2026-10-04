@@ -5,7 +5,7 @@ import { runInNewContext } from 'node:vm';
 
 const code = await readFile(new URL('../assets/sia-widget.js', import.meta.url), 'utf8');
 
-async function fixture(withViewport = true, mobile = true) {
+async function fixture(withViewport = true, mobile = true, sources = []) {
   function element() {
     const listeners = new Map(), properties = new Map(), priorities = new Map(), attributes = new Map();
     return {
@@ -16,7 +16,9 @@ async function fixture(withViewport = true, mobile = true) {
       setAttribute(name, value) { attributes.set(name, value); },
       removeAttribute(name) { attributes.delete(name); },
       toggleAttribute(name, enabled) { if (enabled) attributes.set(name, ''); else attributes.delete(name); },
-      replaceChildren() {},
+      children: [],
+      append(child) { this.children.push(child); },
+      replaceChildren(...children) { this.children = children; },
       focus(options) { this.focusCalls.push(options); },
       style: {
         setProperty(name, value, priority = '') { properties.set(name, value); priorities.set(name, priority); },
@@ -45,8 +47,8 @@ async function fixture(withViewport = true, mobile = true) {
   });
   await runInNewContext(code, {
     window,
-    document: { querySelector: () => null, createElement: () => ({ attachShadow: () => root }), body },
-    fetch: async url => ({ ok: true, json: async () => url === '/api/sia-config' ? { enabled: true } : { provider: 'OpenAI', answer: 'Antwort', sources: [] } }),
+    document: { querySelector: () => null, createElement: tag => tag === 'sls-sia' ? ({ attachShadow: () => root }) : element(), body },
+    fetch: async url => ({ ok: true, json: async () => url === '/api/sia-config' ? { enabled: true } : { provider: 'OpenAI', answer: 'Antwort', sources } }),
     AbortController, setTimeout, clearTimeout,
   });
   return { get, root, body, scrollCalls, suggestions, viewport, window, frames, flush() { for (const [key, fn] of frames) { frames.delete(key); fn(); } } };
@@ -188,4 +190,30 @@ test('all five suggestion actions prepare distinct questions without sending a r
   assert.match(drafts[3], /Finanzierung/);
   assert.equal(drafts[4], 'Was zeichnet SLS Immobilienpartner aus?');
   assert.equal(f.get('.send').disabled, undefined);
+});
+
+
+test('source view stays in SIA and preserves answer, draft, scroll and focus on return', async () => {
+  const f = await fixture(true, true, [{number: 1, title: 'Bewertung', text: '<script>kein HTML</script> Echte Grundlage', snapshotDate: '2026-10-02', url: '/quellen/valuation-costs.html'}]);
+  f.get('.launch').emit('click');
+  f.get('textarea').value = 'Wie bewertet ihr?';
+  await [...f.get('form').listeners.get('submit')][0]({preventDefault() {}});
+  const button = f.get('.source-list').children[0].children[0];
+  assert.equal(button.href, undefined);
+  f.get('textarea').value = 'Mein Entwurf'; f.get('.content').scrollTop = 240;
+  button.emit('click');
+  assert.equal(f.get('.source-view').hidden, false);
+  assert.equal(f.get('.content').hidden, true);
+  assert.equal(f.get('form').hidden, true);
+  assert.equal(f.get('.source-text').textContent, '<script>kein HTML</script> Echte Grundlage');
+  assert.equal(f.get('.source-meta').textContent, 'Stand der Grundlage: 2026-10-02');
+  f.get('.source-back').emit('click');
+  assert.equal(f.get('.source-view').hidden, true);
+  assert.equal(f.get('.content').scrollTop, 240);
+  assert.equal(f.get('textarea').value, 'Mein Entwurf');
+  assert.equal(f.get('.answer').textContent, 'Antwort');
+  assert.equal(button.focusCalls.at(-1).preventScroll, true);
+  button.emit('click'); f.get('.close').emit('click'); f.get('.launch').emit('click');
+  assert.equal(f.get('.source-view').hidden, true);
+  assert.equal(f.get('.content').hidden, false);
 });
