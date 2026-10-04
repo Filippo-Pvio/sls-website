@@ -571,7 +571,11 @@
       "Abläufe koordinieren"
     ],
     "source": "https://sls.de/sophia-peter/",
-    "heroScenes": [],
+    "heroScenes": [
+      "sophia-hero/sophia-1",
+      "sophia-hero/sophia-2",
+      "sophia-hero/sophia-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Inhalte machen die Menschen und die Arbeit von SLS Immobilienpartner sichtbar.",
