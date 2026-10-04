@@ -1,7 +1,7 @@
 (() => {
   const form=document.querySelector('#buyer-form');if(!form)return;
   const steps=[...form.querySelectorAll('[data-step]')],next=document.querySelector('#buyer-next'),back=document.querySelector('#buyer-back'),submit=document.querySelector('#buyer-submit'),status=document.querySelector('#buyer-status');
-  const endpoint='/api/propstack-contact-request';let step=0,token='',ready=null,busy=false,complete=false,analysing=false,analysisKey='';
+  const endpoint='/api/propstack-contact-request';let step=0,token='',ready=null,busy=false,complete=false,analysing=false,analysisKey='',activeAnalysis=null;
   function notify(text,error=false){status.textContent=text;status.hidden=!text;status.className=error?'is-error':'';}
   function available(){return token&&ready?.availableTopics?.includes('buyerfinder')&&(form.elements.method.value!=='callback'||ready.callbackAvailable);}
   function sync(){
@@ -15,19 +15,59 @@
     else if(!busy&&!complete)notify('');
   }
   function validStep(index){const fields=[...steps[index].querySelectorAll('input,select,textarea')].filter(x=>!x.disabled);for(const field of fields)if(!field.checkValidity()){field.reportValidity();return false;}return true;}
-  function go(value){step=value;sync();steps[step].querySelector('legend').focus();}
-  next.addEventListener('click',()=>{if(!validStep(step))return;go(step+1);if(step===2)analyse();});back.addEventListener('click',()=>go(step-1));form.addEventListener('change',()=>{categories();sync();});
+  function go(value){if(value<2&&activeAnalysis)cancelAnalysis();step=value;sync();steps[step].querySelector('legend').focus();}
+  next.addEventListener('click',()=>{if(!validStep(step))return;go(step+1);if(step===2)analyse();});back.addEventListener('click',()=>go(step-1));form.addEventListener('change',event=>{categories();if(analysisFields.includes(event.target.name))invalidateAnalysis();sync();});
+  form.addEventListener('input',event=>{if(analysisFields.includes(event.target.name)){invalidateAnalysis();sync();}});
 
   const categoryOptions={house:[['SINGLE_FAMILY_HOUSE','Einfamilienhaus'],['TWO_FAMILY_HOUSE','Zweifamilienhaus'],['TERRACE_HOUSE','Reihenhaus'],['SEMIDETACHED_HOUSE','Doppelhaushälfte'],['BUNGALOW','Bungalow'],['VILLA','Villa']],apartment:[['APARTMENT','Etagenwohnung'],['GROUND_FLOOR','Erdgeschosswohnung'],['ROOF_STOREY','Dachgeschosswohnung'],['PENTHOUSE','Penthouse'],['MAISONETTE','Maisonette']]};let previousType='';
   function categories(){const type=form.elements.propertyType.value;if(type===previousType)return;previousType=type;const select=form.elements.category;select.replaceChildren(new Option('Noch offen',''));for(const [value,label] of categoryOptions[type]||[])select.add(new Option(label,value));document.querySelector('#buyer-category').hidden=!categoryOptions[type];select.disabled=!categoryOptions[type];}
+  const analysisFields=['propertyType','category','place','area','rooms','price'];
+  function analysisParams(){const params=new URLSearchParams();for(const name of analysisFields)params.set(name,form.elements[name].disabled?'':form.elements[name].value);return params;}
+  function cancelAnalysis(){
+    if(!activeAnalysis)return;
+    const job=activeAnalysis;activeAnalysis=null;job.controller.abort();clearInterval(job.timer);analysing=false;
+    const box=document.querySelector('#buyer-analysis');box.setAttribute('aria-busy','false');box.classList.remove('is-analysing');
+    document.querySelector('#buyer-analysis-inventory').hidden=true;document.querySelector('#buyer-analysis-result').hidden=true;
+  }
+  function invalidateAnalysis(){cancelAnalysis();analysisKey='';document.querySelector('#buyer-analysis-result').hidden=true;}
+  function analysisPause(signal){return new Promise((resolve,reject)=>{
+    const abort=()=>{clearTimeout(timer);signal.removeEventListener('abort',abort);reject(signal.reason);};
+    const timer=setTimeout(()=>{signal.removeEventListener('abort',abort);resolve();},1800);
+    signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();
+  });}
   async function analyse(){
-    const params=new URLSearchParams();for(const name of ['propertyType','category','place','area','rooms','price'])params.set(name,form.elements[name].disabled?'':form.elements[name].value);
-    const key=params.toString();if(key===analysisKey)return;analysisKey='';analysing=true;sync();
-    const box=document.querySelector('#buyer-analysis'),phase=document.querySelector('#buyer-analysis-phase'),result=document.querySelector('#buyer-analysis-result'),count=document.querySelector('#buyer-analysis-count'),copy=document.querySelector('#buyer-analysis-copy'),details=document.querySelector('#buyer-analysis-details');box.setAttribute('aria-busy','true');box.classList.add('is-analysing');result.hidden=true;phase.textContent='Wir öffnen unsere Interessentenkartei …';document.querySelector('#buyer-analysis-inventory').hidden=true;
-    const phases=['Wir prüfen, wer in Ihrer Region kaufen möchte …','Wir vergleichen die Suchwünsche mit Ihrer Immobilie …','Wir ermitteln Ihre potenziellen Kaufinteressenten …'];let i=0;const timer=setInterval(()=>{phase.textContent=phases[Math.min(i++,phases.length-1)];},1800);
-    try{try{const inventoryResponse=await fetch('/api/buyer-demand?summary=1',{cache:'no-store',signal:AbortSignal.timeout(60000)}),inventory=await inventoryResponse.json();if(inventoryResponse.ok&&Number.isSafeInteger(inventory.analysedClients)&&inventory.analysedClients>=0){document.querySelector('#buyer-inventory-count').textContent=inventory.analysedClients.toLocaleString('de-DE');document.querySelector('#buyer-analysis-inventory').hidden=false;phase.textContent='Ihre persönliche Auswertung wird vorbereitet …';await new Promise(resolve=>setTimeout(resolve,1800));}}catch{/* The matching request independently confirms availability. */}const response=await fetch('/api/buyer-demand?'+params,{cache:'no-store',signal:AbortSignal.timeout(60000)}),data=await response.json();if(!response.ok)throw new Error(data.error||'Der Nachfragecheck ist gerade nicht verfügbar.');if(!Number.isSafeInteger(data.count)||data.count<0)throw new Error('Der Nachfragecheck konnte nicht bestätigt werden.');analysisKey=key;count.textContent=data.count.toLocaleString('de-DE');copy.textContent=data.count===0?'Für diese Eckdaten haben wir keine passenden aktiven Suchprofile gefunden. Gemeinsam prüfen wir, wie wir neue Interessenten erreichen können.':'Potenzielle Kaufinteressenten';details.textContent=(Number.isSafeInteger(data.analysedClients)?'Geprüfte Kartei: '+data.analysedClients.toLocaleString('de-DE')+' aktive Kaufinteressenten · ':'')+data.location+' · '+(data.priceChecked?'Budget berücksichtigt':'Preisvorstellung offen – Budget noch nicht geprüft')+' · Datenstand '+new Date(data.checkedAt).toLocaleString('de-DE',{dateStyle:'short',timeStyle:'short'});phase.textContent='Ihr erster Nachfragecheck ist fertig.';}
-    catch(error){count.textContent='';copy.textContent=error.name==='TimeoutError'?'Der automatische Abgleich dauert gerade zu lange. Unser Team prüft die Nachfrage gerne persönlich für Sie.':error.message;details.textContent='Sie können Ihre Angaben ändern oder einen persönlichen Abgleich anfragen.';phase.textContent='Persönlicher Abgleich möglich.';}
-    finally{clearInterval(timer);analysing=false;box.setAttribute('aria-busy','false');box.classList.remove('is-analysing');document.querySelector('#buyer-analysis-inventory').hidden=true;result.hidden=false;sync();}
+    const params=analysisParams(),key=params.toString();if(key===analysisKey)return;
+    cancelAnalysis();analysisKey='';const job={controller:new AbortController(),timer:null};activeAnalysis=job;analysing=true;sync();
+    // Cancellation alone is insufficient: a response may already be decoding when inputs change.
+    const current=()=>activeAnalysis===job&&!job.controller.signal.aborted&&key===analysisParams().toString();
+    const requestOptions=()=>({cache:'no-store',signal:AbortSignal.any([job.controller.signal,AbortSignal.timeout(60000)])});
+    const box=document.querySelector('#buyer-analysis'),phase=document.querySelector('#buyer-analysis-phase'),result=document.querySelector('#buyer-analysis-result'),count=document.querySelector('#buyer-analysis-count'),copy=document.querySelector('#buyer-analysis-copy'),details=document.querySelector('#buyer-analysis-details');
+    box.setAttribute('aria-busy','true');box.classList.add('is-analysing');result.hidden=true;phase.textContent='Wir öffnen unsere Interessentenkartei …';document.querySelector('#buyer-analysis-inventory').hidden=true;
+    const phases=['Wir prüfen, wer in Ihrer Region kaufen möchte …','Wir vergleichen die Suchwünsche mit Ihrer Immobilie …','Wir ermitteln Ihre potenziellen Kaufinteressenten …'];let i=0;
+    job.timer=setInterval(()=>{if(current())phase.textContent=phases[Math.min(i++,phases.length-1)];},1800);
+    try{
+      try{
+        const inventoryResponse=await fetch('/api/buyer-demand?summary=1',requestOptions()),inventory=await inventoryResponse.json();
+        if(!current())return;
+        if(inventoryResponse.ok&&Number.isSafeInteger(inventory.analysedClients)&&inventory.analysedClients>=0){
+          document.querySelector('#buyer-inventory-count').textContent=inventory.analysedClients.toLocaleString('de-DE');document.querySelector('#buyer-analysis-inventory').hidden=false;phase.textContent='Ihre persönliche Auswertung wird vorbereitet …';await analysisPause(job.controller.signal);
+        }
+      }catch{if(!current())return;/* The matching request independently confirms availability. */}
+      if(!current())return;
+      const response=await fetch('/api/buyer-demand?'+params,requestOptions()),data=await response.json();
+      if(!current())return;
+      if(!response.ok)throw new Error(data.error||'Der Nachfragecheck ist gerade nicht verfügbar.');
+      if(!Number.isSafeInteger(data.count)||data.count<0)throw new Error('Der Nachfragecheck konnte nicht bestätigt werden.');
+      analysisKey=key;count.textContent=data.count.toLocaleString('de-DE');copy.textContent=data.count===0?'Für diese Eckdaten haben wir keine passenden aktiven Suchprofile gefunden. Gemeinsam prüfen wir, wie wir neue Interessenten erreichen können.':'Potenzielle Kaufinteressenten';
+      details.textContent=(Number.isSafeInteger(data.analysedClients)?'Geprüfte Kartei: '+data.analysedClients.toLocaleString('de-DE')+' aktive Kaufinteressenten · ':'')+data.location+' · '+(data.priceChecked?'Budget berücksichtigt':'Preisvorstellung offen – Budget noch nicht geprüft')+' · Datenstand '+new Date(data.checkedAt).toLocaleString('de-DE',{dateStyle:'short',timeStyle:'short'});phase.textContent='Ihr erster Nachfragecheck ist fertig.';
+    }catch(error){
+      if(!current())return;
+      count.textContent='';copy.textContent=error.name==='TimeoutError'?'Der automatische Abgleich dauert gerade zu lange. Unser Team prüft die Nachfrage gerne persönlich für Sie.':error.message;details.textContent='Sie können Ihre Angaben ändern oder einen persönlichen Abgleich anfragen.';phase.textContent='Persönlicher Abgleich möglich.';
+    }finally{
+      clearInterval(job.timer);
+      // An obsolete request must not unlock buttons or hide the newer analysis.
+      if(activeAnalysis===job){const valid=current();activeAnalysis=null;analysing=false;box.setAttribute('aria-busy','false');box.classList.remove('is-analysing');document.querySelector('#buyer-analysis-inventory').hidden=true;result.hidden=!valid;sync();}
+    }
   }
   async function initialise(){try{const response=await fetch(endpoint,{cache:'no-store',signal:AbortSignal.timeout(20000)});const data=await response.json();if(response.ok&&data.token){ready=data;token=data.token;}sync();}catch{sync();}}
   form.addEventListener('submit',async event=>{
