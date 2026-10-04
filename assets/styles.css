@@ -3251,7 +3251,7 @@ html body main :is(.about-value,.profile-focus-grid>article,.office-service,.car
 }
 html body main :is(.about-value,.profile-focus-grid>article,.office-service,.career-culture-grid>article,.career-area-grid>article,.finance-basics-grid>article,.guide-card,.info-card) h3{
   margin-top:0!important;margin-bottom:12px!important;line-height:1.2;
-  min-height:2.4em;
+  min-height:1.2em;
 }
 html body main :is(.about-value,.profile-focus-grid>article,.office-service,.career-culture-grid>article,.career-area-grid>article,.finance-basics-grid>article,.guide-card,.info-card)>p{
   margin-top:0!important;margin-bottom:var(--space-copy)!important;
