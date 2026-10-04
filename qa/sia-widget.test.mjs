@@ -9,7 +9,7 @@ async function fixture(withViewport = true, mobile = true) {
   function element() {
     const listeners = new Map(), properties = new Map(), priorities = new Map(), attributes = new Map();
     return {
-      listeners, properties, attributes, focusCalls: [], value: '', scrollTop: 0,
+      listeners, properties, attributes, classList: { add() {} }, focusCalls: [], value: '', scrollTop: 0,
       addEventListener(type, fn) { if (!listeners.has(type)) listeners.set(type, new Set()); listeners.get(type).add(fn); },
       removeEventListener(type, fn) { listeners.get(type)?.delete(fn); },
       emit(type) { listeners.get(type)?.forEach(fn => fn()); },
@@ -28,7 +28,7 @@ async function fixture(withViewport = true, mobile = true) {
       close() { this.open = false; this.emit('close'); },
     };
   }
-  const nodes = new Map(), suggestions = [element(), element()];
+  const nodes = new Map(), suggestions = [element(), element(), element(), element()];
   const get = selector => { if (!nodes.has(selector)) nodes.set(selector, element()); return nodes.get(selector); };
   const root = { innerHTML: '', querySelector: get, querySelectorAll: () => suggestions };
   const frames = new Map(), scrollCalls = []; let id = 0;
@@ -36,6 +36,7 @@ async function fixture(withViewport = true, mobile = true) {
   const viewport = Object.assign(element(), { height: 780, offsetTop: 0 });
   const window = Object.assign(element(), {
     innerHeight: 780, scrollX: 0, scrollY: 1250,
+    setTimeout: () => 1, clearTimeout() {},
     matchMedia: () => ({ matches: mobile }),
     scrollTo(options) { scrollCalls.push(options); },
     visualViewport: withViewport ? viewport : undefined,
@@ -95,7 +96,7 @@ test('viewport fallback supports resizing and suggestions still allow intentiona
   assert.equal(f.get('dialog').properties.get('--sia-viewport-height'), '430px');
   assert.equal(f.get('dialog').properties.get('--sia-viewport-top'), '0px');
   f.suggestions[0].emit('click');
-  assert.match(f.get('textarea').value, /Mietwohnung/);
+  assert.match(f.get('textarea').value, /Verkauf/);
   assert.equal(f.get('textarea').focusCalls.length, 1);
   assert.equal(f.get('textarea').focusCalls[0].preventScroll, true);
 });
@@ -149,4 +150,41 @@ test('an arriving answer keeps keyboard focus and a follow-up draft intact', asy
   assert.equal(f.get('.answer').textContent, 'Antwort');
   assert.equal(f.get('.result').focusCalls.length, 0);
   assert.equal(f.get('textarea').value, 'Und welche Unterlagen brauche ich?');
+});
+
+test('information view preserves the draft and answer scroll, then restores focus without opening the keyboard', async () => {
+  const f = await fixture();
+  f.get('.launch').emit('click');
+  f.get('textarea').value = 'Meine noch nicht abgesendete Frage';
+  f.get('.content').scrollTop = 180;
+  f.get('.notes-open').emit('click');
+  assert.equal(f.get('.notes').hidden, false);
+  assert.equal(f.get('.content').hidden, true);
+  assert.equal(f.get('form').hidden, true);
+  assert.equal(f.get('.notes-open').attributes.get('aria-expanded'), 'true');
+  assert.equal(f.get('#sia-notes-title').focusCalls.at(-1).preventScroll, true);
+  f.get('.notes-back').emit('click');
+  assert.equal(f.get('textarea').value, 'Meine noch nicht abgesendete Frage');
+  assert.equal(f.get('.content').scrollTop, 180);
+  assert.equal(f.get('.content').hidden, false);
+  assert.equal(f.get('form').hidden, false);
+  assert.equal(f.get('.notes').hidden, true);
+  assert.equal(f.get('.notes-open').focusCalls.at(-1).preventScroll, true);
+  assert.equal(f.get('textarea').focusCalls.length, 0);
+  f.get('.notes-open').emit('click');
+  f.get('.close').emit('click');
+  f.get('.launch').emit('click');
+  assert.equal(f.get('.notes').hidden, true);
+  assert.equal(f.get('textarea').value, 'Meine noch nicht abgesendete Frage');
+});
+
+test('all four topic actions prepare distinct questions without sending a request', async () => {
+  const f = await fixture();
+  const drafts = [];
+  for (const button of f.suggestions) { button.emit('click'); drafts.push(f.get('textarea').value); }
+  assert.equal(new Set(drafts).size, 4);
+  assert.match(drafts[1], /Wert/);
+  assert.match(drafts[2], /Immobilienkauf/);
+  assert.match(drafts[3], /Finanzierung/);
+  assert.equal(f.get('.send').disabled, undefined);
 });

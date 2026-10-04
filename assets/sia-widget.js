@@ -14,15 +14,22 @@
       <a class="quick-call" href="tel:+4923697428020" aria-label="SLS Immobilienpartner telefonisch anrufen"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.91.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></a>
     </div>
     <dialog aria-labelledby="sia-title">
-      <header><span class="brand" aria-hidden="true">SIA</span><div class="identity"><h2 id="sia-title"><b>S</b>LS <b>I</b>mmobilien <b>A</b>ssistenz</h2><span class="sub">KI-ASSISTENZ</span></div><button class="close" type="button" aria-label="SIA schließen" autofocus>×</button></header>
+      <header><span class="brand" aria-hidden="true">SIA</span><div class="identity"><h2 id="sia-title">KI-Assistent</h2><span class="sub">von SLS Immobilienpartner</span></div><button class="close" type="button" aria-label="SIA schließen" autofocus>×</button></header>
       <div class="content">
-        <section class="intro"><h3>Ein guter Anfang für Ihren nächsten Schritt.</h3><p>Ich bin SIA, die KI-Assistenz von SLS Immobilienpartner. Hier finden Sie Orientierung rund um Verkauf, Kauf und Ihre Immobilie.</p><div class="suggestions"><button type="button">Verkauf und Wohnungssuche koordinieren</button><button type="button">Kosten bei SLS Immobilienpartner</button></div></section>
+        <section class="intro"><h3>Was möchten Sie über Immobilien wissen?</h3><p>Ich helfe Ihnen, Ihren nächsten Schritt einzuordnen.</p><div class="suggestions" role="group" aria-label="Thema für Ihre Frage wählen"><button type="button">Verkaufen</button><button type="button">Bewerten</button><button type="button">Kaufen</button><button type="button">Finanzieren</button></div></section>
         <p class="status" role="status" aria-live="polite"></p>
         <section class="result" hidden tabindex="-1" aria-label="Antwort von SIA"><p class="question"></p><span class="origin"></span><div class="answer"></div><details class="sources"><summary>Verwendete Quellen</summary><div class="source-list"></div></details></section>
-        <p class="disclaimer">SIA ist eine KI und kann Fehler machen. Die Antworten dienen der Orientierung und ersetzen keine individuelle Beratung. Besprechen Sie Ihre Situation und die nächsten Schritte gerne persönlich mit Ihrem SLS Immobilienpartner.</p>
-        <div class="contact"><a href="tel:+4923697428020">Persönlich anrufen ↗</a><a href="mailto:service@sls.de">E-Mail schreiben ↗</a></div>
+        <div class="contact"><a href="/kontakt/">Mit unserem Team sprechen</a></div>
       </div>
-      <form><label for="sia-question">Ihre Nachricht an SIA</label><div class="input-row"><textarea id="sia-question" name="question" rows="2" minlength="3" maxlength="1200" required placeholder="Zum Beispiel: Haus verkaufen und zur Miete wohnen" aria-describedby="sia-privacy"></textarea><button class="send" type="submit">Senden</button></div><p class="privacy" id="sia-privacy">Ihre Frage wird zur Verarbeitung an OpenAI übermittelt. Bitte keine personenbezogenen oder vertraulichen Angaben eingeben. <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutz ↗</a></p></form>
+      <form><label for="sia-question">Ihre Frage an SIA</label><div class="input-row"><textarea id="sia-question" name="question" rows="2" minlength="3" maxlength="1200" required placeholder="Ihre Frage an SIA …" aria-describedby="sia-privacy"></textarea><button class="send" type="submit">Senden</button></div><p class="privacy" id="sia-privacy">SIA ist eine KI und kann Fehler machen. Bitte keine personenbezogenen oder vertraulichen Angaben eingeben. Fragen werden zur Verarbeitung an OpenAI übermittelt.</p><button class="notes-open" type="button" aria-controls="sia-notes" aria-expanded="false">Hinweise zu KI und Datenschutz</button></form>
+      <section class="notes" id="sia-notes" hidden aria-labelledby="sia-notes-title">
+        <h3 id="sia-notes-title" tabindex="-1">Hinweise zu SIA</h3>
+        <h4>Eine erste Orientierung</h4><p>SIA ist der KI-Assistent von SLS Immobilienpartner. Die Antworten dienen der allgemeinen Information rund um Immobilien. Sie können fehlerhaft, unvollständig oder nicht aktuell sein.</p>
+        <h4>Ihre persönliche Situation</h4><p>SIA ersetzt keine individuelle fachliche, rechtliche oder steuerliche Beratung. Lassen Sie wichtige Entscheidungen und Angaben durch eine geeignete Fachperson prüfen. Unser Team unterstützt Sie bei Ihrem nächsten Schritt rund um Ihre Immobilie.</p>
+        <h4>Ihre Frage und Ihre Daten</h4><p>Zum Absenden einer Frage sind keine Kontaktdaten erforderlich. Geben Sie bitte keine Namen, Kontaktdaten oder andere personenbezogene oder vertrauliche Informationen ein. Ihre Frage wird über den SLS-Fragedienst zur Verarbeitung an OpenAI übermittelt. Wenn die KI-Antwort nicht verfügbar ist, können Informationen aus der Wissensbasis von SLS Immobilienpartner angezeigt werden.</p>
+        <p>Weitere Informationen finden Sie in unserer <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
+        <button class="notes-back" type="button">Zurück zu SIA</button>
+      </section>
     </dialog>`;
   document.body.append(host);
   const $ = s => root.querySelector(s);
@@ -112,8 +119,31 @@
     launch.setAttribute('aria-expanded', 'false');
     launch.focus({ preventScroll: true });
   });
+  const topicQuestions = [
+    'Wie bereite ich den Verkauf meiner Immobilie vor?',
+    'Wie wird der Wert meiner Immobilie ermittelt?',
+    'Wie läuft der Immobilienkauf bei SLS Immobilienpartner ab?',
+    'Was sollte ich bei der Finanzierung einer Immobilie beachten?'
+  ];
+  let notesScroll = 0;
+  function showNotes(show, restoreFocus = true) {
+    if (show) notesScroll = $('.content').scrollTop;
+    $('.notes').hidden = !show;
+    $('.content').hidden = show;
+    $('form').hidden = show;
+    $('.notes-open').setAttribute('aria-expanded', String(show));
+    if (show) $('#sia-notes-title').focus({ preventScroll: true });
+    else {
+      $('.content').scrollTop = notesScroll;
+      if (restoreFocus) $('.notes-open').focus({ preventScroll: true });
+    }
+    scheduleViewportUpdate();
+  }
+  $('.notes-open').addEventListener('click', () => showNotes(true));
+  $('.notes-back').addEventListener('click', () => showNotes(false));
+  dialog.addEventListener('close', () => showNotes(false, false));
   root.querySelectorAll('.suggestions button').forEach((button, index) => button.addEventListener('click', () => {
-    field.value = index === 0 ? 'Kann ich mein Haus verkaufen und gleichzeitig eine Mietwohnung suchen?' : 'Welche Kosten entstehen bei SLS Immobilienpartner?';
+    field.value = topicQuestions[index];
     field.focus({ preventScroll: true });
   }));
   function sourceCard(source) {
