@@ -3177,7 +3177,7 @@ html body:not(.magazine-article):not(.property-preview)
 }
 
 /* Shared action-button geometry; icon and segmented controls keep their own layouts. */
-:root{--action-height:52px;--action-pad-y:14px;--action-pad-x:24px;--action-radius:999px}
+:root{--action-height:52px;--action-pad-y:14px;--action-pad-x:24px;--action-radius:14px}
 html body :is(.button,.pp-button,.career-file-picker){
   box-sizing:border-box!important;
   border-radius:var(--action-radius)!important;
@@ -3196,7 +3196,7 @@ html body :is(.button,.pp-button,.career-file-picker){
 html body .site-header :is(.header-cta,.floating-scroll-cta,.nav-mobile-cta),
 html body .offcanvas-valuation-cta{
   box-sizing:border-box;
-  border-radius:var(--action-radius)!important;
+  border-radius:999px!important;
   min-height:44px!important;
   height:auto;
   padding:10px 16px!important;
@@ -3205,6 +3205,8 @@ html body .offcanvas-valuation-cta{
 @media(max-width:1049px){
   html body .site-header .floating-scroll-cta{min-height:40px!important;padding:10px 12px!important}
 }
+html body .site-header .button,
+html body .pp-inquiry-shortcut .pp-button{border-radius:999px!important}
 
 /* Shared editorial rhythm: sections, introductions and related content. */
 :root{
