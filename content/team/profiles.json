@@ -330,7 +330,11 @@
       "Persönlich begleiten"
     ],
     "source": "https://sls.de/manuela-landripet/",
-    "heroScenes": [],
+    "heroScenes": [
+      "manuela-hero/manuela-1",
+      "manuela-hero/manuela-2",
+      "manuela-hero/manuela-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Erfahrung aus Australien und Deutschland erweitert ihren Blick auf unterschiedliche Wohnbedürfnisse.",
