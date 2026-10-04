@@ -175,7 +175,11 @@
       "Absprachen verlässlich halten"
     ],
     "source": "https://sls.de/daniel-allamezade/",
-    "heroScenes": [],
+    "heroScenes": [
+      "daniel-hero/daniel-1",
+      "daniel-hero/daniel-2",
+      "daniel-hero/daniel-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Im Gespräch werden Erwartungen und nächste Schritte konkret benannt.",
