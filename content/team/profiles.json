@@ -414,7 +414,11 @@
       "Persönliche Wünsche einordnen"
     ],
     "source": "https://sls.de/uwe-braun/",
-    "heroScenes": [],
+    "heroScenes": [
+      "uwe-hero/uwe-1",
+      "uwe-hero/uwe-2",
+      "uwe-hero/uwe-3"
+    ],
     "videos": [
       {
         "id": "guoSI4VrK8E",
