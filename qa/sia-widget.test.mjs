@@ -12,7 +12,7 @@ async function fixture(withViewport = true, mobile = true, sources = []) {
       listeners, properties, attributes, classList: { add() {} }, focusCalls: [], value: '', scrollTop: 0,
       addEventListener(type, fn) { if (!listeners.has(type)) listeners.set(type, new Set()); listeners.get(type).add(fn); },
       removeEventListener(type, fn) { listeners.get(type)?.delete(fn); },
-      emit(type) { listeners.get(type)?.forEach(fn => fn()); },
+      emit(type, event = {}) { listeners.get(type)?.forEach(fn => fn(event)); },
       setAttribute(name, value) { attributes.set(name, value); },
       removeAttribute(name) { attributes.delete(name); },
       toggleAttribute(name, enabled) { if (enabled) attributes.set(name, ''); else attributes.delete(name); },
@@ -91,7 +91,7 @@ test('keyboard opening, viewport panning and keyboard dismissal resize the dialo
   assert.equal(f.viewport.listeners.get('resize').size, 1);
 });
 
-test('viewport fallback supports resizing and suggestions still allow intentional text entry', async () => {
+test('viewport fallback supports resizing and suggestions prepare drafts without opening the keyboard', async () => {
   const f = await fixture(false);
   f.get('.launch').emit('click');
   f.window.innerHeight = 430; f.window.emit('resize'); f.flush();
@@ -99,8 +99,8 @@ test('viewport fallback supports resizing and suggestions still allow intentiona
   assert.equal(f.get('dialog').properties.get('--sia-viewport-top'), '0px');
   f.suggestions[0].emit('click');
   assert.match(f.get('textarea').value, /Verkauf/);
-  assert.equal(f.get('textarea').focusCalls.length, 1);
-  assert.equal(f.get('textarea').focusCalls[0].preventScroll, true);
+  assert.equal(f.get('textarea').focusCalls.length, 0);
+  assert.match(f.get('.status').textContent, /vorbereitet/);
 });
 
 
@@ -216,4 +216,15 @@ test('source view stays in SIA and preserves answer, draft, scroll and focus on 
   button.emit('click'); f.get('.close').emit('click'); f.get('.launch').emit('click');
   assert.equal(f.get('.source-view').hidden, true);
   assert.equal(f.get('.content').hidden, false);
+});
+
+
+test('close focus indicator distinguishes keyboard navigation from pointer input', async () => {
+ const f = await fixture(); const dialog = f.get('dialog');
+ f.get('.launch').emit('click');
+ assert.equal(dialog.attributes.has('data-keyboard-navigation'), false);
+ dialog.emit('keydown', {key:'Tab'});
+ assert.equal(dialog.attributes.has('data-keyboard-navigation'), true);
+ dialog.emit('pointerdown');
+ assert.equal(dialog.attributes.has('data-keyboard-navigation'), false);
 });

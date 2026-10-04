@@ -14,14 +14,14 @@
       <a class="quick-call" href="tel:+4923697428020" aria-label="SLS Immobilienpartner telefonisch anrufen"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.91.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></a>
     </div>
     <dialog aria-labelledby="sia-title">
-      <header><span class="brand" aria-hidden="true">SIA</span><div class="identity"><h2 id="sia-title"><b>S</b>LS <b>I</b>mmobilien <b>A</b>ssistenz</h2><span class="sub">KI-Assistent von SLS Immobilienpartner</span></div><button class="close" type="button" aria-label="SIA schließen" autofocus>×</button></header>
+      <header><span class="brand" aria-hidden="true">SIA</span><div class="identity"><h2 id="sia-title"><b>S</b>LS <b>I</b>mmobilien <b>A</b>ssistenz</h2><span class="sub">KI-Assistent von SLS Immobilienpartner</span></div><button class="close" type="button" aria-label="SIA schließen" autofocus><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
       <div class="content">
         <section class="intro"><h3>Was möchten Sie über Immobilien wissen?</h3><p>Ich helfe Ihnen, Ihren nächsten Schritt einzuordnen.</p><div class="suggestions" role="group" aria-label="Thema für Ihre Frage wählen"><button type="button">Verkaufen</button><button type="button">Bewerten</button><button type="button">Kaufen</button><button type="button">Finanzieren</button><button class="why-sls" type="button">Warum SLS Immobilienpartner?</button></div></section>
         <p class="status" role="status" aria-live="polite"></p>
         <section class="result" hidden tabindex="-1" aria-label="Antwort von SIA"><p class="question"></p><span class="origin"></span><div class="answer"></div><details class="sources"><summary>Grundlage dieser Antwort</summary><div class="source-list"></div></details></section>
         <div class="contact"><a href="/kontakt/">Mit unserem Team sprechen</a></div>
       </div>
-      <form><label for="sia-question">Ihre Frage an SIA</label><div class="input-row"><textarea id="sia-question" name="question" rows="2" minlength="3" maxlength="1200" required placeholder="Ihre Frage an SIA …" aria-describedby="sia-privacy"></textarea><button class="send" type="submit">Senden</button></div><p class="privacy" id="sia-privacy">SIA ist eine KI und kann Fehler machen. Bitte keine personenbezogenen oder vertraulichen Angaben eingeben. Fragen werden zur Verarbeitung an OpenAI übermittelt.</p><button class="notes-open" type="button" aria-controls="sia-notes" aria-expanded="false">Hinweise zu KI und Datenschutz</button></form>
+      <form><label for="sia-question">Ihre Frage an SIA</label><div class="input-row"><textarea id="sia-question" name="question" rows="2" minlength="3" maxlength="1200" required placeholder="Ihre Frage an SIA …" aria-describedby="sia-privacy"></textarea><button class="send" type="submit">Senden</button></div><p class="privacy" id="sia-privacy">SIA ist eine KI und kann Fehler machen. Bitte keine personenbezogenen oder vertraulichen Angaben eingeben. Fragen werden zur Verarbeitung an OpenAI übermittelt.</p><p class="privacy-compact">KI kann Fehler machen. Keine persönlichen Daten eingeben. Verarbeitung durch OpenAI.</p><button class="notes-open" type="button" aria-controls="sia-notes" aria-expanded="false">Hinweise zu KI und Datenschutz</button></form>
       <section class="source-view" hidden aria-labelledby="sia-source-title"><h3 id="sia-source-title" tabindex="-1"></h3><p class="source-meta"></p><div class="source-text"></div><button class="source-back" type="button">Zurück zur Antwort</button></section>
       <section class="notes" id="sia-notes" hidden aria-labelledby="sia-notes-title">
         <h3 id="sia-notes-title" tabindex="-1">Hinweise zu SIA</h3>
@@ -107,6 +107,10 @@
     window.__slsSiaOpenRequested = false;
     openSia();
   }
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'Tab') dialog.setAttribute('data-keyboard-navigation', '');
+  });
+  dialog.addEventListener('pointerdown', () => dialog.removeAttribute('data-keyboard-navigation'));
   dialog.addEventListener('focusin', scheduleViewportUpdate);
   dialog.addEventListener('focusout', scheduleViewportUpdate);
   $('.close').addEventListener('click', () => dialog.close());
@@ -146,7 +150,7 @@
   dialog.addEventListener('close', () => showNotes(false, false));
   root.querySelectorAll('.suggestions button').forEach((button, index) => button.addEventListener('click', () => {
     field.value = topicQuestions[index];
-    field.focus({ preventScroll: true });
+    status.textContent = 'Ihre Frage ist vorbereitet. Sie können sie bearbeiten oder direkt senden.';
   }));
   let sourceTrigger = null, sourceScroll = 0;
   function showSource(source, trigger) {

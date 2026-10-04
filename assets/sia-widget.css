@@ -113,3 +113,19 @@ label{font-size:14px;font-weight:600;margin-bottom:8px}
 .source-text{font-size:15px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
 .source-back{min-height:52px;padding:14px 24px;background:#345B6E;color:#fff;border:0;border-radius:14px;font-weight:600;margin-top:24px}
 @media(max-width:600px), (hover:none) and (pointer:coarse){.source-view{padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px))}}
+
+/* A quiet close icon; only keyboard navigation draws its focus indicator. */
+.close{display:grid;place-items:center;min-width:44px;min-height:44px;width:44px;height:44px;padding:10px;border-radius:8px}
+.close svg{display:block;width:22px;height:22px}
+.close:focus-visible{outline:none}
+dialog[data-keyboard-navigation] .close:focus-visible{outline:2px solid #345B6E;outline-offset:2px}
+.privacy-compact{display:none}
+@media(max-width:600px), (hover:none) and (pointer:coarse){
+ dialog[data-keyboard-open] form{padding-top:10px;padding-bottom:8px}
+ dialog[data-keyboard-open] form label{margin-bottom:6px;font-size:13px}
+ dialog[data-keyboard-open] textarea{height:54px}
+ dialog[data-keyboard-open] .privacy{display:none}
+ dialog[data-keyboard-open] .privacy-compact{display:block;margin:7px 0 3px;font-size:11px;line-height:1.4;color:#607782}
+ dialog[data-keyboard-open] .notes-open{font-size:11px}
+ dialog[data-keyboard-open] .content{padding-block:12px}
+}
