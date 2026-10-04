@@ -475,7 +475,11 @@
       "Struktur im Tagesgeschäft"
     ],
     "source": "https://sls.de/kristina-kruschinski/",
-    "heroScenes": [],
+    "heroScenes": [
+      "kristina-hero/kristina-1",
+      "kristina-hero/kristina-2",
+      "kristina-hero/kristina-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Organisatorische Aufgaben werden zusammengeführt und im Team abgestimmt.",
