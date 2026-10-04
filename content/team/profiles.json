@@ -375,7 +375,11 @@
       "Pragmatische Lösungen finden"
     ],
     "source": "https://sls.de/jacqueline-floeter/",
-    "heroScenes": [],
+    "heroScenes": [
+      "jacqueline-hero/jacqueline-1",
+      "jacqueline-hero/jacqueline-2",
+      "jacqueline-hero/jacqueline-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Auch unübersichtliche Ausgangslagen werden in verständliche Schritte übersetzt.",
