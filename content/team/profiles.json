@@ -204,9 +204,8 @@
     ],
     "source": "https://sls.de/nico-hryn/",
     "heroScenes": [
-      "nico-hero/nico-1",
-      "nico-hero/nico-2",
-      "nico-hero/nico-3"
+      "netzwerk/bauplanung",
+      "hero-scenes/consultation"
     ],
     "videos": [],
     "focusCopy": [
