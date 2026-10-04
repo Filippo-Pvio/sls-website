@@ -287,7 +287,11 @@
       "Klare Schritte vereinbaren"
     ],
     "source": "https://sls.de/heiko-hofmann/",
-    "heroScenes": [],
+    "heroScenes": [
+      "heiko-hero/beratung",
+      "heiko-hero/gespraech",
+      "heiko-hero/expose"
+    ],
     "videos": [],
     "focusCopy": [
       "Regionale Erfahrung unterstützt die Einschätzung von Lage, Nachfrage und Vermarktung.",
