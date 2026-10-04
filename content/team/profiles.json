@@ -507,7 +507,11 @@
       "Digitale Prozesse"
     ],
     "source": "https://sls.de/svea-bruns/",
-    "heroScenes": [],
+    "heroScenes": [
+      "svea-hero/svea-1",
+      "svea-hero/svea-2",
+      "svea-hero/svea-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Juristische Ausbildung bildet die Grundlage für die fachliche Einordnung.",
