@@ -3158,3 +3158,20 @@ html body .site-footer.footer-unified[data-footer-tone] .footer-navigation{borde
 .site-header.has-scroll-cta .floating-brand{min-width:0;width:auto}
 .site-header.has-scroll-cta .floating-brand img{max-width:100%;width:100%;height:auto;object-fit:contain}
 }
+
+/* Shared section-heading scale. Keep article, card, form and process hierarchies. */
+html body:not(.magazine-article):not(.property-preview)
+:is(main,.home-faq-section) h2:not(:where(
+  .home-process-intro h2,
+  .buy-process-intro h2,
+  .finance-process-intro h2,
+  .mag-card h2,
+  .contact-form-panel h2,
+  form h2,
+  .career-privacy-copy h2,
+  .career-final h2
+)){
+  /* Override the older page-specific heading scales without changing their colors or spacing. */
+  font-size:clamp(32px,3.8vw,48px)!important;
+  line-height:1.12!important;
+}
