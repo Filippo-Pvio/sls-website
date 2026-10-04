@@ -246,7 +246,11 @@
       "Bis zur Übergabe begleiten"
     ],
     "source": "https://sls.de/maximilian-werner/",
-    "heroScenes": [],
+    "heroScenes": [
+      "maximilian-hero/maximilian-1",
+      "maximilian-hero/maximilian-2",
+      "maximilian-hero/maximilian-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Zuhören und Nachfragen helfen, persönliche Erwartungen zu erfassen.",
