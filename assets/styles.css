@@ -1928,8 +1928,8 @@ a.google-review-card .google-review-more{
 .home-editorial .hero-intro-mobile{display:block}
 .home-editorial .hero-actions .button-ghost{min-height:48px;padding:0 4px;border:0;background:transparent;color:var(--paper);text-decoration:none}
 .home-editorial .hero-actions .button-ghost:hover{border:0;background:transparent;color:var(--paper)}
-.home-editorial .hero-actions .hero-secondary-label{display:inline-flex;align-items:center;gap:10px;padding-bottom:4px;border-bottom:2px solid currentColor}
-.home-editorial .hero-actions .hero-secondary-label::after{content:"\2192";display:inline-block;transition:transform .2s ease}
+.home-editorial .hero-actions .hero-secondary-label{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:550;line-height:1.4;white-space:nowrap;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.home-editorial .hero-actions .hero-secondary-label::after{content:"\2192";display:inline-block;flex-shrink:0;text-decoration:none;transition:transform .2s ease}
 .home-editorial .hero-actions .button-ghost:hover .hero-secondary-label::after{transform:translateX(5px)}
 @media(max-width:640px){
   .home-editorial .hero-premium{
@@ -1989,7 +1989,8 @@ a.google-review-card .google-review-more{
   }
   .home-editorial .hero-actions .button-ghost{
     width:auto;
-    min-height:32px;
+    align-self:center;
+    min-height:44px;
     padding:0;
     border:0;
     background:transparent;
