@@ -203,7 +203,11 @@
       "Individuelle Möglichkeiten"
     ],
     "source": "https://sls.de/nico-hryn/",
-    "heroScenes": [],
+    "heroScenes": [
+      "nico-hero/nico-1",
+      "nico-hero/nico-2",
+      "nico-hero/nico-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Der Hintergrund als Bankkaufmann ergänzt die Beratung zu Immobilienentscheidungen.",
