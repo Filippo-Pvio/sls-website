@@ -635,7 +635,11 @@
       "Den nächsten Schritt klären"
     ],
     "source": "https://sls.de/samy-el-munayer/",
-    "heroScenes": [],
+    "heroScenes": [
+      "samy-hero/samy-1",
+      "samy-hero/samy-2",
+      "samy-hero/samy-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Im Erstgespräch werden Wünsche und Fragen der Eigentümer aufgenommen.",
