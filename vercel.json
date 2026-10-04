@@ -3,7 +3,17 @@
   "trailingSlash": true,
   "redirects": [
     {
-      "source": "/service/:path*",
+      "source": "/service/",
+      "destination": "/verkaufen/",
+      "permanent": true
+    },
+    {
+      "source": "/service",
+      "destination": "/verkaufen/",
+      "permanent": true
+    },
+    {
+      "source": "/service/index.html",
       "destination": "/verkaufen/",
       "permanent": true
     }
