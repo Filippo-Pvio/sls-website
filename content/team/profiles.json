@@ -151,7 +151,11 @@
       "Verhandlungen begleiten"
     ],
     "source": "https://sls.de/tanja-wawrosch/",
-    "heroScenes": [],
+    "heroScenes": [
+      "tanja-hero/tanja-1",
+      "tanja-hero/tanja-2",
+      "tanja-hero/tanja-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Ruhrgebiet, Kreis Coesfeld und Münsterland bilden ihren regionalen Schwerpunkt.",
