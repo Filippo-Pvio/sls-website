@@ -119,7 +119,11 @@
       "Persönliche Beratung"
     ],
     "source": "https://sls.de/cueneyt-demirli/",
-    "heroScenes": [],
+    "heroScenes": [
+      "cueneyt-hero/cueneyt-1",
+      "cueneyt-hero/cueneyt-2",
+      "cueneyt-hero/cueneyt-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Erfahrung in der Baufinanzierung ergänzt den Blick auf Kauf- und Verkaufsentscheidungen.",
