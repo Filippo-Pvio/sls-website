@@ -1,3 +1,4 @@
+import { generalDefinition } from './lib/sia-general-knowledge.js';
 import { siaEnabled } from './sia-config.js';
 const endpoint = 'https://frag-sls.vercel.app/api/ask';
 const send = (res, status, data) => {
@@ -41,7 +42,10 @@ export default async function handler(req, res) {
     if (!upstream.ok) return send(res, 502, { error: 'SIA ist gerade nicht erreichbar. Bitte versuchen Sie es später erneut oder kontaktieren Sie Ihren SLS Immobilienpartner.' });
     const data = await upstream.json();
     if (!['OpenAI', 'Wissensbasis von SLS Immobilienpartner'].includes(data.provider) || typeof data.answer !== 'string' || !data.answer.trim() || data.answer.length > 30000 || !Array.isArray(data.sources) || data.sources.length > 30) throw new Error('Invalid response');
-    return send(res, 200, { provider: data.provider, answer: data.answer, sources: data.sources, version: data.version });
+    const definition = data.provider !== 'OpenAI' && !data.sources.length ? generalDefinition(question) : null;
+    if (definition) return send(res, 200, definition);
+    const reason = ['invalid_sources', 'verification_failed', 'missing_api_key', 'authentication', 'rate_limit', 'configuration', 'upstream_error', 'timeout', 'invalid_response'].includes(data.reason) ? data.reason : null;
+    return send(res, 200, { provider: data.provider, answer: data.answer, sources: data.sources, version: data.version, reason });
   } catch {
     return send(res, 502, { error: 'SIA konnte gerade keine Antwort abrufen. Bitte versuchen Sie es später erneut oder kontaktieren Sie Ihren SLS Immobilienpartner.' });
   }

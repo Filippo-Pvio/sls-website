@@ -204,7 +204,10 @@
       $('.source-list').replaceChildren(...data.sources.filter(s => s && typeof s === 'object').map(sourceCard));
       $('.sources').hidden = !data.sources.length; $('.sources').open = false;
       $('.result').hidden = false;
-      status.textContent = data.provider === 'OpenAI' ? 'Ihre Antwort ist da.' : 'Die KI-Antwort ist derzeit nicht verfügbar. Hier finden Sie Informationen aus der Wissensbasis.';
+      status.textContent = data.provider === 'OpenAI' ? 'Ihre Antwort ist da.'
+        : data.reason === 'general_definition' ? 'Hier finden Sie eine belegte Erklärung aus unserer Wissensbasis.'
+        : ['invalid_sources', 'verification_failed'].includes(data.reason) ? (data.sources.length ? 'Hier finden Sie belegte Informationen aus unserer Wissensbasis.' : 'Zu dieser Frage konnte SIA keine ausreichend belegte Antwort erstellen.')
+        : 'Die KI-Antwort ist derzeit nicht verfügbar. Hier finden Sie Informationen aus der Wissensbasis.';
       if (field.value.trim() === question) field.value = '';
       if (dialog.open) {
         // An arriving answer must not dismiss the keyboard while someone is typing.
