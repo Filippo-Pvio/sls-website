@@ -16,7 +16,7 @@ function outputText(data) {
 }
 async function request(payload, { env, fetcher, timeout }) {
   const response = await fetcher(endpoint, { method: 'POST', headers: { Authorization: `Bearer ${env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: env.SIA_OPENAI_MODEL || 'gpt-4.1-mini', store: false, ...payload }), signal: AbortSignal.timeout(timeout), redirect: 'error' });
-  if (!response.ok) throw new Error(`AI unavailable HTTP ${response.status}`);
+  if (!response.ok) { const failure = await response.json().catch(() => ({})); const code = String(failure.error?.code || '').replace(/[^a-zA-Z0-9_.-]/g, '').slice(0,80); const param = String(failure.error?.param || '').replace(/[^a-zA-Z0-9_.\[\]-]/g, '').slice(0,80); throw new Error(`AI unavailable HTTP ${response.status} code=${code} param=${param}`); }
   const data = await response.json();
   if (data.status !== 'completed') throw new Error('Incomplete AI response');
   return data;
