@@ -16,7 +16,7 @@
     <dialog aria-labelledby="sia-title">
       <header><span class="brand" aria-hidden="true">SIA</span><div class="identity"><h2 id="sia-title"><b>S</b>LS <b>I</b>mmobilien <b>A</b>ssistenz</h2><span class="sub">KI-Assistent von SLS Immobilienpartner</span></div><button class="close" type="button" aria-label="SIA schließen" autofocus>×</button></header>
       <div class="content">
-        <section class="intro"><h3>Was möchten Sie über Immobilien wissen?</h3><p>Ich helfe Ihnen, Ihren nächsten Schritt einzuordnen.</p><div class="suggestions" role="group" aria-label="Thema für Ihre Frage wählen"><button type="button">Verkaufen</button><button type="button">Bewerten</button><button type="button">Kaufen</button><button type="button">Finanzieren</button></div></section>
+        <section class="intro"><h3>Was möchten Sie über Immobilien wissen?</h3><p>Ich helfe Ihnen, Ihren nächsten Schritt einzuordnen.</p><div class="suggestions" role="group" aria-label="Thema für Ihre Frage wählen"><button type="button">Verkaufen</button><button type="button">Bewerten</button><button type="button">Kaufen</button><button type="button">Finanzieren</button><button class="why-sls" type="button">Warum SLS Immobilienpartner?</button></div></section>
         <p class="status" role="status" aria-live="polite"></p>
         <section class="result" hidden tabindex="-1" aria-label="Antwort von SIA"><p class="question"></p><span class="origin"></span><div class="answer"></div><details class="sources"><summary>Verwendete Quellen</summary><div class="source-list"></div></details></section>
         <div class="contact"><a href="/kontakt/">Mit unserem Team sprechen</a></div>
@@ -123,7 +123,8 @@
     'Wie bereite ich den Verkauf meiner Immobilie vor?',
     'Wie wird der Wert meiner Immobilie ermittelt?',
     'Wie läuft der Immobilienkauf bei SLS Immobilienpartner ab?',
-    'Was sollte ich bei der Finanzierung einer Immobilie beachten?'
+    'Was sollte ich bei der Finanzierung einer Immobilie beachten?',
+    'Was zeichnet SLS Immobilienpartner aus?'
   ];
   let notesScroll = 0;
   function showNotes(show, restoreFocus = true) {

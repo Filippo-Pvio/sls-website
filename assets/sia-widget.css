@@ -99,3 +99,6 @@ label{font-size:14px;font-weight:600;margin-bottom:8px}
  dialog[data-compact] .intro{margin:0;padding:0}
  dialog[data-compact] .intro h3{font-size:23px}
 }
+
+.suggestions .why-sls{grid-column:1/-1;min-height:44px;font-size:13px;font-weight:500;border-color:#e0e7eb;background:#f8fafb}
+.suggestions .why-sls:hover{background:#EAF0F3}

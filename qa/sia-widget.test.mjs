@@ -28,7 +28,7 @@ async function fixture(withViewport = true, mobile = true) {
       close() { this.open = false; this.emit('close'); },
     };
   }
-  const nodes = new Map(), suggestions = [element(), element(), element(), element()];
+  const nodes = new Map(), suggestions = [element(), element(), element(), element(), element()];
   const get = selector => { if (!nodes.has(selector)) nodes.set(selector, element()); return nodes.get(selector); };
   const root = { innerHTML: '', querySelector: get, querySelectorAll: () => suggestions };
   const frames = new Map(), scrollCalls = []; let id = 0;
@@ -178,13 +178,14 @@ test('information view preserves the draft and answer scroll, then restores focu
   assert.equal(f.get('textarea').value, 'Meine noch nicht abgesendete Frage');
 });
 
-test('all four topic actions prepare distinct questions without sending a request', async () => {
+test('all five suggestion actions prepare distinct questions without sending a request', async () => {
   const f = await fixture();
   const drafts = [];
   for (const button of f.suggestions) { button.emit('click'); drafts.push(f.get('textarea').value); }
-  assert.equal(new Set(drafts).size, 4);
+  assert.equal(new Set(drafts).size, 5);
   assert.match(drafts[1], /Wert/);
   assert.match(drafts[2], /Immobilienkauf/);
   assert.match(drafts[3], /Finanzierung/);
+  assert.equal(drafts[4], 'Was zeichnet SLS Immobilienpartner aus?');
   assert.equal(f.get('.send').disabled, undefined);
 });
