@@ -1,3 +1,13 @@
+# Zentraler SIA-Dienst · frag-dialogue-1
+
+Dieses Verzeichnis ist das Vercel-Root-Directory des bestehenden Projekts `frag-sls`. Veröffentlichung erfolgt über `main` im vorhandenen Repository. Der bestehende serverseitige `OPENAI_API_KEY` bleibt unverändert.
+
+Allgemeine Immobilienfragen werden mit aktuellen Quellen recherchiert. Unternehmensfragen verwenden die bestätigte Wissensbasis. Bei fehlenden Angaben ist eine kurze Rückfrage erlaubt; bis zu drei vollständige Gesprächspaare werden berücksichtigt. GET `/api/ask` liefert die Fähigkeiten für das Website-Widget. Die Website verwaltet weiterhin das Tageslimit; Rückfragen zählen nicht als beantwortete Fragen.
+
+169 lokale Regressionstests bestehen. Echte Modellantworten müssen nach dem Deployment geprüft werden. Die folgenden Abschnitte dokumentieren den vorherigen Stand des unverändert übernommenen Unternehmensmoduls.
+
+---
+
 ## Änderung 1.4.3
 Keine Gegenfragen: Generator und Prüfer sind entsprechend angepasst. Erkannte unbelegte Rückfrageabsätze werden vor der inhaltlichen Prüfung entfernt; der verbleibende Text muss die Quellen- und Vollständigkeitsprüfung bestehen. Besteht die Antwort nur aus Fragen, erfolgt eine Ersatzantwort. Formulierungen ohne Fragezeichen werden zusätzlich auf typische Aufforderungen geprüft; die semantische Modellprüfung bleibt erforderlich. Persönlicher Abschluss bleibt bestehen. 131 lokale Tests und Browserprüfung bestanden; echte Modellantwort nach Upload prüfen.
 
