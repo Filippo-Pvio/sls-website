@@ -2,7 +2,6 @@ import { generalDefinition } from './lib/sia-general-knowledge.js';
 import { siaEnabled } from './sia-config.js';
 import { reserveQuota } from './lib/sia-quota.js';
 import { validateConversation } from './lib/sia-conversation.js';
-import { planQuestion, answerGeneral } from './lib/sia-openai.js';
 const endpoint = 'https://frag-sls.vercel.app/api/ask';
 const send = (res, status, data) => {
   res.statusCode = status;
@@ -53,35 +52,26 @@ export default async function handler(req, res) {
       : 'Bitte warten Sie einen Moment, bevor Sie die nächste Frage senden.' });
   }
   try {
-    let standaloneQuestion = question;
-    if (process.env.OPENAI_API_KEY) {
-      const plan = await planQuestion(question, history);
-      if (plan.kind === 'clarification' || plan.kind === 'offtopic') {
-        const quota = await reservation?.settle(false);
-        return send(res, 200, { provider: 'OpenAI', kind: plan.kind, reason: plan.kind, answer: plan.kind === 'clarification' ? plan.clarification : 'Ich unterstütze Sie bei Fragen rund um Immobilien. Welches Immobilienthema möchten Sie besprechen?', sources: [], ...(quota ? { quota } : {}) });
-      }
-      standaloneQuestion = plan.question;
-      if (plan.kind === 'general') {
-        const answer = await answerGeneral(standaloneQuestion);
-        const quota = await reservation?.settle(true);
-        return send(res, 200, { ...answer, ...(quota ? { quota } : {}) });
-      }
-    }
     const upstream = await fetch(endpoint, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question: standaloneQuestion }), signal: AbortSignal.timeout(process.env.OPENAI_API_KEY ? 30000 : 43000), redirect: 'error'
+      body: JSON.stringify({ question, ...(history.length ? { history } : {}) }), signal: AbortSignal.timeout(50000), redirect: 'error'
     });
     if (!upstream.ok) throw new Error('Upstream unavailable');
     const data = await upstream.json();
     if (!['OpenAI', 'Wissensbasis von SLS Immobilienpartner'].includes(data.provider) || typeof data.answer !== 'string' || !data.answer.trim() || data.answer.length > 30000 || !Array.isArray(data.sources) || data.sources.length > 30) throw new Error('Invalid response');
-    const definition = data.provider !== 'OpenAI' && !data.sources.length ? generalDefinition(standaloneQuestion) : null;
+    const definition = data.provider !== 'OpenAI' && !data.sources.length ? generalDefinition(question) : null;
     const reason = ['invalid_sources', 'verification_failed', 'missing_api_key', 'authentication', 'rate_limit', 'configuration', 'upstream_error', 'timeout', 'invalid_response'].includes(data.reason) ? data.reason : null;
-    const answer = definition || { provider: data.provider, answer: data.answer, sources: data.sources, version: data.version, reason };
+    if (data.kind !== undefined && !['answer', 'clarification', 'offtopic'].includes(data.kind)) throw new Error('Invalid answer kind');
+    if (data.kind && data.kind !== 'answer' && (data.provider !== 'OpenAI' || data.sources.length || data.answer.length > 500)) throw new Error('Invalid clarification');
+    const kind = data.kind || 'answer';
+    const citations = data.citations;
+    if (citations !== undefined && (!Array.isArray(citations) || citations.length > 100 || citations.some((c, i) => !Number.isInteger(c.number) || !Number.isInteger(c.start) || !Number.isInteger(c.end) || c.start < (i ? citations[i-1].end : 0) || c.end <= c.start || c.end > data.answer.length || !data.sources.some(source => source.number === c.number)))) throw new Error('Invalid citations');
+    const answer = definition || { provider: data.provider, answer: data.answer, sources: data.sources, version: data.version, kind, reason: ['clarification', 'offtopic', 'general_web'].includes(data.reason) ? data.reason : reason, ...(citations ? { citations } : {}) };
     if (answer.provider !== 'OpenAI' && !answer.sources.length) {
       answer.answer = 'Zu dieser Frage fehlt SIA derzeit eine ausreichend belegte Grundlage. Unser Team kann Ihr Anliegen persönlich einordnen.';
       answer.reason = 'unanswered';
     }
-    const quota = await reservation?.settle(answer.provider === 'OpenAI' || answer.sources.length > 0);
+    const quota = await reservation?.settle(kind === 'answer' && (answer.provider === 'OpenAI' || answer.sources.length > 0));
     return send(res, 200, { ...answer, ...(quota ? { quota } : {}) });
   } catch {
     try { await reservation?.settle(false); } catch { /* Pending reservations expire automatically. */ }

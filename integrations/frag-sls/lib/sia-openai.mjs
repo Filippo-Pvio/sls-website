@@ -61,7 +61,7 @@ export function extractGroundedAnswer(data, now = new Date()) {
   answer += part.text.slice(cursor);
   // Never expose generated Markdown links or unverified URLs as citations.
   if (/https?:\/\/|\]\(/i.test(answer)) throw new Error('Unannotated URL');
-  return { provider: 'OpenAI', kind: 'answer', reason: 'general_web', answer, citations, sources, version: 'website-dialogue-1' };
+  return { provider: 'OpenAI', kind: 'answer', reason: 'general_web', answer, citations, sources, version: 'frag-dialogue-1' };
 }
 export async function answerGeneral(question, { env = process.env, fetcher = fetch } = {}) {
   const data = await request({

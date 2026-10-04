@@ -13,12 +13,12 @@ test('preview proxy boundaries',async t=>{
   global.fetch=async(url,opts)=>{assert.equal(url,'https://frag-sls.vercel.app/api/ask');assert.deepEqual(JSON.parse(opts.body),{question:'Wie läuft der Verkauf?'});return Response.json(fixture);};
   const res=await call();assert.equal(res.statusCode,200);assert.equal(res.data.provider,'OpenAI');assert.equal(res.headers['Cache-Control'],'no-store');
  });
- await t.test('production disabled even if local flag set',async()=>{process.env.VERCEL_ENV='production';process.env.SIA_LOCAL_PREVIEW='1';assert.equal((await call()).statusCode,404);const r=response();config({method:'GET'},r);assert.equal(r.data.enabled,false);process.env.VERCEL_ENV='preview';});
+ await t.test('production disabled even if local flag set',async()=>{process.env.VERCEL_ENV='production';process.env.SIA_LOCAL_PREVIEW='1';assert.equal((await call()).statusCode,404);const r=response();await config({method:'GET'},r);assert.equal(r.data.enabled,false);process.env.VERCEL_ENV='preview';});
  await t.test('approved public hostname enabled, other aliases disabled',async()=>{
   process.env.VERCEL_ENV='production';global.fetch=async()=>Response.json(fixture);
   const headers={'content-type':'application/json',host:'sls-website-eight.vercel.app',origin:'https://sls-website-eight.vercel.app'};
   assert.equal((await call({headers})).statusCode,200);
-  const r=response();config({method:'GET',headers},r);assert.equal(r.data.enabled,true);
+  const r=response();await config({method:'GET',headers},r);assert.equal(r.data.enabled,true);
   assert.equal((await call({headers:{...headers,host:'sls.de'}})).statusCode,404);
   process.env.VERCEL_ENV='preview';
  });

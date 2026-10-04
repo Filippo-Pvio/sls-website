@@ -74,6 +74,6 @@ test('proxy blocks the eleventh upstream call and does not count technical error
 
 test('pure OpenAI clarification consumes no daily answer',async()=>{
  const original=global.fetch,db=store();Object.assign(process.env,env,{VERCEL_ENV:'preview',OPENAI_API_KEY:'test-key'});
- global.fetch=async(url,options)=>url===env.UPSTASH_REDIS_REST_URL?db.fetch(url,options):Response.json({status:'completed',output:[{type:'message',role:'assistant',content:[{type:'output_text',text:JSON.stringify({kind:'clarification',question:'Was ist beim Kauf oder Verkauf zu beachten?',clarification:'Geht es um Kauf oder Verkauf?'})}]}]});
+ global.fetch=async(url,options)=>url===env.UPSTASH_REDIS_REST_URL?db.fetch(url,options):Response.json({provider:'OpenAI',kind:'clarification',reason:'clarification',answer:'Geht es um Kauf oder Verkauf?',sources:[]});
  try {const res=response();await handler({method:'POST',headers:{'content-type':'application/json'},body:{question:'Was muss ich beachten?'}},res);assert.equal(res.statusCode,200);assert.equal(res.data.kind,'clarification');assert.equal(res.data.quota.remaining,10);}finally{global.fetch=original;for(const key of [...Object.keys(env),'VERCEL_ENV','OPENAI_API_KEY'])delete process.env[key];}
 });

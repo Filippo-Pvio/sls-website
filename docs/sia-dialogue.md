@@ -1,25 +1,38 @@
-# Allgemeines Immobilienwissen und Dialog in SIA
+# SIA: zentraler Fragedienst
 
-## Aktivierung
+Die Website ruft ausschließlich `https://frag-sls.vercel.app/api/ask` auf. Der OpenAI-Key bleibt im bestehenden Projekt `frag-sls`; im Website-Projekt wird kein zusätzlicher Key benötigt.
 
-Im Vercel-Projekt `sls-website` die sensitive serverseitige Variable `OPENAI_API_KEY` für Production und Preview hinterlegen. Der vorhandene Schlüssel in `frag-sls` ist sensitive und nicht auslesbar; eine Projektverbindung teilt diesen Schlüssel nicht automatisch. Einen passenden Schlüssel direkt in Vercel eintragen, niemals in Chat oder Repository. Der Schlüssel braucht Zugriff auf die Responses API und gehostete Websuche.
+## Vorbereiteter Backend-Umbau
 
-Danach den aktuellen `main`-Stand neu deployen. `/api/sia-config` zeigt `dialogueEnabled: true`, sobald der Schlüssel im Deployment vorhanden ist. Ohne Schlüssel bleibt der vorhandene SLS-Fragedienst aktiv und der Dialogmodus ausgeblendet.
+`integrations/frag-sls` enthält die ergänzenden Dateien für das bestehende CommonJS-Backend. Der Installer wird ausschließlich auf einen vollständigen Export der aktuellen Produktionsversion 1.4.3 angewendet:
 
-Standardmodell ist `gpt-4.1-mini`, das der vorhandene Fragedienst ebenfalls verwendet. Optional über `SIA_OPENAI_MODEL` ändern; das gewählte Modell muss Responses API, Structured Outputs und `web_search` unterstützen.
+```sh
+python integrations/frag-sls/install.py /absoluter/pfad/zum/backendexport
+```
+
+Der Installer prüft die SHA1 des aktuellen `api/ask.js` aus Deployment `dpl_3uj6goBfTXvbv7qYoov6UD1TpshA`. Er sichert den bisherigen Handler unverändert als `lib/legacy-handler.cjs`. Unternehmenswissen, Quellen, Verifikationslogik und bestehende SLS-Antworten bleiben im vorhandenen Handler. Der neue Handler ergänzt die Einordnung und allgemeine Antworten. Keine vorhandene Bibliothek oder Wissensdatei wird ersetzt.
+
+Anschließend das vollständige Backend als Preview im bestehenden Vercel-Projekt deployen. Dessen vorhandenen Key nutzen; keine Umgebungsvariablen auslesen oder in Dateien speichern. Bei Preview-Schutz über authentifizierte Vercel-Verifikation testen. Nach erfolgreicher Prüfung zu Production veröffentlichen.
+
+Die Website erkennt die neue Fähigkeit über GET `/api/ask`: `version: frag-dialogue-1`, `dialogueEnabled: true`. Solange der alte Backend-Stand läuft, bleiben die neuen Gesprächsfunktionen deaktiviert und der bisherige Fragedienst nutzbar. API-Erkennung schlägt bei Fehlern geschlossen auf den bisherigen Modus zurück.
 
 ## Verhalten
 
-1. Frage mit bis zu drei früheren Frage-Antwort-Paaren einordnen; keine unbegrenzte Historie.
-2. Allgemeine Immobilienthemen über gehostete Websuche auf freigegebenen Behörden-, Gesetzes-, Notariats- und Verbraucherquellen beantworten. Definitionen direkt erklären. Ungewöhnliche Begriffe nicht stillschweigend umdeuten.
-3. SLS-Informationen weiterhin aus dem bisherigen bestätigten Fragedienst. Aktuelle bzw. rekonstruierte Fragen mit SLS-Bezug werden zwingend dorthin geschickt.
-4. Wenn wesentliches Wissen über das Anliegen fehlt, eine kurze Rückfrage. Nach einer bereits markierten Rückfrage verhindert der Server eine weitere direkt aufeinander folgende Rückfrage.
-5. Erfolgreiche belegte Antworten zählen zum vorhandenen Tageslimit. Klärungsfragen, themenfremde Hinweise und technische Fehler zählen nicht. Technischer Missbrauchsschutz gilt weiterhin auch für kostenlose Klärungsfragen.
-6. Quellen nur aus echten URL-Annotationen der API und erlaubten HTTPS-Domains übernehmen. Inline-Zitate öffnen die interne Quellenansicht; keine ungeprüften externen Links. Diese Ansicht kennzeichnet recherchierte Quellen als Quellenhinweis, ohne zu behaupten, den vollständigen Originalartikel wiederzugeben.
-7. Der Verlauf bleibt nur im Arbeitsspeicher des Widgets. „Neues Gespräch“ oder Neuladen löscht den Kontext; das Tageskontingent bleibt bestehen. API-Anfragen verwenden `store: false`; dies ist keine Zusage über sämtliche providerseitigen Aufbewahrungsfristen.
+- Allgemeine Immobilienfragen recherchiert der zentrale Dienst mit OpenAI und einer festgelegten Auswahl fachlicher Quellen.
+- Unternehmensfragen gehen nach Kontextauflösung an den unveränderten SLS-Handler.
+- Genau eine gezielte Klärungsfrage bei wesentlicher Unklarheit; keine routinemäßige Frage am Ende jeder Antwort.
+- Die Website überträgt höchstens drei vollständige Gesprächspaare. Kontext bleibt im Arbeitsspeicher des Widgets; Neues Gespräch und Neuladen löschen ihn.
+- Persönliche oder vertrauliche Informationen werden nicht gezielt abgefragt.
+- Quellen bleiben innerhalb von SIA sichtbar.
+- Der Website-Tageszähler zählt belegte Antworten, aber keine reinen Rückfragen, themenfremden Antworten oder technischen Fehler. Neues Gespräch setzt das Kontingent nicht zurück.
+- `store: false` deaktiviert die Speicherung der Responses zur späteren Abrufbarkeit; es ist keine Aussage über sämtliche Aufbewahrungsregeln des Anbieters.
 
-## Prüfungen
+## Prüfung und aktueller Status
 
-`node --test qa/sia-dialogue.test.mjs qa/sia-api.test.mjs qa/sia-widget.test.mjs qa/sia-quota.test.mjs qa/sia-general-knowledge.test.mjs`
+```sh
+node --test qa/sia-central-backend.test.mjs qa/sia-dialogue.test.mjs qa/sia-api.test.mjs qa/sia-widget.test.mjs qa/sia-quota.test.mjs qa/sia-general-knowledge.test.mjs
+```
 
-Die API-Antworten der Dialogtests sind Fixtures, keine echten Modellaufrufe. Nach Aktivierung live prüfen: Bergbauminderverzicht (Begriffszuordnung und passende Quellen), klare Begriffsfrage ohne unnötige Rückfrage, unklare Anfrage mit genau einer Rückfrage, kurze Antwort wie „Ja“, personalisierte SLS-Nachfrage, Prompt-Injektion, Quellenanzeige, Zeitüberschreitungen und Quota vor/nach einer Klärungsfrage. Modellverhalten und Zugriff auf gehostete Suche sind erst dann verifiziert.
+38 Tests bestanden. KI-Aufrufe sind in diesen Tests simuliert. Der zentralisierte Backend-Umbau ist noch nicht veröffentlicht: Der Vercel-Connector liefert Source-Dateien gekürzt und stellt keine Deployment-Erstellung bereit; in der lokalen Umgebung besteht keine Vercel-CLI-Anmeldung. Für vollständigen Source-Export und Veröffentlichung ist deshalb ein ausdrücklich erlaubter Browser-Fallback oder ein vollständiger aktueller Backend-Checkout mit autorisiertem Deployment-Zugang erforderlich.
+
+Nach Backend-Aktivierung live prüfen: Bergbauminderverzicht samt Quellen, kurze Antwort auf eine Klärungsfrage, bestätigte SLS-Angaben, internes Quellenfenster, technische Fehler und Tageslimit. Ohne echte Live-Prüfung keinen erfolgreichen KI-Betrieb behaupten.
