@@ -1,5 +1,6 @@
 import { generalDefinition } from './lib/sia-general-knowledge.js';
 import { siaEnabled } from './sia-config.js';
+import { reserveQuota } from './lib/sia-quota.js';
 const endpoint = 'https://frag-sls.vercel.app/api/ask';
 const send = (res, status, data) => {
   res.statusCode = status;
@@ -34,19 +35,33 @@ export default async function handler(req, res) {
   } catch { return send(res, 400, { error: 'Ungültige Anfrage.' }); }
   const question = typeof body?.question === 'string' ? body.question.trim() : '';
   if (question.length < 3 || question.length > 1200) return send(res, 400, { error: 'Bitte 3 bis 1200 Zeichen eingeben.' });
+  let reservation;
+  try {
+    reservation = await reserveQuota(req, res);
+  } catch {
+    return send(res, 503, { error: 'SIA ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.' });
+  }
+  if (reservation?.blocked) {
+    res.setHeader('Retry-After', String(reservation.retryAfter));
+    return send(res, 429, { code: reservation.blocked, quota: reservation.quota, error: reservation.blocked === 'daily_limit'
+      ? 'Sie haben heute zehn Antworten von SIA erhalten. Morgen können Sie wieder Fragen stellen. Unser Team ist weiterhin persönlich für Sie da.'
+      : 'Bitte warten Sie einen Moment, bevor Sie die nächste Frage senden.' });
+  }
   try {
     const upstream = await fetch(endpoint, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question }), signal: AbortSignal.timeout(43000), redirect: 'error'
     });
-    if (!upstream.ok) return send(res, 502, { error: 'SIA ist gerade nicht erreichbar. Bitte versuchen Sie es später erneut oder kontaktieren Sie Ihren SLS Immobilienpartner.' });
+    if (!upstream.ok) throw new Error('Upstream unavailable');
     const data = await upstream.json();
     if (!['OpenAI', 'Wissensbasis von SLS Immobilienpartner'].includes(data.provider) || typeof data.answer !== 'string' || !data.answer.trim() || data.answer.length > 30000 || !Array.isArray(data.sources) || data.sources.length > 30) throw new Error('Invalid response');
     const definition = data.provider !== 'OpenAI' && !data.sources.length ? generalDefinition(question) : null;
-    if (definition) return send(res, 200, definition);
     const reason = ['invalid_sources', 'verification_failed', 'missing_api_key', 'authentication', 'rate_limit', 'configuration', 'upstream_error', 'timeout', 'invalid_response'].includes(data.reason) ? data.reason : null;
-    return send(res, 200, { provider: data.provider, answer: data.answer, sources: data.sources, version: data.version, reason });
+    const answer = definition || { provider: data.provider, answer: data.answer, sources: data.sources, version: data.version, reason };
+    const quota = await reservation?.settle(answer.provider === 'OpenAI' || answer.sources.length > 0);
+    return send(res, 200, { ...answer, ...(quota ? { quota } : {}) });
   } catch {
+    try { await reservation?.settle(false); } catch { /* Pending reservations expire automatically. */ }
     return send(res, 502, { error: 'SIA konnte gerade keine Antwort abrufen. Bitte versuchen Sie es später erneut oder kontaktieren Sie Ihren SLS Immobilienpartner.' });
   }
 }

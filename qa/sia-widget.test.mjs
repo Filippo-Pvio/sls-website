@@ -5,7 +5,7 @@ import { runInNewContext } from 'node:vm';
 
 const code = await readFile(new URL('../assets/sia-widget.js', import.meta.url), 'utf8');
 
-async function fixture(withViewport = true, mobile = true, sources = []) {
+async function fixture(withViewport = true, mobile = true, sources = [], reply = null) {
   function element() {
     const listeners = new Map(), properties = new Map(), priorities = new Map(), attributes = new Map();
     return {
@@ -48,7 +48,7 @@ async function fixture(withViewport = true, mobile = true, sources = []) {
   await runInNewContext(code, {
     window,
     document: { querySelector: () => null, createElement: tag => tag === 'sls-sia' ? ({ attachShadow: () => root }) : element(), body },
-    fetch: async url => ({ ok: true, json: async () => url === '/api/sia-config' ? { enabled: true } : { provider: 'OpenAI', answer: 'Antwort', sources } }),
+    fetch: async url => ({ ok: url === '/api/sia-config' || !reply?.code, status: reply?.code ? 429 : 200, json: async () => url === '/api/sia-config' ? { enabled: true, dailyLimit: 10 } : reply || { provider: 'OpenAI', answer: 'Antwort', sources } }),
     AbortController, setTimeout, clearTimeout,
   });
   return { get, root, body, scrollCalls, suggestions, viewport, window, frames, flush() { for (const [key, fn] of frames) { frames.delete(key); fn(); } } };

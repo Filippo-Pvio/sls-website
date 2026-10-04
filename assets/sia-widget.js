@@ -1,9 +1,11 @@
 /* SIA is enabled only on the approved site or in a preview. */
 (async () => {
   if (document.querySelector('sls-sia')) return;
+  let dailyLimit = null;
   try {
     const config = await fetch('/api/sia-config', { cache: 'no-store' }).then(r => r.ok ? r.json() : null);
     if (!config?.enabled) return;
+    dailyLimit = config.dailyLimit;
   } catch { return; }
   const host = document.createElement('sls-sia');
   const root = host.attachShadow({ mode: 'open' });
@@ -28,6 +30,7 @@
         <h4>Eine erste Orientierung</h4><p>SIA ist der KI-Assistent von SLS Immobilienpartner. Die Antworten dienen der allgemeinen Information rund um Immobilien. Sie können fehlerhaft, unvollständig oder nicht aktuell sein.</p>
         <h4>Ihre persönliche Situation</h4><p>SIA ersetzt keine individuelle fachliche, rechtliche oder steuerliche Beratung. Lassen Sie wichtige Entscheidungen und Angaben durch eine geeignete Fachperson prüfen. Unser Team unterstützt Sie bei Ihrem nächsten Schritt rund um Ihre Immobilie.</p>
         <h4>Ihre Frage und Ihre Daten</h4><p>Zum Absenden einer Frage sind keine Kontaktdaten erforderlich. Geben Sie bitte keine Namen, Kontaktdaten oder andere personenbezogene oder vertrauliche Informationen ein. Ihre Frage wird über den SLS-Fragedienst zur Verarbeitung an OpenAI übermittelt. Wenn die KI-Antwort nicht verfügbar ist, können Informationen aus der Wissensbasis von SLS Immobilienpartner angezeigt werden.</p>
+        ${dailyLimit === 10 ? '<h4>Ihr Tageskontingent</h4><p>Pro Browser sind täglich zehn Antworten möglich. Technische Fehler zählen nicht mit. Für den Zähler verwenden wir ein anonymes Cookie, das bei Nutzung auf 24 Stunden verlängert wird. Es enthält keine Fragen oder Kontaktdaten. Das Kontingent wird um Mitternacht deutscher Zeit zurückgesetzt.</p>' : ''}
         <p>Weitere Informationen finden Sie in unserer <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
         <button class="notes-back" type="button">Zurück zu SIA</button>
       </section>
@@ -196,6 +199,12 @@
     try {
       const response = await fetch('/api/sia-ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question }), signal: controller.signal });
       const data = await response.json();
+      if (response.status === 429 && ['daily_limit', 'pending_limit', 'slow_down'].includes(data.code)) {
+        status.textContent = data.code === 'daily_limit'
+          ? 'Sie haben heute zehn Antworten von SIA erhalten. Morgen können Sie wieder Fragen stellen. Unser Team ist weiterhin persönlich für Sie da.'
+          : 'Bitte warten Sie einen Moment, bevor Sie die nächste Frage senden.';
+        return;
+      }
       if (!response.ok) throw new Error('Unavailable');
       if (!['OpenAI', 'Wissensbasis von SLS Immobilienpartner'].includes(data.provider) || typeof data.answer !== 'string' || !Array.isArray(data.sources)) throw new Error('Invalid response');
       $('.question').textContent = question;
@@ -208,6 +217,10 @@
         : data.reason === 'general_definition' ? 'Hier finden Sie eine belegte Erklärung aus unserer Wissensbasis.'
         : ['invalid_sources', 'verification_failed'].includes(data.reason) ? (data.sources.length ? 'Hier finden Sie belegte Informationen aus unserer Wissensbasis.' : 'Zu dieser Frage konnte SIA keine ausreichend belegte Antwort erstellen.')
         : 'Die KI-Antwort ist derzeit nicht verfügbar. Hier finden Sie Informationen aus der Wissensbasis.';
+      if (Number.isInteger(data.quota?.remaining) && data.quota.remaining >= 0 && data.quota.remaining <= 3) {
+        status.textContent += data.quota.remaining === 0 ? ' Ihr Tageslimit ist erreicht. Morgen sind wieder Fragen möglich.'
+          : ` Heute ${data.quota.remaining === 1 ? 'ist noch eine weitere Antwort' : `sind noch ${data.quota.remaining} weitere Antworten`} möglich.`;
+      }
       if (field.value.trim() === question) field.value = '';
       if (dialog.open) {
         // An arriving answer must not dismiss the keyboard while someone is typing.
