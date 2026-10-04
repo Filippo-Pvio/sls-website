@@ -358,7 +358,11 @@
       "Sorgfältig organisieren"
     ],
     "source": "https://sls.de/gina-kuennecke/",
-    "heroScenes": [],
+    "heroScenes": [
+      "gina-hero/gina-1",
+      "gina-hero/gina-2",
+      "gina-hero/gina-3"
+    ],
     "videos": [],
     "focusCopy": [
       "Persönliche Vorstellungen werden im Gespräch konkretisiert und geordnet.",
