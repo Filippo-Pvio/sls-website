@@ -1,0 +1,11 @@
+.env*
+!.env.example
+test/
+server.js
+README.md
+DIAGNOSE.md
+scripts/
+FREIGABE.md
+
+eval/
+eval-results/

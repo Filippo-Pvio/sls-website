@@ -1,0 +1,148 @@
+[
+  {
+    "id": "valuation-costs",
+    "title": "Kostenlose und unverbindliche Bewertung",
+    "text": "Online-Bewertung, Erstgespräch und Vor-Ort-Bewertung bei SLS Immobilienpartner sind kostenlos und unverbindlich. Es besteht keine Verpflichtung, anschließend über SLS Immobilienpartner zu verkaufen.",
+    "patterns": [
+      "(?=.*(?:bewert|erstgesprach|vor.ort))(?=.*(?:kost|gebuhr|gratis|unverbind|verpflicht))"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: kostenlos und unverbindlich",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/valuation-costs.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "commission",
+    "title": "Provision und Mindestprovision",
+    "text": "Für die von SLS Immobilienpartner beschriebenen Fälle der geteilten Provision sieht der bereitgestellte Vertragsauszug bei einem Verkaufspreis über 83.000 Euro eine Verkäuferprovision von 3,57 % des Kaufpreises inklusive Mehrwertsteuer vor. Mit dem Käufer kann ebenfalls eine Provision von 3,57 % inklusive Mehrwertsteuer vereinbart werden. Bei einem Verkaufspreis von 83.000 Euro oder darunter nennt der Auszug stattdessen eine Mindestprovision von mindestens 5.950 Euro inklusive Mehrwertsteuer. Besteht auch mit dem Käufer ein wirksamer Maklervertrag mit Provisionsanspruch, fällt diese Mindestprovision insgesamt nur einmal an; Verkäufer und Käufer tragen dann jeweils 2.975 Euro inklusive Mehrwertsteuer. Die konkreten Konditionen richten sich nach dem vereinbarten Maklervertrag. Die genannten Prozentsätze sind vertragliche Konditionen von SLS Immobilienpartner, keine gesetzlich festgelegten Provisionssätze.",
+    "patterns": [],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Vom Auftraggeber bereitgestellter Vertragsauszug, Ziffer 5, und Erläuterung zur geteilten Provision",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/commission.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "service-costs",
+    "title": "Keine zusätzlichen Leistungskosten – nur im Erfolgsfall",
+    "text": "Bei SLS Immobilienpartner entstehen neben der vereinbarten Erfolgsprovision keine zusätzlichen Kosten für die Leistungen von SLS Immobilienpartner. Die Provision wird nur im Erfolgsfall berechnet. Bei einer Kündigung werden keine Kündigungsgebühr und keine Kosten für die bis dahin erbrachten Leistungen von SLS Immobilienpartner berechnet. Damit ist keine Aussage über den Wegfall einer bereits entstandenen Erfolgsprovision verbunden. Die Zusage betrifft die Leistungen von SLS Immobilienpartner; sie umfasst nicht automatisch externe Kosten, etwa für Notar oder Grundbuch.",
+    "patterns": [],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: keine weiteren Leistungskosten, nur erfolgsabhängige Abrechnung und keine Kosten bei Kündigung; redaktionelle Abgrenzung zu Erfolgsprovision und Fremdkosten",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/service-costs.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "investment-commission",
+    "title": "Provision bei Investmentobjekten",
+    "text": "Bei Investmentobjekten bespricht SLS Immobilienpartner die Provision individuell. Gesetzliche Vorgaben bleiben dabei maßgeblich: Die Bezeichnung als Investmentobjekt allein schließt die Regelungen zur Verteilung der Maklerkosten nicht aus. Bei einer Wohnung oder einem Einfamilienhaus und einem Käufer, der als Verbraucher handelt, sind die §§ 656b bis 656d BGB zu berücksichtigen. Bitte lassen Sie die für Ihr Objekt geltende Vereinbarung von Ihrem SLS Immobilienpartner erläutern.",
+    "patterns": [],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers zu Investmentobjekten; rechtliche Einordnung anhand §§ 656b–656d BGB",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/investment-commission.html",
+    "sourceType": "user-confirmation",
+    "references": [
+      "https://www.gesetze-im-internet.de/bgb/__656b.html",
+      "https://www.gesetze-im-internet.de/bgb/__656c.html",
+      "https://www.gesetze-im-internet.de/bgb/__656d.html"
+    ]
+  },
+  {
+    "id": "owner-reporting",
+    "title": "Digitales Eigentümer-Reporting",
+    "text": "Das digitale Eigentümer-Reporting von SLS Immobilienpartner ist für alle Verkaufsaufträge verfügbar. Eigentümer können ihre Vermarktungsaktivitäten und den aktuellen Stand jederzeit einsehen.",
+    "patterns": [
+      "reporting",
+      "cockpit",
+      "vermarktungsaktivit",
+      "digital.*eigentumer",
+      "eigentumer.*digital",
+      "stand.*einseh",
+      "informiert"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers im Projektgespräch: für alle Verkaufsaufträge verfügbar, jederzeitige Einsicht in Vermarktungsaktivitäten",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/owner-reporting.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "sales-services",
+    "title": "Feste Bestandteile der Verkaufsbegleitung",
+    "text": "Bonitätsprüfung, Einzelbesichtigungen, die Freigabe des Exposés durch den Eigentümer und die direkte Ansprache vorgemerkter Interessenten sind feste Bestandteile der Verkaufsbegleitung von SLS Immobilienpartner.",
+    "patterns": [
+      "bonitat",
+      "einzelbesichtig",
+      "einzeltermin",
+      "expose.*freigabe",
+      "freigabe.*expose",
+      "vorgemerk",
+      "direkt.*interessent",
+      "interessent.*direkt",
+      "feste bestandteil",
+      "verkaufsbegleitung"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: Bonitätsprüfung, Einzelbesichtigungen, Exposé-Freigabe und Direktansprache vorgemerkter Interessenten",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/sales-services.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "presentation-services",
+    "title": "Präsentation passend zur Immobilie",
+    "text": "SLS Immobilienpartner setzt je nach Immobilie professionelle Fotos, Drohnenaufnahmen, Videos und 360°-Rundgänge ein. Diese Leistungen sind ohne zusätzliche Leistungskosten enthalten. Welche Präsentationsformen eingesetzt werden, richtet sich nach der jeweiligen Immobilie.",
+    "patterns": [
+      "foto",
+      "drohne",
+      "video",
+      "360",
+      "rundgang",
+      "rundgange",
+      "prasentation"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: professionelle Fotos, Drohnenaufnahmen, Videos und 360°-Rundgänge je nach Immobilie, ohne zusätzliche Leistungskosten",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/presentation-services.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "central-contact",
+    "title": "Zentraler Kontakt zu SLS Immobilienpartner",
+    "text": "Sie erreichen SLS Immobilienpartner zentral unter der Telefonnummer 02369 742 80 20 oder per E-Mail an service@sls.de.",
+    "patterns": [
+      "kontakt",
+      "erreich",
+      "telefon",
+      "anruf",
+      "e-mail",
+      "email",
+      "mailadresse"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: zentrale Telefonnummer 02369 742 80 20 und E-Mail service@sls.de",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/central-contact.html",
+    "sourceType": "user-confirmation"
+  }
+]

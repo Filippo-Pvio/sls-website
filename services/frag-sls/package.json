@@ -1,0 +1,13 @@
+{
+  "name": "frag-sls-ai-prototyp",
+  "version": "1.4.3",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "start:env": "node --env-file=.env.local server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

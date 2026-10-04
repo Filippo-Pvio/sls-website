@@ -1,0 +1,147 @@
+[
+  {
+    "id": "notary-escrow",
+    "title": "Notaranderkonto: kein automatischer Zahlungsweg",
+    "text": "Der Kaufpreis wird nach der Beurkundung nicht automatisch auf ein Notaranderkonto eingezahlt. Notarielle Geldverwahrung setzt nach § 57 BeurkG insbesondere ein berechtigtes Sicherungsinteresse sowie einen angenommenen Verwahrungsantrag mit Verwahrungsanweisung voraus. Das Anderkonto ist daher kein allgemeiner Standard für jeden Immobilienkauf. Ob es im Einzelfall verwendet wird, ergibt sich aus der vereinbarten Abwicklung; dies erläutert das beurkundende Notariat.",
+    "patterns": [
+      "notarander",
+      "anderkonto",
+      "treuhandkonto"
+    ],
+    "category": "expert",
+    "snapshotDate": "2026-10-02",
+    "reviewAfter": "2027-01-02",
+    "reviewStatus": "Fachgrundlage · Quellenabgleich 02.10.2026",
+    "url": "/quellen/notary-escrow.html",
+    "references": [
+      {
+        "title": "§ 57 BeurkG – Antrag auf Verwahrung",
+        "url": "https://www.gesetze-im-internet.de/beurkg/__57.html"
+      },
+      {
+        "title": "Notarielle Erläuterung: Notaranderkonto",
+        "url": "https://www.selzer-reiff.de/notar-lexikon/notaranderkonto/"
+      }
+    ]
+  },
+  {
+    "id": "purchase-payment",
+    "title": "Kaufpreisfälligkeit und Zahlung",
+    "text": "Die Unterschrift unter dem Kaufvertrag bedeutet nicht automatisch, dass der Kaufpreis sofort zu zahlen ist. Bei der üblichen vertraglichen Abwicklung prüft das Notariat vereinbarte Fälligkeitsvoraussetzungen und versendet anschließend eine Fälligkeitsmitteilung. Maßgeblich sind der konkrete Vertrag und die Mitteilung des beurkundenden Notariats. Ohne diese Unterlagen lässt sich hier weder ein Zahlungstermin noch ein Empfängerkonto verbindlich bestimmen.",
+    "patterns": [
+      "kaufpreis.*(?:zahl|fallig)",
+      "(?:geld|zahl|uberweis).*beurkund",
+      "falligkeitsmitteilung",
+      "wann.*(?:zahl|uberweis)",
+      "welches.*konto"
+    ],
+    "category": "expert",
+    "snapshotDate": "2026-10-02",
+    "reviewAfter": "2027-01-02",
+    "reviewStatus": "Fachgrundlage · Quellenabgleich 02.10.2026",
+    "url": "/quellen/purchase-payment.html",
+    "references": [
+      {
+        "title": "Notarielle Erläuterung: Fälligkeitsmitteilung",
+        "url": "https://www.selzer-reiff.de/notar-lexikon/faelligkeitsmitteilung/"
+      }
+    ]
+  },
+  {
+    "id": "private-sale-tax",
+    "title": "Private Veräußerung: Steuerfolgen hängen vom Einzelfall ab",
+    "text": "Bei privaten Grundstücksverkäufen kann § 23 EStG einen Veräußerungsgewinn erfassen, wenn zwischen Anschaffung und Veräußerung nicht mehr als zehn Jahre liegen. Das Gesetz sieht unter anderem Ausnahmen für bestimmte Eigennutzung vor. Bei unentgeltlichem Erwerb wird für diese Vorschrift grundsätzlich auf die Anschaffung durch den Rechtsvorgänger abgestellt. Ob im konkreten Fall Steuer anfällt, hängt unter anderem von Erwerbszeitpunkt und Nutzung ab und lässt sich hier nicht verbindlich berechnen; dies sollte die Steuerberatung prüfen.",
+    "patterns": [
+      "steuer",
+      "spekulation",
+      "geerbt",
+      "erbschaft"
+    ],
+    "category": "expert",
+    "snapshotDate": "2026-10-02",
+    "reviewAfter": "2027-01-02",
+    "reviewStatus": "Fachgrundlage · Quellenabgleich 02.10.2026",
+    "url": "/quellen/private-sale-tax.html",
+    "references": [
+      {
+        "title": "§ 23 EStG – Private Veräußerungsgeschäfte",
+        "url": "https://www.gesetze-im-internet.de/estg/__23.html"
+      }
+    ]
+  },
+  {
+    "id": "credit-assessment",
+    "title": "Kreditwürdigkeitsprüfung durch den Darlehensgeber",
+    "text": "§ 505a BGB verlangt vor dem Abschluss eines Verbraucherdarlehensvertrags eine Kreditwürdigkeitsprüfung durch den Darlehensgeber. Für einen neuen Immobiliar-Verbraucherdarlehensvertrag muss es nach dieser Prüfung wahrscheinlich sein, dass der Darlehensnehmer seine vertraglichen Verpflichtungen erfüllen wird. Eine Bonitätsprüfung durch einen Immobilienmakler ist damit nicht selbst eine Kreditzusage des Darlehensgebers. Ob und zu welchen Konditionen ein Darlehen zugesagt wird, ist mit dem Darlehensgeber zu klären.",
+    "patterns": [
+      "finanzier",
+      "bankzusage",
+      "bankbestatigung",
+      "kreditwurd",
+      "darlehen",
+      "kredit"
+    ],
+    "category": "expert",
+    "snapshotDate": "2026-10-02",
+    "reviewAfter": "2027-01-02",
+    "reviewStatus": "Fachgrundlage · Quellenabgleich 02.10.2026",
+    "url": "/quellen/credit-assessment.html",
+    "references": [
+      {
+        "title": "§ 505a BGB – Kreditwürdigkeitsprüfung",
+        "url": "https://www.gesetze-im-internet.de/bgb/__505a.html"
+      }
+    ]
+  },
+  {
+    "id": "early-repayment",
+    "title": "Restschuld und mögliche Vorfälligkeitsentschädigung",
+    "text": "Bei vorzeitiger Rückzahlung eines Verbraucherdarlehens mit gebundenem Sollzinssatz kann nach § 502 BGB eine Vorfälligkeitsentschädigung in Betracht kommen. Es bestehen gesetzliche Ausschlussfälle. Ob ein Anspruch besteht und wie hoch er ist, lässt sich ohne Prüfung des Darlehensvertrags und der konkreten Umstände nicht bestimmen. Die in § 502 Absatz 3 genannten Prozentgrenzen betreffen Allgemein-Verbraucherdarlehen und dürfen nicht pauschal auf Immobiliar-Verbraucherdarlehen übertragen werden.",
+    "patterns": [
+      "restschuld",
+      "vorfalligkeit",
+      "kredit.*ablos",
+      "darlehen.*ablos"
+    ],
+    "category": "expert",
+    "snapshotDate": "2026-10-02",
+    "reviewAfter": "2027-01-02",
+    "reviewStatus": "Fachgrundlage · Quellenabgleich 02.10.2026",
+    "url": "/quellen/early-repayment.html",
+    "references": [
+      {
+        "title": "§ 502 BGB – Vorfälligkeitsentschädigung",
+        "url": "https://www.gesetze-im-internet.de/bgb/__502.html"
+      }
+    ]
+  },
+  {
+    "id": "broker-sharing",
+    "title": "Gesetzliche Regeln zur Verteilung der Maklerkosten",
+    "text": "Beim Kauf einer Wohnung oder eines Einfamilienhauses durch einen Verbraucher sind die §§ 656b bis 656d BGB zu beachten. Wird der Makler für beide Parteien entgeltlich tätig, müssen sich beide in gleicher Höhe verpflichten. Hat nur eine Partei den Maklervertrag abgeschlossen, ist eine Kostenübertragung auf die andere nur unter den Voraussetzungen des § 656d möglich: Die beauftragende Partei bleibt mindestens in gleicher Höhe verpflichtet; der Erstattungsanspruch wird erst nach ihrer Zahlung und entsprechendem Nachweis fällig. Die Vorschriften legen keinen Provisionssatz von 3,57 Prozent fest.",
+    "patterns": [
+      "provision",
+      "courtage",
+      "maklerkosten"
+    ],
+    "category": "expert",
+    "snapshotDate": "2026-10-02",
+    "reviewAfter": "2027-01-02",
+    "reviewStatus": "Fachgrundlage · Quellenabgleich 02.10.2026",
+    "url": "/quellen/broker-sharing.html",
+    "references": [
+      {
+        "title": "§ 656b BGB",
+        "url": "https://www.gesetze-im-internet.de/bgb/__656b.html"
+      },
+      {
+        "title": "§ 656c BGB",
+        "url": "https://www.gesetze-im-internet.de/bgb/__656c.html"
+      },
+      {
+        "title": "§ 656d BGB",
+        "url": "https://www.gesetze-im-internet.de/bgb/__656d.html"
+      }
+    ]
+  }
+]

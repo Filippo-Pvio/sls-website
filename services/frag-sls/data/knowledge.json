@@ -1,0 +1,614 @@
+[
+  {
+    "id": "no-obligation",
+    "title": "Muss ich mich nach der Bewertung für SLS Immobilienpartner entscheiden?",
+    "text": "Nein. Die Bewertung soll Ihnen zunächst Orientierung geben. Wenn Sie mit uns zusammenarbeiten möchten, besprechen wir anschließend die nächsten Schritte und die Bedingungen einer Beauftragung.",
+    "patterns": [
+      "entscheiden",
+      "verpflicht",
+      "beauftrag",
+      "muss.*verkaufen",
+      "auftrag"
+    ],
+    "sourcePath": "sls-website/faq/index.html",
+    "pagePath": "/faq/",
+    "section": "Muss ich mich nach der Bewertung für SLS entscheiden?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "f44fddea804644b9e18138543fa541b0783ac9219aed41861feb70eaafaef9fd",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/no-obligation.html"
+  },
+  {
+    "id": "pricing",
+    "title": "Wie entsteht der Angebotspreis meiner Immobilie?",
+    "text": "Wir betrachten Mikrolage, Zustand, Ausstattung, Vergleichsobjekte und aktuelle Nachfrage. Auf dieser Grundlage besprechen wir mit Ihnen, welcher Angebotspreis und welche Strategie zur Immobilie und zum Markt passen.",
+    "patterns": [
+      "angebotspreis",
+      "preisstrategie",
+      "preis.*fest",
+      "preis.*entsteh"
+    ],
+    "sourcePath": "sls-website/faq/index.html",
+    "pagePath": "/faq/",
+    "section": "Wie entsteht der Angebotspreis meiner Immobilie?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "f44fddea804644b9e18138543fa541b0783ac9219aed41861feb70eaafaef9fd",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/pricing.html"
+  },
+  {
+    "id": "documents",
+    "title": "Brauche ich für das erste Gespräch bereits alle Unterlagen?",
+    "text": "Bringen Sie die Informationen mit, die Ihnen bereits vorliegen. Welche Dokumente für die Bewertung und Vermarktung noch wichtig sind, klären wir gemeinsam.",
+    "patterns": [
+      "unterlag",
+      "dokument",
+      "papier"
+    ],
+    "sourcePath": "sls-website/faq/index.html",
+    "pagePath": "/faq/",
+    "section": "Brauche ich für das erste Gespräch bereits alle Unterlagen?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "f44fddea804644b9e18138543fa541b0783ac9219aed41861feb70eaafaef9fd",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/documents.html"
+  },
+  {
+    "id": "marketing-start",
+    "title": "Wann kann die Vermarktung starten?",
+    "text": "Wenn Bewertung, Unterlagen und Vorgehen abgestimmt sind, bereiten wir den Auftritt Ihrer Immobilie vor. Den konkreten Zeitplan besprechen wir mit Ihnen; er hängt auch davon ab, welche Unterlagen und Aufnahmen noch benötigt werden.",
+    "patterns": [
+      "vermarktung.*start",
+      "wann.*start",
+      "vorbereit"
+    ],
+    "sourcePath": "sls-website/faq/index.html",
+    "pagePath": "/faq/",
+    "section": "Wann kann die Vermarktung starten?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "f44fddea804644b9e18138543fa541b0783ac9219aed41861feb70eaafaef9fd",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/marketing-start.html"
+  },
+  {
+    "id": "marketing",
+    "title": "Welche Vermarktungsleistungen sind vorgesehen?",
+    "text": "Je nach Immobilie unter anderem professionelle Fotografie, Drohne, Video, 360°-Rundgang, Exposé, Portale, digitale Kanäle und direkte Interessentenansprache.",
+    "patterns": [
+      "vermarktungsleist",
+      "präsent",
+      "prasent",
+      "portal",
+      "foto",
+      "drohne",
+      "360",
+      "video",
+      "exposé",
+      "expose"
+    ],
+    "sourcePath": "sls-website/verkaufen/index.html",
+    "pagePath": "/verkaufen/",
+    "section": "Welche Vermarktungsleistungen sind vorgesehen?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "8b88cf3110a09e5cd6b74423d723fdf497458e99eb1e88f8c8acd3b1028d7919",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/marketing.html"
+  },
+  {
+    "id": "buyer-matching",
+    "title": "Sprechen Sie Interessenten auch direkt an?",
+    "text": "Ja. Wir prüfen, ob vorgemerkte Interessenten aus unserer Datenbank zur Immobilie passen, und sprechen sie gezielt an. Das ergänzt Anfragen aus Portalen und unseren Social-Media-Kanälen.",
+    "patterns": [
+      "interessent.*ansprech",
+      "sprech.*interessent",
+      "käufer.*such",
+      "kaufer.*such",
+      "vorgemerk",
+      "datenbank"
+    ],
+    "sourcePath": "sls-website/faq/index.html",
+    "pagePath": "/faq/",
+    "section": "Sprechen Sie Interessenten auch direkt an?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "f44fddea804644b9e18138543fa541b0783ac9219aed41861feb70eaafaef9fd",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/buyer-matching.html"
+  },
+  {
+    "id": "duration",
+    "title": "Wie lange dauert ein Immobilienverkauf?",
+    "text": "Eine feste Dauer lässt sich nicht seriös zusagen. Preis, Nachfrage, Unterlagen und die Finanzierung des Käufers beeinflussen den Ablauf. Wir besprechen mit Ihnen einen realistischen Zeitplan und halten Sie über die nächsten Schritte auf dem Laufenden.",
+    "patterns": [
+      "wie lange",
+      "dauer",
+      "zeitplan"
+    ],
+    "sourcePath": "sls-website/faq/index.html",
+    "pagePath": "/faq/",
+    "section": "Wie lange dauert ein Immobilienverkauf?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "f44fddea804644b9e18138543fa541b0783ac9219aed41861feb70eaafaef9fd",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/duration.html"
+  },
+  {
+    "id": "offer-decision",
+    "title": "Was passiert, wenn ein Angebot nicht zu meinen Vorstellungen passt?",
+    "text": "Wir ordnen das Angebot mit Ihnen ein und besprechen die Möglichkeiten für Verhandlung und weiteres Vorgehen. Über die Annahme entscheiden Sie als Eigentümer.",
+    "patterns": [
+      "angebot.*pass",
+      "angebot.*ablehn",
+      "annahme",
+      "entscheide.*angebot"
+    ],
+    "sourcePath": "sls-website/faq/index.html",
+    "pagePath": "/faq/",
+    "section": "Was passiert, wenn ein Angebot nicht zu meinen Vorstellungen passt?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "f44fddea804644b9e18138543fa541b0783ac9219aed41861feb70eaafaef9fd",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/offer-decision.html"
+  },
+  {
+    "id": "notary",
+    "title": "Wer begleitet die Schritte bis zum Notartermin?",
+    "text": "Wir koordinieren die Abstimmung mit dem Käufer und begleiten die Vorbereitung des Kaufvertrags und des Notartermins. Dabei bleiben wir Ihr Ansprechpartner für Fragen zum Ablauf.",
+    "patterns": [
+      "notar",
+      "kaufvertrag",
+      "beurkund"
+    ],
+    "sourcePath": "sls-website/faq/index.html",
+    "pagePath": "/faq/",
+    "section": "Wer begleitet die Schritte bis zum Notartermin?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "f44fddea804644b9e18138543fa541b0783ac9219aed41861feb70eaafaef9fd",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/notary.html"
+  },
+  {
+    "id": "contact",
+    "title": "Meine Frage ist nicht dabei. Kann ich direkt mit Ihnen sprechen?",
+    "text": "Ja. Erzählen Sie uns, was Sie beschäftigt. Wir klären Ihre Frage persönlich und besprechen, welcher nächste Schritt für Sie sinnvoll ist.",
+    "patterns": [
+      "kontakt",
+      "erreich",
+      "sprechen",
+      "beratung",
+      "ansprechpartner",
+      "telefon",
+      "email",
+      "e-mail"
+    ],
+    "sourcePath": "sls-website/faq/index.html",
+    "pagePath": "/faq/",
+    "section": "Meine Frage ist nicht dabei. Kann ich direkt mit Ihnen sprechen?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "f44fddea804644b9e18138543fa541b0783ac9219aed41861feb70eaafaef9fd",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/contact.html"
+  },
+  {
+    "id": "sales-process",
+    "title": "Wie startet der Verkauf mit SLS Immobilienpartner?",
+    "text": "Mit einer Anfrage oder Immobilienbewertung. Danach stimmen wir einen persönlichen Termin ab und klären Objekt, Unterlagen, Ziele und Zeitplan.",
+    "patterns": [
+      "verkauf",
+      "verkaufen",
+      "ablauf",
+      "anfang",
+      "start",
+      "erstgespräch",
+      "erstgesprach"
+    ],
+    "sourcePath": "sls-website/verkaufen/index.html",
+    "pagePath": "/verkaufen/",
+    "section": "Wie startet der Verkauf mit SLS?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "8b88cf3110a09e5cd6b74423d723fdf497458e99eb1e88f8c8acd3b1028d7919",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/sales-process.html"
+  },
+  {
+    "id": "online-accuracy",
+    "title": "Wie genau ist eine Online-Bewertung?",
+    "text": "Sie kann einen ersten Wertrahmen liefern. Für eine belastbare Verkaufspreisstrategie sollten objektspezifische Merkmale und die konkrete Mikrolage persönlich geprüft werden.",
+    "patterns": [
+      "genau",
+      "online",
+      "wertrahmen"
+    ],
+    "sourcePath": "sls-website/immobilienbewertung/index.html",
+    "pagePath": "/immobilienbewertung/",
+    "section": "Wie genau ist eine Online-Bewertung?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "d2e8729d3869d6ec987cc8f7c737e52c6a408cce5d16415996be3d9822c6d1a1",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/online-accuracy.html"
+  },
+  {
+    "id": "property-types",
+    "title": "Welche Immobilien können bewertet werden?",
+    "text": "Die digitale Ersteinschätzung ist für Wohnungen, Häuser und Mehrfamilienhäuser vorgesehen. Bei Grundstücken, Gewerbeimmobilien oder komplexen Objekten beraten wir Sie persönlich.",
+    "patterns": [
+      "welche immobil",
+      "gewerbe",
+      "grundstück",
+      "grundstuck",
+      "mehrfamilien",
+      "wohnung.*bewert"
+    ],
+    "sourcePath": "sls-website/immobilienbewertung/index.html",
+    "pagePath": "/immobilienbewertung/",
+    "section": "Welche Immobilien können bewertet werden?",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "d2e8729d3869d6ec987cc8f7c737e52c6a408cce5d16415996be3d9822c6d1a1",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/property-types.html"
+  },
+  {
+    "id": "valuation",
+    "title": "Bewertung vor Ort",
+    "text": "Beim Vor-Ort-Termin betrachten wir Lage, Substanz, Nutzung und Zustand Ihrer Immobilie. Welche Verfahren wir heranziehen, richtet sich nach dem Objekt. So entsteht eine nachvollziehbare Grundlage für die marktgerechte Preisfindung.",
+    "patterns": [
+      "bewert",
+      "wert",
+      "vor.ort",
+      "zustand",
+      "lage"
+    ],
+    "sourcePath": "sls-website/immobilienbewertung/index.html",
+    "pagePath": "/immobilienbewertung/",
+    "section": "Bewertung vor Ort",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "d2e8729d3869d6ec987cc8f7c737e52c6a408cce5d16415996be3d9822c6d1a1",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/valuation.html"
+  },
+  {
+    "id": "comparison",
+    "title": "Vergleichswertverfahren",
+    "text": "Wir betrachten vergleichbare Immobilien und erzielte Kaufpreise. Aktuelle Verkaufsangebote ergänzen den Blick auf das Marktumfeld und die Auswahl, die potenzielle Käufer haben.",
+    "patterns": [
+      "vergleichswert",
+      "vergleichsobjekt"
+    ],
+    "sourcePath": "sls-website/immobilienbewertung/index.html",
+    "pagePath": "/immobilienbewertung/",
+    "section": "Vergleichswertverfahren",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "d2e8729d3869d6ec987cc8f7c737e52c6a408cce5d16415996be3d9822c6d1a1",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/comparison.html"
+  },
+  {
+    "id": "asset-value",
+    "title": "Sachwertverfahren",
+    "text": "Hier steht die Substanz im Mittelpunkt: Grundstück, Gebäude und Außenanlagen. Baukosten sowie Alter und Zustand fließen in die Betrachtung ein.",
+    "patterns": [
+      "sachwert",
+      "bausubstanz"
+    ],
+    "sourcePath": "sls-website/immobilienbewertung/index.html",
+    "pagePath": "/immobilienbewertung/",
+    "section": "Sachwertverfahren",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "d2e8729d3869d6ec987cc8f7c737e52c6a408cce5d16415996be3d9822c6d1a1",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/asset-value.html"
+  },
+  {
+    "id": "income-value",
+    "title": "Ertragswertverfahren",
+    "text": "Bei ertragsorientierten Immobilien betrachten wir die wirtschaftliche Nutzung. Nachhaltig erzielbare Mieteinnahmen und laufende Bewirtschaftungskosten sind dabei wesentliche Größen.",
+    "patterns": [
+      "ertragswert",
+      "mieteinnahm",
+      "rendite"
+    ],
+    "sourcePath": "sls-website/immobilienbewertung/index.html",
+    "pagePath": "/immobilienbewertung/",
+    "section": "Ertragswertverfahren",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "d2e8729d3869d6ec987cc8f7c737e52c6a408cce5d16415996be3d9822c6d1a1",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/income-value.html"
+  },
+  {
+    "id": "visit",
+    "title": "Vor-Ort-Termin",
+    "text": "Wir besprechen Ihre Ziele und betrachten Lage, Zustand, Ausstattung, Modernisierungen und die Besonderheiten Ihrer Immobilie.",
+    "patterns": [
+      "modernisier",
+      "vor.ort",
+      "ausstattung"
+    ],
+    "sourcePath": "sls-website/immobilienbewertung/index.html",
+    "pagePath": "/immobilienbewertung/",
+    "section": "Vor-Ort-Termin",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "d2e8729d3869d6ec987cc8f7c737e52c6a408cce5d16415996be3d9822c6d1a1",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/visit.html"
+  },
+  {
+    "id": "methods",
+    "title": "Auswahl des Bewertungsverfahrens",
+    "text": "Wir prüfen die Objektunterlagen und ordnen Markt- und Vergleichsdaten ein. Je nach Immobilienart und Nutzung wählen wir die passenden Bewertungsverfahren.",
+    "patterns": [
+      "verfahren",
+      "method"
+    ],
+    "sourcePath": "sls-website/immobilienbewertung/index.html",
+    "pagePath": "/immobilienbewertung/",
+    "section": "Auswahl des Bewertungsverfahrens",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "d2e8729d3869d6ec987cc8f7c737e52c6a408cce5d16415996be3d9822c6d1a1",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/methods.html"
+  },
+  {
+    "id": "first-meeting",
+    "title": "Das erste Gespräch",
+    "text": "Wir lernen uns kennen, besprechen Ihre Ziele und klären, worauf es Ihnen wirklich ankommt.",
+    "patterns": [
+      "erstgespräch",
+      "erstgesprach",
+      "erst.*termin"
+    ],
+    "sourcePath": "sls-website/verkaufen/index.html",
+    "pagePath": "/verkaufen/",
+    "section": "Das erste Gespräch",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "8b88cf3110a09e5cd6b74423d723fdf497458e99eb1e88f8c8acd3b1028d7919",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/first-meeting.html"
+  },
+  {
+    "id": "expose-approval",
+    "title": "Freigabe des Exposés",
+    "text": "Sie erhalten das Exposé zur Freigabe. Sobald alles passt, starten wir mit der Vermarktung.",
+    "patterns": [
+      "freigabe",
+      "exposé",
+      "expose"
+    ],
+    "sourcePath": "sls-website/verkaufen/index.html",
+    "pagePath": "/verkaufen/",
+    "section": "Freigabe des Exposés",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "8b88cf3110a09e5cd6b74423d723fdf497458e99eb1e88f8c8acd3b1028d7919",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/expose-approval.html"
+  },
+  {
+    "id": "viewings",
+    "title": "Besichtigungen",
+    "text": "Wir sprechen gezielt passende Käufer an, führen Einzeltermine durch und halten Sie über alles auf dem Laufenden.",
+    "patterns": [
+      "besichtig",
+      "einzeltermin"
+    ],
+    "sourcePath": "sls-website/verkaufen/index.html",
+    "pagePath": "/verkaufen/",
+    "section": "Besichtigungen",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "8b88cf3110a09e5cd6b74423d723fdf497458e99eb1e88f8c8acd3b1028d7919",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/viewings.html"
+  },
+  {
+    "id": "negotiation",
+    "title": "Käuferprüfung und Verhandlung",
+    "text": "Wir prüfen Bonitäten, führen Preisverhandlungen und stimmen alles eng mit Ihnen ab – bis zu Ihrer finalen Entscheidung.",
+    "patterns": [
+      "bonität",
+      "bonitat",
+      "käuferprüf",
+      "kauferpruf",
+      "verhand"
+    ],
+    "sourcePath": "sls-website/verkaufen/index.html",
+    "pagePath": "/verkaufen/",
+    "section": "Käuferprüfung und Verhandlung",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "8b88cf3110a09e5cd6b74423d723fdf497458e99eb1e88f8c8acd3b1028d7919",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/negotiation.html"
+  },
+  {
+    "id": "handover",
+    "title": "Abschluss und Übergabe",
+    "text": "Wir bereiten den Notartermin vor, begleiten die Übergabe und bleiben auch danach Ihr Ansprechpartner.",
+    "patterns": [
+      "übergabe",
+      "ubergabe",
+      "abschluss"
+    ],
+    "sourcePath": "sls-website/verkaufen/index.html",
+    "pagePath": "/verkaufen/",
+    "section": "Abschluss und Übergabe",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "8b88cf3110a09e5cd6b74423d723fdf497458e99eb1e88f8c8acd3b1028d7919",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/handover.html"
+  },
+  {
+    "id": "dorsten",
+    "title": "Immobilienverkauf in Dorsten",
+    "text": "Für eine realistische Positionierung betrachten wir nicht nur allgemeine Marktdaten, sondern auch Mikrolage, Zustand, Zielgruppe und aktuelle Nachfrage. Daraus entsteht eine individuelle Bewertung und Vermarktungsstrategie.",
+    "patterns": [
+      "dorsten"
+    ],
+    "sourcePath": "sls-website/immobilienmakler-dorsten/index.html",
+    "pagePath": "/immobilienmakler-dorsten/",
+    "section": "Immobilienverkauf in Dorsten",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "7422a87b780b8a0b036d1bfdf046ebf647e49293d8bcdfd094b638bab04b1e95",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/dorsten.html"
+  },
+  {
+    "id": "personal-advice",
+    "title": "Persönliche Beratung",
+    "text": "Wir besprechen Ihre Situation, geben eine ehrliche erste Einschätzung und sagen transparent, welche nächsten Schritte sinnvoll sind.",
+    "patterns": [
+      "persönlich",
+      "personlich",
+      "beratung"
+    ],
+    "sourcePath": "sls-website/kontakt/index.html",
+    "pagePath": "/kontakt/",
+    "section": "Persönliche Beratung",
+    "snapshotDate": "2026-10-02",
+    "sourceHash": "dc57cb299c4d4e23abeb64b28922340afd43cc9264a5bf3da7c3408109f7ca33",
+    "reviewStatus": "Projektstand – fachliche Freigabe offen",
+    "url": "/quellen/personal-advice.html"
+  },
+  {
+    "id": "valuation-costs",
+    "title": "Kostenlose und unverbindliche Bewertung",
+    "text": "Online-Bewertung, Erstgespräch und Vor-Ort-Bewertung bei SLS Immobilienpartner sind kostenlos und unverbindlich. Es besteht keine Verpflichtung, anschließend über SLS Immobilienpartner zu verkaufen.",
+    "patterns": [
+      "(?=.*(?:bewert|erstgesprach|vor.ort))(?=.*(?:kost|gebuhr|gratis|unverbind|verpflicht))"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: kostenlos und unverbindlich",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/valuation-costs.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "commission",
+    "title": "Provision und Mindestprovision",
+    "text": "Für die von SLS Immobilienpartner beschriebenen Fälle der geteilten Provision sieht der bereitgestellte Vertragsauszug bei einem Verkaufspreis über 83.000 Euro eine Verkäuferprovision von 3,57 % des Kaufpreises inklusive Mehrwertsteuer vor. Mit dem Käufer kann ebenfalls eine Provision von 3,57 % inklusive Mehrwertsteuer vereinbart werden. Bei einem Verkaufspreis von 83.000 Euro oder darunter nennt der Auszug stattdessen eine Mindestprovision von mindestens 5.950 Euro inklusive Mehrwertsteuer. Besteht auch mit dem Käufer ein wirksamer Maklervertrag mit Provisionsanspruch, fällt diese Mindestprovision insgesamt nur einmal an; Verkäufer und Käufer tragen dann jeweils 2.975 Euro inklusive Mehrwertsteuer. Die konkreten Konditionen richten sich nach dem vereinbarten Maklervertrag. Die genannten Prozentsätze sind vertragliche Konditionen von SLS Immobilienpartner, keine gesetzlich festgelegten Provisionssätze.",
+    "patterns": [],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Vom Auftraggeber bereitgestellter Vertragsauszug, Ziffer 5, und Erläuterung zur geteilten Provision",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/commission.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "service-costs",
+    "title": "Keine zusätzlichen Leistungskosten – nur im Erfolgsfall",
+    "text": "Bei SLS Immobilienpartner entstehen neben der vereinbarten Erfolgsprovision keine zusätzlichen Kosten für die Leistungen von SLS Immobilienpartner. Die Provision wird nur im Erfolgsfall berechnet. Bei einer Kündigung werden keine Kündigungsgebühr und keine Kosten für die bis dahin erbrachten Leistungen von SLS Immobilienpartner berechnet. Damit ist keine Aussage über den Wegfall einer bereits entstandenen Erfolgsprovision verbunden. Die Zusage betrifft die Leistungen von SLS Immobilienpartner; sie umfasst nicht automatisch externe Kosten, etwa für Notar oder Grundbuch.",
+    "patterns": [],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: keine weiteren Leistungskosten, nur erfolgsabhängige Abrechnung und keine Kosten bei Kündigung; redaktionelle Abgrenzung zu Erfolgsprovision und Fremdkosten",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/service-costs.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "investment-commission",
+    "title": "Provision bei Investmentobjekten",
+    "text": "Bei Investmentobjekten bespricht SLS Immobilienpartner die Provision individuell. Gesetzliche Vorgaben bleiben dabei maßgeblich: Die Bezeichnung als Investmentobjekt allein schließt die Regelungen zur Verteilung der Maklerkosten nicht aus. Bei einer Wohnung oder einem Einfamilienhaus und einem Käufer, der als Verbraucher handelt, sind die §§ 656b bis 656d BGB zu berücksichtigen. Bitte lassen Sie die für Ihr Objekt geltende Vereinbarung von Ihrem SLS Immobilienpartner erläutern.",
+    "patterns": [],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers zu Investmentobjekten; rechtliche Einordnung anhand §§ 656b–656d BGB",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/investment-commission.html",
+    "sourceType": "user-confirmation",
+    "references": [
+      "https://www.gesetze-im-internet.de/bgb/__656b.html",
+      "https://www.gesetze-im-internet.de/bgb/__656c.html",
+      "https://www.gesetze-im-internet.de/bgb/__656d.html"
+    ]
+  },
+  {
+    "id": "owner-reporting",
+    "title": "Digitales Eigentümer-Reporting",
+    "text": "Das digitale Eigentümer-Reporting von SLS Immobilienpartner ist für alle Verkaufsaufträge verfügbar. Eigentümer können ihre Vermarktungsaktivitäten und den aktuellen Stand jederzeit einsehen.",
+    "patterns": [
+      "reporting",
+      "cockpit",
+      "vermarktungsaktivit",
+      "digital.*eigentumer",
+      "eigentumer.*digital",
+      "stand.*einseh",
+      "informiert"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers im Projektgespräch: für alle Verkaufsaufträge verfügbar, jederzeitige Einsicht in Vermarktungsaktivitäten",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/owner-reporting.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "sales-services",
+    "title": "Feste Bestandteile der Verkaufsbegleitung",
+    "text": "Bonitätsprüfung, Einzelbesichtigungen, die Freigabe des Exposés durch den Eigentümer und die direkte Ansprache vorgemerkter Interessenten sind feste Bestandteile der Verkaufsbegleitung von SLS Immobilienpartner.",
+    "patterns": [
+      "bonitat",
+      "einzelbesichtig",
+      "einzeltermin",
+      "expose.*freigabe",
+      "freigabe.*expose",
+      "vorgemerk",
+      "direkt.*interessent",
+      "interessent.*direkt",
+      "feste bestandteil",
+      "verkaufsbegleitung"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: Bonitätsprüfung, Einzelbesichtigungen, Exposé-Freigabe und Direktansprache vorgemerkter Interessenten",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/sales-services.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "presentation-services",
+    "title": "Präsentation passend zur Immobilie",
+    "text": "SLS Immobilienpartner setzt je nach Immobilie professionelle Fotos, Drohnenaufnahmen, Videos und 360°-Rundgänge ein. Diese Leistungen sind ohne zusätzliche Leistungskosten enthalten. Welche Präsentationsformen eingesetzt werden, richtet sich nach der jeweiligen Immobilie.",
+    "patterns": [
+      "foto",
+      "drohne",
+      "video",
+      "360",
+      "rundgang",
+      "rundgange",
+      "prasentation"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: professionelle Fotos, Drohnenaufnahmen, Videos und 360°-Rundgänge je nach Immobilie, ohne zusätzliche Leistungskosten",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/presentation-services.html",
+    "sourceType": "user-confirmation"
+  },
+  {
+    "id": "central-contact",
+    "title": "Zentraler Kontakt zu SLS Immobilienpartner",
+    "text": "Sie erreichen SLS Immobilienpartner zentral unter der Telefonnummer 02369 742 80 20 oder per E-Mail an service@sls.de.",
+    "patterns": [
+      "kontakt",
+      "erreich",
+      "telefon",
+      "anruf",
+      "e-mail",
+      "email",
+      "mailadresse"
+    ],
+    "sourcePath": "data/approved-facts.json",
+    "pagePath": "Freigabe im Projektgespräch",
+    "section": "Bestätigung des Auftraggebers: zentrale Telefonnummer 02369 742 80 20 und E-Mail service@sls.de",
+    "snapshotDate": "2026-10-02",
+    "reviewStatus": "Vom Auftraggeber bestätigt am 02.10.2026",
+    "url": "/quellen/central-contact.html",
+    "sourceType": "user-confirmation"
+  }
+]
