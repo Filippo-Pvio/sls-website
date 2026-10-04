@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
   "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/service/:path*",
+      "destination": "/verkaufen/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/immobilie/:slug/",
