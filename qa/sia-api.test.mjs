@@ -29,7 +29,7 @@ test('preview proxy boundaries',async t=>{
  await t.test('unsupported definition gets grounded fallback; valid AI and individual questions stay unchanged',async()=>{
   global.fetch=async()=>Response.json({provider:'Wissensbasis von SLS Immobilienpartner',answer:'Keine Antwort',sources:[],reason:'invalid_sources'});
   let res=await call({body:{question:'Was ist Erbpacht?'}});assert.equal(res.data.reason,'general_definition');assert.equal(res.data.sources.length,1);assert.match(res.data.answer,/Erbbaurecht/);
-  res=await call({body:{question:'Kann ich mein Erbbaurecht kündigen?'}});assert.equal(res.data.answer,'Keine Antwort');assert.equal(res.data.reason,'invalid_sources');
+  res=await call({body:{question:'Kann ich mein Erbbaurecht kündigen?'}});assert.match(res.data.answer,/fehlt SIA/);assert.equal(res.data.reason,'unanswered');
   global.fetch=async()=>Response.json(fixture);res=await call({body:{question:'Was ist Erbpacht?'}});assert.equal(res.data.provider,'OpenAI');assert.equal(res.data.answer,fixture.answer);
  });
  await t.test('upstream failures never leak upstream text',async()=>{global.fetch=async()=>new Response('private diagnostic',{status:429});let res=await call();assert.equal(res.statusCode,502);assert.ok(!JSON.stringify(res.data).includes('private'));global.fetch=async()=>{throw Error('private diagnostic');};assert.equal((await call()).statusCode,502);});

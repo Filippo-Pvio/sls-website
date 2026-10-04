@@ -2,10 +2,12 @@
 (async () => {
   if (document.querySelector('sls-sia')) return;
   let dailyLimit = null;
+  let dialogueEnabled = false;
   try {
     const config = await fetch('/api/sia-config', { cache: 'no-store' }).then(r => r.ok ? r.json() : null);
     if (!config?.enabled) return;
     dailyLimit = config.dailyLimit;
+    dialogueEnabled = config.dialogueEnabled === true;
   } catch { return; }
   const host = document.createElement('sls-sia');
   const root = host.attachShadow({ mode: 'open' });
@@ -20,17 +22,19 @@
       <div class="content">
         <section class="intro"><h3>Was möchten Sie über Immobilien wissen?</h3><p>Ich helfe Ihnen, Ihren nächsten Schritt einzuordnen.</p><div class="suggestions" role="group" aria-label="Thema für Ihre Frage wählen"><button type="button">Verkaufen</button><button type="button">Bewerten</button><button type="button">Kaufen</button><button type="button">Finanzieren</button><button class="why-sls" type="button">Warum SLS Immobilienpartner?</button></div></section>
         <p class="status" role="status" aria-live="polite"></p>
+        <details class="conversation" hidden><summary>Bisheriges Gespräch</summary><div class="conversation-list"></div></details>
         <section class="result" hidden tabindex="-1" aria-label="Antwort von SIA"><p class="question"></p><span class="origin"></span><div class="answer"></div><details class="sources"><summary>Grundlage dieser Antwort</summary><div class="source-list"></div></details></section>
         <div class="contact"><a href="/kontakt/">Mit unserem Team sprechen</a></div>
       </div>
-      <form><label for="sia-question">Ihre Frage an SIA</label><div class="input-row"><textarea id="sia-question" name="question" rows="2" minlength="3" maxlength="1200" required placeholder="Ihre Frage an SIA …" aria-describedby="sia-privacy"></textarea><button class="send" type="submit">Senden</button></div><p class="privacy" id="sia-privacy">SIA ist eine KI und kann Fehler machen. Bitte keine personenbezogenen oder vertraulichen Angaben eingeben. Fragen werden zur Verarbeitung an OpenAI übermittelt.</p><p class="privacy-compact">KI kann Fehler machen. Keine persönlichen Daten eingeben. Verarbeitung durch OpenAI.</p><button class="notes-open" type="button" aria-controls="sia-notes" aria-expanded="false">Hinweise zu KI und Datenschutz</button></form>
+      <form><label for="sia-question">Ihre Frage an SIA</label><div class="input-row"><textarea id="sia-question" name="question" rows="2" minlength="3" maxlength="1200" required placeholder="Ihre Frage an SIA …" aria-describedby="sia-privacy"></textarea><button class="send" type="submit">Senden</button></div><p class="privacy" id="sia-privacy">SIA ist eine KI und kann Fehler machen. Bitte keine personenbezogenen oder vertraulichen Angaben eingeben. Fragen${dialogueEnabled ? ' und der kurze Gesprächskontext' : ''} werden zur Verarbeitung an OpenAI übermittelt.</p><p class="privacy-compact">KI kann Fehler machen. Keine persönlichen Daten eingeben. Verarbeitung durch OpenAI.</p><button class="notes-open" type="button" aria-controls="sia-notes" aria-expanded="false">Hinweise zu KI und Datenschutz</button><button class="conversation-reset" type="button" hidden>Neues Gespräch</button></form>
       <section class="source-view" hidden aria-labelledby="sia-source-title"><h3 id="sia-source-title" tabindex="-1"></h3><p class="source-meta"></p><div class="source-text"></div><button class="source-back" type="button">Zurück zur Antwort</button></section>
       <section class="notes" id="sia-notes" hidden aria-labelledby="sia-notes-title">
         <h3 id="sia-notes-title" tabindex="-1">Hinweise zu SIA</h3>
         <h4>Eine erste Orientierung</h4><p>SIA ist der KI-Assistent von SLS Immobilienpartner. Die Antworten dienen der allgemeinen Information rund um Immobilien. Sie können fehlerhaft, unvollständig oder nicht aktuell sein.</p>
         <h4>Ihre persönliche Situation</h4><p>SIA ersetzt keine individuelle fachliche, rechtliche oder steuerliche Beratung. Lassen Sie wichtige Entscheidungen und Angaben durch eine geeignete Fachperson prüfen. Unser Team unterstützt Sie bei Ihrem nächsten Schritt rund um Ihre Immobilie.</p>
         <h4>Ihre Frage und Ihre Daten</h4><p>Zum Absenden einer Frage sind keine Kontaktdaten erforderlich. Geben Sie bitte keine Namen, Kontaktdaten oder andere personenbezogene oder vertrauliche Informationen ein. Ihre Frage wird über den SLS-Fragedienst zur Verarbeitung an OpenAI übermittelt. Wenn die KI-Antwort nicht verfügbar ist, können Informationen aus der Wissensbasis von SLS Immobilienpartner angezeigt werden.</p>
-        ${dailyLimit === 10 ? '<h4>Ihr Tageskontingent</h4><p>Pro Browser sind täglich zehn Antworten möglich. Technische Fehler zählen nicht mit. Für den Zähler verwenden wir ein anonymes Cookie, das bei Nutzung auf 24 Stunden verlängert wird. Es enthält keine Fragen oder Kontaktdaten. Das Kontingent wird um Mitternacht deutscher Zeit zurückgesetzt.</p>' : ''}
+        ${dialogueEnabled ? '<h4>Ihr Gespräch</h4><p>SIA kann eine kurze Rückfrage stellen, wenn eine wesentliche Angabe fehlt. Die letzten drei Frage-Antwort-Paare werden zur Einordnung Ihrer nächsten Nachricht an OpenAI übermittelt. Sie bleiben nur im geöffneten Widget gespeichert. Mit „Neues Gespräch“ oder durch Neuladen der Seite löschen Sie diesen Kontext.</p>' : ''}
+        ${dailyLimit === 10 ? `<h4>Ihr Tageskontingent</h4><p>Pro Browser sind täglich zehn Antworten möglich. Technische Fehler${dialogueEnabled ? ' und reine Klärungsfragen' : ''} zählen nicht mit. Für den Zähler verwenden wir ein anonymes Cookie, das bei Nutzung auf 24 Stunden verlängert wird. Es enthält keine Fragen oder Kontaktdaten. Das Kontingent wird um Mitternacht deutscher Zeit zurückgesetzt.</p>` : ''}
         <p>Weitere Informationen finden Sie in unserer <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
         <button class="notes-back" type="button">Zurück zu SIA</button>
       </section>
@@ -51,6 +55,16 @@
     compactTimer = window.setTimeout(compactQuickbar, 3200);
   }
   let busy = false;
+  let conversation = [];
+  function resetConversation() {
+    if (busy) return;
+    conversation = []; field.value = ''; field.minLength = 3;
+    $('.conversation').hidden = true; $('.conversation-list').replaceChildren(); $('.conversation-reset').hidden = true;
+    $('.result').hidden = true; $('.intro').hidden = false;
+    $('form label').textContent = 'Ihre Frage an SIA'; field.placeholder = 'Ihre Frage an SIA …';
+    status.textContent = 'Ein neues Gespräch beginnt. Ihr Tageskontingent bleibt unverändert.';
+  }
+  $('.conversation-reset').addEventListener('click', resetConversation);
   let viewportFrame = 0;
   let restorePage = null;
   const mobileLayout = window.matchMedia('(max-width: 600px), (hover: none) and (pointer: coarse)');
@@ -189,15 +203,29 @@
     box.append(button);
     return box;
   }
+  function renderAnswer(data) {
+    const box = $('.answer');
+    if (!Array.isArray(data.citations) || !data.citations.length) { box.textContent = data.answer; return; }
+    const fragments = []; let cursor = 0;
+    for (const citation of data.citations) {
+      const source = data.sources.find(s => s.number === citation.number);
+      if (!source || !Number.isInteger(citation.start) || !Number.isInteger(citation.end) || citation.start < cursor || citation.end <= citation.start || citation.end > data.answer.length) { box.textContent = data.answer; return; }
+      const text = document.createElement('span'); text.textContent = data.answer.slice(cursor, citation.start); fragments.push(text);
+      const button = document.createElement('button'); button.className = 'inline-source'; button.type = 'button'; button.textContent = `[${citation.number}]`;
+      button.setAttribute('aria-label', `Quelle ${citation.number}: ${source.title || 'Grundlage dieser Antwort'}`);
+      button.addEventListener('click', () => showSource(source, button)); fragments.push(button); cursor = citation.end;
+    }
+    const tail = document.createElement('span'); tail.textContent = data.answer.slice(cursor); fragments.push(tail); box.replaceChildren(...fragments);
+  }
   $('form').addEventListener('submit', async event => {
     event.preventDefault(); if (busy) return;
     const question = field.value.trim();
-    if (question.length < 3 || question.length > 1200) { status.textContent = 'Bitte 3 bis 1200 Zeichen eingeben.'; field.focus(); return; }
+    if (question.length < (dialogueEnabled && conversation.length ? 1 : 3) || question.length > 1200) { status.textContent = 'Bitte eine Frage mit höchstens 1200 Zeichen eingeben.'; field.focus(); return; }
     busy = true; $('.send').disabled = true; $('.result').hidden = true; $('.intro').hidden = true;
     status.textContent = 'SIA bereitet Ihre Antwort vor…'; $('.content').setAttribute('aria-busy', 'true');
-    const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 48000);
+    const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 55000);
     try {
-      const response = await fetch('/api/sia-ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question }), signal: controller.signal });
+      const response = await fetch('/api/sia-ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question, ...(dialogueEnabled ? { history: conversation } : {}) }), signal: controller.signal });
       const data = await response.json();
       if (response.status === 429 && ['daily_limit', 'pending_limit', 'slow_down'].includes(data.code)) {
         status.textContent = data.code === 'daily_limit'
@@ -209,11 +237,14 @@
       if (!['OpenAI', 'Wissensbasis von SLS Immobilienpartner'].includes(data.provider) || typeof data.answer !== 'string' || !Array.isArray(data.sources)) throw new Error('Invalid response');
       $('.question').textContent = question;
       $('.origin').textContent = data.provider === 'OpenAI' ? 'KI-Antwort · OpenAI' : 'Antwort aus der Wissensbasis von SLS Immobilienpartner';
-      $('.answer').textContent = data.answer;
+      renderAnswer(data);
       $('.source-list').replaceChildren(...data.sources.filter(s => s && typeof s === 'object').map(sourceCard));
       $('.sources').hidden = !data.sources.length; $('.sources').open = false;
       $('.result').hidden = false;
-      status.textContent = data.provider === 'OpenAI' ? 'Ihre Antwort ist da.'
+      status.textContent = data.kind === 'clarification' ? 'Eine kurze Rückfrage hilft SIA, Ihr Anliegen einzuordnen. Sie zählt nicht zum Tageskontingent.'
+        : data.kind === 'offtopic' ? 'SIA unterstützt Sie bei Immobilienfragen.'
+        : data.reason === 'unanswered' ? 'Für diese Frage fehlt derzeit eine ausreichend belegte Grundlage.'
+        : data.provider === 'OpenAI' ? 'Ihre Antwort ist da.'
         : data.reason === 'general_definition' ? 'Hier finden Sie eine belegte Erklärung aus unserer Wissensbasis.'
         : ['invalid_sources', 'verification_failed'].includes(data.reason) ? (data.sources.length ? 'Hier finden Sie belegte Informationen aus unserer Wissensbasis.' : 'Zu dieser Frage konnte SIA keine ausreichend belegte Antwort erstellen.')
         : 'Die KI-Antwort ist derzeit nicht verfügbar. Hier finden Sie Informationen aus der Wissensbasis.';
@@ -222,6 +253,14 @@
           : ` Heute ${data.quota.remaining === 1 ? 'ist noch eine weitere Antwort' : `sind noch ${data.quota.remaining} weitere Antworten`} möglich.`;
       }
       if (field.value.trim() === question) field.value = '';
+      if (dialogueEnabled && !['unanswered'].includes(data.reason) && data.kind !== 'offtopic') {
+        $('.conversation-list').replaceChildren(...conversation.map(turn => { const p = document.createElement('p'); p.textContent = `${turn.role === 'user' ? 'Sie' : 'SIA'}: ${turn.content}`; return p; }));
+        $('.conversation').hidden = !conversation.length; $('.conversation').open = false;
+        conversation = [...conversation, { role: 'user', content: question }, { role: 'assistant', content: data.answer.slice(0,3000), ...(data.kind === 'clarification' ? { kind: 'clarification' } : {}) }].slice(-6);
+        $('.conversation-reset').hidden = false; field.minLength = 1;
+        $('form label').textContent = data.kind === 'clarification' ? 'Ihre Antwort an SIA' : 'Ihre Frage an SIA';
+        field.placeholder = data.kind === 'clarification' ? 'Ihre Antwort auf die Rückfrage …' : 'Ihre nächste Frage an SIA …';
+      }
       if (dialog.open) {
         // An arriving answer must not dismiss the keyboard while someone is typing.
         if (root.activeElement !== field) $('.result').focus({ preventScroll: true });

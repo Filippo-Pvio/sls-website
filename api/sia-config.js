@@ -9,5 +9,5 @@ export default function handler(req, res) {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   if (req.method !== 'GET') { res.statusCode = 405; res.setHeader('Allow', 'GET'); return res.end('{}'); }
-  res.end(JSON.stringify({ enabled: siaEnabled(req), dailyLimit: quotaConfigured() ? DAILY_LIMIT : null }));
+  res.end(JSON.stringify({ enabled: siaEnabled(req), dailyLimit: quotaConfigured() ? DAILY_LIMIT : null, dialogueEnabled: !!process.env.OPENAI_API_KEY }));
 }

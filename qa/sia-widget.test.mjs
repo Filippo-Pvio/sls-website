@@ -5,7 +5,7 @@ import { runInNewContext } from 'node:vm';
 
 const code = await readFile(new URL('../assets/sia-widget.js', import.meta.url), 'utf8');
 
-async function fixture(withViewport = true, mobile = true, sources = [], reply = null) {
+async function fixture(withViewport = true, mobile = true, sources = [], reply = null, dialogue = false) {
   function element() {
     const listeners = new Map(), properties = new Map(), priorities = new Map(), attributes = new Map();
     return {
@@ -33,7 +33,7 @@ async function fixture(withViewport = true, mobile = true, sources = [], reply =
   const nodes = new Map(), suggestions = [element(), element(), element(), element(), element()];
   const get = selector => { if (!nodes.has(selector)) nodes.set(selector, element()); return nodes.get(selector); };
   const root = { innerHTML: '', querySelector: get, querySelectorAll: () => suggestions };
-  const frames = new Map(), scrollCalls = []; let id = 0;
+  const frames = new Map(), scrollCalls = [], requests = []; let id = 0;
   const body = Object.assign(element(), { append() {} });
   const viewport = Object.assign(element(), { height: 780, offsetTop: 0 });
   const window = Object.assign(element(), {
@@ -48,10 +48,10 @@ async function fixture(withViewport = true, mobile = true, sources = [], reply =
   await runInNewContext(code, {
     window,
     document: { querySelector: () => null, createElement: tag => tag === 'sls-sia' ? ({ attachShadow: () => root }) : element(), body },
-    fetch: async url => ({ ok: url === '/api/sia-config' || !reply?.code, status: reply?.code ? 429 : 200, json: async () => url === '/api/sia-config' ? { enabled: true, dailyLimit: 10 } : reply || { provider: 'OpenAI', answer: 'Antwort', sources } }),
+    fetch: async (url, options) => { if(options?.body) requests.push(JSON.parse(options.body)); return { ok: url === '/api/sia-config' || !reply?.code, status: reply?.code ? 429 : 200, json: async () => url === '/api/sia-config' ? { enabled: true, dailyLimit: 10, dialogueEnabled: dialogue } : reply || { provider: 'OpenAI', answer: 'Antwort', sources } }; },
     AbortController, setTimeout, clearTimeout,
   });
-  return { get, root, body, scrollCalls, suggestions, viewport, window, frames, flush() { for (const [key, fn] of frames) { frames.delete(key); fn(); } } };
+  return { get, root, body, scrollCalls, requests, suggestions, viewport, window, frames, flush() { for (const [key, fn] of frames) { frames.delete(key); fn(); } } };
 }
 
 test('opening SIA never focuses the input; closing restores the launcher without scrolling', async () => {
@@ -227,4 +227,25 @@ test('close focus indicator distinguishes keyboard navigation from pointer input
  assert.equal(dialog.attributes.has('data-keyboard-navigation'), true);
  dialog.emit('pointerdown');
  assert.equal(dialog.attributes.has('data-keyboard-navigation'), false);
+});
+
+test('clarification accepts a short answer, carries context, and resets without touching quota',async()=>{
+ const reply={provider:'OpenAI',kind:'clarification',answer:'Geht es um einen Kauf?',sources:[],quota:{remaining:10}};
+ const f=await fixture(true,true,[],reply,true), submit=()=>[...f.get('form').listeners.get('submit')][0]({preventDefault(){}});
+ f.get('textarea').value='Ich brauche Unterstützung'; await submit();
+ assert.deepEqual(f.requests[0].history,[]);assert.match(f.get('.status').textContent,/zählt nicht/);assert.equal(f.get('form label').textContent,'Ihre Antwort an SIA');
+ Object.assign(reply,{kind:'answer',answer:'Eine hilfreiche Einordnung.',quota:{remaining:9}});
+ f.get('textarea').value='Ja';await submit();assert.equal(f.requests[1].question,'Ja');assert.equal(f.requests[1].history.length,2);assert.equal(f.requests[1].history[1].content,'Geht es um einen Kauf?');
+ assert.equal(f.get('.conversation').hidden,false);
+ f.get('.conversation-reset').emit('click');assert.equal(f.get('.conversation').hidden,true);assert.match(f.get('.status').textContent,/Tageskontingent bleibt unverändert/);
+ f.get('textarea').value='Was ist ein Grundbuch?';await submit();assert.deepEqual(f.requests[2].history,[]);
+});
+test('inline citations open their source inside SIA without navigation',async()=>{
+ const source={number:1,title:'Eine geprüfte Quelle',text:'Quellenhinweis'}, f=await fixture(true,true,[],{provider:'OpenAI',answer:'Erklärung [1]',sources:[source],citations:[{number:1,start:10,end:13}]},true);
+ f.get('textarea').value='Was bedeutet das?';await [...f.get('form').listeners.get('submit')][0]({preventDefault(){}});
+ const button=f.get('.answer').children[1];assert.equal(button.textContent,'[1]');button.emit('click');assert.equal(f.get('.source-view').hidden,false);assert.equal(f.get('.source-text').textContent,'Quellenhinweis');
+});
+test('daily limit keeps unsent draft and remaining counter only appears near limit',async()=>{
+ const blocked=await fixture(true,true,[],{code:'daily_limit'});blocked.get('textarea').value='Meine Frage';await [...blocked.get('form').listeners.get('submit')][0]({preventDefault(){}});assert.match(blocked.get('.status').textContent,/zehn Antworten/);assert.equal(blocked.get('textarea').value,'Meine Frage');
+ for(const remaining of [7,3,1,0]) {const f=await fixture(true,true,[],{provider:'OpenAI',answer:'Antwort',sources:[],quota:{remaining}});f.get('textarea').value='Meine Frage';await [...f.get('form').listeners.get('submit')][0]({preventDefault(){}});if(remaining===7)assert.equal(f.get('.status').textContent,'Ihre Antwort ist da.');else if(!remaining)assert.match(f.get('.status').textContent,/Tageslimit/);else assert.match(f.get('.status').textContent,/Heute/);}
 });
