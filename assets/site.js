@@ -111,7 +111,7 @@ document.querySelector("[data-site-header]").innerHTML = `
       <p class="offcanvas-intro">Womit können wir helfen?</p>
       <div class="fullscreen-nav-grid">${overlaySections}</div>
       <div class="fullscreen-nav-bottom">
-        <a href="/kontakt/">Kontakt</a>
+        <a class="offcanvas-contact-cta" href="/kontakt/">Kontakt aufnehmen</a>
       </div>
       <a class="offcanvas-valuation-cta" href="/immobilienbewertung/">Immobilie kostenlos bewerten</a>
     </div>

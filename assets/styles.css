@@ -3321,3 +3321,14 @@ html body :is(.contact-status,#buyer-status,.career-status,.sls-search-profile-s
 html body :is(.contact-status,#buyer-status,.career-status,.sls-search-profile-status,.pp-data-note).is-error{padding:14px 16px;border:1px solid #d39e9e;border-radius:8px;color:#8b3434;background:#fff4f3}
 html body :is(.contact-status,#buyer-status,.career-status,.sls-search-profile-status,.pp-data-note).is-success{padding:14px 16px;border:1px solid #b9cdd6;border-radius:8px;background:#edf5ef;color:#345b48}
 @media(max-width:540px){html body :is(.contact-method,.buyer-method){flex-direction:column}html body :is(.contact-method,.buyer-method) label{display:flex;width:100%;box-sizing:border-box}}
+
+/* Clear contact action at the end of the shared navigation. */
+html body .fullscreen-nav-bottom .offcanvas-contact-cta{
+ display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;
+ min-height:44px;padding:10px 24px;border:1px solid #345b6e;border-radius:999px;
+ background:#345b6e;color:#fff;font:700 14px/1.4 Raleway,Arial,sans-serif;
+ text-align:center;text-decoration:none;margin:0;
+}
+html body .fullscreen-nav-bottom .offcanvas-contact-cta:hover{background:#294b5c;border-color:#294b5c;color:#fff}
+html body .fullscreen-nav-bottom .offcanvas-contact-cta:focus-visible{outline:3px solid #345b6e;outline-offset:4px}
+@media(max-width:980px){html body .fullscreen-nav-bottom .offcanvas-contact-cta{width:100%;padding-inline:16px}}
