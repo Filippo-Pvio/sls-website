@@ -5,14 +5,14 @@ const normalise = v => String(v || '').normalize('NFC').trim().replace(/\s+/g,' 
 const validId = id => Number.isSafeInteger(Number(id)) && Number(id)>0;
 const rows = data => {if (Array.isArray(data)) return data; if (Array.isArray(data?.data)) return data.data; throw new Error('Unexpected list response');};
 const sign = (value,key) => createHmac('sha256',key).update(`sls-contact:${value}`).digest('base64url');
-function issueToken(key) {const value=`${Date.now()}.${randomUUID()}`; return `${value}.${sign(value,key)}`;}
-function requestId(token,key) {
+function issueToken(key,previous) {const value=`${previous ? Date.now()-1000 : Date.now()}.${previous?.id || randomUUID()}`; return `${value}.${sign(value,key)}`;}
+function tokenDetails(token,key) {
   if (typeof token!=='string' || token.length>150) return null;
   const [time,id,signature,extra]=token.split('.');
   if (extra || !/^\d{13}$/.test(time || '') || !/^[a-f\d-]{36}$/.test(id || '') || !signature) return null;
   const expected=Buffer.from(sign(`${time}.${id}`,key)),actual=Buffer.from(signature);
   if (expected.length!==actual.length || !timingSafeEqual(expected,actual)) return null;
-  const age=Date.now()-Number(time); return age>=1000 && age<30*60*1000 ? id : null;
+  const age=Date.now()-Number(time); return age>=1000 ? {id,age} : null;
 }
 async function propstack(path,key,payload,method) {
   const r=await fetch(`https://api.propstack.de/v1/${path}`,{method:method || (payload?'POST':'GET'),headers:{'X-API-KEY':key,...(payload?{'Content-Type':'application/json'}:{})},...(payload?{body:JSON.stringify(payload)}:{}),signal:AbortSignal.timeout(10000)});
@@ -79,13 +79,19 @@ export default async function handler(req,res) {
   const key=process.env.PROPSTACK_CONTACT_API_KEY || process.env.PROPSTACK_INQUIRY_API_KEY || process.env.PROPSTACK_API_KEY;
   if(!key)return res.status(503).json({error:'Das Kontaktformular ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.'});
   if(req.method==='GET'){
-    try {const categories=await noteCategories(key);return res.status(200).json({token:issueToken(key),availableTopics:Object.entries(CONTACT_TOPICS).filter(([,v])=>categories[v.title]).map(([k])=>k),callbackAvailable:Boolean(categories[CALLBACK_TITLE])});}
+    try {
+      const oldToken=req.headers?.['x-sls-form-token'],previous=oldToken ? tokenDetails(oldToken,key) : null;
+      if(oldToken&&!previous)return res.status(400).json({error:'Die Formularfreigabe konnte nicht erneuert werden.'});
+      const categories=await noteCategories(key),token=issueToken(key,previous);
+      return res.status(200).json({token,expiresAt:Number(token.split('.')[0])+30*60*1000,availableTopics:Object.entries(CONTACT_TOPICS).filter(([,v])=>categories[v.title]).map(([k])=>k),callbackAvailable:Boolean(categories[CALLBACK_TITLE])});}
     catch {return res.status(503).json({error:'Das Kontaktformular ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.'});}
   }
   if(req.headers?.origin!==`${local?'http':'https'}://${host}`)return res.status(403).json({error:'Anfrage nicht erlaubt.'});
   if(!req.headers?.['content-type']?.startsWith('application/json') || !req.body || typeof req.body!=='object' || JSON.stringify(req.body).length>6500)return res.status(400).json({error:'Ungültige Anfrage.'});
-  const id=requestId(req.body.token,key);
-  if(!id || req.body.website)return res.status(400).json({error:'Bitte laden Sie das Formular neu und versuchen Sie es erneut.'});
+  const details=tokenDetails(req.body.token,key);
+  if(!details || req.body.website)return res.status(400).json({error:'Bitte laden Sie das Formular neu und versuchen Sie es erneut.'});
+  if(details.age>=30*60*1000)return res.status(400).json({code:'FORM_TOKEN_EXPIRED',error:'Die Formularfreigabe ist abgelaufen und muss erneuert werden.'});
+  const id=details.id;
   let request;try{request=parseContactRequest(req.body);}catch(e){return res.status(400).json({error:e.message});}
   const now=Date.now();for(const [k,v] of attempts)if(v.until<now)attempts.delete(k);
   for(const [k,time] of uncertain)if(now-time>60*60*1000)uncertain.delete(k);

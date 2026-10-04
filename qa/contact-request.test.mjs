@@ -32,7 +32,7 @@ async function fixture(run,options={}) {
  try{
   const ready=await request('GET');assert.equal(ready.code,200);now+=2000;
   const payload={topic:'sale',firstName:'Anna',lastName:'Muster',email,phone:'0123456789',method:'email',message:'Test <script>unsafe</script>',privacy:true,privacyVersion:CONTACT_PRIVACY_VERSION,token:ready.body.token};
-  await run({payload,ready,request,notes,writes});
+  await run({payload,ready,request,notes,writes,advance:milliseconds=>now+=milliseconds});
  }finally{vars.forEach((x,i)=>env[i]===undefined?delete process.env[x]:process.env[x]=env[i]);global.fetch=fetchBefore;Date.now=nowBefore;}
 }
 test('email request creates one exact topic note, without callback or contact mutation',()=>fixture(async({request,payload,writes,notes})=>{
@@ -93,3 +93,20 @@ test('invalid salutation is rejected before any CRM writes',()=>fixture(async({r
 test('unconfirmed salutation update cannot report successful submission',()=>fixture(async({request,payload,notes})=>{
  assert.equal((await request('POST',{...payload,salutation:'ms'})).code,502);assert.equal(notes.length,0);
 },{rejectSalutation:true}));
+
+test('expired permission is rejected before writes and renewed with the same request ID',()=>fixture(async({request,payload,ready,writes,advance})=>{
+ advance(30*60*1000);
+ const expired=await request('POST',payload);assert.equal(expired.body.code,'FORM_TOKEN_EXPIRED');assert.equal(writes.length,0);
+ const renewed=await request('GET',{}, {'x-sls-form-token':payload.token});assert.equal(renewed.code,200);
+ assert.equal(renewed.body.token.split('.')[1],ready.body.token.split('.')[1]);assert.ok(renewed.body.expiresAt>ready.body.expiresAt);
+ assert.equal((await request('POST',{...payload,token:renewed.body.token})).code,200);assert.equal(writes.length,1);
+}));
+test('renewal after an uncertain write reconciles notes without duplicates',()=>fixture(async({request,payload,writes,notes,advance})=>{
+ const body={...payload,method:'callback',window:'afternoon'};
+ assert.equal((await request('POST',body)).code,502);advance(31*60*1000);
+ const renewed=await request('GET',{}, {'x-sls-form-token':body.token});assert.equal(renewed.code,200);
+ assert.equal((await request('POST',{...body,token:renewed.body.token})).code,200);assert.equal(notes.length,2);assert.equal(writes.length,2);
+},{callbackTimeout:true}));
+test('tampered renewal token cannot create a new request identity',()=>fixture(async({request,payload,writes})=>{
+ assert.equal((await request('GET',{}, {'x-sls-form-token':payload.token+'x'})).code,400);assert.equal(writes.length,0);
+}));
