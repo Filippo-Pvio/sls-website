@@ -45,7 +45,7 @@ function createHandler({ legacy, env = process.env, fetcher = (...args) => fetch
       }
       req.body = { question: standalone };
       return await (legacy || require('../lib/legacy-handler.cjs'))(req, res);
-    } catch { return send(res, 502, { error: 'SIA konnte gerade keine Antwort abrufen. Bitte versuchen Sie es später erneut.' }); }
+    } catch (error) { console.warn(JSON.stringify({event: 'sia_dialogue_failure', reason: error.name === 'TimeoutError' ? 'timeout' : error.message})); return send(res, 502, { error: 'SIA konnte gerade keine Antwort abrufen. Bitte versuchen Sie es später erneut.' }); }
   };
 }
 module.exports = createHandler();
