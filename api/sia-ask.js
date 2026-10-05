@@ -100,6 +100,12 @@ export default async function handler(req, res) {
     const q = question.toLocaleLowerCase('de-DE');
     const missing = topic => `Zu ${topic} ist im veröffentlichten Inserat aktuell keine Angabe hinterlegt.`;
 
+    if (/kaufpreis|preis|kostet|kosten.*immobilie|immobilie.*kosten|wie teuer|teuer.*immobilie/.test(q)) {
+      return p.price != null
+        ? `Der Kaufpreis dieser Immobilie beträgt ${new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(p.price)}.`
+        : missing('dem Kaufpreis');
+    }
+
     if (/eckdaten|daten|wichtigste.*(daten|infos)|größe|groesse|fläche|flaeche|zimmer|baujahr/.test(q)) {
       const lines = [
         p.price != null ? `Kaufpreis: ${new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(p.price)}` : null,
@@ -253,6 +259,18 @@ export default async function handler(req, res) {
       sources: [],
       kind: 'answer',
       reason: 'property_context'
+    });
+  }
+
+  // On a concrete property page, never fall through to the generic seller knowledge base.
+  // If the published listing does not contain the requested information, say so in property context.
+  if (context?.type === 'property') {
+    return send(res, 200, {
+      provider: 'Wissensbasis von SLS Immobilienpartner',
+      answer: 'Dazu finde ich in den aktuell veröffentlichten Angaben zu dieser Immobilie keine eindeutige Information. Bitte nutzen Sie bei Bedarf „Diese Immobilie anfragen“ – der zuständige SLS Immobilienpartner kann die Frage direkt zum Objekt beantworten.',
+      sources: [],
+      kind: 'answer',
+      reason: 'property_context_missing'
     });
   }
 
