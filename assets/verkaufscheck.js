@@ -71,7 +71,7 @@
 
   const siaButton = id => {
     const question = siaQuestions[id];
-    return question ? '<button type="button" class="sales-sia-link" data-sia-question="'+question.replace(/"/g,'&quot;')+'"><span>SIA</span> fragen</button>' : '';
+    return question ? '<button type="button" class="sales-sia-link" data-sia-question="'+question.replace(/"/g,'&quot;')+'">SIA fragen</button>' : '';
   };
 
   const questions = {
@@ -862,7 +862,7 @@
     }
 
     html+='<div class="sales-summary-note"><strong>Hinweis zum Notartermin</strong><p>Die interne Vereinbarung, dass der Käufer Notar- und Grundbuchkosten trägt, bedeutet nicht in jedem Fall, dass gegenüber dem Notar ausschließlich der Käufer als Kostenschuldner in Betracht kommt. Deshalb sollte die Finanzierung möglichst vor der Beurkundung belastbar geprüft sein. Rechtliche Einzelfragen bitte mit dem Notar oder einer Rechtsberatung klären.</p></div>';
-    html+='<div class="sales-summary-export"><button type="button" data-sales-pdf>PDF-Auswertung herunterladen</button><button type="button" data-sales-email>Auswertung per E-Mail</button><small>Die PDF wird direkt in Ihrem Browser erstellt. Für die E-Mail öffnet sich Ihr E-Mail-Programm mit einer vorbereiteten Zusammenfassung.</small></div>';
+    html+='<div class="sales-report-request"><div class="sales-report-head"><span>Ihre persönliche SLS-Auswertung</span><h4>Verkaufsanalyse als PDF per E-Mail erhalten</h4><p>Wir senden Ihnen Ihre individuelle Auswertung mit offenen Punkten, Bezugsquellen und den nächsten Schritten übersichtlich als SLS-PDF zu.</p></div><form class="sales-report-form" data-sales-report-form><div class="sales-report-fields"><label><span>Vorname *</span><input name="firstName" autocomplete="given-name" required maxlength="80"></label><label><span>Nachname *</span><input name="lastName" autocomplete="family-name" required maxlength="80"></label><label><span>E-Mail *</span><input name="email" type="email" autocomplete="email" required maxlength="160"></label><label><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" maxlength="60"></label></div><label class="sales-report-consent"><input name="consent" type="checkbox" required><span>Ich möchte meine persönliche Verkaufsanalyse per E-Mail erhalten und stimme der Verarbeitung meiner Angaben hierfür zu. Hinweise finden Sie in unserer <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label><button class="sales-report-submit" type="submit">Meine Verkaufsanalyse anfordern</button><p class="sales-report-status" data-sales-report-status role="status" aria-live="polite"></p></form></div>';
     html+='<p class="sales-summary-cta"><a class="text-link" href="/kontakt/">Verkauf mit SLS besprechen →</a></p></div>';
     explainer.innerHTML=html;
   };
@@ -948,20 +948,51 @@
   };
 
   root.addEventListener('click', event => {
-    if(event.target.closest('[data-sales-pdf]')){
-      downloadSummaryPdf();
-      return;
-    }
-    if(event.target.closest('[data-sales-email]')){
-      emailSummary();
-      return;
-    }
     const button = event.target.closest('[data-sia-question]');
     if (!button) return;
     const question = button.dataset.siaQuestion || '';
     if (!question) return;
     window.__slsSiaQuestionRequested = question;
     window.dispatchEvent(new CustomEvent('sls:sia-ask',{detail:{question}}));
+  });
+
+  root.addEventListener('submit', async event => {
+    const form=event.target.closest('[data-sales-report-form]');
+    if(!form)return;
+    event.preventDefault();
+    const status=form.querySelector('[data-sales-report-status]');
+    const submit=form.querySelector('.sales-report-submit');
+    const data=new FormData(form);
+    if(!data.get('consent')){
+      status.textContent='Bitte bestätigen Sie den Datenschutzhinweis.';
+      return;
+    }
+    submit.disabled=true;
+    status.textContent='Ihre persönliche Auswertung wird vorbereitet …';
+    try{
+      const response=await fetch('/api/sales-check-report',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          contact:{
+            firstName:String(data.get('firstName')||'').trim(),
+            lastName:String(data.get('lastName')||'').trim(),
+            email:String(data.get('email')||'').trim(),
+            phone:String(data.get('phone')||'').trim()
+          },
+          report:buildExportData()
+        })
+      });
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(result?.message||'Versand derzeit nicht möglich.');
+      form.reset();
+      status.textContent='Vielen Dank. Ihre persönliche Verkaufsanalyse wurde an die angegebene E-Mail-Adresse gesendet.';
+      form.classList.add('is-sent');
+    }catch(error){
+      status.textContent=error?.message||'Die Auswertung konnte gerade nicht versendet werden. Bitte versuchen Sie es später erneut.';
+    }finally{
+      submit.disabled=false;
+    }
   });
 
   next.addEventListener('click',goNext);
