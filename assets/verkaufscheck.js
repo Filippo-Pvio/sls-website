@@ -542,6 +542,7 @@
   };
 
   let current='start', history=[], answers={}, selected=null;
+  let autoTimer=null;
 
   const render = () => {
     const q=questions[current];
@@ -577,14 +578,30 @@
   };
 
   const select=value=>{
+    if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
     selected=value;
     answers[current]=value;
     [...options.children].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===value)));
-    showExplain(questions[current],value);
-    next.hidden=false;
+
+    const q=questions[current];
+    const hasInfo=Boolean(q.explain?.[value]);
+
+    showExplain(q,value);
+
+    if(hasInfo){
+      next.hidden=false;
+      return;
+    }
+
+    next.hidden=true;
+    autoTimer=setTimeout(()=>{
+      autoTimer=null;
+      goNext();
+    },260);
   };
 
   const goNext=()=>{
+    if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
     const q=questions[current];
     if(!selected||!q.next)return;
     history.push(current);
@@ -596,6 +613,7 @@
   };
 
   const goBack=()=>{
+    if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
     if(!history.length)return;
     current=history.pop();
     selected=answers[current]||null;
