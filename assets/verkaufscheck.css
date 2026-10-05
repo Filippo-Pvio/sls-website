@@ -26,3 +26,17 @@ body.sales-check-page #main>.buy-final .lead{color:#edf3f5!important}
 .sales-sia-link:hover{color:#ff596f}
 .sales-summary-item .sales-sia-link{margin-top:7px}
 @media(max-width:540px){.sales-sia-link{font-size:12px}.sales-sia-link span{min-width:30px;height:21px}}
+
+.sales-summary-source{display:block;margin-top:5px!important;color:#4f6975!important;font-weight:600}
+.sales-summary-contradictions{display:grid;gap:10px;padding:18px 20px;border:1px solid #e8b8c0;border-left:4px solid #c34f60;border-radius:9px;background:#fff6f8}
+.sales-summary-contradictions>h4{margin:0;color:#9f4050;font:800 12px/1.3 Raleway,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em}
+.sales-summary-contradiction{padding-top:10px;border-top:1px solid #efd8dd}
+.sales-summary-contradiction:first-of-type{padding-top:0;border-top:0}
+.sales-summary-contradiction strong{display:block;color:#345b6e;font-size:14px}
+.sales-summary-contradiction p{margin:5px 0 0!important;font-size:13px!important;line-height:1.55}
+.sales-summary-export{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:4px}
+.sales-summary-export button{min-height:48px;border-radius:7px;padding:11px 14px;border:1px solid #345b6e;background:#345b6e;color:#fff;font:750 13px/1.3 Raleway,Arial,sans-serif;cursor:pointer}
+.sales-summary-export button+button{background:#fff;color:#345b6e}
+.sales-summary-export small{grid-column:1/-1;color:#6b808a;line-height:1.45}
+@media(hover:hover) and (pointer:fine){.sales-summary-export button:hover{background:#294b5c}.sales-summary-export button+button:hover{background:#eef3f5;color:#294b5c}}
+@media(max-width:620px){.sales-summary-export{grid-template-columns:1fr}.sales-summary-export small{grid-column:auto}.sales-summary-export button{width:100%}}
