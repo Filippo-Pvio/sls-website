@@ -63,15 +63,15 @@ function buildPdf(report, contact) {
   function header(first = true) {
     rect(0, 762, 595, 80, BRAND.blue);
     rect(0, 758, 595, 4, BRAND.coral);
-    pages[page].push({ text: 'SLS', size: 26, bold: true, x: 54, y: 800, fill: BRAND.white });
-    pages[page].push({ text: 'IMMOBILIENPARTNER', size: 8, bold: true, x: 54, y: 784, fill: BRAND.white });
-    pages[page].push({ text: first ? 'PERSOENLICHE VERKAUFSANALYSE' : 'VERKAUFSANALYSE - FORTSETZUNG', size: 9, bold: true, x: 345, y: 791, fill: BRAND.white });
+    pages[page].push({ text: 'SLS', size: 28, bold: true, x: 54, y: 800, fill: BRAND.white });
+    pages[page].push({ text: 'IMMOBILIENPARTNER', size: 8, bold: true, x: 54, y: 783, fill: BRAND.white });
+    pages[page].push({ text: first ? 'PERSÖNLICHE VERKAUFSANALYSE' : 'VERKAUFSANALYSE · FORTSETZUNG', size: 9, bold: true, x: 342, y: 791, fill: BRAND.white });
     y = 724;
   }
 
   header(true);
-  line('Ihre persoenliche Verkaufsanalyse', { size: 19, bold: true, leading: 28, fill: BRAND.blue });
-  wrapped('Ein strukturierter Ueberblick ueber die Punkte, die Sie vor Vermarktung, Notartermin und Uebergabe noch klaeren sollten.', { size: 10, leading: 15, fill: BRAND.muted, max: 84 });
+  line('Ihre persönliche Verkaufsanalyse', { size: 21, bold: true, leading: 30, fill: BRAND.blue });
+  wrapped('Ihre individuelle Übersicht zeigt, welche Punkte vor Vermarktung, Notartermin und Übergabe noch geklärt werden sollten – kompakt, priorisiert und mit Bezugsquellen.', { size: 10, leading: 15, fill: BRAND.muted, max: 84 });
   gap(10);
 
   rect(54, y - 58, 487, 58, BRAND.light);
@@ -82,7 +82,7 @@ function buildPdf(report, contact) {
 
   const contradictions = Array.isArray(report.contradictions) ? report.contradictions : [];
   if (contradictions.length) {
-    line('Bitte gegenpruefen', { size: 13, bold: true, leading: 20, fill: BRAND.coral });
+    line('Bitte gegenprüfen', { size: 13, bold: true, leading: 20, fill: BRAND.coral });
     contradictions.forEach(item => {
       wrapped(clampText(item.title, 180), { size: 10, bold: true, leading: 14, fill: BRAND.blue });
       wrapped(clampText(item.text, 900), { size: 9, x: 64, leading: 13, fill: BRAND.dark, max: 78 });
@@ -94,7 +94,7 @@ function buildPdf(report, contact) {
   const phases = Array.isArray(report.phases) ? report.phases : [];
   if (!phases.length) {
     line('Aktuell keine offenen Punkte aus dem Check', { size: 13, bold: true, leading: 19, fill: BRAND.blue });
-    wrapped('Die abgefragten Punkte wirken weitgehend geklaert. Vor dem naechsten Schritt sollten Unterlagen und Nachweise dennoch noch einmal auf Aktualitaet und Vollstaendigkeit geprueft werden.', { size: 9, leading: 14, fill: BRAND.dark });
+    wrapped('Die abgefragten Punkte wirken weitgehend geklärt. Vor dem nächsten Schritt sollten Unterlagen und Nachweise dennoch noch einmal auf Aktualität und Vollständigkeit geprüft werden.', { size: 9, leading: 14, fill: BRAND.dark });
     gap(8);
   }
 
@@ -103,16 +103,20 @@ function buildPdf(report, contact) {
     (Array.isArray(section.items) ? section.items : []).forEach(item => {
       const prefix = item.status === 'critical' ? 'WICHTIG' : item.status === 'unsure' ? 'UNSICHER' : 'OFFEN';
       wrapped(prefix + ': ' + clampText(item.label, 240), { size: 10, bold: item.status === 'critical', x: 62, leading: 14, fill: item.status === 'critical' ? BRAND.coral : BRAND.dark, max: 78 });
+      wrapped('Nächster Schritt: ' + clampText(item.label, 220) + ' prüfen, beschaffen oder verbindlich klären.', { size: 8, x: 72, leading: 12, fill: BRAND.muted, max: 74 });
       if (item.source) wrapped('Bezugsquelle: ' + clampText(item.source, 300), { size: 8, x: 72, leading: 12, fill: BRAND.muted, max: 74 });
-      gap(4);
+      gap(5);
     });
     gap(7);
   });
 
   line('Wichtiger Hinweis', { size: 11, bold: true, leading: 17, fill: BRAND.blue });
-  wrapped('Diese Auswertung dient als praktische Orientierung. Sie ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung. Anforderungen von Banken, Notariaten oder Behoerden koennen im Einzelfall abweichen.', { size: 8, leading: 12, fill: BRAND.muted });
-  gap(12);
-  line('SLS Immobilienpartner GmbH  |  www.sls.de  |  service@sls.de  |  02369 742 80 20', { size: 8, bold: true, fill: BRAND.blue });
+  wrapped('Diese Auswertung dient als praktische Orientierung. Sie ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung. Anforderungen von Banken, Notariaten oder Behörden können im Einzelfall abweichen.', { size: 8, leading: 12, fill: BRAND.muted });
+  gap(14);
+  line('Sie möchten die offenen Punkte persönlich einordnen?', { size: 10, bold: true, leading: 15, fill: BRAND.blue });
+  wrapped('SLS Immobilienpartner begleitet Sie vom ersten Überblick bis zur Übergabe – persönlich, strukturiert und mit einem klaren nächsten Schritt.', { size: 8, leading: 12, fill: BRAND.muted, max: 82 });
+  gap(8);
+  line('SLS Immobilienpartner GmbH  ·  www.sls.de  ·  service@sls.de  ·  02369 742 80 20', { size: 8, bold: true, fill: BRAND.blue });
 
   const objects = [];
   const count = 4 + pages.length * 2;
@@ -161,16 +165,34 @@ function buildPdf(report, contact) {
 const htmlEscape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 function buildEmailHtml(contact) {
-  return '<!doctype html><html><body style="margin:0;background:#f2f5f6;font-family:Arial,sans-serif;color:#24383f">' +
-    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f2f5f6;padding:28px 12px"><tr><td align="center">' +
-    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;background:#fff;border-collapse:collapse">' +
-    '<tr><td style="background:#345b6e;padding:30px 34px;border-bottom:4px solid #ff596f"><div style="font-size:28px;line-height:1;color:#fff;font-weight:700">SLS</div><div style="font-size:10px;letter-spacing:2px;color:#dbe7ec;margin-top:5px">IMMOBILIENPARTNER</div></td></tr>' +
-    '<tr><td style="padding:34px"><div style="font-size:12px;letter-spacing:1px;color:#ff596f;font-weight:700;text-transform:uppercase">Ihre persönliche Verkaufsanalyse</div>' +
-    '<h1 style="font-family:Georgia,serif;font-size:30px;line-height:1.15;color:#345b6e;margin:10px 0 16px">Guten Tag ' + htmlEscape(contact.firstName) + ',</h1>' +
-    '<p style="font-size:15px;line-height:1.65;margin:0 0 18px">vielen Dank für Ihre Angaben im SLS Verkaufscheck. Im Anhang finden Sie Ihre persönliche Auswertung als PDF – mit offenen Punkten, konkreten Bezugsquellen und einer Einordnung nach Verkaufsphase.</p>' +
-    '<p style="font-size:15px;line-height:1.65;margin:0 0 24px">Wenn Sie einzelne Punkte gemeinsam mit uns einordnen möchten, stehen wir Ihnen gerne persönlich zur Verfügung.</p>' +
-    '<a href="https://sls.de/kontakt/" style="display:inline-block;background:#345b6e;color:#fff;text-decoration:none;padding:13px 18px;border-radius:6px;font-weight:700">Verkauf mit SLS besprechen</a></td></tr>' +
-    '<tr><td style="background:#eef3f5;padding:22px 34px;font-size:12px;line-height:1.55;color:#5d7078">SLS Immobilienpartner GmbH · 02369 742 80 20 · service@sls.de<br>Diese Auswertung dient der Orientierung und ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung.</td></tr>' +
+  const fullName = [contact.firstName, contact.lastName].filter(Boolean).join(' ');
+  const logoUrl = 'https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/logo-sls-horizontal-transparent.png';
+  return '<!doctype html><html><body style="margin:0;background:#f3f6f7;font-family:Arial,Helvetica,sans-serif;color:#24383f">' +
+    '<div style="display:none;max-height:0;overflow:hidden;opacity:0">Ihre persönliche SLS Verkaufsanalyse ist da.</div>' +
+    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f6f7;padding:32px 12px"><tr><td align="center">' +
+    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:660px;background:#ffffff;border-collapse:separate;border-spacing:0;border-radius:18px;overflow:hidden;box-shadow:0 12px 38px rgba(36,56,63,.10)">' +
+    '<tr><td style="padding:30px 38px 24px;border-top:5px solid #ff596f;background:#ffffff">' +
+      '<img src="' + logoUrl + '" width="220" alt="SLS Immobilienpartner" style="display:block;width:220px;max-width:70%;height:auto;border:0">' +
+    '</td></tr>' +
+    '<tr><td style="padding:16px 38px 10px">' +
+      '<div style="font-size:12px;line-height:1.3;letter-spacing:1.6px;color:#ff596f;font-weight:700;text-transform:uppercase">Ihre persönliche Verkaufsanalyse</div>' +
+      '<h1 style="font-family:Georgia,Times,serif;font-size:31px;line-height:1.2;color:#345b6e;margin:12px 0 20px;font-weight:500">Guten Tag ' + htmlEscape(fullName) + ',</h1>' +
+      '<p style="font-size:15px;line-height:1.7;margin:0 0 16px;color:#344b55">vielen Dank für Ihre Angaben im SLS Verkaufscheck. Im Anhang finden Sie Ihre persönliche Verkaufsanalyse als PDF.</p>' +
+      '<p style="font-size:15px;line-height:1.7;margin:0 0 22px;color:#344b55">Die Auswertung ordnet Ihre offenen Punkte nach Verkaufsphase, zeigt konkrete nächste Schritte und nennt – soweit möglich – die passende Bezugsquelle.</p>' +
+      '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 24px;background:#f5f7f6;border-radius:12px"><tr><td style="padding:18px 20px">' +
+        '<div style="font-size:13px;font-weight:700;color:#345b6e;margin-bottom:7px">In Ihrer PDF finden Sie:</div>' +
+        '<div style="font-size:14px;line-height:1.65;color:#536a74">• Vor der Vermarktung klären<br>• Vor dem Notartermin klären<br>• Vor Übergabe / nach Kaufpreisfälligkeit klären</div>' +
+      '</td></tr></table>' +
+      '<a href="https://sls.de/kontakt/" style="display:inline-block;background:#345b6e;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:999px;font-size:14px;font-weight:700">Verkauf mit SLS besprechen</a>' +
+    '</td></tr>' +
+    '<tr><td style="padding:30px 38px 34px">' +
+      '<div style="height:1px;background:#e3eaed;margin-bottom:24px"></div>' +
+      '<div style="font-size:14px;line-height:1.7;color:#345b6e;font-weight:700">SLS Immobilienpartner GmbH</div>' +
+      '<div style="font-size:13px;line-height:1.7;color:#5d7078;margin-top:4px">02369 742 80 20 &nbsp;·&nbsp; <a href="mailto:service@sls.de" style="color:#345b6e;text-decoration:none">service@sls.de</a> &nbsp;·&nbsp; <a href="https://sls.de/" style="color:#345b6e;text-decoration:none">www.sls.de</a></div>' +
+      '<div style="font-size:12px;line-height:1.65;color:#7a8b92;margin-top:10px">Dorsten · Ubierweg 2 · 46286 Dorsten<br>Düsseldorf · Königsallee 19 · 40213 Düsseldorf</div>' +
+      '<div style="font-size:11px;line-height:1.55;color:#8a989e;margin-top:18px">Diese Auswertung dient der Orientierung und ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung.</div>' +
+    '</td></tr>' +
+    '<tr><td style="background:#345b6e;height:10px;font-size:0;line-height:0">&nbsp;</td></tr>' +
     '</table></td></tr></table></body></html>';
 }
 
