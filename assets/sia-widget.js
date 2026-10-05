@@ -209,6 +209,20 @@
     launch.setAttribute('aria-expanded', 'false');
     launch.focus({ preventScroll: true });
   });
+
+  if (propertyContext) {
+    $('.contact a').addEventListener('click', event => {
+      event.preventDefault();
+      const target = document.querySelector('#pp-inquiry');
+      if (!target) return;
+      if (dialog.open) dialog.close();
+      // Wait until the mobile page lock has been fully restored, then move to the form.
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        try { history.replaceState(null, '', '#pp-inquiry'); } catch {}
+      }));
+    });
+  }
   let notesScroll = 0;
   function showNotes(show, restoreFocus = true) {
     if (show) notesScroll = $('.content').scrollTop;
