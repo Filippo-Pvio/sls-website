@@ -57,7 +57,7 @@
         ['buyer','Ich habe bereits einen konkreten Käufer','Ich möchte wissen, was jetzt bis Notar, Kaufpreiszahlung und Übergabe passiert.'],
         ['unsure','Ich bin unsicher','Ich möchte erst einordnen, wie weit mein Verkauf überhaupt ist.']
       ],
-      next:value=> value==='buyer'?'typeBuyer':value==='interest'?'typeInterest':'typePrep'
+      next:(_,value)=> value==='buyer'?'typeBuyer':value==='interest'?'typeInterest':'typePrep'
     },
 
     typePrep: typeQuestion(),
