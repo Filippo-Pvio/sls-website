@@ -21,7 +21,9 @@
   const typeFromAnswers = answers =>
     answers.typePrep || answers.typeInterest || answers.typeBuyer || 'house';
 
-  const afterDocs = answers =>
+  const afterDocs = answers => 'ownership';
+
+  const afterSpecials = answers =>
     answers.start === 'buyer' ? 'finance' :
     answers.start === 'interest' ? 'qualification' : 'market';
 
@@ -181,6 +183,121 @@
       next:afterDocs
     },
 
+    ownership:{
+      kicker:'Eigentümer',title:'Gehört die Immobilie Ihnen allein?',
+      text:'Mehrere Eigentümer, Erbengemeinschaften oder Vertretungen sollten früh im Ablauf berücksichtigt werden.',
+      options:[
+        ['single','Ja, mir allein','Ich bin alleiniger Eigentümer.'],
+        ['multiple','Nein, mehrere Eigentümer','Zum Beispiel Ehepartner, Miteigentümer oder Erbengemeinschaft.'],
+        ['represent','Ich handle für jemand anderen','Zum Beispiel mit Vollmacht oder als gesetzliche Vertretung.'],
+        ['unknown','Unsicher','Ich weiß nicht, ob die Eigentümer- bzw. Vertretungssituation vollständig geklärt ist.']
+      ],
+      explain:{
+        multiple:['Bei mehreren Eigentümern sollte die Entscheidungs- und Unterschriftssituation früh geklärt sein.',['Alle relevanten Eigentümer müssen in den Verkaufsprozess einbezogen werden.','Bei Erbfällen können zusätzliche Nachweise zur Erbfolge erforderlich sein.','Unterschiedliche Vorstellungen sollten möglichst vor Vermarktung und Preisverhandlung geklärt werden.']],
+        represent:['Eine Vertretung sollte nicht erst kurz vor dem Notartermin geprüft werden.',['Je nach Situation kann eine besondere Form der Vollmacht erforderlich sein.','Die konkrete Verwendbarkeit einer Vollmacht sollte rechtzeitig mit dem Notariat abgestimmt werden.']],
+        unknown:['Die Eigentümerstellung ist eine Grundvoraussetzung des Verkaufs.',['Prüfen Sie, wer im Grundbuch steht und wer wirksam handeln bzw. unterschreiben kann.']]
+      },
+      next:(answers,value)=> value==='multiple'||value==='represent'||value==='unknown'?'authority':'sellerLoan'
+    },
+
+    authority:{
+      kicker:'Eigentümer · Vertretung',title:'Ist geklärt, wer Entscheidungen treffen und beim Notar wirksam handeln kann?',
+      text:'Gerade bei mehreren Eigentümern, Erbfällen oder Vollmachten kann dieser Punkt den Ablauf stark beeinflussen.',
+      options:statusOptions('Ja, geklärt','Nein, noch offen'),
+      explain:missingInfo('Das sollte nicht erst am Tag der Beurkundung auffallen.',[
+        'Bei Erbfällen können Erbnachweise oder weitere Unterlagen erforderlich sein.',
+        'Bei Vertretung sollte die Vollmacht rechtzeitig auf ihre Eignung für den Grundstückskaufvertrag geprüft werden.',
+        'Das Notariat kann die formalen Anforderungen für den konkreten Fall einordnen.'
+      ]),
+      next:()=> 'sellerLoan'
+    },
+
+    sellerLoan:{
+      kicker:'Eigene Finanzierung',title:'Ist die Immobilie noch finanziert oder sind Grundschulden eingetragen?',
+      text:'Auch die Finanzierung des Verkäufers kann für Ablösung, Löschung und Kaufpreisabwicklung wichtig werden.',
+      options:[
+        ['none','Nein / bereits geklärt','Es bestehen keine offenen Finanzierungsthemen.'],
+        ['active','Ja, es läuft noch ein Darlehen','Es gibt noch eine Restschuld bei einer Bank.'],
+        ['grundschuld','Grundschuld vorhanden, Darlehen unklar oder erledigt','Die Eintragung besteht noch, obwohl die Finanzierung möglicherweise beendet ist.'],
+        ['unknown','Unsicher','Ich kenne den aktuellen Stand nicht genau.']
+      ],
+      explain:{
+        active:['Eine laufende Finanzierung sollte früh in die Verkaufsabwicklung einbezogen werden.',['Die Bank kann für Ablösebetrag und Löschungsunterlagen benötigt werden.','Je nach Vertrag können Fragen zu Vorfälligkeit oder Ablösung entstehen.','Der Notar koordiniert die grundbuchrechtliche Abwicklung, benötigt dafür aber die richtigen Informationen.']],
+        grundschuld:['Eine eingetragene Grundschuld verschwindet nicht automatisch nach Rückzahlung des Darlehens.',['Für eine lastenfreie Übertragung können Löschungsunterlagen erforderlich sein.','Frühzeitige Klärung verhindert Verzögerungen bei der Kaufpreisfälligkeit.']],
+        unknown:['Hier lohnt sich eine Prüfung vor dem Notartermin.',['Grundbuch und Bankunterlagen sollten miteinander abgeglichen werden.']]
+      },
+      next:answers=> typeFromAnswers(answers)==='land'?'landRisks':'occupancy'
+    },
+
+    occupancy:{
+      kicker:'Nutzung',title:'Wie wird die Immobilie aktuell genutzt?',
+      text:'Ob selbst genutzt, leerstehend oder vermietet beeinflusst Unterlagen, Übergabe und Käuferfragen.',
+      options:[
+        ['owner','Selbst bewohnt','Ich bzw. meine Familie wohnen dort.'],
+        ['vacant','Leerstehend','Die Immobilie ist derzeit frei.'],
+        ['rented','Vermietet','Mindestens eine Einheit ist vermietet.'],
+        ['mixed','Teilweise vermietet','Zum Beispiel bei einem Mehrfamilienhaus oder einer Einliegerwohnung.']
+      ],
+      next:(_,value)=> value==='rented'||value==='mixed'?'rental':'alterations'
+    },
+
+    rental:{
+      kicker:'Vermietung',title:'Sind Mietverträge, Miethöhen, Kautionen und Abrechnungen sauber dokumentiert?',
+      text:'Beim Verkauf einer vermieteten Immobilie übernimmt der Käufer grundsätzlich bestehende Mietverhältnisse mit.',
+      options:statusOptions('Ja, vollständig','Nein, nicht vollständig'),
+      explain:missingInfo('Bei vermieteten Immobilien braucht der Käufer eine belastbare wirtschaftliche Grundlage.',[
+        'Typisch relevant sind Mietverträge, aktuelle Miethöhen, Kautionen und Nebenkostenunterlagen.',
+        'Auch offene Streitpunkte, Rückstände oder vereinbarte Besonderheiten sollten sauber eingeordnet werden.',
+        'Aussagen zu Kündigungsmöglichkeiten sollten nicht pauschal versprochen werden; im Zweifel rechtlich prüfen lassen.'
+      ]),
+      next:()=> 'alterations'
+    },
+
+    alterations:{
+      kicker:'Baulicher Zustand',title:'Gab es Umbauten, Anbauten oder Nutzungsänderungen?',
+      text:'Wintergarten, Dachausbau, Anbau oder umgenutzte Flächen können relevant sein, wenn Unterlagen und tatsächlicher Zustand nicht zusammenpassen.',
+      options:[
+        ['none','Nein / nichts Wesentliches','Mir sind keine relevanten Änderungen bekannt.'],
+        ['documented','Ja, mit Unterlagen','Die Änderungen sind nach meiner Kenntnis dokumentiert bzw. genehmigt.'],
+        ['unclear','Ja, aber Unterlagen sind unklar','Ich weiß nicht, ob alles vollständig dokumentiert ist.'],
+        ['unknown','Unsicher','Ich kann das nicht sicher beurteilen.']
+      ],
+      explain:{
+        unclear:['Das sollte vor der Vermarktung geprüft werden.',['Bauakte, Genehmigungen und heutiger Zustand sollten zueinander passen.','Nicht nachvollziehbare Wohn- oder Nutzflächen können Käufer und Finanzierung verunsichern.']],
+        unknown:['Gerade bei älteren Immobilien lohnt sich der Abgleich mit vorhandenen Bauunterlagen.',['SLS kann auffällige Abweichungen in der Vorbereitung identifizieren und weitere Prüfung anstoßen.']]
+      },
+      next:answers=> ['house','investment','land'].includes(typeFromAnswers(answers))?'landRisks':'pv'
+    },
+
+    landRisks:{
+      kicker:'Grundstück & öffentlich-rechtliche Themen',title:'Sind Baulasten, Erschließung und mögliche Altlastenthemen geklärt?',
+      text:'Diese Punkte können Nutzung, Finanzierung oder Kaufentscheidung beeinflussen und sind nicht immer aus dem Grundbuch ersichtlich.',
+      options:statusOptions('Ja, weitgehend geklärt','Nein / noch offen'),
+      explain:missingInfo('Nicht alle Grundstücksthemen stehen im Grundbuch.',[
+        'Baulasten werden in einem eigenen Verzeichnis geführt.',
+        'Auch Erschließungsstand oder noch mögliche Beiträge können für Käufer relevant sein.',
+        'Hinweise auf Altlasten oder frühere gewerbliche Nutzung sollten bei Bedarf geprüft werden.',
+        'Welche Auskünfte sinnvoll sind, hängt von Lage, Nutzung und Objektart ab.'
+      ]),
+      next:answers=> typeFromAnswers(answers)==='land'?afterSpecials(answers):'pv'
+    },
+
+    pv:{
+      kicker:'Technik & mitverkaufte Anlagen',title:'Gibt es eine Photovoltaikanlage oder andere mitzuübertragende Technik?',
+      text:'Eigentum, Finanzierung, Miet- oder Pachtmodelle und laufende Verträge sollten vor dem Verkauf klar sein.',
+      options:[
+        ['none','Nein','Es gibt keine entsprechende Anlage.'],
+        ['owned','Ja, im Eigentum und geklärt','Die Anlage gehört zum Objekt und die Unterlagen liegen vor.'],
+        ['financed','Ja, noch finanziert / Vertrag läuft','Es bestehen noch Finanzierung, Miet-, Pacht- oder andere Vertragsbindungen.'],
+        ['unknown','Unsicher','Ich kenne die Vertrags- oder Eigentumssituation nicht genau.']
+      ],
+      explain:{
+        financed:['Laufende Verträge sollten vor dem Verkauf eingeordnet werden.',['Zu klären ist, ob Verträge beendet, übertragen oder vom Käufer übernommen werden können.','Bei PV können zusätzlich Einspeise- und technische Unterlagen relevant sein.']],
+        unknown:['Technik am Gebäude ist nicht automatisch frei übertragbar.',['Eigentum, Finanzierung und laufende Verträge sollten vor dem Notartermin nachvollziehbar sein.']]
+      },
+      next:afterSpecials
+    },
+
     market:{
       kicker:'Vermarktung', title:'Wer kümmert sich während der Vermarktung um Anfragen, Besichtigungen und Nachfassen?',
       text:'Ein Interessent entscheidet selten in einem einzigen Gespräch.',
@@ -270,6 +387,21 @@
         partly:['Offene Punkte sollten möglichst vor dem Beurkundungstermin geklärt werden.',['Übergabetermin und Inventar','Grundschulden oder weitere Rechte','Finanzierung und benötigte Bankunterlagen']],
         no:['Der Notar beurkundet – aber der Verkauf muss vorher wirtschaftlich vorbereitet sein.',['Für den Vertragsentwurf werden Daten beider Parteien und Objektangaben benötigt.','Der Notar ist neutral und ersetzt nicht die wirtschaftliche Entscheidung von Käufer oder Verkäufer.']]
       },
+      next:()=> 'earlyAccess'
+    },
+
+    earlyAccess:{
+      kicker:'Vor der Übergabe',title:'Möchte der Käufer schon vor Kaufpreiszahlung Schlüssel, Zugang oder mit Renovierungen beginnen?',
+      text:'Ein früher Besitz- oder Schlüsselübergang sollte nicht informell „auf Zuruf“ erfolgen.',
+      options:[
+        ['no','Nein','Der Zugang soll erst entsprechend der vertraglichen Abwicklung erfolgen.'],
+        ['yes','Ja','Der Käufer möchte früher hinein oder schon Arbeiten durchführen.'],
+        ['unknown','Noch nicht besprochen','Das Thema wurde bislang nicht geklärt.']
+      ],
+      explain:{
+        yes:['Hier sollte nicht einfach vorzeitig übergeben werden.',['Risiken zu Besitz, Schäden, Versicherung und Rückabwicklung sollten vorher sauber geregelt sein.','Eine vorzeitige Nutzung oder Schlüsselübergabe sollte mit dem Notariat bzw. rechtlich abgestimmt werden.']],
+        unknown:['Der Übergabezeitpunkt sollte ausdrücklich besprochen werden.',['So vermeiden Sie unterschiedliche Erwartungen unmittelbar nach der Beurkundung.']]
+      },
       next:()=> 'payment'
     },
 
@@ -323,20 +455,28 @@
   }
 
   const todoDefinitions = {
-    docGrundbuch:{label:'Aktueller Grundbuchauszug',critical:true},
-    docFlur:{label:'Aktuelle Flurkarte / Grundstücksangaben',critical:true},
-    docPlans:{label:'Grundrisse und Flächenangaben',critical:false},
-    docApartment:{label:'WEG-Unterlagen',critical:false},
-    docInvestment:{label:'Miet- und Ertragsunterlagen',critical:false},
-    docLand:{label:'Bebaubarkeit / Grundstücksnutzung',critical:false},
-    docEnergy:{label:'Gültiger Energieausweis',critical:true},
-    groundbook:{label:'Eintragungen in Abteilung II und III klären',critical:true},
-    qualification:{label:'Interessentenstatus belastbar einordnen',critical:false},
-    finance:{label:'Finanzierung des Käufers belastbar prüfen',critical:true},
-    financeType:{label:'Uneingeschränkte Finanzierungszusage sicherstellen',critical:true},
-    notary:{label:'Offene Punkte für den Notar klären',critical:true},
-    payment:{label:'Kaufpreisfälligkeit und Übergabeablauf klären',critical:false},
-    handover:{label:'Dokumentierte Übergabe vorbereiten',critical:false}
+    docGrundbuch:{label:'Aktuellen Grundbuchauszug beschaffen / prüfen',critical:true,phase:'marketing'},
+    docFlur:{label:'Aktuelle Flurkarte / Grundstücksangaben klären',critical:true,phase:'marketing'},
+    docPlans:{label:'Grundrisse und Flächenangaben nachvollziehbar machen',critical:false,phase:'marketing'},
+    docApartment:{label:'WEG-Unterlagen vervollständigen',critical:false,phase:'marketing'},
+    docInvestment:{label:'Miet- und Ertragsunterlagen vervollständigen',critical:false,phase:'marketing'},
+    docLand:{label:'Bebaubarkeit / Grundstücksnutzung klären',critical:false,phase:'marketing'},
+    docEnergy:{label:'Gültigen Energieausweis bereitstellen',critical:true,phase:'marketing'},
+    groundbook:{label:'Eintragungen in Abteilung II und III klären',critical:true,phase:'notary'},
+    ownership:{label:'Eigentümer- und Beteiligtenstellung klären',critical:true,phase:'marketing'},
+    authority:{label:'Vertretung / Vollmacht / Erbnachweis klären',critical:true,phase:'notary'},
+    sellerLoan:{label:'Eigene Finanzierung / Grundschuld / Ablösung klären',critical:true,phase:'notary'},
+    rental:{label:'Mietunterlagen und laufende Mietthemen aufbereiten',critical:false,phase:'marketing'},
+    alterations:{label:'Umbauten / Genehmigungen / Bauunterlagen prüfen',critical:true,phase:'marketing'},
+    landRisks:{label:'Baulasten, Erschließung und Altlastenthemen prüfen',critical:true,phase:'marketing'},
+    pv:{label:'PV / Technik / laufende Verträge klären',critical:false,phase:'notary'},
+    qualification:{label:'Interessentenstatus belastbar einordnen',critical:false,phase:'notary'},
+    finance:{label:'Finanzierung des Käufers belastbar prüfen',critical:true,phase:'notary'},
+    financeType:{label:'Uneingeschränkte Finanzierungszusage sicherstellen',critical:true,phase:'notary'},
+    notary:{label:'Offene Punkte für den Notar klären',critical:true,phase:'notary'},
+    earlyAccess:{label:'Vorzeitigen Schlüssel- oder Nutzungswunsch klären',critical:true,phase:'handover'},
+    payment:{label:'Kaufpreisfälligkeit und Übergabeablauf klären',critical:false,phase:'handover'},
+    handover:{label:'Dokumentierte Übergabe vorbereiten',critical:false,phase:'handover'}
   };
 
   const buildTodoList = () => {
@@ -349,6 +489,14 @@
       if(id==='finance' && value==='yes') return;
       if(id==='financeType' && value==='final') return;
       if(id==='qualification' && ['viewed','offer','finance'].includes(value)) return;
+      if(id==='ownership' && value==='single') return;
+      if(id==='authority' && value==='yes') return;
+      if(id==='sellerLoan' && value==='none') return;
+      if(id==='rental' && value==='yes') return;
+      if(id==='alterations' && ['none','documented'].includes(value)) return;
+      if(id==='landRisks' && value==='yes') return;
+      if(id==='pv' && ['none','owned'].includes(value)) return;
+      if(id==='earlyAccess' && value==='no') return;
       if(id==='notary' && value==='yes') return;
       if(id==='payment' && value==='yes') return;
       if(id==='handover' && value==='yes') return;
@@ -365,17 +513,23 @@
       '<li class="sales-summary-item sales-summary-'+kind+'"><span aria-hidden="true">'+(kind==='critical'?'!':'?')+'</span><div><strong>'+item.label+'</strong><small>'+(kind==='critical'?(item.critical?'Vor dem nächsten großen Schritt möglichst klären.':'Noch offen und zu klären.'):'Noch nicht eindeutig geklärt.')+'</small></div></li>'
     ).join('');
 
-    const criticalMissing=missing.filter(x=>x.critical);
-    const normalMissing=missing.filter(x=>!x.critical);
+    const all=[...missing.map(x=>({...x,status:x.critical?'critical':'open'})),...unsure.map(x=>({...x,status:'unsure'}))];
+    const phaseLabels={marketing:'Vor der Vermarktung klären',notary:'Vor dem Notartermin klären',handover:'Vor der Übergabe klären'};
     let html='<div class="sales-summary">';
-    html+='<div class="sales-summary-lead"><h3>Ihre nächsten Schritte</h3><p>Aus Ihren Antworten ergibt sich diese persönliche Übersicht.</p></div>';
+    html+='<div class="sales-summary-lead"><h3>Ihre nächsten Schritte</h3><p>Aus Ihren Antworten ergibt sich diese persönliche Übersicht – sortiert danach, wann die Punkte relevant werden.</p></div>';
 
-    if(!missing.length && !unsure.length){
+    if(!all.length){
       html+='<div class="sales-summary-good"><strong>Die abgefragten Punkte wirken derzeit weitgehend geklärt.</strong><p>Vor Vermarktung oder Beurkundung sollten Unterlagen und Nachweise trotzdem noch einmal auf Aktualität und Vollständigkeit geprüft werden.</p></div>';
     } else {
-      if(criticalMissing.length) html+='<div class="sales-summary-block"><h4>Besonders wichtig</h4><ul>'+rows(criticalMissing,'critical')+'</ul></div>';
-      if(normalMissing.length) html+='<div class="sales-summary-block"><h4>Noch offen</h4><ul>'+rows(normalMissing,'open')+'</ul></div>';
-      if(unsure.length) html+='<div class="sales-summary-block"><h4>Noch unsicher</h4><ul>'+rows(unsure,'unsure')+'</ul></div>';
+      ['marketing','notary','handover'].forEach(phase=>{
+        const phaseItems=all.filter(x=>x.phase===phase);
+        if(!phaseItems.length)return;
+        html+='<div class="sales-summary-block sales-summary-phase"><h4>'+phaseLabels[phase]+'</h4><ul>';
+        html+=phaseItems.map(item =>
+          '<li class="sales-summary-item sales-summary-'+item.status+'"><span aria-hidden="true">'+(item.status==='critical'?'!':item.status==='unsure'?'?':'•')+'</span><div><strong>'+item.label+'</strong><small>'+(item.status==='critical'?'Besonders wichtig – möglichst vor dem nächsten Schritt klären.':item.status==='unsure'?'Noch nicht eindeutig geklärt.':'Noch offen und zu klären.')+'</small></div></li>'
+        ).join('');
+        html+='</ul></div>';
+      });
     }
 
     if(['buyer','interest'].includes(answers.start)){
