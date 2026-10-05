@@ -1,4 +1,5 @@
 import { generalDefinition } from './lib/sia-general-knowledge.js';
+import { propertyDetailResult } from './propstack-properties.js';
 import { siaEnabled } from './sia-config.js';
 import { reserveQuota } from './lib/sia-quota.js';
 import { validateConversation } from './lib/sia-conversation.js';
@@ -39,6 +40,59 @@ export default async function handler(req, res) {
   let history;
   try { history = validateConversation(body?.history); } catch { return send(res, 400, { error: 'Ungültiger Gesprächskontext.' }); }
   if (question.length < (history.length ? 1 : 3) || question.length > 1200) return send(res, 400, { error: 'Bitte eine Frage mit höchstens 1200 Zeichen eingeben.' });
+
+  let context = null;
+  const requestedContext = body?.pageContext;
+  if (requestedContext?.type === 'property') {
+    const propertyId = String(requestedContext.propertyId || '');
+    if (!/^\d+$/.test(propertyId)) return send(res, 400, { error: 'Ungültiger Objektkontext.' });
+    const result = await propertyDetailResult(propertyId);
+    const property = result.status === 200 ? result.body?.items?.[0] : null;
+    if (!property) return send(res, 409, { error: 'Diese Immobilie ist nicht mehr öffentlich verfügbar.' });
+    const safeProperty = {
+      id: property.id,
+      reference: property.reference,
+      title: property.title,
+      type: property.type,
+      city: property.city,
+      zip: property.zip,
+      price: property.price,
+      area: property.area,
+      rooms: property.rooms,
+      bedrooms: property.bedrooms,
+      baths: property.baths,
+      plot: property.plot,
+      year: property.year,
+      objectFacts: property.objectFacts,
+      description: property.description,
+      location: property.location,
+      features: property.features,
+      otherNote: property.otherNote,
+      courtage: property.courtage,
+      courtageNote: property.courtageNote,
+      energy: property.energy,
+      amenities: property.amenities,
+      flooring: property.flooring,
+      broker: property.broker ? {
+        name: property.broker.name,
+        phone: property.broker.phone,
+        mobile: property.broker.mobile,
+        email: property.broker.email
+      } : null
+    };
+    context = {
+      type: 'property',
+      instruction: 'Beantworte objektspezifische Fragen ausschließlich anhand dieser aktuell veröffentlichten SLS-Objektdaten. Erfinde keine fehlenden Angaben. Wenn eine Information hier nicht enthalten ist, sage klar, dass sie im veröffentlichten Inserat nicht angegeben ist, und verweise bei Bedarf auf den Ansprechpartner.',
+      property: safeProperty
+    };
+  } else if (requestedContext?.type === 'page') {
+    context = {
+      type: 'page',
+      path: typeof requestedContext.path === 'string' ? requestedContext.path.slice(0, 180) : '',
+      title: typeof requestedContext.title === 'string' ? requestedContext.title.slice(0, 180) : '',
+      heading: typeof requestedContext.heading === 'string' ? requestedContext.heading.slice(0, 180) : ''
+    };
+  }
   let reservation;
   try {
     reservation = await reserveQuota(req, res);
@@ -54,7 +108,7 @@ export default async function handler(req, res) {
   try {
     const upstream = await fetch(endpoint, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question, ...(history.length ? { history } : {}) }), signal: AbortSignal.timeout(50000), redirect: 'error'
+      body: JSON.stringify({ question, ...(history.length ? { history } : {}), ...(context ? { context } : {}) }), signal: AbortSignal.timeout(50000), redirect: 'error'
     });
     if (!upstream.ok) throw new Error('Upstream unavailable');
     const data = await upstream.json();
