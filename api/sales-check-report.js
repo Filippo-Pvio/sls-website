@@ -1,165 +1,237 @@
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+
 const BRAND = {
-  blue: [0.204, 0.357, 0.431],
-  coral: [1, 0.349, 0.435],
-  dark: [0.14, 0.22, 0.26],
-  muted: [0.38, 0.46, 0.50],
-  light: [0.94, 0.96, 0.97],
-  white: [1,1,1]
+  blue: rgb(0.204, 0.357, 0.431),
+  coral: rgb(1, 0.349, 0.435),
+  dark: rgb(0.14, 0.22, 0.26),
+  muted: rgb(0.38, 0.46, 0.50),
+  light: rgb(0.965, 0.973, 0.972),
+  line: rgb(0.88, 0.91, 0.92),
+  white: rgb(1, 1, 1)
 };
 
 const clampText = (value, max = 4000) => String(value ?? '').replace(/[<>]/g, '').trim().slice(0, max);
 const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+const pdfText = value => String(value ?? '')
+  .replace(/[–—]/g, '-')
+  .replace(/[„“”]/g, '"')
+  .replace(/[’]/g, "'")
+  .replace(/…/g, '...')
+  .replace(/→/g, '->')
+  .trim();
 
-const latin = value => String(value ?? '')
-  .replace(/[–—]/g, '-').replace(/[„“”]/g, '"').replace(/[’]/g, "'").replace(/…/g, '...')
-  .replace(/€/g, 'EUR').replace(/→/g, '->');
-
-const pdfEscape = value => latin(value).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
-const bytes = value => Uint8Array.from([...String(value)].map(ch => {
-  const code = ch.charCodeAt(0);
-  return code <= 255 ? code : 63;
-}));
-const concat = arrays => {
-  const length = arrays.reduce((sum, item) => sum + item.length, 0);
-  const out = new Uint8Array(length);
-  let offset = 0;
-  arrays.forEach(item => { out.set(item, offset); offset += item.length; });
-  return out;
-};
-const wrap = (value, max = 82) => {
-  const words = latin(value).split(/\s+/).filter(Boolean);
+function wrapPdfText(value, font, size, maxWidth) {
+  const words = pdfText(value).split(/\s+/).filter(Boolean);
   const lines = [];
   let line = '';
-  words.forEach(word => {
+  for (const word of words) {
     const candidate = line ? line + ' ' + word : word;
-    if (candidate.length > max && line) { lines.push(line); line = word; }
-    else line = candidate;
-  });
+    if (line && font.widthOfTextAtSize(candidate, size) > maxWidth) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = candidate;
+    }
+  }
   if (line) lines.push(line);
   return lines.length ? lines : [''];
-};
+}
 
-function buildPdf(report, contact) {
-  const pages = [[]];
-  let page = 0;
-  let y = 735;
+async function buildPdf(report, contact) {
+  const pdfDoc = await PDFDocument.create();
+  const regular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const bold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  const serif = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
 
-  const addRaw = cmd => pages[page].push({ raw: cmd });
-  const ensure = height => {
-    if (y - height >= 64) return;
-    pages.push([]); page += 1; y = 760;
-    header(false);
-  };
-  const color = arr => arr.join(' ');
-  const line = (text, { size = 10, bold = false, x = 54, leading = 14, fill = BRAND.dark } = {}) => {
-    ensure(leading + 4);
-    pages[page].push({ text: pdfEscape(text), size, bold, x, y, fill });
-    y -= leading;
-  };
-  const wrapped = (text, opts = {}) => wrap(text, opts.max || 82).forEach(row => line(row, opts));
-  const gap = amount => { ensure(amount); y -= amount; };
-  const rect = (x, ry, w, h, fill) => addRaw(color(fill) + ' rg\n' + x + ' ' + ry + ' ' + w + ' ' + h + ' re f\n');
-
-  function header(first = true) {
-    rect(0, 762, 595, 80, BRAND.blue);
-    rect(0, 758, 595, 4, BRAND.coral);
-    pages[page].push({ text: 'SLS', size: 28, bold: true, x: 54, y: 800, fill: BRAND.white });
-    pages[page].push({ text: 'IMMOBILIENPARTNER', size: 8, bold: true, x: 54, y: 783, fill: BRAND.white });
-    pages[page].push({ text: first ? 'PERSÖNLICHE VERKAUFSANALYSE' : 'VERKAUFSANALYSE · FORTSETZUNG', size: 9, bold: true, x: 342, y: 791, fill: BRAND.white });
-    y = 724;
+  let logo = null;
+  try {
+    const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/logo-sls-horizontal-transparent.png');
+    if (response.ok) logo = await pdfDoc.embedPng(await response.arrayBuffer());
+  } catch (error) {
+    console.error('sales-check-report: logo unavailable', error);
   }
 
-  header(true);
-  line('Ihre persönliche Verkaufsanalyse', { size: 21, bold: true, leading: 30, fill: BRAND.blue });
-  wrapped('Ihre individuelle Übersicht zeigt, welche Punkte vor Vermarktung, Notartermin und Übergabe noch geklärt werden sollten – kompakt, priorisiert und mit Bezugsquellen.', { size: 10, leading: 15, fill: BRAND.muted, max: 84 });
-  gap(10);
+  const PAGE_W = 595.28;
+  const PAGE_H = 841.89;
+  const M = 52;
+  const CONTENT_W = PAGE_W - M * 2;
+  const FOOTER_H = 44;
 
-  rect(54, y - 58, 487, 58, BRAND.light);
-  line('Auswertung fuer', { size: 8, bold: true, x: 68, leading: 13, fill: BRAND.muted });
-  line((contact.firstName + ' ' + contact.lastName).trim(), { size: 12, bold: true, x: 68, leading: 15, fill: BRAND.blue });
-  line('Immobilie: ' + (report.type || 'Immobilie') + '   |   Situation: ' + (report.situation || 'Verkauf') + '   |   Stand: ' + (report.date || ''), { size: 8, x: 68, leading: 15, fill: BRAND.muted });
-  gap(12);
+  let page;
+  let y = 0;
+
+  const drawFooter = target => {
+    target.drawLine({ start: { x: M, y: 45 }, end: { x: PAGE_W - M, y: 45 }, thickness: 0.7, color: BRAND.line });
+    target.drawText('SLS Immobilienpartner GmbH', { x: M, y: 28, size: 7.6, font: bold, color: BRAND.blue });
+    const right = 'www.sls.de  |  service@sls.de  |  02369 742 80 20';
+    target.drawText(right, { x: PAGE_W - M - regular.widthOfTextAtSize(right, 7.4), y: 28, size: 7.4, font: regular, color: BRAND.muted });
+  };
+
+  const drawHeader = (target, first) => {
+    target.drawRectangle({ x: 0, y: PAGE_H - 5, width: PAGE_W, height: 5, color: BRAND.coral });
+    if (logo) {
+      const dims = logo.scale(1);
+      const logoW = 148;
+      const logoH = logoW * (dims.height / dims.width);
+      target.drawImage(logo, { x: M, y: PAGE_H - 46 - logoH / 2, width: logoW, height: logoH });
+    } else {
+      target.drawText('SLS IMMOBILIENPARTNER', { x: M, y: PAGE_H - 39, size: 15, font: bold, color: BRAND.blue });
+    }
+    const kicker = first ? 'PERSÖNLICHE VERKAUFSANALYSE' : 'VERKAUFSANALYSE | FORTSETZUNG';
+    target.drawText(kicker, {
+      x: PAGE_W - M - bold.widthOfTextAtSize(kicker, 8.6),
+      y: PAGE_H - 37,
+      size: 8.6,
+      font: bold,
+      color: BRAND.blue
+    });
+    target.drawLine({ start: { x: M, y: PAGE_H - 66 }, end: { x: PAGE_W - M, y: PAGE_H - 66 }, thickness: 0.7, color: BRAND.line });
+    drawFooter(target);
+  };
+
+  const addPage = first => {
+    page = pdfDoc.addPage([PAGE_W, PAGE_H]);
+    drawHeader(page, first);
+    y = PAGE_H - 93;
+  };
+
+  const ensure = needed => {
+    if (y - needed >= FOOTER_H + 24) return;
+    addPage(false);
+  };
+
+  const drawWrapped = (text, {
+    x = M, size = 9, font = regular, color = BRAND.dark,
+    maxWidth = CONTENT_W, leading = size * 1.35
+  } = {}) => {
+    const lines = wrapPdfText(text, font, size, maxWidth);
+    ensure(lines.length * leading);
+    for (const row of lines) {
+      page.drawText(row, { x, y, size, font, color });
+      y -= leading;
+    }
+    return lines.length;
+  };
+
+  const gap = amount => {
+    ensure(amount);
+    y -= amount;
+  };
+
+  const drawMetaCard = () => {
+    const h = 64;
+    ensure(h + 10);
+    page.drawRectangle({ x: M, y: y - h + 8, width: CONTENT_W, height: h, color: BRAND.light, borderColor: BRAND.line, borderWidth: 0.6 });
+    page.drawText('AUSWERTUNG FÜR', { x: M + 16, y: y - 8, size: 7.2, font: bold, color: BRAND.muted });
+    const name = [contact.firstName, contact.lastName].filter(Boolean).join(' ');
+    page.drawText(name, { x: M + 16, y: y - 26, size: 12.2, font: bold, color: BRAND.blue });
+    const meta = 'Immobilie: ' + (report.type || 'Immobilie') + '   |   Situation: ' + (report.situation || 'Verkauf') + '   |   Stand: ' + (report.date || '');
+    page.drawText(meta, { x: M + 16, y: y - 44, size: 7.5, font: regular, color: BRAND.muted });
+    y -= h + 8;
+  };
+
+  const statusInfo = status => {
+    if (status === 'critical') return { label: 'WICHTIG', accent: BRAND.coral, note: 'Vor dem nächsten Verkaufsschritt verbindlich klären.' };
+    if (status === 'unsure') return { label: 'NOCH UNKLAR', accent: BRAND.blue, note: 'Aktualität oder Vollständigkeit bitte gegenprüfen.' };
+    return { label: 'OFFEN', accent: BRAND.muted, note: 'Für die weitere Vermarktung bzw. Abwicklung vorbereiten.' };
+  };
+
+  const drawItemCard = item => {
+    const info = statusInfo(item.status);
+    const title = clampText(item.label, 260);
+    const source = item.source ? 'Bezugsquelle: ' + clampText(item.source, 320) : '';
+    const titleLines = wrapPdfText(title, bold, 9.6, CONTENT_W - 46);
+    const noteLines = wrapPdfText(info.note, regular, 7.8, CONTENT_W - 46);
+    const sourceLines = source ? wrapPdfText(source, regular, 7.6, CONTENT_W - 46) : [];
+    const h = 18 + titleLines.length * 12.5 + noteLines.length * 10.5 + sourceLines.length * 10.2 + 13;
+    ensure(h + 7);
+
+    const top = y;
+    page.drawRectangle({ x: M, y: top - h, width: CONTENT_W, height: h, color: BRAND.light, borderColor: BRAND.line, borderWidth: 0.55 });
+    page.drawRectangle({ x: M, y: top - h, width: 4, height: h, color: info.accent });
+    page.drawText(info.label, { x: M + 14, y: top - 17, size: 7.3, font: bold, color: info.accent });
+
+    let cy = top - 34;
+    for (const row of titleLines) {
+      page.drawText(row, { x: M + 14, y: cy, size: 9.6, font: bold, color: BRAND.dark });
+      cy -= 12.5;
+    }
+    for (const row of noteLines) {
+      page.drawText(row, { x: M + 14, y: cy - 1, size: 7.8, font: regular, color: BRAND.muted });
+      cy -= 10.5;
+    }
+    if (sourceLines.length) {
+      cy -= 2;
+      for (const row of sourceLines) {
+        page.drawText(row, { x: M + 14, y: cy, size: 7.6, font: regular, color: BRAND.blue });
+        cy -= 10.2;
+      }
+    }
+    y = top - h - 7;
+  };
+
+  addPage(true);
+
+  page.drawText('Ihre persönliche Verkaufsanalyse', { x: M, y, size: 24.5, font: serif, color: BRAND.blue });
+  y -= 31;
+  drawWrapped('Die wichtigsten offenen Punkte aus Ihrem Verkaufscheck - nach Verkaufsphase sortiert und mit konkreten Bezugsquellen.', {
+    size: 9.5, color: BRAND.muted, leading: 13.2
+  });
+  gap(10);
+  drawMetaCard();
 
   const contradictions = Array.isArray(report.contradictions) ? report.contradictions : [];
   if (contradictions.length) {
-    line('Bitte gegenprüfen', { size: 13, bold: true, leading: 20, fill: BRAND.coral });
+    page.drawText('BITTE GEGENPRÜFEN', { x: M, y, size: 7.5, font: bold, color: BRAND.coral });
+    y -= 15;
     contradictions.forEach(item => {
-      wrapped(clampText(item.title, 180), { size: 10, bold: true, leading: 14, fill: BRAND.blue });
-      wrapped(clampText(item.text, 900), { size: 9, x: 64, leading: 13, fill: BRAND.dark, max: 78 });
+      const title = clampText(item.title, 180);
+      const text = clampText(item.text, 900);
+      drawWrapped(title, { size: 9.3, font: bold, color: BRAND.dark, leading: 12.4 });
+      drawWrapped(text, { size: 7.8, color: BRAND.muted, leading: 10.5 });
       gap(6);
     });
-    gap(4);
+    gap(3);
   }
 
   const phases = Array.isArray(report.phases) ? report.phases : [];
   if (!phases.length) {
-    line('Aktuell keine offenen Punkte aus dem Check', { size: 13, bold: true, leading: 19, fill: BRAND.blue });
-    wrapped('Die abgefragten Punkte wirken weitgehend geklärt. Vor dem nächsten Schritt sollten Unterlagen und Nachweise dennoch noch einmal auf Aktualität und Vollständigkeit geprüft werden.', { size: 9, leading: 14, fill: BRAND.dark });
-    gap(8);
-  }
-
-  phases.forEach(section => {
-    line(clampText(section.label, 120), { size: 13, bold: true, leading: 20, fill: BRAND.blue });
-    (Array.isArray(section.items) ? section.items : []).forEach(item => {
-      const prefix = item.status === 'critical' ? 'WICHTIG' : item.status === 'unsure' ? 'UNSICHER' : 'OFFEN';
-      wrapped(prefix + ': ' + clampText(item.label, 240), { size: 10, bold: item.status === 'critical', x: 62, leading: 14, fill: item.status === 'critical' ? BRAND.coral : BRAND.dark, max: 78 });
-      wrapped('Nächster Schritt: ' + clampText(item.label, 220) + ' prüfen, beschaffen oder verbindlich klären.', { size: 8, x: 72, leading: 12, fill: BRAND.muted, max: 74 });
-      if (item.source) wrapped('Bezugsquelle: ' + clampText(item.source, 300), { size: 8, x: 72, leading: 12, fill: BRAND.muted, max: 74 });
+    ensure(72);
+    page.drawRectangle({ x: M, y: y - 54, width: CONTENT_W, height: 54, color: BRAND.light, borderColor: BRAND.line, borderWidth: 0.6 });
+    page.drawText('Aktuell keine offenen Punkte aus dem Check', { x: M + 16, y: y - 20, size: 10.2, font: bold, color: BRAND.blue });
+    page.drawText('Prüfen Sie Unterlagen und Nachweise vor dem nächsten Schritt dennoch noch einmal auf Aktualität.', { x: M + 16, y: y - 38, size: 7.8, font: regular, color: BRAND.muted });
+    y -= 65;
+  } else {
+    for (const section of phases) {
+      ensure(36);
+      page.drawText(clampText(section.label, 120), { x: M, y, size: 14.2, font: serif, color: BRAND.blue });
+      y -= 21;
+      for (const item of (Array.isArray(section.items) ? section.items : [])) drawItemCard(item);
       gap(5);
-    });
-    gap(7);
-  });
-
-  line('Wichtiger Hinweis', { size: 11, bold: true, leading: 17, fill: BRAND.blue });
-  wrapped('Diese Auswertung dient als praktische Orientierung. Sie ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung. Anforderungen von Banken, Notariaten oder Behörden können im Einzelfall abweichen.', { size: 8, leading: 12, fill: BRAND.muted });
-  gap(14);
-  line('Sie möchten die offenen Punkte persönlich einordnen?', { size: 10, bold: true, leading: 15, fill: BRAND.blue });
-  wrapped('SLS Immobilienpartner begleitet Sie vom ersten Überblick bis zur Übergabe – persönlich, strukturiert und mit einem klaren nächsten Schritt.', { size: 8, leading: 12, fill: BRAND.muted, max: 82 });
-  gap(8);
-  line('SLS Immobilienpartner GmbH  ·  www.sls.de  ·  service@sls.de  ·  02369 742 80 20', { size: 8, bold: true, fill: BRAND.blue });
-
-  const objects = [];
-  const count = 4 + pages.length * 2;
-  objects[1] = '<< /Type /Catalog /Pages 2 0 R >>';
-  objects[2] = '<< /Type /Pages /Kids [ ' + pages.map((_, i) => (5 + i * 2) + ' 0 R').join(' ') + ' ] /Count ' + pages.length + ' >>';
-  objects[3] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';
-  objects[4] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>';
-
-  pages.forEach((items, i) => {
-    const pageId = 5 + i * 2;
-    const contentId = 6 + i * 2;
-    let stream = '';
-    items.forEach(item => {
-      if (item.raw) { stream += item.raw; return; }
-      stream += color(item.fill) + ' rg\nBT /' + (item.bold ? 'F2' : 'F1') + ' ' + item.size + ' Tf 1 0 0 1 ' + item.x + ' ' + item.y + ' Tm (' + item.text + ') Tj ET\n';
-    });
-    const streamBytes = bytes(stream);
-    objects[pageId] = '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ' + contentId + ' 0 R >>';
-    objects[contentId] = { streamBytes };
-  });
-
-  const chunks = [Uint8Array.from([37,80,68,70,45,49,46,52,10,37,226,227,207,211,10])];
-  const offsets = [0];
-  let cursor = chunks[0].length;
-  for (let i = 1; i <= count; i++) {
-    offsets[i] = cursor;
-    const head = bytes(i + ' 0 obj\n');
-    let body;
-    if (typeof objects[i] === 'object') {
-      const h = bytes('<< /Length ' + objects[i].streamBytes.length + ' >>\nstream\n');
-      const t = bytes('\nendstream');
-      body = concat([h, objects[i].streamBytes, t]);
-    } else body = bytes(objects[i]);
-    const tail = bytes('\nendobj\n');
-    const obj = concat([head, body, tail]);
-    chunks.push(obj); cursor += obj.length;
+    }
   }
-  const xrefOffset = cursor;
-  let xref = 'xref\n0 ' + (count + 1) + '\n0000000000 65535 f \n';
-  for (let i = 1; i <= count; i++) xref += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
-  xref += 'trailer\n<< /Size ' + (count + 1) + ' /Root 1 0 R >>\nstartxref\n' + xrefOffset + '\n%%EOF';
-  chunks.push(bytes(xref));
-  return concat(chunks);
+
+  ensure(108);
+  page.drawRectangle({ x: M, y: y - 82, width: CONTENT_W, height: 82, color: BRAND.blue });
+  page.drawText('Gut vorbereitet in den nächsten Schritt.', { x: M + 18, y: y - 24, size: 11.5, font: bold, color: BRAND.white });
+  const cta = 'Wenn Sie offene Punkte gemeinsam einordnen möchten, begleiten wir Sie persönlich von der Vorbereitung bis zur Übergabe.';
+  let cy = y - 43;
+  for (const row of wrapPdfText(cta, regular, 8.2, CONTENT_W - 36)) {
+    page.drawText(row, { x: M + 18, y: cy, size: 8.2, font: regular, color: BRAND.white });
+    cy -= 11;
+  }
+  page.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: M + 18, y: y - 69, size: 7.8, font: bold, color: BRAND.white });
+  y -= 95;
+
+  ensure(55);
+  page.drawText('Hinweis', { x: M, y, size: 8.5, font: bold, color: BRAND.blue });
+  y -= 13;
+  drawWrapped('Diese Auswertung dient als praktische Orientierung und ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung. Anforderungen von Banken, Notariaten oder Behörden können im Einzelfall abweichen.', {
+    size: 7.2, color: BRAND.muted, leading: 9.8
+  });
+
+  const out = await pdfDoc.save({ useObjectStreams: false });
+  return Uint8Array.from(out);
 }
 
 const htmlEscape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -327,7 +399,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const pdf = buildPdf(report, contact);
+    const pdf = await buildPdf(report, contact);
     const pdfBase64 = Buffer.from(pdf).toString('base64');
 
     await sendViaMicrosoftGraph({
