@@ -49,6 +49,28 @@
     unknown:[title,bullets]
   });
 
+  const siaQuestions = {
+    docGrundbuch:'Warum ist ein aktueller Grundbuchauszug beim Immobilienverkauf wichtig?',
+    groundbook:'Was bedeuten Abteilung II und Abteilung III im Grundbuch beim Immobilienverkauf?',
+    docFlur:'Warum kann eine aktuelle Flurkarte für Käufer und Finanzierung wichtig sein?',
+    docEnergy:'Warum braucht man beim Immobilienverkauf einen gültigen Energieausweis?',
+    authority:'Welche Rolle spielen Vollmacht oder Erbnachweis beim Immobilienverkauf?',
+    sellerLoan:'Was passiert beim Immobilienverkauf mit einer bestehenden Grundschuld oder Restschuld?',
+    rental:'Welche Unterlagen sind bei einer vermieteten Immobilie für den Verkauf wichtig?',
+    alterations:'Warum können nicht dokumentierte Umbauten den Immobilienverkauf erschweren?',
+    landRisks:'Was sind Baulasten und warum sind sie beim Immobilienverkauf wichtig?',
+    pv:'Was muss beim Verkauf einer Immobilie mit Photovoltaikanlage beachtet werden?',
+    finance:'Warum sollte die Finanzierung des Käufers vor dem Notartermin belastbar geprüft sein?',
+    financeType:'Warum reicht eine vorläufige Finanzierungszusage beim Immobilienkauf nicht aus?',
+    notaryRisk:'Welche Kostenrisiken bestehen, wenn ein Immobilienkauf nach dem Notartermin scheitert?',
+    earlyAccess:'Warum sollte man Schlüssel oder Nutzung nicht vor Kaufpreiszahlung übergeben?'
+  };
+
+  const siaButton = id => {
+    const question = siaQuestions[id];
+    return question ? '<button type="button" class="sales-sia-link" data-sia-question="'+question.replace(/"/g,'&quot;')+'"><span>SIA</span> fragen</button>' : '';
+  };
+
   const questions = {
     start: {
       kicker:'Ausgangssituation', title:'Wo stehen Sie gerade mit Ihrem Verkauf?',
@@ -526,7 +548,7 @@
         if(!phaseItems.length)return;
         html+='<div class="sales-summary-block sales-summary-phase"><h4>'+phaseLabels[phase]+'</h4><ul>';
         html+=phaseItems.map(item =>
-          '<li class="sales-summary-item sales-summary-'+item.status+'"><span aria-hidden="true">'+(item.status==='critical'?'!':item.status==='unsure'?'?':'•')+'</span><div><strong>'+item.label+'</strong><small>'+(item.status==='critical'?'Besonders wichtig – möglichst vor dem nächsten Schritt klären.':item.status==='unsure'?'Noch nicht eindeutig geklärt.':'Noch offen und zu klären.')+'</small></div></li>'
+          '<li class="sales-summary-item sales-summary-'+item.status+'"><span aria-hidden="true">'+(item.status==='critical'?'!':item.status==='unsure'?'?':'•')+'</span><div><strong>'+item.label+'</strong><small>'+(item.status==='critical'?'Besonders wichtig – möglichst vor dem nächsten Schritt klären.':item.status==='unsure'?'Noch nicht eindeutig geklärt.':'Noch offen und zu klären.')+'</small>'+siaButton(item.id)+'</div></li>'
         ).join('');
         html+='</ul></div>';
       });
@@ -574,7 +596,7 @@
     const info=q.explain?.[value];
     if(!info){explainer.hidden=true;explainer.innerHTML='';return}
     explainer.hidden=false;
-    explainer.innerHTML='<h3>'+info[0]+'</h3>'+(info[1]?.length?'<ul>'+info[1].map(x=>'<li>'+x+'</li>').join('')+'</ul>':'');
+    explainer.innerHTML='<h3>'+info[0]+'</h3>'+(info[1]?.length?'<ul>'+info[1].map(x=>'<li>'+x+'</li>').join('')+'</ul>':'')+siaButton(current);
   };
 
   const select=value=>{
@@ -620,6 +642,15 @@
     render();
     root.scrollIntoView({behavior:'smooth',block:'start'});
   };
+
+  root.addEventListener('click', event => {
+    const button = event.target.closest('[data-sia-question]');
+    if (!button) return;
+    const question = button.dataset.siaQuestion || '';
+    if (!question) return;
+    window.__slsSiaQuestionRequested = question;
+    window.dispatchEvent(new CustomEvent('sls:sia-ask',{detail:{question}}));
+  });
 
   next.addEventListener('click',goNext);
   back.addEventListener('click',goBack);
