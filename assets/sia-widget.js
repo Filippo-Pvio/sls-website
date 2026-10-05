@@ -102,7 +102,7 @@
     $('.contact a').href = '#pp-inquiry';
   } else {
     const path = location.pathname;
-    if (path.startsWith('/verkaufen')) {
+    if (path.startsWith('/verkaufen') || path.startsWith('/verkaufscheck')) {
       $('.intro h3').textContent = 'Fragen zu Ihrem Immobilienverkauf?';
       $('.intro > p').textContent = 'Ich helfe Ihnen bei Bewertung, Vorbereitung und Verkaufsprozess.';
     } else if (/finanz/i.test(path)) {
@@ -214,9 +214,21 @@
     window.visualViewport?.addEventListener('scroll', scheduleViewportUpdate);
     window.addEventListener('resize', scheduleViewportUpdate);
   };
+  const prepareExternalQuestion = question => {
+    const value = typeof question === 'string' ? question.trim().slice(0,1200) : '';
+    if (!value) return;
+    openSia();
+    field.value = value;
+    status.textContent = 'Ihre Frage aus dem Verkaufscheck ist vorbereitet. Sie können sie bearbeiten oder direkt senden.';
+  };
   launch.addEventListener('click', openSia);
   window.addEventListener('sls:sia-open', openSia);
-  if (window.__slsSiaOpenRequested) {
+  window.addEventListener('sls:sia-ask', event => prepareExternalQuestion(event.detail?.question));
+  if (window.__slsSiaQuestionRequested) {
+    const pendingQuestion = window.__slsSiaQuestionRequested;
+    window.__slsSiaQuestionRequested = '';
+    prepareExternalQuestion(pendingQuestion);
+  } else if (window.__slsSiaOpenRequested) {
     window.__slsSiaOpenRequested = false;
     openSia();
   }
