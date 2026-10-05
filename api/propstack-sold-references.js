@@ -35,10 +35,11 @@ function publicReference(unit, soldStatusIds) {
   if (!image) return null;
   const title = String(unit.title?.value ?? unit.title ?? '').trim().slice(0, 130);
   const city = String(unit.city ?? '').trim().slice(0, 70);
+  const zip = String(unit.zip_code ?? unit.zip ?? '').trim().slice(0, 12);
   if (!title || !city) return null;
   const brokerName = String(unit.broker?.name || '').trim().slice(0, 100);
   const brokerId = String(unit.broker_id || unit.broker?.id || '').trim();
-  return { id: String(unit.id), title, city, image, brokerName: brokerName || null, brokerId: brokerId || null };
+  return { id: String(unit.id), title, city, zip: zip || null, image, brokerName: brokerName || null, brokerId: brokerId || null };
 }
 
 async function soldListings(key, statusIds) {
