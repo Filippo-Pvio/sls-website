@@ -93,3 +93,26 @@ body.profile-page #main > section.profile-success.profile-tone-light .profile-su
 
 /* Distinguish Expert Channel video/podcast from the separate editorial interview. */
 .profile-podcast-link{display:inline-flex;margin-top:14px;color:#345b6e;font-size:14px;font-weight:700;text-decoration:none}.profile-podcast-link:hover{text-decoration:underline;text-underline-offset:4px}.profile-media-audio{height:100%;padding:32px;border-radius:18px;background:#fff;box-shadow:0 12px 32px rgba(25,51,62,.06)}.profile-media-audio h3{font:500 30px/1.22 'Playfair Display',Georgia,serif;color:#345b6e;margin:0 0 16px}.profile-media-audio>p:not(.eyebrow){color:#5b707a;line-height:1.7}
+
+
+/* Keep the sold-reference link readable when the section rhythm changes because a media block is present. */
+body.profile-page #main > section.profile-success.profile-tone-blue .profile-success-footer .text-link{
+  color:#f7f2e8 !important;
+}
+body.profile-page #main > section.profile-success.profile-tone-blue .profile-success-footer .text-link:hover,
+body.profile-page #main > section.profile-success.profile-tone-blue .profile-success-footer .text-link:focus-visible{
+  color:#fff !important;
+}
+body.profile-page #main > section.profile-success.profile-tone-blue .profile-success-footer .text-link::after{
+  background:currentColor !important;
+}
+body.profile-page #main > section.profile-success.profile-tone-light .profile-success-footer .text-link{
+  color:#345b6e !important;
+}
+body.profile-page #main > section.profile-success.profile-tone-light .profile-success-footer .text-link:hover,
+body.profile-page #main > section.profile-success.profile-tone-light .profile-success-footer .text-link:focus-visible{
+  color:#294a5a !important;
+}
+body.profile-page #main > section.profile-success.profile-tone-light .profile-success-footer .text-link::after{
+  background:currentColor !important;
+}
