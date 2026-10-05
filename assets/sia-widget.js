@@ -9,6 +9,30 @@
     dailyLimit = config.dailyLimit;
     dialogueEnabled = config.dialogueEnabled === true;
   } catch { return; }
+
+  let propertyContext = null;
+  try {
+    const bootstrap = document.querySelector('#pp-server-data');
+    const data = bootstrap ? JSON.parse(bootstrap.textContent || '{}') : null;
+    const property = data?.status === 200 && data?.property && /^\d+$/.test(String(data.property.id || '')) ? data.property : null;
+    if (property) propertyContext = {
+      id: String(property.id),
+      title: String(property.title || 'Diese Immobilie'),
+      hasCourtage: Boolean(property.courtage || property.courtageNote),
+      hasEnergy: Boolean(property.energy && Object.values(property.energy).some(value => value !== null && value !== undefined && value !== '')),
+      hasFeatures: Boolean(property.features || (Array.isArray(property.amenities) && property.amenities.length))
+    };
+  } catch { /* Keep general SIA if page context cannot be read. */ }
+
+  const pageContext = propertyContext
+    ? { type: 'property', propertyId: propertyContext.id }
+    : {
+        type: 'page',
+        path: location.pathname.slice(0, 180),
+        title: document.title.slice(0, 180),
+        heading: (document.querySelector('main h1')?.textContent || '').trim().slice(0, 180)
+      };
+
   const host = document.createElement('sls-sia');
   const root = host.attachShadow({ mode: 'open' });
   root.innerHTML = `
@@ -41,6 +65,50 @@
     </dialog>`;
   document.body.append(host);
   const $ = s => root.querySelector(s);
+
+  let topicQuestions = [
+    'Wie bereite ich den Verkauf meiner Immobilie vor?',
+    'Wie wird der Wert meiner Immobilie ermittelt?',
+    'Wie läuft der Immobilienkauf bei SLS Immobilienpartner ab?',
+    'Was sollte ich bei der Finanzierung einer Immobilie beachten?',
+    'Was zeichnet SLS Immobilienpartner aus?'
+  ];
+  if (propertyContext) {
+    $('.intro h3').textContent = 'Fragen zu dieser Immobilie?';
+    $('.intro > p').textContent = 'Ich beantworte Fragen auf Grundlage der veröffentlichten Objektdaten.';
+    const propertyQuestions = [
+      ['Eckdaten', 'Was sind die wichtigsten Eckdaten dieser Immobilie?'],
+      propertyContext.hasCourtage
+        ? ['Käuferprovision', 'Wie hoch ist die Käuferprovision bei dieser Immobilie?']
+        : ['Preis & Kosten', 'Welche Preis- und Kostenangaben sind zu dieser Immobilie veröffentlicht?'],
+      propertyContext.hasEnergy
+        ? ['Energieausweis', 'Welche Angaben zum Energieausweis gibt es bei dieser Immobilie?']
+        : ['Baujahr & Zustand', 'Was ist zu Baujahr und Zustand dieser Immobilie veröffentlicht?'],
+      propertyContext.hasFeatures
+        ? ['Ausstattung', 'Welche Ausstattung und Merkmale hat diese Immobilie?']
+        : ['Beschreibung', 'Was ist in der Objektbeschreibung zu dieser Immobilie wichtig?'],
+      ['Ansprechpartner', 'Wer ist Ansprechpartner für diese Immobilie und wie kann ich sie anfragen?']
+    ];
+    topicQuestions = propertyQuestions.map(([, question]) => question);
+    root.querySelectorAll('.suggestions button').forEach((button, index) => {
+      button.textContent = propertyQuestions[index]?.[0] || button.textContent;
+      button.classList.toggle('why-sls', index === propertyQuestions.length - 1);
+    });
+    $('.contact a').textContent = 'Diese Immobilie anfragen';
+    $('.contact a').href = '#immobilie-anfragen';
+  } else {
+    const path = location.pathname;
+    if (path.startsWith('/verkaufen')) {
+      $('.intro h3').textContent = 'Fragen zu Ihrem Immobilienverkauf?';
+      $('.intro > p').textContent = 'Ich helfe Ihnen bei Bewertung, Vorbereitung und Verkaufsprozess.';
+    } else if (/finanz/i.test(path)) {
+      $('.intro h3').textContent = 'Fragen zur Finanzierung?';
+      $('.intro > p').textContent = 'Ich ordne wichtige Begriffe und nächste Schritte für Sie ein.';
+    } else if (path.startsWith('/immobilien')) {
+      $('.intro h3').textContent = 'Fragen zum Immobilienkauf?';
+      $('.intro > p').textContent = 'Ich helfe Ihnen bei Suche, Auswahl und Kaufprozess.';
+    }
+  }
   const dialog = $('dialog'), launch = $('.launch'), field = $('textarea'), status = $('.status');
   const quickbar = $('.quickbar');
   let compactTimer = 0;
@@ -141,13 +209,6 @@
     launch.setAttribute('aria-expanded', 'false');
     launch.focus({ preventScroll: true });
   });
-  const topicQuestions = [
-    'Wie bereite ich den Verkauf meiner Immobilie vor?',
-    'Wie wird der Wert meiner Immobilie ermittelt?',
-    'Wie läuft der Immobilienkauf bei SLS Immobilienpartner ab?',
-    'Was sollte ich bei der Finanzierung einer Immobilie beachten?',
-    'Was zeichnet SLS Immobilienpartner aus?'
-  ];
   let notesScroll = 0;
   function showNotes(show, restoreFocus = true) {
     if (show) notesScroll = $('.content').scrollTop;
@@ -225,7 +286,7 @@
     status.textContent = 'SIA bereitet Ihre Antwort vor…'; $('.content').setAttribute('aria-busy', 'true');
     const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 55000);
     try {
-      const response = await fetch('/api/sia-ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question, ...(dialogueEnabled ? { history: conversation } : {}) }), signal: controller.signal });
+      const response = await fetch('/api/sia-ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question, pageContext, ...(dialogueEnabled ? { history: conversation } : {}) }), signal: controller.signal });
       const data = await response.json();
       if (response.status === 429 && ['daily_limit', 'pending_limit', 'slow_down'].includes(data.code)) {
         status.textContent = data.code === 'daily_limit'
