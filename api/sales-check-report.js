@@ -209,6 +209,74 @@ async function rateLimit(req, email) {
   return true;
 }
 
+async function getGraphAccessToken() {
+  const tenantId = process.env.MS_GRAPH_TENANT_ID;
+  const clientId = process.env.MS_GRAPH_CLIENT_ID;
+  const clientSecret = process.env.MS_GRAPH_CLIENT_SECRET;
+  if (!tenantId || !clientId || !clientSecret) {
+    const error = new Error('Microsoft Graph credentials missing');
+    error.code = 'GRAPH_CONFIG_MISSING';
+    throw error;
+  }
+
+  const body = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    scope: 'https://graph.microsoft.com/.default',
+    grant_type: 'client_credentials'
+  });
+
+  const response = await fetch('https://login.microsoftonline.com/' + encodeURIComponent(tenantId) + '/oauth2/v2.0/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.access_token) {
+    console.error('sales-check-report: graph token error', response.status, data?.error || data?.error_description || 'unknown');
+    const error = new Error('Microsoft Graph token unavailable');
+    error.code = 'GRAPH_AUTH_FAILED';
+    throw error;
+  }
+  return data.access_token;
+}
+
+async function sendViaMicrosoftGraph({ to, subject, html, attachmentBase64 }) {
+  const sender = process.env.MS_GRAPH_SENDER || 'service@sls.de';
+  const accessToken = await getGraphAccessToken();
+  const payload = {
+    message: {
+      subject,
+      body: { contentType: 'HTML', content: html },
+      toRecipients: [{ emailAddress: { address: to } }],
+      attachments: [{
+        '@odata.type': '#microsoft.graph.fileAttachment',
+        name: 'SLS-Verkaufsanalyse.pdf',
+        contentType: 'application/pdf',
+        contentBytes: attachmentBase64
+      }]
+    },
+    saveToSentItems: true
+  };
+
+  const response = await fetch('https://graph.microsoft.com/v1.0/users/' + encodeURIComponent(sender) + '/sendMail', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + accessToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    const text = await response.text().catch(() => '');
+    console.error('sales-check-report: graph sendMail error', response.status, text.slice(0, 800));
+    const error = new Error('Microsoft Graph send failed');
+    error.code = 'GRAPH_SEND_FAILED';
+    throw error;
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -231,38 +299,26 @@ export default async function handler(req, res) {
     return res.status(429).json({ message: 'Bitte warten Sie etwas, bevor Sie eine weitere Auswertung anfordern.' });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error('sales-check-report: RESEND_API_KEY missing');
+  if (!process.env.MS_GRAPH_TENANT_ID || !process.env.MS_GRAPH_CLIENT_ID || !process.env.MS_GRAPH_CLIENT_SECRET) {
+    console.error('sales-check-report: Microsoft Graph credentials missing');
     return res.status(503).json({ message: 'Der E-Mail-Versand wird gerade eingerichtet. Bitte versuchen Sie es später erneut.' });
   }
 
   try {
     const pdf = buildPdf(report, contact);
     const pdfBase64 = Buffer.from(pdf).toString('base64');
-    const from = process.env.SALES_CHECK_FROM_EMAIL || 'SLS Immobilienpartner <service@sls.de>';
-    const payload = {
-      from,
-      to: [contact.email],
+
+    await sendViaMicrosoftGraph({
+      to: contact.email,
       subject: 'Ihre persönliche SLS Verkaufsanalyse',
       html: buildEmailHtml(contact),
-      attachments: [{ filename: 'SLS-Verkaufsanalyse.pdf', content: pdfBase64 }]
-    };
-
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: 'Bearer ' + apiKey, 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      attachmentBase64: pdfBase64
     });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      console.error('sales-check-report: email provider error', response.status, result?.name || result?.message || 'unknown');
-      return res.status(502).json({ message: 'Die E-Mail konnte gerade nicht versendet werden. Bitte versuchen Sie es später erneut.' });
-    }
 
     return res.status(200).json({ ok: true });
   } catch (error) {
     console.error('sales-check-report:', error);
-    return res.status(500).json({ message: 'Die Auswertung konnte gerade nicht erstellt werden. Bitte versuchen Sie es später erneut.' });
+    const status = error?.code === 'GRAPH_CONFIG_MISSING' ? 503 : 502;
+    return res.status(status).json({ message: 'Die E-Mail konnte gerade nicht versendet werden. Bitte versuchen Sie es später erneut.' });
   }
 }
