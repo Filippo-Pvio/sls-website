@@ -79,3 +79,8 @@ body.profile-page #main > section.profile-focus.profile-tone-blue h2,
 body.profile-page #main > section.profile-success.profile-tone-blue h2{
   color:#fff !important;
 }
+
+/* Use the site's warm cream tone for subheadings on blue profile sections. */
+body.profile-page #main > section.profile-focus.profile-tone-blue .profile-focus-grid h3{
+  color:#f7f2e8 !important;
+}
