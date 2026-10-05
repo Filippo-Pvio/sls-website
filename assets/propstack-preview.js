@@ -1,3 +1,4 @@
+import {setupPropertyFilters} from './property-filters.mjs';
 import {propertyCardHtml} from './property-card.mjs';
 import {objectPath,buildPropertySeo} from './property-seo.mjs';
 (() => {
@@ -115,6 +116,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
       query:String(form.get('query')||'').toLocaleLowerCase('de').trim(),
       city:String(form.get('city')||'').toLocaleLowerCase('de').trim(),
       type:form.get('type'),
+      subtype:form.get('subtype'),
       price:Number(form.get('price')),
       minArea:Number(form.get('area')),
       rooms:Number(form.get('rooms'))
@@ -134,7 +136,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
     if(searchProfileCta&&$('#pp-results').contains(searchProfileCta))$('#pp-results').before(searchProfileCta);
     $('#pp-results').innerHTML='<p role="status">Immobilien werden geladen …</p>';
     if(demo){
-      const f=activeFilters();all=[sample].filter(p=>(!f.query||`${p.title} ${p.city} ${p.zip}`.toLocaleLowerCase('de').includes(f.query))&&(!f.city||p.city.toLocaleLowerCase('de').includes(f.city))&&(!f.type||p.type===f.type)&&(!f.price||p.price<=f.price)&&(!f.minArea||p.area>=f.minArea)&&(!f.rooms||p.rooms>=f.rooms));total=all.length;renderList();return;
+      const f=activeFilters();all=[sample].filter(p=>(!f.query||`${p.title} ${p.city} ${p.zip}`.toLocaleLowerCase('de').includes(f.query))&&(!f.city||p.city.toLocaleLowerCase('de').includes(f.city))&&(!f.type||p.type===f.type)&&(!f.subtype||p.rs_category===f.subtype)&&(!f.price||p.price<=f.price)&&(!f.minArea||p.area>=f.minArea)&&(!f.rooms||p.rooms>=f.rooms));total=all.length;renderList();return;
     }
     await loadNextPage();
   }
@@ -268,7 +270,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
       }
     }
   }
-  function setupBrowse(){
+  async function setupBrowse(){
     document.body.classList.add('pp-is-browse');
     const search=$('#pp-search');
     search.insertAdjacentHTML('afterbegin',`<div class="pp-mobile-tools"><form id="pp-quick-search" role="search"><label class="pp-sr-only" for="pp-quick-query">Ort, PLZ oder Objekt suchen</label><input id="pp-quick-query" type="search" placeholder="Ort, PLZ oder Objekt suchen"><button type="submit" aria-label="Jetzt suchen">⌕</button></form><nav aria-label="Immobiliensuche"><button type="button" id="pp-mobile-sort"><b aria-hidden="true">⇅</b><span>Sortieren</span></button><a href="${browseBase}?favoriten=1${demo?'&demo=1':''}" id="pp-mobile-favorites"><b aria-hidden="true">♡</b><span>Favoriten (${favorites.size})</span></a><button type="button" id="pp-mobile-filter"><b aria-hidden="true">☷</b><span>Filtern</span></button><button type="button" id="pp-mobile-map" aria-pressed="false"><b aria-hidden="true">▧</b><span>Karte</span></button></nav></div><div class="pp-view-switch" role="group" aria-label="Ansicht wählen"><button type="button" data-view="list" aria-pressed="true">Liste</button><button type="button" data-view="map" aria-pressed="false">Karte</button></div>`);
@@ -289,6 +291,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
       $('#pp-sort').value=restoringBrowse.sort||'default';
       $('#pp-quick-query').value=form.elements.query.value;
     }
+    await setupPropertyFilters(form,{demoItems:demo?[sample]:undefined,restore:restoringBrowse?.fields});
     history.scrollRestoration='manual';
     const saveBrowse=()=>{
       if(restoringBrowse)return;
@@ -501,7 +504,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
         await loadFavorites();return;
       }
       if(productionRoute&&!id&&location.pathname.startsWith('/immobilie/')){renderNotFound();return}
-      if(!id)setupBrowse();
+      if(!id)await setupBrowse();
       if(demo){all=[sample];total=1;hasMore=false;$('#pp-banner').textContent='Designvorschau mit einem öffentlich sichtbaren Beispielobjekt. Keine Live-Abfrage; Angaben und Verfügbarkeit bitte auf sls.de prüfen.'}
       else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(response.status===410&&data.code==='PROPERTY_UNAVAILABLE'){renderUnavailable();return}if(!response.ok){if(response.status===404){renderNotFound();return}throw new Error(data.error||'Daten nicht abrufbar')}all=data.items;$('#pp-banner').textContent=productionRoute?'Aktuelles Immobilienangebot von SLS Immobilienpartner.':'Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
       else {committedQuery=captureQuery();currentPage=0;await loadNextPage();$('#pp-banner').textContent='Entdecken Sie unsere aktuellen Kaufimmobilien.'}

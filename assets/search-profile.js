@@ -6,6 +6,7 @@
   function criteriaText(criteria){
     const parts=[
       criteria.type&&criteria.type!=='Immobilie'?criteria.type:'',
+      criteria.subtypeLabel,
       criteria.city,
       criteria.price?`bis ${money(criteria.price)}`:'',
       criteria.minArea?`ab ${area(criteria.minArea)}`:'',
@@ -25,6 +26,8 @@
       const form=new FormData(source);
       return {
         type:String(form.get('type')||'').trim(),
+        subtype:String(form.get('subtype')||'').trim(),
+        subtypeLabel:form.get('subtype')?source.elements.subtype?.selectedOptions[0]?.textContent:'',
         city:String(form.get('city')||'').trim(),
         price:Number(form.get('price'))||null,
         minArea:Number(form.get('area'))||null,

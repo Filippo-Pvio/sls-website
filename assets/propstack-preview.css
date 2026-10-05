@@ -425,3 +425,11 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
     display:none !important;
   }
 }
+.property-preview .pp-city-combobox{position:relative;min-width:0}
+.property-preview .pp-city-options{position:absolute;top:100%;left:0;right:0;z-index:30;max-height:220px;overflow-y:auto;background:#fff;border:1px solid #c8d8da;border-radius:5px;box-shadow:0 8px 20px #14252920;font-weight:400}
+.property-preview .pp-city-options[hidden]{display:none}
+.property-preview .pp-city-options [role=option],.property-preview .pp-city-empty{padding:10px 12px;overflow-wrap:anywhere}
+.property-preview .pp-city-options [role=option]{cursor:pointer}
+.property-preview .pp-city-options [role=option]:hover,.property-preview .pp-city-options [aria-selected=true]{background:#ecf7f8;color:#005c68}
+.property-preview .pp-filter-notice{font-size:14px;color:#52676e}
+.property-preview .pp-search select:disabled{color:#687d83;background:#f7f9fa}

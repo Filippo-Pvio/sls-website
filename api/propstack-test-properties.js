@@ -60,7 +60,7 @@ export default async function handler(req,res) {
       // The detail endpoint can return null for facts that are populated in the public listing.
       // Preserve those listing facts so card and exposé do not contradict each other.
       const unwrapped=value=>value && typeof value==='object' && 'value' in value ? value.value : value;
-      for (const field of new Set(['price','object_price','living_space','property_space_value','number_of_rooms','number_of_bed_rooms','number_of_bath_rooms','plot_area','construction_year','rs_type','city','zip_code',...publicPropertySourceFields])) {
+      for (const field of new Set(['price','object_price','living_space','property_space_value','number_of_rooms','number_of_bed_rooms','number_of_bath_rooms','plot_area','construction_year','rs_type','rs_category','city','zip_code',...publicPropertySourceFields])) {
         const detailValue=unwrapped(combined[field]);
         const summaryValue=unwrapped(summary[field]);
         if ((detailValue == null || detailValue === '') && summaryValue != null && summaryValue !== '') combined[field]=summary[field];

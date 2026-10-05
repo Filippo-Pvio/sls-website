@@ -1,4 +1,4 @@
-import {propertyCard,queryProperties,cachedCatalog} from '../lib/property-catalog.mjs';
+import {propertyCard,queryProperties,cachedCatalog,propertyFilters} from '../lib/property-catalog.mjs';
 import {similarProperties} from '../assets/property-similarity.mjs';
 import {publicUnit} from '../lib/propstack-preview.mjs';
 import {publicPropertyFacts,publicPropertySourceFields} from '../lib/public-property-facts.mjs';
@@ -132,7 +132,7 @@ function mergeDetail(summary,detail){
   for(const field of new Set([
     'price','object_price','living_space','property_space_value','number_of_rooms',
     'number_of_bed_rooms','number_of_bath_rooms','plot_area','construction_year',
-    'rs_type','city','zip_code',...publicPropertySourceFields
+    'rs_type','rs_category','city','zip_code',...publicPropertySourceFields
   ])){
     const detailValue=unwrap(combined[field]);
     const summaryValue=unwrap(summary[field]);
@@ -169,7 +169,12 @@ export default async function handler(req,res){
     const per=Math.min(LIST_PAGE_SIZE,Math.max(1,requestedPer));
     const sort=String(req.query.sort||'default');
     let result;
-    const needsCatalog=req.query.map==='1'||req.query.similarTo||['query','city','type','price','area','rooms'].some(k=>Boolean(req.query[k]));
+    if(req.query.filters==='1'){
+      const filters=propertyFilters(await getCatalog(key,status.id));
+      res.setHeader('Cache-Control','public, s-maxage=60');
+      return res.status(200).json({filters});
+    }
+    const needsCatalog=req.query.map==='1'||req.query.similarTo||['query','city','type','subtype','price','area','rooms'].some(k=>Boolean(req.query[k]));
     if(needsCatalog){
       const catalog=await getCatalog(key,status.id);
       if(req.query.similarTo){
@@ -221,7 +226,8 @@ async function detailResponse(id,key,status,res){
       for(const field of ['price','area','rooms','city','zip']){
         if(publicListing[field]!=null&&publicListing[field]!=='')publicDetail[field]=publicListing[field];
       }
-      if(publicListing.type!=='Immobilie')publicDetail.type=publicListing.type;
+      if(publicListing.type!=='Immobilie'){publicDetail.type=publicListing.type;publicDetail.rs_type=publicListing.rs_type;}
+      if(publicListing.rs_category){publicDetail.rs_category=publicListing.rs_category;publicDetail.subtype=publicListing.subtype;}
       for(const field of ['bedrooms','baths','year']){
         if(publicDetail[field]==null)publicDetail[field]=publicListing[field];
       }
