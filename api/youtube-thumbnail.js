@@ -1,4 +1,4 @@
-const videos = new Set(['qip-kPiTPcA', 'o0hvSO41MOI', 'guoSI4VrK8E', '-Pby-CF9f04']);
+const videos = new Set(['qip-kPiTPcA', 'o0hvSO41MOI', 'guoSI4VrK8E', '-Pby-CF9f04', 'maZwZ6Rzwpk']);
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).end();
   const id = new URL(req.url, 'https://sls.de').searchParams.get('video');
