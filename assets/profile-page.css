@@ -68,3 +68,14 @@ body.profile-page #main>section.profile-tone-blue h2{color:#fff}
 .profile-success.profile-tone-blue .profile-success-copy h3{color:#345b6e}
 .profile-success.profile-tone-blue .profile-success-footer .text-link{color:#fff}
 .profile-success.profile-tone-blue .profile-success-footer .text-link::after{background:currentColor}
+
+/* Force the two alternating blue profile sections to win over global section backgrounds. */
+body.profile-page #main > section.profile-focus.profile-tone-blue,
+body.profile-page #main > section.profile-success.profile-tone-blue{
+  background:#345b6e !important;
+  color:#fff;
+}
+body.profile-page #main > section.profile-focus.profile-tone-blue h2,
+body.profile-page #main > section.profile-success.profile-tone-blue h2{
+  color:#fff !important;
+}
