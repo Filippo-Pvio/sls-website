@@ -90,12 +90,12 @@
     },
 
     docFlur:{
-      kicker:'Unterlagen · Grundstück',title:'Liegen Flurkarte und belastbare Grundstücksangaben vor?',
-      text:'Flurstück, Grundstücksgröße und Zuschnitt sollten eindeutig zum Objekt passen.',
+      kicker:'Unterlagen · Grundstück',title:'Liegt eine aktuelle Flurkarte mit belastbaren Grundstücksangaben vor?',
+      text:'Flurstück, Grundstücksgröße und Zuschnitt sollten aktuell und eindeutig zum Objekt passen.',
       options:statusOptions(),
       explain:missingInfo('Diese Angaben gehören zu den zentralen Objektgrundlagen.',[
         'Woher? Je nach Unterlage über Kataster- bzw. Vermessungsstellen oder vorhandene Eigentümerunterlagen.',
-        'Warum wichtig? Käufer und Finanzierung benötigen nachvollziehbare Grundstücksdaten.',
+        'Warum aktuell? Gerade für die Objektprüfung durch Käufer und finanzierende Banken sollten die Grundstücksdaten den heutigen Stand abbilden.',
         'SLS gleicht vorhandene Angaben ab und zeigt, welche Nachweise noch fehlen.'
       ]),
       next:nextAfterFlur
@@ -209,20 +209,53 @@
     },
 
     finance:{
-      kicker:'Finanzierung & Bonität', title:'Liegt bereits ein belastbarer Finanzierungsnachweis vor?',
-      text:'Eine mündliche Kaufzusage ist noch kein Nachweis dafür, dass der Kaufpreis tatsächlich finanziert werden kann.',
+      kicker:'Finanzierung & Bonität', title:'Liegt bereits ein Finanzierungsnachweis des Käufers vor?',
+      text:'Eine mündliche Aussage oder eine vorläufige Finanzierungsbestätigung ist noch nicht dasselbe wie eine abschließende, belastbare Finanzierungszusage.',
       options:[
-        ['yes','Ja','Eine belastbare Bestätigung bzw. ein nachvollziehbarer Nachweis liegt vor.'],
+        ['yes','Ja, es liegt etwas vor','Ich habe eine schriftliche Bestätigung bzw. einen Nachweis gesehen.'],
         ['promise','Nur eine mündliche Zusage','Der Käufer sagt, die Finanzierung sei kein Problem.'],
         ['pending','Noch in Prüfung','Bank oder Finanzierungspartner prüft noch.'],
         ['unknown','Ich weiß nicht, was ausreicht','Ich kann die vorhandenen Nachweise nicht einordnen.']
       ],
       explain:{
-        promise:['Eine Zusage allein reicht für die Vorbereitung des Abschlusses nicht aus.',['Vor einem Notartermin sollte die Kaufpreisfinanzierung nachvollziehbar sein.','Je nach Fall können Finanzierungsbestätigung und Eigenkapitalnachweise eine Rolle spielen.']],
-        pending:['Solange die Finanzierung offen ist, sollte auch der nächste Schritt bewusst gesteuert werden.',['Offene Bankunterlagen können den Zeitplan verändern.','SLS hält solche Punkte mit Käufer und Finanzierungspartner nach.']],
-        unknown:['Nicht jeder Nachweis hat dieselbe Aussagekraft.',['Entscheidend ist, ob der Kaufpreis realistisch und belastbar darstellbar ist.']]
+        promise:['Eine mündliche Zusage ist keine abschließende Finanzierungsbestätigung.',['Vor einem Notartermin sollte die Kaufpreisfinanzierung belastbar geprüft sein.','Je nach Fall können zusätzlich Eigenkapitalnachweise oder weitere Unterlagen erforderlich sein.']],
+        pending:['Solange die Finanzierung offen ist, sollte ein Notartermin mit besonderer Vorsicht vorbereitet werden.',['Die Bank prüft nicht nur den Käufer, sondern regelmäßig auch die Immobilie als Beleihungsobjekt.','Fehlende oder veraltete Objektunterlagen können die Prüfung verzögern.']],
+        unknown:['Nicht jeder Finanzierungsnachweis hat dieselbe Aussagekraft.',['Entscheidend ist, ob die Bank ihre Kreditentscheidung bereits abschließend getroffen hat oder ob noch Bedingungen offen sind.']]
       },
-      next:answers=> answers.start==='interest'?'summaryInterest':'notary'
+      next:(answers,value)=> value==='yes'?'financeType':(answers.start==='interest'?'summaryInterest':'notaryRisk')
+    },
+
+    financeType:{
+      kicker:'Finanzierung · Qualität der Zusage',title:'Welche Art von Finanzierungsbestätigung liegt tatsächlich vor?',
+      text:'Für den Verkäufer ist entscheidend, ob die Bank bereits abschließend zugesagt hat oder ob die Bestätigung noch unter Vorbehalten steht.',
+      options:[
+        ['final','Uneingeschränkte / finale Zusage','Die Bank hat die Finanzierung nach meiner Kenntnis abschließend bestätigt.'],
+        ['preliminary','Vorläufige Bestätigung','Es handelt sich um ein Finanzierungszertifikat, eine Vorprüfung oder eine Zusage unter Bedingungen.'],
+        ['conditional','Zusage mit offenen Bedingungen','Es fehlen noch Unterlagen oder die Bank hat weitere Voraussetzungen genannt.'],
+        ['unknown','Kann ich nicht sicher unterscheiden','Ich weiß nicht, ob die Bestätigung wirklich abschließend ist.']
+      ],
+      explain:{
+        final:['Auch eine finale Zusage sollte inhaltlich genau geprüft werden.',['Eine abschließende Immobilienfinanzierung setzt regelmäßig voraus, dass die Bank Käufer und Beleihungsobjekt geprüft hat.','Dafür werden aktuelle Objektunterlagen benötigt; Umfang und Anforderungen unterscheiden sich je nach Bank und Einzelfall.','Aktueller Grundbuchauszug, aktuelle Flurkarte und ein verwertbarer Energieausweis gehören heute häufig zu den zentralen Objektunterlagen.']],
+        preliminary:['Eine vorläufige Bestätigung ist noch keine abschließende Kreditzusage.',['Sie kann zeigen, dass die Finanzierung grundsätzlich plausibel erscheint.','Solange Objektprüfung oder Unterlagenprüfung noch offen sind, kann sich die Bankentscheidung noch ändern.','Für den Verkäufer sollte das nicht wie eine uneingeschränkte Zusage behandelt werden.']],
+        conditional:['Offene Bedingungen sind ein klares Signal, dass die Finanzierung noch nicht vollständig abgeschlossen ist.',['Prüfen Sie genau, welche Unterlagen oder Voraussetzungen noch fehlen.','Aktuelle Objektunterlagen können für die finale Beleihungsprüfung entscheidend sein.']],
+        unknown:['Im Zweifel sollte die Bestätigung vor dem Notartermin eingeordnet werden.',['Wichtig ist die Frage, ob noch Vorbehalte, Objektprüfung oder Unterlagenanforderungen offen sind.','SLS kann die vorhandenen Nachweise mit Käufer und Finanzierungspartner strukturiert nachhalten.']]
+      },
+      next:answers=> answers.start==='interest'?'summaryInterest':'notaryRisk'
+    },
+
+    notaryRisk:{
+      kicker:'Notar · Kostenrisiko',title:'Ist Ihnen das Risiko eines Notartermins bei ungeklärter Finanzierung bewusst?',
+      text:'Auch wenn im Kaufvertrag vereinbart wird, dass der Käufer die Notar- und Grundbuchkosten trägt, sollte die Finanzierung möglichst vor der Beurkundung belastbar geklärt sein.',
+      options:[
+        ['yes','Ja, das ist mir bewusst','Ich möchte den Notartermin erst mit belastbarer Finanzierung angehen.'],
+        ['no','Nein, das war mir nicht klar','Ich bin davon ausgegangen, dass bei einem Scheitern nur der Käufer betroffen ist.'],
+        ['unsure','Unsicher','Ich weiß nicht, wer bei einem gescheiterten Kauf Kosten tragen muss.']
+      ],
+      explain:{
+        no:['Ein geplatzter Kauf nach Beurkundung kann auch für den Verkäufer unangenehme Folgen haben.',['Die vertragliche Vereinbarung, dass der Käufer Kosten trägt, ist nicht gleichbedeutend damit, dass gegenüber dem Notar ausschließlich der Käufer Kostenschuldner sein kann.','Je nach rechtlicher Konstellation können mehrere Beteiligte als Kostenschuldner in Betracht kommen.','Deshalb ist eine belastbare Finanzierungsprüfung vor der Beurkundung auch für den Verkäufer ein wichtiger Schutz.']],
+        unsure:['Kostenfragen sollten nicht erst geklärt werden, wenn der Kauf bereits gescheitert ist.',['Wer die Kosten im Innenverhältnis tragen soll und wer gegenüber dem Notar gesetzlich in Anspruch genommen werden kann, sind unterschiedliche Fragen.','Der konkrete Einzelfall gehört bei Bedarf zum Notar oder in rechtliche Beratung.']]
+      },
+      next:()=> 'notary'
     },
 
     notary:{
@@ -289,6 +322,71 @@
     return {kicker:k,title:t,text:b,summary:true,options:[],next:null};
   }
 
+  const todoDefinitions = {
+    docGrundbuch:{label:'Aktueller Grundbuchauszug',critical:true},
+    docFlur:{label:'Aktuelle Flurkarte / Grundstücksangaben',critical:true},
+    docPlans:{label:'Grundrisse und Flächenangaben',critical:false},
+    docApartment:{label:'WEG-Unterlagen',critical:false},
+    docInvestment:{label:'Miet- und Ertragsunterlagen',critical:false},
+    docLand:{label:'Bebaubarkeit / Grundstücksnutzung',critical:false},
+    docEnergy:{label:'Gültiger Energieausweis',critical:true},
+    groundbook:{label:'Eintragungen in Abteilung II und III klären',critical:true},
+    qualification:{label:'Interessentenstatus belastbar einordnen',critical:false},
+    finance:{label:'Finanzierung des Käufers belastbar prüfen',critical:true},
+    financeType:{label:'Uneingeschränkte Finanzierungszusage sicherstellen',critical:true},
+    notary:{label:'Offene Punkte für den Notar klären',critical:true},
+    payment:{label:'Kaufpreisfälligkeit und Übergabeablauf klären',critical:false},
+    handover:{label:'Dokumentierte Übergabe vorbereiten',critical:false}
+  };
+
+  const buildTodoList = () => {
+    const missing=[]; const unsure=[];
+    Object.entries(todoDefinitions).forEach(([id,def])=>{
+      const value=answers[id];
+      if(!value)return;
+      let isMissing = value==='no' || value==='promise' || value==='pending' || value==='preliminary' || value==='conditional' || value==='partly' || value==='open';
+      let isUnsure = value==='unknown' || value==='unsure';
+      if(id==='finance' && value==='yes') return;
+      if(id==='financeType' && value==='final') return;
+      if(id==='qualification' && ['viewed','offer','finance'].includes(value)) return;
+      if(id==='notary' && value==='yes') return;
+      if(id==='payment' && value==='yes') return;
+      if(id==='handover' && value==='yes') return;
+      if(id==='groundbook' && value==='yes') return;
+      if(isMissing) missing.push({...def,id});
+      else if(isUnsure) unsure.push({...def,id});
+    });
+    return {missing,unsure};
+  };
+
+  const renderSummary = q => {
+    const {missing,unsure}=buildTodoList();
+    const rows = (items,kind) => items.map(item =>
+      '<li class="sales-summary-item sales-summary-'+kind+'"><span aria-hidden="true">'+(kind==='critical'?'!':'?')+'</span><div><strong>'+item.label+'</strong><small>'+(kind==='critical'?(item.critical?'Vor dem nächsten großen Schritt möglichst klären.':'Noch offen und zu klären.'):'Noch nicht eindeutig geklärt.')+'</small></div></li>'
+    ).join('');
+
+    const criticalMissing=missing.filter(x=>x.critical);
+    const normalMissing=missing.filter(x=>!x.critical);
+    let html='<div class="sales-summary">';
+    html+='<div class="sales-summary-lead"><h3>Ihre nächsten Schritte</h3><p>Aus Ihren Antworten ergibt sich diese persönliche Übersicht.</p></div>';
+
+    if(!missing.length && !unsure.length){
+      html+='<div class="sales-summary-good"><strong>Die abgefragten Punkte wirken derzeit weitgehend geklärt.</strong><p>Vor Vermarktung oder Beurkundung sollten Unterlagen und Nachweise trotzdem noch einmal auf Aktualität und Vollständigkeit geprüft werden.</p></div>';
+    } else {
+      if(criticalMissing.length) html+='<div class="sales-summary-block"><h4>Besonders wichtig</h4><ul>'+rows(criticalMissing,'critical')+'</ul></div>';
+      if(normalMissing.length) html+='<div class="sales-summary-block"><h4>Noch offen</h4><ul>'+rows(normalMissing,'open')+'</ul></div>';
+      if(unsure.length) html+='<div class="sales-summary-block"><h4>Noch unsicher</h4><ul>'+rows(unsure,'unsure')+'</ul></div>';
+    }
+
+    if(['buyer','interest'].includes(answers.start)){
+      html+='<div class="sales-summary-finance"><strong>Zur Finanzierung</strong><p>Eine vorläufige Finanzierungsbestätigung oder eine Zusage unter Bedingungen ist nicht mit einer uneingeschränkten, abschließenden Kreditzusage gleichzusetzen. Für die finale Objektprüfung verlangen Banken regelmäßig aktuelle Objektunterlagen; welche Unterlagen konkret erforderlich sind, hängt von Bank und Einzelfall ab.</p></div>';
+    }
+
+    html+='<div class="sales-summary-note"><strong>Hinweis zum Notartermin</strong><p>Die interne Vereinbarung, dass der Käufer Notar- und Grundbuchkosten trägt, bedeutet nicht in jedem Fall, dass gegenüber dem Notar ausschließlich der Käufer als Kostenschuldner in Betracht kommt. Deshalb sollte die Finanzierung möglichst vor der Beurkundung belastbar geprüft sein. Rechtliche Einzelfragen bitte mit dem Notar oder einer Rechtsberatung klären.</p></div>';
+    html+='<p class="sales-summary-cta"><a class="text-link" href="/kontakt/">Verkauf mit SLS besprechen →</a></p></div>';
+    explainer.innerHTML=html;
+  };
+
   let current='start', history=[], answers={}, selected=null;
 
   const render = () => {
@@ -313,7 +411,7 @@
 
     if(q.summary){
       explainer.hidden=false;
-      explainer.innerHTML='<h3>Was bedeutet das für Sie?</h3><p>'+q.text+'</p><ul><li>Offene Unterlagen und Objektfragen früh klären</li><li>Käufer- und Notarprozess nicht erst am Ende organisieren</li><li>Bei Bedarf SLS die Beschaffung und Koordination übernehmen lassen</li></ul><p style="margin-top:14px"><a class="text-link" href="/kontakt/">Verkauf mit SLS besprechen →</a></p>';
+      renderSummary(q);
     } else if(selected) showExplain(q,selected);
   };
 
