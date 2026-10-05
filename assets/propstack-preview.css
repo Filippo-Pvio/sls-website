@@ -416,3 +416,11 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 @media(max-width:600px){
   .property-preview.pp-is-browse .pp-heading{margin-top:-110px;padding-top:108px}
 }
+
+
+/* Mobile property actions: financing stays in the page, while the sticky row is reserved for inquiry + SIA/phone. */
+@media(max-width:850px){
+  .property-preview.pp-is-detail .pp-inquiry-shortcut .pp-financing-shortcut{
+    display:none !important;
+  }
+}
