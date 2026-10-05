@@ -19,6 +19,98 @@
   });
 })();
 
+
+(() => {
+  const allowedProfiles = new Set([
+    'Andreas Busch',
+    'Cüneyt Demirli',
+    'Daniel Allamezade',
+    'Dennis Sahlmen',
+    'Dustin Offermann',
+    'Filippo Livera',
+    'Gina Künnecke',
+    'Heiko Hofmann',
+    'Jacqueline Flöter',
+    'Manuela Landripet',
+    'Maximilian Werner',
+    'Mischa Stratmann',
+    'Nico Hryn',
+    'Tanja Wawrosch',
+    'Uwe Braun'
+  ]);
+
+  const section = document.querySelector('.profile-success');
+  const grid = section?.querySelector('.profile-success-grid');
+  const profileName = document.querySelector('.profile-hero-copy h1')?.textContent?.trim();
+  if (!section || !grid || !profileName || !allowedProfiles.has(profileName)) return;
+
+  const normalize = value => String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/gi, ' ')
+    .trim()
+    .toLowerCase();
+
+  const profileKey = normalize(profileName);
+
+  const createCard = ref => {
+    const article = document.createElement('article');
+    article.className = 'profile-success-card reveal';
+
+    const imageWrap = document.createElement('div');
+    imageWrap.className = 'profile-success-image';
+    const image = document.createElement('img');
+    image.src = ref.image;
+    image.alt = `Verkaufte Immobilie in ${ref.city}`;
+    image.width = 900;
+    image.height = 600;
+    image.loading = 'lazy';
+    const badge = document.createElement('span');
+    badge.textContent = 'Verkauft';
+    imageWrap.append(image, badge);
+
+    const copy = document.createElement('div');
+    copy.className = 'profile-success-copy';
+    const city = document.createElement('p');
+    city.textContent = ref.city;
+    const title = document.createElement('h3');
+    title.textContent = ref.title;
+    copy.append(city, title);
+
+    article.append(imageWrap, copy);
+    return article;
+  };
+
+  async function loadProfileReferences() {
+    try {
+      const response = await fetch('/api/propstack-sold-references');
+      if (!response.ok) return;
+      const data = await response.json();
+      const refs = (Array.isArray(data.references) ? data.references : [])
+        .filter(ref => normalize(ref.brokerName) === profileKey)
+        .slice(0, 3);
+      if (!refs.length) return;
+
+      const fragment = document.createDocumentFragment();
+      refs.forEach(ref => fragment.append(createCard(ref)));
+      grid.replaceChildren(fragment);
+    } catch {
+      // Keep the verified static references if Propstack is temporarily unavailable.
+    }
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      observer.disconnect();
+      loadProfileReferences();
+    }, { rootMargin: '500px' });
+    observer.observe(section);
+  } else {
+    loadProfileReferences();
+  }
+})();
+
 (() => {
   document.querySelectorAll('[data-video-gallery]').forEach(gallery => {
     const track = gallery.querySelector('[data-video-track]');
