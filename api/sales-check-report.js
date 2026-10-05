@@ -174,6 +174,41 @@ function buildEmailHtml(contact) {
     '</table></td></tr></table></body></html>';
 }
 
+async function rateLimit(req, email) {
+  const url = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
+  if (!url || !token) return true;
+  const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
+  const hour = Math.floor(Date.now() / 3600000);
+  const keys = [
+    'sales-check:ip:' + ip + ':' + hour,
+    'sales-check:mail:' + String(email || '').toLowerCase() + ':' + hour
+  ];
+  try {
+    for (const key of keys) {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify(['INCR', key])
+      });
+      if (!response.ok) continue;
+      const data = await response.json();
+      const count = Number(data?.result || 0);
+      if (count === 1) {
+        await fetch(url, {
+          method: 'POST',
+          headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify(['EXPIRE', key, 3700])
+        }).catch(() => {});
+      }
+      if (count > 4) return false;
+    }
+  } catch (error) {
+    console.error('sales-check-report: rate limit unavailable', error);
+  }
+  return true;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -190,6 +225,10 @@ export default async function handler(req, res) {
 
   if (!contact.firstName || !contact.lastName || !validEmail(contact.email) || !report) {
     return res.status(400).json({ message: 'Bitte prüfen Sie Ihre Kontaktdaten und versuchen Sie es erneut.' });
+  }
+
+  if (!(await rateLimit(req, contact.email))) {
+    return res.status(429).json({ message: 'Bitte warten Sie etwas, bevor Sie eine weitere Auswertung anfordern.' });
   }
 
   const apiKey = process.env.RESEND_API_KEY;
