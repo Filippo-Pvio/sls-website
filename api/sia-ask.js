@@ -158,44 +158,87 @@ export default async function handler(req, res) {
       return p.description ? `In der veröffentlichten Objektbeschreibung steht:\n\n${p.description}` : missing('der Objektbeschreibung');
     }
 
-    // Free property questions: search all published object text, not just the predefined topics.
+    // Free property questions: return only the precise published passage containing the requested term.
     const normalizeSearch = value => String(value || '')
       .normalize('NFD')
-      .replace(/[\\u0300-\\u036f]/g, '')
+      .replace(/[\u0300-\u036f]/g, '')
       .toLocaleLowerCase('de-DE');
+
     const stop = new Set([
       'der','die','das','den','dem','des','ein','eine','einen','einem','einer','und','oder','ist','sind','hat','haben',
       'gibt','es','bei','zur','zum','zu','von','im','in','auf','an','mit','für','fuer','was','wie','welche','welcher',
-      'welches','ich','mir','diese','dieser','dieses','immobilie','objekt','steht','stehts','bitte','kann','man'
+      'welches','ich','mir','diese','dieser','dieses','immobilie','objekt','steht','stehts','bitte','kann','man','hoch'
     ]);
+
     const terms = [...new Set(normalizeSearch(question)
       .split(/[^a-z0-9äöüß]+/)
       .map(word => word.trim())
-      .filter(word => word.length >= 4 && !stop.has(word)))];
+      .filter(word => word.length >= 4 && !stop.has(word)))]
+      .sort((a,b) => b.length - a.length);
 
-    if (terms.length) {
+    const exactTerm = terms[0] || '';
+
+    if (exactTerm) {
+      // 1) Prefer an explicitly published structured field whose label matches the requested term.
+      const fact = Array.isArray(p.objectFacts)
+        ? p.objectFacts.find(item => normalizeSearch(item?.label).includes(exactTerm))
+        : null;
+      if (fact) return `${fact.label}: ${fact.value}`;
+
       const sources = [
         ['Objektbeschreibung', p.description],
         ['Ausstattung', p.features],
-        ['Lagebeschreibung', p.location],
         ['Sonstiges', p.otherNote],
-        ['Provisionshinweis', p.courtageNote],
-        ['Eckdaten', Array.isArray(p.objectFacts) ? p.objectFacts.map(item => `${item.label}: ${item.value}`).join('. ') : '']
+        ['Lagebeschreibung', p.location],
+        ['Provisionshinweis', p.courtageNote]
       ].filter(([,text]) => typeof text === 'string' && text.trim());
 
-      const hits = [];
-      for (const [label, text] of sources) {
-        const chunks = String(text).replace(/\\r/g, '').split(/(?<=[.!?])\\s+|\\n+/).map(part => part.trim()).filter(Boolean);
-        const matched = chunks.filter(chunk => {
-          const haystack = normalizeSearch(chunk);
-          return terms.some(term => haystack.includes(term));
-        }).slice(0, 3);
-        if (matched.length) hits.push([label, matched]);
-      }
+      const preciseExcerpt = text => {
+        const raw = String(text).replace(/\r/g, '').trim();
+        const normalized = normalizeSearch(raw);
+        const termIndex = normalized.indexOf(exactTerm);
+        if (termIndex < 0) return null;
 
-      if (hits.length) {
-        const answer = hits.map(([label, matched]) => `${label}:\n${matched.join(' ')}`).join('\n\n');
-        return `Dazu finde ich im veröffentlichten Inserat folgende Angaben:\n\n${answer.slice(0, 1800)}`;
+        // Map the normalized hit approximately back into the original text.
+        const ratio = raw.length / Math.max(1, normalized.length);
+        const originalIndex = Math.max(0, Math.min(raw.length - 1, Math.round(termIndex * ratio)));
+
+        const leftBreaks = [
+          raw.lastIndexOf('.', originalIndex),
+          raw.lastIndexOf('!', originalIndex),
+          raw.lastIndexOf('?', originalIndex),
+          raw.lastIndexOf('\n', originalIndex),
+          raw.lastIndexOf(';', originalIndex)
+        ];
+        const left = Math.max(...leftBreaks) + 1;
+
+        const rightCandidates = [
+          raw.indexOf('.', originalIndex),
+          raw.indexOf('!', originalIndex),
+          raw.indexOf('?', originalIndex),
+          raw.indexOf('\n', originalIndex),
+          raw.indexOf(';', originalIndex)
+        ].filter(index => index >= 0);
+        const right = rightCandidates.length ? Math.min(...rightCandidates) + 1 : raw.length;
+
+        let excerpt = raw.slice(left, right).replace(/\s+/g, ' ').trim();
+
+        // If the sentence is very long, keep only a concise window around the exact hit.
+        if (excerpt.length > 360) {
+          const localNormalized = normalizeSearch(excerpt);
+          const localHit = localNormalized.indexOf(exactTerm);
+          const localRatio = excerpt.length / Math.max(1, localNormalized.length);
+          const center = Math.max(0, Math.round(localHit * localRatio));
+          const from = Math.max(0, center - 130);
+          const to = Math.min(excerpt.length, center + 230);
+          excerpt = `${from > 0 ? '…' : ''}${excerpt.slice(from,to).trim()}${to < excerpt.length ? '…' : ''}`;
+        }
+        return excerpt || null;
+      };
+
+      for (const [label,text] of sources) {
+        const excerpt = preciseExcerpt(text);
+        if (excerpt) return `Dazu steht im veröffentlichten Inserat:\n\n${excerpt}`;
       }
     }
 
