@@ -37,7 +37,8 @@ function publicReference(unit, soldStatusIds) {
   const city = String(unit.city ?? '').trim().slice(0, 70);
   if (!title || !city) return null;
   const brokerName = String(unit.broker?.name || '').trim().slice(0, 100);
-  return { id: String(unit.id), title, city, image, brokerName: brokerName || null };
+  const brokerId = String(unit.broker_id || unit.broker?.id || '').trim();
+  return { id: String(unit.id), title, city, image, brokerName: brokerName || null, brokerId: brokerId || null };
 }
 
 async function soldListings(key, statusIds) {
@@ -46,7 +47,7 @@ async function soldListings(key, statusIds) {
   for (let page = 1; page <= MAX_PAGES; page++) {
     const query = new URLSearchParams({
       with_meta: '1', status: [...statusIds].join(','),
-      marketing_type: 'BUY', archived: '-1', expand: '1',
+      marketing_type: 'BUY', archived: '-1',
       per: String(PAGE_SIZE), page: String(page)
     });
     const response = await propstack(`units?${query}`, key);
