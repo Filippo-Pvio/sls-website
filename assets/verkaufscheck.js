@@ -628,16 +628,220 @@
     return issues;
   };
 
+  const phaseLabels={marketing:'Vor der Vermarktung klären',notary:'Vor dem Notartermin klären',handover:'Vor der Übergabe klären'};
+  const typeLabels={house:'Haus',apartment:'Eigentumswohnung',investment:'Mehrfamilienhaus',land:'Grundstück'};
+  const situationLabels={noBuyer:'Noch kein Käufer',interest:'Interessent vorhanden',buyer:'Konkreter Käufer vorhanden',unsure:'Verkaufsstand noch unklar'};
+
+  const buildExportData = () => {
+    const {missing,unsure}=buildTodoList();
+    const all=[...missing.map(x=>({...x,status:x.critical?'critical':'open'})),...unsure.map(x=>({...x,status:'unsure'}))];
+    return {
+      date:new Date().toLocaleDateString('de-DE'),
+      type:typeLabels[typeFromAnswers(answers)] || 'Immobilie',
+      situation:situationLabels[answers.start] || 'Verkauf',
+      contradictions:detectContradictions(),
+      phases:['marketing','notary','handover'].map(phase=>({phase,label:phaseLabels[phase],items:all.filter(x=>x.phase===phase)})).filter(section=>section.items.length)
+    };
+  };
+
+  const buildEmailText = () => {
+    const data=buildExportData();
+    const lines=[
+      'SLS Verkaufs-Check',
+      'Stand: '+data.date,
+      'Immobilie: '+data.type,
+      'Situation: '+data.situation,
+      ''
+    ];
+    if(data.contradictions.length){
+      lines.push('BITTE GEGENPRÜFEN');
+      data.contradictions.forEach(item=>lines.push('- '+item.title+': '+item.text));
+      lines.push('');
+    }
+    if(!data.phases.length){
+      lines.push('Die abgefragten Punkte wirken derzeit weitgehend geklärt.');
+      lines.push('');
+    }
+    data.phases.forEach(section=>{
+      lines.push(section.label.toUpperCase());
+      section.items.forEach(item=>{
+        const prefix=item.status==='critical'?'[WICHTIG] ':item.status==='unsure'?'[UNSICHER] ':'';
+        lines.push('- '+prefix+item.label);
+        if(item.source) lines.push('  Bezugsquelle: '+item.source);
+      });
+      lines.push('');
+    });
+    if(['buyer','interest'].includes(answers.start)){
+      lines.push('Finanzierung: Eine vorläufige Finanzierungsbestätigung oder eine Zusage unter Bedingungen ist nicht mit einer uneingeschränkten, abschließenden Kreditzusage gleichzusetzen.');
+      lines.push('');
+    }
+    lines.push('Hinweis: Diese Auswertung ist eine praktische Orientierung und ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung.');
+    lines.push('');
+    lines.push('SLS Immobilienpartner GmbH');
+    lines.push('www.sls.de');
+    return lines.join('\n');
+  };
+
+  const pdfSafe = value => String(value ?? '')
+    .replace(/[–—]/g,'-').replace(/[„“”]/g,'"').replace(/[’]/g,"'").replace(/…/g,'...')
+    .replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
+
+  const pdfBytes = value => {
+    const bytes=[];
+    for(const char of String(value)){
+      const code=char.charCodeAt(0);
+      bytes.push(code<=255?code:63);
+    }
+    return bytes;
+  };
+
+  const concatBytes = arrays => {
+    const len=arrays.reduce((sum,a)=>sum+a.length,0);
+    const out=new Uint8Array(len); let offset=0;
+    arrays.forEach(a=>{out.set(a,offset);offset+=a.length;});
+    return out;
+  };
+
+  const wrapPdfText = (value,max=88) => {
+    const words=String(value).split(/\s+/).filter(Boolean);
+    const lines=[]; let line='';
+    words.forEach(word=>{
+      const candidate=line?line+' '+word:word;
+      if(candidate.length>max && line){lines.push(line);line=word;}
+      else line=candidate;
+    });
+    if(line) lines.push(line);
+    return lines.length?lines:[''];
+  };
+
+  const createSummaryPdf = () => {
+    const data=buildExportData();
+    const pages=[[]]; let page=0; let y=790;
+    const addLine=(textValue,{size=10,bold=false,indent=0,leading=14,color='0.20 0.36 0.43'}={})=>{
+      if(y<60){pages.push([]);page++;y=790;}
+      pages[page].push({text:pdfSafe(textValue),size,bold,x:52+indent,y,color});
+      y-=leading;
+    };
+    const addWrapped=(textValue,opts={})=>{
+      const max=opts.max || (opts.indent?78:88);
+      wrapPdfText(textValue,max).forEach(line=>addLine(line,opts));
+    };
+    const gap=n=>{y-=n; if(y<60){pages.push([]);page++;y=790;}};
+
+    addLine('SLS Verkaufs-Check',{size:21,bold:true,leading:28});
+    addLine('Ihre persönliche Auswertung',{size:13,bold:true,color:'0.35 0.43 0.47',leading:22});
+    addLine('Stand: '+data.date+'   |   Immobilie: '+data.type+'   |   Situation: '+data.situation,{size:9,color:'0.35 0.43 0.47',leading:18});
+    gap(8);
+
+    if(data.contradictions.length){
+      addLine('Bitte gegenprüfen',{size:13,bold:true,color:'0.75 0.24 0.31',leading:20});
+      data.contradictions.forEach(item=>{
+        addWrapped(item.title,{size:10,bold:true,color:'0.75 0.24 0.31',leading:14});
+        addWrapped(item.text,{size:9,color:'0.28 0.33 0.36',leading:13,indent:8,max:80});
+        gap(4);
+      });
+      gap(6);
+    }
+
+    if(!data.phases.length){
+      addWrapped('Die abgefragten Punkte wirken derzeit weitgehend geklärt. Prüfen Sie Unterlagen und Nachweise vor Vermarktung oder Beurkundung trotzdem noch einmal auf Aktualität und Vollständigkeit.',{size:10,leading:14});
+      gap(8);
+    }
+
+    data.phases.forEach(section=>{
+      addLine(section.label,{size:13,bold:true,leading:21});
+      section.items.forEach(item=>{
+        const prefix=item.status==='critical'?'WICHTIG: ':item.status==='unsure'?'UNSICHER: ':'OFFEN: ';
+        addWrapped(prefix+item.label,{size:10,bold:item.status==='critical',leading:14,indent:6,max:80,color:item.status==='critical'?'0.75 0.24 0.31':'0.20 0.36 0.43'});
+        if(item.source) addWrapped('Bezugsquelle: '+item.source,{size:8,leading:12,indent:14,max:76,color:'0.40 0.47 0.50'});
+        gap(3);
+      });
+      gap(8);
+    });
+
+    if(['buyer','interest'].includes(answers.start)){
+      addLine('Zur Finanzierung',{size:12,bold:true,leading:19});
+      addWrapped('Eine vorläufige Finanzierungsbestätigung oder eine Zusage unter Bedingungen ist nicht mit einer uneingeschränkten, abschließenden Kreditzusage gleichzusetzen. Welche Objektunterlagen die Bank konkret verlangt, hängt von Bank und Einzelfall ab.',{size:9,leading:13,color:'0.28 0.33 0.36'});
+      gap(8);
+    }
+
+    addLine('Hinweis',{size:11,bold:true,leading:17});
+    addWrapped('Diese Auswertung ist eine praktische Orientierung und ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung.',{size:8,leading:12,color:'0.40 0.47 0.50'});
+    gap(10);
+    addLine('SLS Immobilienpartner GmbH  |  www.sls.de',{size:9,bold:true,leading:12});
+
+    const objects=[];
+    const objectCount=4+pages.length*2;
+    objects[1]='<< /Type /Catalog /Pages 2 0 R >>';
+    const kids=pages.map((_,i)=>(5+i*2)+' 0 R').join(' ');
+    objects[2]='<< /Type /Pages /Kids [ '+kids+' ] /Count '+pages.length+' >>';
+    objects[3]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';
+    objects[4]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>';
+
+    pages.forEach((lines,i)=>{
+      const pageId=5+i*2, contentId=6+i*2;
+      let stream='';
+      lines.forEach(line=>{
+        stream+=line.color+' rg\nBT /'+(line.bold?'F2':'F1')+' '+line.size+' Tf 1 0 0 1 '+line.x+' '+line.y+' Tm ('+line.text+') Tj ET\n';
+      });
+      const streamBytes=pdfBytes(stream);
+      objects[pageId]='<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents '+contentId+' 0 R >>';
+      objects[contentId]={stream,streamBytes};
+    });
+
+    const chunks=[Uint8Array.from([37,80,68,70,45,49,46,52,10,37,226,227,207,211,10])];
+    const offsets=[0]; let cursor=chunks[0].length;
+    for(let i=1;i<=objectCount;i++){
+      offsets[i]=cursor;
+      const head=pdfBytes(i+' 0 obj\n');
+      let body;
+      if(typeof objects[i]==='object'){
+        const h=pdfBytes('<< /Length '+objects[i].streamBytes.length+' >>\nstream\n');
+        const t=pdfBytes('\nendstream');
+        body=concatBytes([h,objects[i].streamBytes,t]);
+      } else body=pdfBytes(objects[i]);
+      const tail=pdfBytes('\nendobj\n');
+      const obj=concatBytes([head,body,tail]);
+      chunks.push(obj); cursor+=obj.length;
+    }
+    const xrefOffset=cursor;
+    let xref='xref\n0 '+(objectCount+1)+'\n0000000000 65535 f \n';
+    for(let i=1;i<=objectCount;i++) xref+=String(offsets[i]).padStart(10,'0')+' 00000 n \n';
+    xref+='trailer\n<< /Size '+(objectCount+1)+' /Root 1 0 R >>\nstartxref\n'+xrefOffset+'\n%%EOF';
+    chunks.push(pdfBytes(xref));
+    return concatBytes(chunks);
+  };
+
+  const downloadSummaryPdf = () => {
+    const blob=new Blob([createSummaryPdf()],{type:'application/pdf'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='SLS-Verkaufscheck-'+new Date().toISOString().slice(0,10)+'.pdf';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  };
+
+  const emailSummary = () => {
+    const subject='Meine SLS Verkaufs-Check Auswertung';
+    const body=buildEmailText().slice(0,9000);
+    location.href='mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  };
+
   const renderSummary = q => {
     const {missing,unsure}=buildTodoList();
-    const rows = (items,kind) => items.map(item =>
-      '<li class="sales-summary-item sales-summary-'+kind+'"><span aria-hidden="true">'+(kind==='critical'?'!':'?')+'</span><div><strong>'+item.label+'</strong><small>'+(kind==='critical'?(item.critical?'Vor dem nächsten großen Schritt möglichst klären.':'Noch offen und zu klären.'):'Noch nicht eindeutig geklärt.')+'</small></div></li>'
-    ).join('');
-
+    const contradictions=detectContradictions();
     const all=[...missing.map(x=>({...x,status:x.critical?'critical':'open'})),...unsure.map(x=>({...x,status:'unsure'}))];
-    const phaseLabels={marketing:'Vor der Vermarktung klären',notary:'Vor dem Notartermin klären',handover:'Vor der Übergabe klären'};
     let html='<div class="sales-summary">';
-    html+='<div class="sales-summary-lead"><h3>Ihre nächsten Schritte</h3><p>Aus Ihren Antworten ergibt sich diese persönliche Übersicht – sortiert danach, wann die Punkte relevant werden.</p></div>';
+    html+='<div class="sales-summary-lead"><h3>Ihre nächsten Schritte</h3><p>Aus Ihren Antworten ergibt sich diese persönliche Übersicht - sortiert danach, wann die Punkte relevant werden.</p></div>';
+
+    if(contradictions.length){
+      html+='<div class="sales-summary-contradictions"><h4>Bitte gegenprüfen</h4>';
+      contradictions.forEach(item=>{
+        html+='<div class="sales-summary-contradiction"><strong>'+item.title+'</strong><p>'+item.text+'</p>'+siaButton(item.sia)+'</div>';
+      });
+      html+='</div>';
+    }
 
     if(!all.length){
       html+='<div class="sales-summary-good"><strong>Die abgefragten Punkte wirken derzeit weitgehend geklärt.</strong><p>Vor Vermarktung oder Beurkundung sollten Unterlagen und Nachweise trotzdem noch einmal auf Aktualität und Vollständigkeit geprüft werden.</p></div>';
@@ -647,7 +851,7 @@
         if(!phaseItems.length)return;
         html+='<div class="sales-summary-block sales-summary-phase"><h4>'+phaseLabels[phase]+'</h4><ul>';
         html+=phaseItems.map(item =>
-          '<li class="sales-summary-item sales-summary-'+item.status+'"><span aria-hidden="true">'+(item.status==='critical'?'!':item.status==='unsure'?'?':'•')+'</span><div><strong>'+item.label+'</strong><small>'+(item.status==='critical'?'Besonders wichtig – möglichst vor dem nächsten Schritt klären.':item.status==='unsure'?'Noch nicht eindeutig geklärt.':'Noch offen und zu klären.')+'</small>'+siaButton(item.id)+'</div></li>'
+          '<li class="sales-summary-item sales-summary-'+item.status+'"><span aria-hidden="true">'+(item.status==='critical'?'!':item.status==='unsure'?'?':'•')+'</span><div><strong>'+item.label+'</strong><small>'+(item.status==='critical'?'Besonders wichtig - möglichst vor dem nächsten Schritt klären.':item.status==='unsure'?'Noch nicht eindeutig geklärt.':'Noch offen und zu klären.')+'</small>'+(item.source?'<small class="sales-summary-source">Bezugsquelle: '+item.source+'</small>':'')+siaButton(item.id)+'</div></li>'
         ).join('');
         html+='</ul></div>';
       });
@@ -658,6 +862,7 @@
     }
 
     html+='<div class="sales-summary-note"><strong>Hinweis zum Notartermin</strong><p>Die interne Vereinbarung, dass der Käufer Notar- und Grundbuchkosten trägt, bedeutet nicht in jedem Fall, dass gegenüber dem Notar ausschließlich der Käufer als Kostenschuldner in Betracht kommt. Deshalb sollte die Finanzierung möglichst vor der Beurkundung belastbar geprüft sein. Rechtliche Einzelfragen bitte mit dem Notar oder einer Rechtsberatung klären.</p></div>';
+    html+='<div class="sales-summary-export"><button type="button" data-sales-pdf>PDF-Auswertung herunterladen</button><button type="button" data-sales-email>Auswertung per E-Mail</button><small>Die PDF wird direkt in Ihrem Browser erstellt. Für die E-Mail öffnet sich Ihr E-Mail-Programm mit einer vorbereiteten Zusammenfassung.</small></div>';
     html+='<p class="sales-summary-cta"><a class="text-link" href="/kontakt/">Verkauf mit SLS besprechen →</a></p></div>';
     explainer.innerHTML=html;
   };
