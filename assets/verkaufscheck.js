@@ -54,6 +54,9 @@
     groundbook:'Was bedeuten Abteilung II und Abteilung III im Grundbuch beim Immobilienverkauf?',
     docFlur:'Warum kann eine aktuelle Flurkarte für Käufer und Finanzierung wichtig sein?',
     docEnergy:'Warum braucht man beim Immobilienverkauf einen gültigen Energieausweis?',
+    docGrundbuchAge:'Wie aktuell sollte ein Grundbuchauszug für Verkauf und Finanzierung sein?',
+    docFlurAge:'Wie aktuell sollte eine Flurkarte für Verkauf und Finanzierung sein?',
+    docEnergyAge:'Wie lange ist ein Energieausweis gültig?',
     authority:'Welche Rolle spielen Vollmacht oder Erbnachweis beim Immobilienverkauf?',
     sellerLoan:'Was passiert beim Immobilienverkauf mit einer bestehenden Grundschuld oder Restschuld?',
     rental:'Welche Unterlagen sind bei einer vermieteten Immobilie für den Verkauf wichtig?',
@@ -110,6 +113,23 @@
         'Abteilung III enthält typischerweise Grundpfandrechte wie Grundschulden.',
         'SLS prüft mit Ihnen, welcher Stand vorliegt und wo weiterer Klärungsbedarf besteht.'
       ]),
+      next:(answers,value)=> value==='yes'?'docGrundbuchAge':nextAfterGrundbuch(answers)
+    },
+
+    docGrundbuchAge:{
+      kicker:'Unterlagen · Aktualität',title:'Wie aktuell ist Ihr Grundbuchauszug?',
+      text:'Ein Grundbuchauszug hat keine pauschale gesetzliche „Ablauffrist“. Käuferbank oder Notariat können für den konkreten Vorgang aber einen aktuellen Stand verlangen.',
+      options:[
+        ['recent','Bis etwa 3 Monate alt','Der Auszug wurde erst vor kurzem erstellt.'],
+        ['mid','Etwa 3 bis 6 Monate alt','Der Auszug ist vorhanden, aber nicht mehr ganz neu.'],
+        ['old','Älter als 6 Monate','Der Auszug kann für einzelne Beteiligte möglicherweise nicht mehr aktuell genug sein.'],
+        ['unknown','Weiß ich nicht','Ich kenne das Ausstellungsdatum nicht.']
+      ],
+      explain:{
+        mid:['Aktualität im weiteren Prozess im Blick behalten.',['Es gibt keine einheitliche starre Altersgrenze für jeden Verkauf.','Banken und Notariate können je nach Vorgang einen jüngeren Auszug verlangen.']],
+        old:['Bitte prüfen, ob ein neuer Auszug benötigt wird.',['Gerade vor Finanzierungs- oder Notarprüfung kann ein aktueller Grundbuchstand wichtig sein.','Bezugsquelle: zuständiges Grundbuchamt beim Amtsgericht.']],
+        unknown:['Das Ausstellungsdatum sollte geprüft werden.',['So lässt sich früh erkennen, ob für Bank oder Notariat ein neuer Auszug sinnvoll ist.']]
+      },
       next:nextAfterGrundbuch
     },
 
@@ -122,6 +142,23 @@
         'Warum aktuell? Gerade für die Objektprüfung durch Käufer und finanzierende Banken sollten die Grundstücksdaten den heutigen Stand abbilden.',
         'SLS gleicht vorhandene Angaben ab und zeigt, welche Nachweise noch fehlen.'
       ]),
+      next:(answers,value)=> value==='yes'?'docFlurAge':nextAfterFlur(answers)
+    },
+
+    docFlurAge:{
+      kicker:'Unterlagen · Aktualität',title:'Wie aktuell ist Ihre Flurkarte?',
+      text:'Auch bei Flurkarten gibt es keine allgemeine starre Ablauffrist. Für Käufer- und Bankprüfung sollte der dargestellte Grundstücksstand jedoch aktuell und plausibel sein.',
+      options:[
+        ['recent','Bis etwa 6 Monate alt','Die Flurkarte wurde erst vor kurzem bezogen.'],
+        ['mid','Etwa 6 bis 12 Monate alt','Die Unterlage ist vorhanden, aber nicht mehr ganz neu.'],
+        ['old','Älter als 12 Monate','Eine aktuelle Auskunft kann für die weitere Prüfung sinnvoll sein.'],
+        ['unknown','Weiß ich nicht','Ich kenne den Stand der Unterlage nicht.']
+      ],
+      explain:{
+        mid:['Prüfen Sie, ob sich am Grundstücksstand etwas verändert hat.',['Bei unverändertem Bestand kann die Unterlage weiterhin hilfreich sein.','Welche Aktualität eine Bank verlangt, hängt vom Einzelfall ab.']],
+        old:['Eine neue Flurkarte kann sinnvoll sein.',['Gerade bei Finanzierung oder Veränderungen am Grundstück sollte der heutige Stand eindeutig sein.','Bezugsquelle: Kataster- bzw. Vermessungsamt oder das zuständige Geoportal.']],
+        unknown:['Der Stand der Flurkarte sollte eingeordnet werden.',['So vermeiden Sie, dass eine veraltete Unterlage erst in der Finanzierungsprüfung auffällt.']]
+      },
       next:nextAfterFlur
     },
 
@@ -139,8 +176,8 @@
     },
 
     docApartment:{
-      kicker:'Unterlagen · Eigentumswohnung',title:'Sind die wichtigen WEG-Unterlagen vollständig?',
-      text:'Bei einer Eigentumswohnung wird nicht nur die Wohnung selbst geprüft, sondern auch das Gemeinschaftseigentum.',
+      kicker:'Unterlagen · Eigentumswohnung',title:'Sind die wichtigen WEG-Unterlagen vollständig und aktuell?',
+      text:'Bei einer Eigentumswohnung wird nicht nur die Wohnung selbst geprüft. Aktuelle Wirtschaftspläne, Abrechnungen und Beschlüsse können für Käufer und Bank besonders wichtig sein.',
       options:statusOptions(),
       explain:missingInfo('Bei Wohnungen entstehen häufig genau hier Unterlagenlücken.',[
         'Typisch relevant: Teilungserklärung und Aufteilungsplan.',
@@ -153,8 +190,8 @@
     },
 
     docInvestment:{
-      kicker:'Unterlagen · Mehrfamilienhaus',title:'Sind Miet- und Ertragsunterlagen vollständig und nachvollziehbar?',
-      text:'Bei einem Anlageobjekt prüfen Käufer zusätzlich zur Immobilie die wirtschaftlichen Grundlagen.',
+      kicker:'Unterlagen · Mehrfamilienhaus',title:'Sind Miet- und Ertragsunterlagen vollständig und aktuell?',
+      text:'Bei einem Anlageobjekt prüfen Käufer zusätzlich zur Immobilie die wirtschaftlichen Grundlagen. Mietstände, Leerstände und Abrechnungen sollten den heutigen Stand abbilden.',
       options:statusOptions(),
       explain:missingInfo('Bei Mehrfamilienhäusern reicht die reine Objektbeschreibung nicht aus.',[
         'Typisch relevant sind Mietverträge, aktuelle Mieten, Betriebskosten und Informationen zu Leerständen.',
@@ -187,7 +224,22 @@
         'Ein neuer Ausweis wird von entsprechend qualifizierten Ausstellern erstellt.',
         'SLS prüft, ob ein verwertbarer Ausweis vorliegt und weist auf fehlende Angaben hin.'
       ]),
-      next:answers=> 'groundbook'
+      next:(answers,value)=> value==='yes'?'docEnergyAge':'groundbook'
+    },
+
+    docEnergyAge:{
+      kicker:'Unterlagen · Aktualität',title:'Wann wurde der Energieausweis ausgestellt?',
+      text:'Ein Energieausweis wird grundsätzlich für zehn Jahre ausgestellt. Unabhängig davon kann bei bestimmten Änderungen ein neuer Ausweis erforderlich werden.',
+      options:[
+        ['valid','Vor weniger als 10 Jahren','Der Ausweis liegt innerhalb der regulären Gültigkeitsdauer.'],
+        ['expired','Vor 10 Jahren oder länger','Die reguläre Gültigkeitsdauer ist erreicht oder überschritten.'],
+        ['unknown','Weiß ich nicht','Das Ausstellungsdatum ist mir nicht bekannt.']
+      ],
+      explain:{
+        expired:['Der Energieausweis sollte erneuert bzw. fachlich geprüft werden.',['Die gesetzliche Gültigkeitsdauer beträgt grundsätzlich zehn Jahre.','Bezugsquelle: entsprechend qualifizierte Aussteller, z. B. Energieberater oder andere nach den gesetzlichen Vorgaben berechtigte Fachpersonen.']],
+        unknown:['Bitte prüfen Sie das Ausstellungsdatum.',['Ein abgelaufener Energieausweis sollte nicht erst während der Vermarktung auffallen.']]
+      },
+      next:()=> 'groundbook'
     },
 
     groundbook:{
