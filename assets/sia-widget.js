@@ -45,6 +45,10 @@
       <header><span class="brand" aria-hidden="true">SIA</span><div class="identity"><h2 id="sia-title"><b>S</b>LS <b>I</b>mmobilien <b>A</b>ssistenz</h2><span class="sub">KI-Assistent von SLS Immobilienpartner</span></div><button class="close" type="button" aria-label="SIA schließen" autofocus><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
       <div class="content">
         <section class="intro"><h3>Was möchten Sie über Immobilien wissen?</h3><p>Ich helfe Ihnen, Ihren nächsten Schritt einzuordnen.</p><div class="suggestions" role="group" aria-label="Thema für Ihre Frage wählen"><button type="button">Verkaufen</button><button type="button">Bewerten</button><button type="button">Kaufen</button><button type="button">Finanzieren</button><button class="why-sls" type="button">Warum SLS Immobilienpartner?</button></div></section>
+        <div class="thinking" hidden aria-hidden="true">
+          <div class="thinking-mark"><strong>SIA</strong><span class="thinking-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+          <div class="thinking-copy"><span class="thinking-text">SIA prüft Ihre Frage …</span><span class="thinking-line" aria-hidden="true"></span></div>
+        </div>
         <p class="status" role="status" aria-live="polite"></p>
         <details class="conversation" hidden><summary>Bisheriges Gespräch</summary><div class="conversation-list"></div></details>
         <section class="result" hidden tabindex="-1" aria-label="Antwort von SIA"><p class="question"></p><span class="origin"></span><div class="answer"></div><details class="sources"><summary>Grundlage dieser Antwort</summary><div class="source-list"></div></details></section>
@@ -110,6 +114,30 @@
     }
   }
   const dialog = $('dialog'), launch = $('.launch'), field = $('textarea'), status = $('.status');
+  const thinking = $('.thinking'), thinkingText = $('.thinking-text');
+  const thinkingMessages = [
+    'SIA prüft Ihre Frage …',
+    'SIA sucht die passenden Informationen …',
+    'SIA formuliert Ihre Antwort …'
+  ];
+  let thinkingTimer = 0;
+  const startThinking = () => {
+    let index = 0;
+    thinking.hidden = false;
+    thinking.setAttribute('aria-hidden', 'false');
+    thinkingText.textContent = thinkingMessages[index];
+    window.clearInterval(thinkingTimer);
+    thinkingTimer = window.setInterval(() => {
+      index = (index + 1) % thinkingMessages.length;
+      thinkingText.textContent = thinkingMessages[index];
+    }, 1400);
+  };
+  const stopThinking = () => {
+    window.clearInterval(thinkingTimer);
+    thinkingTimer = 0;
+    thinking.hidden = true;
+    thinking.setAttribute('aria-hidden', 'true');
+  };
   const quickbar = $('.quickbar');
   let compactTimer = 0;
   const compactQuickbar = () => {
@@ -297,7 +325,7 @@
     const question = field.value.trim();
     if (question.length < (dialogueEnabled && conversation.length ? 1 : 3) || question.length > 1200) { status.textContent = 'Bitte eine Frage mit höchstens 1200 Zeichen eingeben.'; field.focus(); return; }
     busy = true; $('.send').disabled = true; $('.result').hidden = true; $('.intro').hidden = true;
-    status.textContent = 'SIA bereitet Ihre Antwort vor…'; $('.content').setAttribute('aria-busy', 'true');
+    status.textContent = ''; startThinking(); $('.content').setAttribute('aria-busy', 'true');
     const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 55000);
     try {
       const response = await fetch('/api/sia-ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question, pageContext, ...(dialogueEnabled ? { history: conversation } : {}) }), signal: controller.signal });
@@ -344,7 +372,7 @@
     } catch {
       status.textContent = 'SIA konnte gerade keine Antwort abrufen. Bitte versuchen Sie es erneut oder wenden Sie sich persönlich an Ihren SLS Immobilienpartner.';
     } finally {
-      clearTimeout(timeout); busy = false; $('.send').disabled = false; $('.content').removeAttribute('aria-busy');
+      clearTimeout(timeout); stopThinking(); busy = false; $('.send').disabled = false; $('.content').removeAttribute('aria-busy');
     }
   });
 })();
