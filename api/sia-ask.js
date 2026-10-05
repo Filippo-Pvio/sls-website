@@ -109,51 +109,58 @@ export default async function handler(req, res) {
     let upstreamQuestion = question;
     if (context?.type === 'property' && context.property) {
       const p = context.property;
-      const compact = value => typeof value === 'string' ? value.trim().slice(0, 2200) : value;
-      const facts = Array.isArray(p.objectFacts)
-        ? p.objectFacts.slice(0, 30).map(item => `${item.label}: ${item.value}`).join('; ')
-        : '';
-      const energy = p.energy && typeof p.energy === 'object'
-        ? Object.entries(p.energy).filter(([,value]) => value !== null && value !== undefined && value !== '').slice(0, 20).map(([key,value]) => `${key}: ${value}`).join('; ')
-        : '';
-      const broker = p.broker
-        ? [p.broker.name, p.broker.phone || p.broker.mobile, p.broker.email].filter(Boolean).join(' · ')
-        : '';
-      const propertyContextText = [
-        'VERBINDLICHER KONTEXT ZUR AKTUELL GEÖFFNETEN SLS-IMMOBILIE:',
-        `Objekt-ID: ${p.id || ''}`,
-        `Titel: ${compact(p.title) || ''}`,
-        `Referenz: ${compact(p.reference) || ''}`,
-        `Typ: ${compact(p.type) || ''}`,
-        `Ort: ${[p.zip, p.city].filter(Boolean).join(' ')}`,
-        p.price != null ? `Kaufpreis: ${p.price}` : '',
-        p.area != null ? `Wohnfläche: ${p.area} m²` : '',
-        p.rooms != null ? `Zimmer: ${p.rooms}` : '',
-        p.bedrooms != null ? `Schlafzimmer: ${p.bedrooms}` : '',
-        p.baths != null ? `Badezimmer: ${p.baths}` : '',
-        p.plot != null ? `Grundstück: ${p.plot} m²` : '',
-        p.year != null ? `Baujahr: ${p.year}` : '',
-        facts ? `Weitere Eckdaten: ${facts}` : '',
-        p.courtage ? `Käuferprovision: ${compact(p.courtage)}` : '',
-        p.courtageNote ? `Provisionshinweis: ${compact(p.courtageNote)}` : '',
-        energy ? `Energieangaben: ${energy}` : '',
-        Array.isArray(p.amenities) && p.amenities.length ? `Merkmale: ${p.amenities.slice(0,30).join(', ')}` : '',
-        p.flooring ? `Bodenbeläge: ${compact(p.flooring)}` : '',
-        p.features ? `Ausstattung: ${compact(p.features)}` : '',
-        p.description ? `Objektbeschreibung: ${compact(p.description)}` : '',
-        p.location ? `Lagebeschreibung: ${compact(p.location)}` : '',
-        p.otherNote ? `Sonstiges: ${compact(p.otherNote)}` : '',
-        broker ? `Ansprechpartner: ${broker}` : '',
-        '',
-        'WICHTIGE ANTWORTREGELN:',
-        '- Beantworte die folgende Nutzerfrage bezogen auf genau diese Immobilie.',
-        '- Verwende für objektspezifische Aussagen ausschließlich die oben genannten veröffentlichten Daten.',
-        '- Fehlt eine Information, sage klar, dass sie im veröffentlichten Inserat nicht angegeben ist.',
-        '- Frage nicht erneut nach Adresse, Objekt oder weiteren Identifikationsdaten; das Objekt ist bereits eindeutig bestimmt.',
-        '',
-        `NUTZERFRAGE: ${question}`
-      ].filter(Boolean).join('\n');
-      upstreamQuestion = propertyContextText.slice(0, 7600);
+      const q = question.toLocaleLowerCase('de-DE');
+      const clean = value => String(value ?? '').replace(/\s+/g, ' ').trim();
+      const add = (parts, label, value, max = 260) => {
+        const text = clean(value);
+        if (text) parts.push(`${label}: ${text.slice(0, max)}`);
+      };
+
+      const parts = [
+        'Aktuelle veröffentlichte SLS-Immobilie. Nutze nur diese Angaben; fehlende Angaben nicht erfinden und nicht erneut nach dem Objekt fragen.'
+      ];
+      add(parts, 'Titel', p.title, 150);
+      add(parts, 'Objekt-ID', p.id, 30);
+      add(parts, 'Ort', [p.zip, p.city].filter(Boolean).join(' '), 80);
+      if (p.price != null) parts.push(`Kaufpreis: ${p.price} EUR`);
+      if (p.area != null) parts.push(`Wohnfläche: ${p.area} m²`);
+      if (p.rooms != null) parts.push(`Zimmer: ${p.rooms}`);
+      if (p.plot != null) parts.push(`Grundstück: ${p.plot} m²`);
+      if (p.year != null) parts.push(`Baujahr: ${p.year}`);
+
+      const wantsEnergy = /energie|ausweis|heizung|effizienz|verbrauch|bedarf/.test(q);
+      const wantsFeatures = /ausstattung|merkmal|balkon|garten|keller|garage|aufzug|boden|stellplatz/.test(q);
+      const wantsCourtage = /provision|courtage|kosten|preis/.test(q);
+      const wantsLocation = /lage|umgebung|standort|ort|verkehr/.test(q);
+      const wantsBroker = /ansprechpartner|kontakt|anfrag|makler|telefon|email|e-mail/.test(q);
+      const wantsDescription = /beschreibung|besonder|zustand|modern|objekt/.test(q);
+      const wantsFacts = /eckdaten|daten|größe|groesse|fläche|flaeche|zimmer|baujahr/.test(q);
+
+      if (wantsFacts && Array.isArray(p.objectFacts)) {
+        add(parts, 'Weitere Eckdaten', p.objectFacts.slice(0, 12).map(item => `${item.label}: ${item.value}`).join('; '), 320);
+      }
+      if (wantsCourtage) {
+        add(parts, 'Käuferprovision', p.courtage, 180);
+        add(parts, 'Provisionshinweis', p.courtageNote, 220);
+      }
+      if (wantsEnergy && p.energy) {
+        add(parts, 'Energie', Object.entries(p.energy).filter(([,value]) => value !== null && value !== undefined && value !== '').slice(0, 10).map(([key,value]) => `${key}: ${value}`).join('; '), 320);
+      }
+      if (wantsFeatures) {
+        add(parts, 'Merkmale', Array.isArray(p.amenities) ? p.amenities.join(', ') : '', 220);
+        add(parts, 'Ausstattung', p.features, 320);
+        add(parts, 'Bodenbeläge', p.flooring, 120);
+      }
+      if (wantsLocation) add(parts, 'Lagebeschreibung', p.location, 320);
+      if (wantsDescription) add(parts, 'Objektbeschreibung', p.description, 320);
+      if (wantsBroker && p.broker) {
+        add(parts, 'Ansprechpartner', [p.broker.name, p.broker.phone || p.broker.mobile, p.broker.email].filter(Boolean).join(' · '), 220);
+      }
+
+      const prefix = parts.join('\n');
+      const suffix = `\nNutzerfrage: ${question}`;
+      const maxPrefix = Math.max(0, 1120 - suffix.length);
+      upstreamQuestion = prefix.slice(0, maxPrefix) + suffix;
     }
 
     const upstream = await fetch(endpoint, {
