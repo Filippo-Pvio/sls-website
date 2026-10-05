@@ -7,7 +7,7 @@ const SOLD_NAMES = new Set(['verkauft', 'erfolgreich vermarktet']);
 async function propstack(path, key) {
   const response = await fetch(new URL(path, API_BASE), {
     headers: { 'X-API-KEY': key },
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.timeout(15000),
   });
   if (!response.ok) throw new Error(`Propstack HTTP ${response.status}`);
   return response.json();
