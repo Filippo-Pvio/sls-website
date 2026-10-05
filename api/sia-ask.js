@@ -93,6 +93,85 @@ export default async function handler(req, res) {
       heading: typeof requestedContext.heading === 'string' ? requestedContext.heading.slice(0, 180) : ''
     };
   }
+  const formatNumber = value => new Intl.NumberFormat('de-DE').format(value);
+  const propertyAnswer = () => {
+    if (context?.type !== 'property' || !context.property) return null;
+    const p = context.property;
+    const q = question.toLocaleLowerCase('de-DE');
+    const missing = topic => `Zu ${topic} ist im veröffentlichten Inserat aktuell keine Angabe hinterlegt.`;
+
+    if (/eckdaten|daten|wichtigste.*(daten|infos)|größe|groesse|fläche|flaeche|zimmer|baujahr/.test(q)) {
+      const lines = [
+        p.price != null ? `Kaufpreis: ${new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(p.price)}` : null,
+        p.area != null ? `Wohnfläche: ${formatNumber(p.area)} m²` : null,
+        p.rooms != null ? `Zimmer: ${formatNumber(p.rooms)}` : null,
+        p.bedrooms != null ? `Schlafzimmer: ${formatNumber(p.bedrooms)}` : null,
+        p.baths != null ? `Badezimmer: ${formatNumber(p.baths)}` : null,
+        p.plot != null ? `Grundstück: ${formatNumber(p.plot)} m²` : null,
+        p.year != null ? `Baujahr: ${formatNumber(p.year)}` : null,
+        [p.zip,p.city].filter(Boolean).length ? `Lage: ${[p.zip,p.city].filter(Boolean).join(' ')}` : null
+      ].filter(Boolean);
+      return lines.length ? `Die wichtigsten veröffentlichten Eckdaten zu dieser Immobilie sind:\n\n${lines.join('\n')}` : missing('den Eckdaten');
+    }
+
+    if (/provision|courtage|käuferprovision|kaeuferprovision/.test(q)) {
+      const parts = [p.courtage, p.courtageNote].filter(Boolean);
+      return parts.length ? `Zur Käuferprovision ist veröffentlicht:\n\n${parts.join('\n')}` : missing('der Käuferprovision');
+    }
+
+    if (/energie|ausweis|effizienz|heizung|verbrauch|bedarf/.test(q)) {
+      const labels = {
+        availability:'Verfügbarkeit', kind:'Art des Energieausweises', rating:'Energieeffizienzklasse', value:'Energiekennwert',
+        fuel:'Energieträger', heating:'Heizungsart', issuedOn:'Ausgestellt am', validUntil:'Gültig bis',
+        buildingYear:'Gebäudebaujahr laut Energieangaben', equipmentYear:'Baujahr Anlagentechnik'
+      };
+      const rows = Object.entries(p.energy || {})
+        .filter(([key,value]) => key !== 'yearFromCertificate' && value !== null && value !== undefined && value !== '')
+        .map(([key,value]) => `${labels[key] || key}: ${value}`);
+      return rows.length ? `Zum Energieausweis bzw. zu den Energieangaben ist veröffentlicht:\n\n${rows.join('\n')}` : missing('den Energieangaben');
+    }
+
+    if (/ausstattung|merkmal|balkon|garten|keller|garage|aufzug|stellplatz|boden/.test(q)) {
+      const parts = [];
+      if (Array.isArray(p.amenities) && p.amenities.length) parts.push(`Merkmale: ${p.amenities.join(', ')}`);
+      if (p.flooring) parts.push(`Bodenbeläge: ${p.flooring}`);
+      if (p.features) parts.push(`Ausstattung: ${p.features}`);
+      return parts.length ? `Zur Ausstattung ist veröffentlicht:\n\n${parts.join('\n\n')}` : missing('der Ausstattung');
+    }
+
+    if (/lage|umgebung|standort|verkehr/.test(q)) {
+      return p.location ? `Zur Lage ist veröffentlicht:\n\n${p.location}` : missing('der Lage');
+    }
+
+    if (/ansprechpartner|kontakt|anfrag|makler|telefon|email|e-mail/.test(q)) {
+      const b = p.broker;
+      if (!b) return missing('dem Ansprechpartner');
+      const lines = [
+        b.name ? `Ansprechpartner: ${b.name}` : null,
+        (b.phone || b.mobile) ? `Telefon: ${b.phone || b.mobile}` : null,
+        b.email ? `E-Mail: ${b.email}` : null
+      ].filter(Boolean);
+      return lines.length ? `${lines.join('\n')}\n\nÜber den Anfragebereich auf dieser Objektseite können Sie direkt Kontakt aufnehmen.` : missing('dem Ansprechpartner');
+    }
+
+    if (/beschreibung|zustand|modernis|besonder|objekt/.test(q)) {
+      return p.description ? `In der veröffentlichten Objektbeschreibung steht:\n\n${p.description}` : missing('der Objektbeschreibung');
+    }
+
+    return null;
+  };
+
+  const directPropertyAnswer = propertyAnswer();
+  if (directPropertyAnswer) {
+    return send(res, 200, {
+      provider: 'Wissensbasis von SLS Immobilienpartner',
+      answer: directPropertyAnswer,
+      sources: [],
+      kind: 'answer',
+      reason: 'property_context'
+    });
+  }
+
   let reservation;
   try {
     reservation = await reserveQuota(req, res);
