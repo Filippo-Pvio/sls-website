@@ -561,6 +561,23 @@
     Object.entries(todoDefinitions).forEach(([id,def])=>{
       const value=answers[id];
       if(!value)return;
+
+      if(id==='docGrundbuchAge'){
+        if(value==='recent') return;
+        if(value==='mid' || value==='unknown') { unsure.push({...def,id}); return; }
+        if(value==='old') { missing.push({...def,id}); return; }
+      }
+      if(id==='docFlurAge'){
+        if(value==='recent') return;
+        if(value==='mid' || value==='unknown') { unsure.push({...def,id}); return; }
+        if(value==='old') { missing.push({...def,id}); return; }
+      }
+      if(id==='docEnergyAge'){
+        if(value==='valid') return;
+        if(value==='unknown') { unsure.push({...def,id}); return; }
+        if(value==='expired') { missing.push({...def,id}); return; }
+      }
+
       let isMissing = value==='no' || value==='promise' || value==='pending' || value==='preliminary' || value==='conditional' || value==='partly' || value==='open';
       let isUnsure = value==='unknown' || value==='unsure';
       if(id==='finance' && value==='yes') return;
@@ -582,6 +599,33 @@
       else if(isUnsure) unsure.push({...def,id});
     });
     return {missing,unsure};
+  };
+
+  const detectContradictions = () => {
+    const issues=[];
+    const type=typeFromAnswers(answers);
+    const documentFlags=[];
+    if(answers.docGrundbuch!=='yes' || ['old','unknown'].includes(answers.docGrundbuchAge)) documentFlags.push('Grundbuchauszug');
+    if(['house','investment','land'].includes(type) && (answers.docFlur!=='yes' || ['old','unknown'].includes(answers.docFlurAge))) documentFlags.push('Flurkarte');
+    if(type!=='land' && (answers.docEnergy!=='yes' || ['expired','unknown'].includes(answers.docEnergyAge))) documentFlags.push('Energieausweis');
+
+    if(answers.financeType==='final' && documentFlags.length){
+      issues.push({
+        title:'Finale Finanzierung bitte gegenprüfen',
+        text:'Sie haben eine uneingeschränkte Finanzierungszusage angegeben, gleichzeitig sind wichtige Objektunterlagen fehlend, unklar oder möglicherweise nicht aktuell genug: '+documentFlags.join(', ')+'. Das muss kein Widerspruch sein, sollte aber mit Käufer bzw. Bank geprüft werden, weil Banken Käufer und Beleihungsobjekt regelmäßig gemeinsam beurteilen.',
+        sia:'financeType'
+      });
+    }
+    if(answers.docEnergy==='yes' && answers.docEnergyAge==='expired'){
+      issues.push({title:'Energieausweis vorhanden, aber möglicherweise nicht mehr gültig',text:'Der Ausweis wurde als vorhanden angegeben, zugleich aber als zehn Jahre oder älter. Die reguläre gesetzliche Gültigkeitsdauer beträgt grundsätzlich zehn Jahre.',sia:'docEnergyAge'});
+    }
+    if(answers.docGrundbuch==='yes' && answers.docGrundbuchAge==='old'){
+      issues.push({title:'Grundbuch vorhanden, Aktualität prüfen',text:'Der Auszug ist vorhanden, aber älter als sechs Monate. Es gibt keine starre allgemeine Ablauffrist; Käuferbank oder Notariat können für den konkreten Vorgang dennoch einen aktuelleren Stand verlangen.',sia:'docGrundbuchAge'});
+    }
+    if(answers.docFlur==='yes' && answers.docFlurAge==='old'){
+      issues.push({title:'Flurkarte vorhanden, Aktualität prüfen',text:'Die Flurkarte ist vorhanden, aber älter als zwölf Monate. Prüfen Sie, ob der dargestellte Grundstücksstand noch aktuell ist und ob Käuferbank oder andere Beteiligte eine neuere Unterlage benötigen.',sia:'docFlurAge'});
+    }
+    return issues;
   };
 
   const renderSummary = q => {
