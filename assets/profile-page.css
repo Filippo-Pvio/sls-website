@@ -54,3 +54,17 @@ body.profile-page #main>section.profile-final h2{margin-inline:auto}
 .profile-success-footer{margin-top:24px}
 @media(max-width:850px){.profile-success-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-success-card:last-child{grid-column:1/-1;max-width:calc(50% - 11px)}}
 @media(max-width:600px){.profile-success-grid{display:flex;overflow-x:auto;gap:16px;margin-right:-24px;padding-right:24px;scroll-snap-type:x mandatory;scrollbar-width:none}.profile-success-grid::-webkit-scrollbar{display:none}.profile-success-card{flex:0 0 84%;scroll-snap-align:start}.profile-success-card:last-child{max-width:none}.profile-success-copy h3{font-size:22px}}
+
+/* Alternate profile sections for a clear light / SLS-blue editorial rhythm. */
+.profile-tone-blue{background:#345b6e;color:#fff}
+body.profile-page #main>section.profile-tone-blue h2{color:#fff}
+.profile-tone-blue .profile-section-head p{color:rgba(255,255,255,.78)}
+.profile-tone-blue .profile-focus-grid article{border-top-color:rgba(255,255,255,.28)}
+.profile-tone-blue .profile-focus-grid h3{color:#fff}
+.profile-tone-blue .profile-focus-grid p{color:rgba(255,255,255,.78)}
+.profile-success.profile-tone-blue{background:#345b6e}
+.profile-success.profile-tone-blue .profile-success-card{background:#fff}
+.profile-success.profile-tone-blue .profile-success-copy p{color:#657e89}
+.profile-success.profile-tone-blue .profile-success-copy h3{color:#345b6e}
+.profile-success.profile-tone-blue .profile-success-footer .text-link{color:#fff}
+.profile-success.profile-tone-blue .profile-success-footer .text-link::after{background:currentColor}
