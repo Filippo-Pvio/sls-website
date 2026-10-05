@@ -37,16 +37,20 @@ export function matchesMarketCity(item, city) {
   const place = normalise(item?.city), target = normalise(city);
   if (!place || !target) return false;
 
-  // The named city itself is always valid. This also permits values such as
-  // "Dorsten - Lembeck" while never accepting a neighbouring municipality.
-  if (beginsWithName(place,target)) return true;
-
   const rule = MARKET_CITIES[target];
+  const zip = String(item?.zip || item?.zip_code || '').trim();
+
+  // The named city itself is valid, but a contradictory postal code rejects
+  // namesakes such as Borken (NRW) versus Borken in Hessen.
+  if (beginsWithName(place,target)) {
+    if (rule && zip && !rule.zip.test(zip)) return false;
+    return true;
+  }
+
   if (!rule) return false;
 
   // District-only values are accepted only when the postal code confirms the
   // same municipality. This keeps local references trustworthy.
-  const zip = String(item?.zip || item?.zip_code || '').trim();
   if (!zip || !rule.zip.test(zip)) return false;
   return rule.districts.some(name => beginsWithName(place,name));
 }
