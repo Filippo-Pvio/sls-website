@@ -84,3 +84,12 @@ body.profile-page #main > section.profile-success.profile-tone-blue h2{
 body.profile-page #main > section.profile-focus.profile-tone-blue .profile-focus-grid h3{
   color:#f7f2e8 !important;
 }
+
+/* Explicit light counterpart for profiles without an editorial media section. */
+body.profile-page #main > section.profile-success.profile-tone-light{background:#f5f7f6 !important;color:#345b6e}
+body.profile-page #main > section.profile-success.profile-tone-light h2{color:#345b6e !important}
+body.profile-page #main > section.profile-success.profile-tone-light .profile-section-head p{color:#5b707a}
+body.profile-page #main > section.profile-success.profile-tone-light .profile-success-footer .text-link{color:#345b6e}
+
+/* Distinguish Expert Channel video/podcast from the separate editorial interview. */
+.profile-podcast-link{display:inline-flex;margin-top:14px;color:#345b6e;font-size:14px;font-weight:700;text-decoration:none}.profile-podcast-link:hover{text-decoration:underline;text-underline-offset:4px}.profile-media-audio{height:100%;padding:32px;border-radius:18px;background:#fff;box-shadow:0 12px 32px rgba(25,51,62,.06)}.profile-media-audio h3{font:500 30px/1.22 'Playfair Display',Georgia,serif;color:#345b6e;margin:0 0 16px}.profile-media-audio>p:not(.eyebrow){color:#5b707a;line-height:1.7}
