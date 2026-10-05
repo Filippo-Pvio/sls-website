@@ -339,18 +339,22 @@
       if (!response.ok) throw new Error('Unavailable');
       if (!['OpenAI', 'Wissensbasis von SLS Immobilienpartner'].includes(data.provider) || typeof data.answer !== 'string' || !Array.isArray(data.sources)) throw new Error('Invalid response');
       $('.question').textContent = question;
-      $('.origin').textContent = data.provider === 'OpenAI' ? 'KI-Antwort · OpenAI' : 'Antwort aus der Wissensbasis von SLS Immobilienpartner';
+      $('.origin').textContent = ['property_context','property_context_missing'].includes(data.reason)
+        ? 'Antwort aus den veröffentlichten Objektdaten von SLS Immobilienpartner'
+        : data.provider === 'OpenAI' ? 'KI-Antwort · OpenAI' : 'Antwort aus der Wissensbasis von SLS Immobilienpartner';
       renderAnswer(data);
       $('.source-list').replaceChildren(...data.sources.filter(s => s && typeof s === 'object').map(sourceCard));
       $('.sources').hidden = !data.sources.length; $('.sources').open = false;
       $('.result').hidden = false;
       status.textContent = data.kind === 'clarification' ? 'Eine kurze Rückfrage hilft SIA, Ihr Anliegen einzuordnen. Sie zählt nicht zum Tageskontingent.'
         : data.kind === 'offtopic' ? 'SIA unterstützt Sie bei Immobilienfragen.'
+        : data.reason === 'property_context' ? 'Antwort auf Grundlage der veröffentlichten Objektdaten.'
+        : data.reason === 'property_context_missing' ? 'In den veröffentlichten Objektdaten ist dazu keine eindeutige Angabe hinterlegt.'
         : data.reason === 'unanswered' ? 'Für diese Frage fehlt derzeit eine ausreichend belegte Grundlage.'
         : data.provider === 'OpenAI' ? 'Ihre Antwort ist da.'
         : data.reason === 'general_definition' ? 'Hier finden Sie eine belegte Erklärung aus unserer Wissensbasis.'
         : ['invalid_sources', 'verification_failed'].includes(data.reason) ? (data.sources.length ? 'Hier finden Sie belegte Informationen aus unserer Wissensbasis.' : 'Zu dieser Frage konnte SIA keine ausreichend belegte Antwort erstellen.')
-        : 'Die KI-Antwort ist derzeit nicht verfügbar. Hier finden Sie Informationen aus der Wissensbasis.';
+        : 'Hier finden Sie Informationen aus der Wissensbasis von SLS Immobilienpartner.';
       if (Number.isInteger(data.quota?.remaining) && data.quota.remaining >= 0 && data.quota.remaining <= 3) {
         status.textContent += data.quota.remaining === 0 ? ' Ihr Tageslimit ist erreicht. Morgen sind wieder Fragen möglich.'
           : ` Heute ${data.quota.remaining === 1 ? 'ist noch eine weitere Antwort' : `sind noch ${data.quota.remaining} weitere Antworten`} möglich.`;
