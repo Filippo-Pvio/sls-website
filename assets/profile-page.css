@@ -103,8 +103,12 @@ body.profile-page #main > section.profile-success.profile-tone-blue .profile-suc
 body.profile-page #main > section.profile-success.profile-tone-blue .profile-success-footer .text-link:focus-visible{
   color:#fff !important;
 }
+body.profile-page #main > section.profile-success.profile-tone-blue .profile-success-footer .text-link{
+  border-bottom-color:rgba(247,242,232,.58) !important;
+}
 body.profile-page #main > section.profile-success.profile-tone-blue .profile-success-footer .text-link::after{
-  background:currentColor !important;
+  background:none !important;
+  color:currentColor !important;
 }
 body.profile-page #main > section.profile-success.profile-tone-light .profile-success-footer .text-link{
   color:#345b6e !important;
@@ -114,5 +118,6 @@ body.profile-page #main > section.profile-success.profile-tone-light .profile-su
   color:#294a5a !important;
 }
 body.profile-page #main > section.profile-success.profile-tone-light .profile-success-footer .text-link::after{
-  background:currentColor !important;
+  background:none !important;
+  color:currentColor !important;
 }
