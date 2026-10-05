@@ -542,8 +542,6 @@
   };
 
   let current='start', history=[], answers={}, selected=null;
-  const confirmSteps = new Set(['financeType','notaryRisk','earlyAccess']);
-  let autoTimer = null;
 
   const render = () => {
     const q=questions[current];
@@ -562,8 +560,7 @@
     });
 
     back.disabled=history.length===0;
-    const needsConfirmation = confirmSteps.has(current);
-    next.hidden=q.summary || !needsConfirmation || !selected;
+    next.hidden=q.summary || !selected;
     next.textContent=q.summary?'':'Weiter →';
 
     if(q.summary){
@@ -580,24 +577,14 @@
   };
 
   const select=value=>{
-    if(autoTimer) clearTimeout(autoTimer);
     selected=value;
     answers[current]=value;
     [...options.children].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===value)));
     showExplain(questions[current],value);
-    if(confirmSteps.has(current)){
-      next.hidden=false;
-      return;
-    }
-    next.hidden=true;
-    autoTimer=setTimeout(()=>{
-      autoTimer=null;
-      goNext();
-    },260);
+    next.hidden=false;
   };
 
   const goNext=()=>{
-    if(autoTimer){ clearTimeout(autoTimer); autoTimer=null; }
     const q=questions[current];
     if(!selected||!q.next)return;
     history.push(current);
@@ -609,7 +596,6 @@
   };
 
   const goBack=()=>{
-    if(autoTimer){ clearTimeout(autoTimer); autoTimer=null; }
     if(!history.length)return;
     current=history.pop();
     selected=answers[current]||null;
