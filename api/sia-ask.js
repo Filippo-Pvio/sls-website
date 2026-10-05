@@ -158,6 +158,47 @@ export default async function handler(req, res) {
       return p.description ? `In der veröffentlichten Objektbeschreibung steht:\n\n${p.description}` : missing('der Objektbeschreibung');
     }
 
+    // Free property questions: search all published object text, not just the predefined topics.
+    const normalizeSearch = value => String(value || '')
+      .normalize('NFD')
+      .replace(/[\\u0300-\\u036f]/g, '')
+      .toLocaleLowerCase('de-DE');
+    const stop = new Set([
+      'der','die','das','den','dem','des','ein','eine','einen','einem','einer','und','oder','ist','sind','hat','haben',
+      'gibt','es','bei','zur','zum','zu','von','im','in','auf','an','mit','für','fuer','was','wie','welche','welcher',
+      'welches','ich','mir','diese','dieser','dieses','immobilie','objekt','steht','stehts','bitte','kann','man'
+    ]);
+    const terms = [...new Set(normalizeSearch(question)
+      .split(/[^a-z0-9äöüß]+/)
+      .map(word => word.trim())
+      .filter(word => word.length >= 4 && !stop.has(word)))];
+
+    if (terms.length) {
+      const sources = [
+        ['Objektbeschreibung', p.description],
+        ['Ausstattung', p.features],
+        ['Lagebeschreibung', p.location],
+        ['Sonstiges', p.otherNote],
+        ['Provisionshinweis', p.courtageNote],
+        ['Eckdaten', Array.isArray(p.objectFacts) ? p.objectFacts.map(item => `${item.label}: ${item.value}`).join('. ') : '']
+      ].filter(([,text]) => typeof text === 'string' && text.trim());
+
+      const hits = [];
+      for (const [label, text] of sources) {
+        const chunks = String(text).replace(/\\r/g, '').split(/(?<=[.!?])\\s+|\\n+/).map(part => part.trim()).filter(Boolean);
+        const matched = chunks.filter(chunk => {
+          const haystack = normalizeSearch(chunk);
+          return terms.some(term => haystack.includes(term));
+        }).slice(0, 3);
+        if (matched.length) hits.push([label, matched]);
+      }
+
+      if (hits.length) {
+        const answer = hits.map(([label, matched]) => `${label}:\n${matched.join(' ')}`).join('\n\n');
+        return `Dazu finde ich im veröffentlichten Inserat folgende Angaben:\n\n${answer.slice(0, 1800)}`;
+      }
+    }
+
     return null;
   };
 
