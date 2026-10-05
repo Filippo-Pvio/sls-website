@@ -95,7 +95,7 @@
       button.classList.toggle('why-sls', index === propertyQuestions.length - 1);
     });
     $('.contact a').textContent = 'Diese Immobilie anfragen';
-    $('.contact a').href = '#immobilie-anfragen';
+    $('.contact a').href = '#pp-inquiry';
   } else {
     const path = location.pathname;
     if (path.startsWith('/verkaufen')) {
