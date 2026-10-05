@@ -55,12 +55,14 @@ async function buildPdf(report, contact) {
   const PAGE_H = 841.89;
   const M = 52;
   const CONTENT_W = PAGE_W - M * 2;
-  const FOOTER_H = 44;
+  const FOOTER_H = 66;
 
   let page;
   let y = 0;
 
   const drawFooter = target => {
+    const note = 'Hinweis: Diese Auswertung dient der Orientierung und ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung.';
+    target.drawText(note, { x: M, y: 58, size: 6.3, font: regular, color: BRAND.muted });
     target.drawLine({ start: { x: M, y: 45 }, end: { x: PAGE_W - M, y: 45 }, thickness: 0.7, color: BRAND.line });
     target.drawText('SLS Immobilienpartner GmbH', { x: M, y: 28, size: 7.6, font: bold, color: BRAND.blue });
     const right = 'www.sls.de  |  service@sls.de  |  02369 742 80 20';
@@ -119,14 +121,14 @@ async function buildPdf(report, contact) {
   };
 
   const drawMetaCard = () => {
-    const h = 64;
+    const h = 58;
     ensure(h + 10);
     page.drawRectangle({ x: M, y: y - h + 8, width: CONTENT_W, height: h, color: BRAND.light, borderColor: BRAND.line, borderWidth: 0.6 });
-    page.drawText('AUSWERTUNG FÜR', { x: M + 16, y: y - 8, size: 7.2, font: bold, color: BRAND.muted });
+    page.drawText('AUSWERTUNG FÜR', { x: M + 16, y: y - 7, size: 7.0, font: bold, color: BRAND.muted });
     const name = [contact.firstName, contact.lastName].filter(Boolean).join(' ');
-    page.drawText(name, { x: M + 16, y: y - 26, size: 12.2, font: bold, color: BRAND.blue });
+    page.drawText(name, { x: M + 16, y: y - 23, size: 11.8, font: bold, color: BRAND.blue });
     const meta = 'Immobilie: ' + (report.type || 'Immobilie') + '   |   Situation: ' + (report.situation || 'Verkauf') + '   |   Stand: ' + (report.date || '');
-    page.drawText(meta, { x: M + 16, y: y - 44, size: 7.5, font: regular, color: BRAND.muted });
+    page.drawText(meta, { x: M + 16, y: y - 40, size: 7.3, font: regular, color: BRAND.muted });
     y -= h + 8;
   };
 
@@ -143,31 +145,31 @@ async function buildPdf(report, contact) {
     const titleLines = wrapPdfText(title, bold, 9.6, CONTENT_W - 46);
     const noteLines = wrapPdfText(info.note, regular, 7.8, CONTENT_W - 46);
     const sourceLines = source ? wrapPdfText(source, regular, 7.6, CONTENT_W - 46) : [];
-    const h = 18 + titleLines.length * 12.5 + noteLines.length * 10.5 + sourceLines.length * 10.2 + 13;
+    const h = 16 + titleLines.length * 11.8 + noteLines.length * 9.8 + sourceLines.length * 9.6 + 11;
     ensure(h + 7);
 
     const top = y;
     page.drawRectangle({ x: M, y: top - h, width: CONTENT_W, height: h, color: BRAND.light, borderColor: BRAND.line, borderWidth: 0.55 });
     page.drawRectangle({ x: M, y: top - h, width: 4, height: h, color: info.accent });
-    page.drawText(info.label, { x: M + 14, y: top - 17, size: 7.3, font: bold, color: info.accent });
+    page.drawText(info.label, { x: M + 14, y: top - 15, size: 7.0, font: bold, color: info.accent });
 
-    let cy = top - 34;
+    let cy = top - 31;
     for (const row of titleLines) {
       page.drawText(row, { x: M + 14, y: cy, size: 9.6, font: bold, color: BRAND.dark });
-      cy -= 12.5;
+      cy -= 11.8;
     }
     for (const row of noteLines) {
       page.drawText(row, { x: M + 14, y: cy - 1, size: 7.8, font: regular, color: BRAND.muted });
-      cy -= 10.5;
+      cy -= 9.8;
     }
     if (sourceLines.length) {
       cy -= 2;
       for (const row of sourceLines) {
         page.drawText(row, { x: M + 14, y: cy, size: 7.6, font: regular, color: BRAND.blue });
-        cy -= 10.2;
+        cy -= 9.6;
       }
     }
-    y = top - h - 7;
+    y = top - h - 5;
   };
 
   addPage(true);
@@ -182,8 +184,9 @@ async function buildPdf(report, contact) {
 
   const contradictions = Array.isArray(report.contradictions) ? report.contradictions : [];
   if (contradictions.length) {
-    page.drawText('BITTE GEGENPRÜFEN', { x: M, y, size: 7.5, font: bold, color: BRAND.coral });
-    y -= 15;
+    page.drawRectangle({ x: M, y: y - 3, width: 22, height: 2, color: BRAND.coral });
+    page.drawText('Bitte gegenprüfen', { x: M + 30, y: y - 6, size: 6.8, font: bold, color: BRAND.muted });
+    y -= 18;
     contradictions.forEach(item => {
       const title = clampText(item.title, 180);
       const text = clampText(item.text, 900);
@@ -205,30 +208,23 @@ async function buildPdf(report, contact) {
     for (const section of phases) {
       ensure(36);
       page.drawText(clampText(section.label, 120), { x: M, y, size: 14.2, font: serif, color: BRAND.blue });
-      y -= 21;
+      y -= 18;
       for (const item of (Array.isArray(section.items) ? section.items : [])) drawItemCard(item);
-      gap(5);
+      gap(3);
     }
   }
 
-  ensure(108);
-  page.drawRectangle({ x: M, y: y - 82, width: CONTENT_W, height: 82, color: BRAND.blue });
-  page.drawText('Gut vorbereitet in den nächsten Schritt.', { x: M + 18, y: y - 24, size: 11.5, font: bold, color: BRAND.white });
+  ensure(96);
+  page.drawRectangle({ x: M, y: y - 74, width: CONTENT_W, height: 74, color: BRAND.blue });
+  page.drawText('Gut vorbereitet in den nächsten Schritt.', { x: M + 18, y: y - 21, size: 11.2, font: bold, color: BRAND.white });
   const cta = 'Wenn Sie offene Punkte gemeinsam einordnen möchten, begleiten wir Sie persönlich von der Vorbereitung bis zur Übergabe.';
-  let cy = y - 43;
+  let cy = y - 39;
   for (const row of wrapPdfText(cta, regular, 8.2, CONTENT_W - 36)) {
     page.drawText(row, { x: M + 18, y: cy, size: 8.2, font: regular, color: BRAND.white });
     cy -= 11;
   }
-  page.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: M + 18, y: y - 69, size: 7.8, font: bold, color: BRAND.white });
-  y -= 95;
-
-  ensure(55);
-  page.drawText('Hinweis', { x: M, y, size: 8.5, font: bold, color: BRAND.blue });
-  y -= 13;
-  drawWrapped('Diese Auswertung dient als praktische Orientierung und ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung. Anforderungen von Banken, Notariaten oder Behörden können im Einzelfall abweichen.', {
-    size: 7.2, color: BRAND.muted, leading: 9.8
-  });
+  page.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: M + 18, y: y - 62, size: 7.6, font: bold, color: BRAND.white });
+  y -= 82;
 
   const out = await pdfDoc.save({ useObjectStreams: false });
   return Uint8Array.from(out);
