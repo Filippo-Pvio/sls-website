@@ -137,7 +137,26 @@ export default async function handler(req, res) {
       return rows.length ? `Zum Energieausweis bzw. zu den Energieangaben ist veröffentlicht:\n\n${rows.join('\n')}` : missing('den Energieangaben');
     }
 
-    if (/ausstattung|merkmal|balkon|garten|keller|garage|aufzug|stellplatz|boden/.test(q)) {
+    const amenityQuestions = [
+      ['garage','Garage'],['balkon','Balkon'],['garten','Garten'],['keller','Keller'],['aufzug','Aufzug'],
+      ['gäste-wc','Gäste-WC'],['gaeste-wc','Gäste-WC'],['dusche','Dusche'],['badewanne','Bad mit Badewanne'],
+      ['stellplatz','Stellplatz']
+    ];
+    const askedAmenity = amenityQuestions.find(([term]) => q.includes(term));
+    if (askedAmenity) {
+      const [, label] = askedAmenity;
+      const amenities = Array.isArray(p.amenities) ? p.amenities.map(item => String(item)) : [];
+      const hasAmenity = amenities.some(item => item.toLocaleLowerCase('de-DE').includes(label.toLocaleLowerCase('de-DE').replace('bad mit ','')));
+      if (hasAmenity) return `Ja. In den veröffentlichten Objektdaten ist ${label} als Merkmal angegeben.`;
+
+      const textSources = [p.description,p.features,p.otherNote].filter(Boolean).join('\n');
+      if (textSources.toLocaleLowerCase('de-DE').includes(askedAmenity[0])) {
+        return null;
+      }
+      return `In den veröffentlichten Objektdaten ist ${label} nicht als Merkmal angegeben.`;
+    }
+
+    if (/ausstattung|merkmal|boden/.test(q)) {
       const parts = [];
       if (Array.isArray(p.amenities) && p.amenities.length) parts.push(`Merkmale: ${p.amenities.join(', ')}`);
       if (p.flooring) parts.push(`Bodenbeläge: ${p.flooring}`);
