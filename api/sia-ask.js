@@ -106,9 +106,59 @@ export default async function handler(req, res) {
       : 'Bitte warten Sie einen Moment, bevor Sie die nächste Frage senden.' });
   }
   try {
+    let upstreamQuestion = question;
+    if (context?.type === 'property' && context.property) {
+      const p = context.property;
+      const compact = value => typeof value === 'string' ? value.trim().slice(0, 2200) : value;
+      const facts = Array.isArray(p.objectFacts)
+        ? p.objectFacts.slice(0, 30).map(item => `${item.label}: ${item.value}`).join('; ')
+        : '';
+      const energy = p.energy && typeof p.energy === 'object'
+        ? Object.entries(p.energy).filter(([,value]) => value !== null && value !== undefined && value !== '').slice(0, 20).map(([key,value]) => `${key}: ${value}`).join('; ')
+        : '';
+      const broker = p.broker
+        ? [p.broker.name, p.broker.phone || p.broker.mobile, p.broker.email].filter(Boolean).join(' · ')
+        : '';
+      const propertyContextText = [
+        'VERBINDLICHER KONTEXT ZUR AKTUELL GEÖFFNETEN SLS-IMMOBILIE:',
+        `Objekt-ID: ${p.id || ''}`,
+        `Titel: ${compact(p.title) || ''}`,
+        `Referenz: ${compact(p.reference) || ''}`,
+        `Typ: ${compact(p.type) || ''}`,
+        `Ort: ${[p.zip, p.city].filter(Boolean).join(' ')}`,
+        p.price != null ? `Kaufpreis: ${p.price}` : '',
+        p.area != null ? `Wohnfläche: ${p.area} m²` : '',
+        p.rooms != null ? `Zimmer: ${p.rooms}` : '',
+        p.bedrooms != null ? `Schlafzimmer: ${p.bedrooms}` : '',
+        p.baths != null ? `Badezimmer: ${p.baths}` : '',
+        p.plot != null ? `Grundstück: ${p.plot} m²` : '',
+        p.year != null ? `Baujahr: ${p.year}` : '',
+        facts ? `Weitere Eckdaten: ${facts}` : '',
+        p.courtage ? `Käuferprovision: ${compact(p.courtage)}` : '',
+        p.courtageNote ? `Provisionshinweis: ${compact(p.courtageNote)}` : '',
+        energy ? `Energieangaben: ${energy}` : '',
+        Array.isArray(p.amenities) && p.amenities.length ? `Merkmale: ${p.amenities.slice(0,30).join(', ')}` : '',
+        p.flooring ? `Bodenbeläge: ${compact(p.flooring)}` : '',
+        p.features ? `Ausstattung: ${compact(p.features)}` : '',
+        p.description ? `Objektbeschreibung: ${compact(p.description)}` : '',
+        p.location ? `Lagebeschreibung: ${compact(p.location)}` : '',
+        p.otherNote ? `Sonstiges: ${compact(p.otherNote)}` : '',
+        broker ? `Ansprechpartner: ${broker}` : '',
+        '',
+        'WICHTIGE ANTWORTREGELN:',
+        '- Beantworte die folgende Nutzerfrage bezogen auf genau diese Immobilie.',
+        '- Verwende für objektspezifische Aussagen ausschließlich die oben genannten veröffentlichten Daten.',
+        '- Fehlt eine Information, sage klar, dass sie im veröffentlichten Inserat nicht angegeben ist.',
+        '- Frage nicht erneut nach Adresse, Objekt oder weiteren Identifikationsdaten; das Objekt ist bereits eindeutig bestimmt.',
+        '',
+        `NUTZERFRAGE: ${question}`
+      ].filter(Boolean).join('\n');
+      upstreamQuestion = propertyContextText.slice(0, 7600);
+    }
+
     const upstream = await fetch(endpoint, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question, ...(history.length ? { history } : {}), ...(context ? { context } : {}) }), signal: AbortSignal.timeout(50000), redirect: 'error'
+      body: JSON.stringify({ question: upstreamQuestion, ...(history.length ? { history } : {}), ...(context ? { context } : {}) }), signal: AbortSignal.timeout(50000), redirect: 'error'
     });
     if (!upstream.ok) throw new Error('Upstream unavailable');
     const data = await upstream.json();
