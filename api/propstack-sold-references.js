@@ -93,7 +93,39 @@ export default async function handler(req, res) {
     }
 
     const listings = await soldListings(key, soldStatusIds);
-    const publicListings = listings.map(unit => publicReference(unit, soldStatusIds)).filter(Boolean);
+    let brokersById = new Map();
+    try {
+      const brokerResult = await propstack('brokers', key);
+      const brokers = Array.isArray(brokerResult) ? brokerResult : Array.isArray(brokerResult.data) ? brokerResult.data : [];
+      brokersById = new Map(brokers.map(broker => [String(broker.id), broker]));
+    } catch (error) {
+      console.warn('Propstack broker list unavailable:', error.message);
+    }
+
+    const publicListings = [];
+    for (let i = 0; i < listings.length; i += 8) {
+      const batch = await Promise.all(listings.slice(i, i + 8).map(async unit => {
+        let source = unit;
+        if (!unit.broker_id && !unit.broker?.id && !unit.broker?.name) {
+          try {
+            const detail = await propstack('units/' + encodeURIComponent(unit.id) + '?new=1', key);
+            if (String(detail?.id) === String(unit.id)) source = { ...unit, ...detail, status: unit.status, images: detail.images?.length ? detail.images : unit.images };
+          } catch (error) {
+            console.warn('Sold reference broker detail unavailable for ' + unit.id + ':', error.message);
+          }
+        }
+        const ref = publicReference(source, soldStatusIds);
+        if (!ref) return null;
+        const brokerId = String(source.broker_id || source.broker?.id || ref.brokerId || '');
+        const broker = source.broker || brokersById.get(brokerId);
+        if (broker) {
+          ref.brokerId = brokerId || String(broker.id || '') || null;
+          ref.brokerName = String(broker.name || '').trim().slice(0, 100) || null;
+        }
+        return ref;
+      }));
+      publicListings.push(...batch.filter(Boolean));
+    }
     const references = publicListings;
     res.setHeader('Cache-Control', 'public, s-maxage=900, stale-while-revalidate=1800');
     return res.status(200).json({ references });
