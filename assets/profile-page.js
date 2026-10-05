@@ -55,7 +55,7 @@
 
   const createCard = ref => {
     const article = document.createElement('article');
-    article.className = 'profile-success-card reveal';
+    article.className = 'profile-success-card reveal is-visible';
 
     const imageWrap = document.createElement('div');
     imageWrap.className = 'profile-success-image';
