@@ -39,3 +39,18 @@ body.profile-page #main>section.section h2{font-size:clamp(32px,3.7vw,50px);line
 
 /* Align the closing heading with the centered copy and contact button. */
 body.profile-page #main>section.profile-final h2{margin-inline:auto}
+
+/* Personal sold-reference prototype. */
+.profile-success{background:#f5f7f6}
+.profile-success-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.profile-success-card{overflow:hidden;border-radius:18px;background:#fff;box-shadow:0 12px 32px rgba(25,51,62,.06)}
+.profile-success-image{position:relative;aspect-ratio:4/3;overflow:hidden;background:#dfe7e8}
+.profile-success-image img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.profile-success-card:hover .profile-success-image img{transform:scale(1.025)}
+.profile-success-image span{position:absolute;left:16px;top:16px;padding:7px 11px;border-radius:999px;background:rgba(52,91,110,.94);color:#fff;font-size:11px;font-weight:750;letter-spacing:.04em;text-transform:uppercase}
+.profile-success-copy{padding:22px 22px 24px}
+.profile-success-copy p{margin:0 0 9px;color:#657e89;font-size:13px;font-weight:700}
+.profile-success-copy h3{margin:0;color:#345b6e;font:500 24px/1.28 'Playfair Display',Georgia,serif}
+.profile-success-footer{margin-top:24px}
+@media(max-width:850px){.profile-success-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-success-card:last-child{grid-column:1/-1;max-width:calc(50% - 11px)}}
+@media(max-width:600px){.profile-success-grid{display:flex;overflow-x:auto;gap:16px;margin-right:-24px;padding-right:24px;scroll-snap-type:x mandatory;scrollbar-width:none}.profile-success-grid::-webkit-scrollbar{display:none}.profile-success-card{flex:0 0 84%;scroll-snap-align:start}.profile-success-card:last-child{max-width:none}.profile-success-copy h3{font-size:22px}}
