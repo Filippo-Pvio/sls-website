@@ -134,3 +134,29 @@ dialog[data-keyboard-navigation] .close:focus-visible{outline:2px solid #345B6E;
 .conversation summary{cursor:pointer;font-weight:600}
 .conversation-list p{white-space:pre-wrap;margin:12px 0;overflow-wrap:anywhere}
 .conversation-reset{display:block;margin:10px 0 0;padding:4px 0;border:0;background:transparent;color:#345B6E;font-size:12px;text-decoration:underline;text-underline-offset:3px;min-height:28px}
+
+
+/* SIA thinking state: visible, calm feedback while an answer is being prepared. */
+.thinking{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;margin:4px 0 18px;padding:16px 17px;border:1px solid #d6e1e7;border-radius:16px;background:linear-gradient(135deg,#f8fbfc,#edf3f5);box-shadow:0 8px 22px #18333f0d}
+.thinking-mark{display:flex;align-items:center;gap:9px;min-width:82px}
+.thinking-mark strong{color:#FF596F;font-size:17px;letter-spacing:.07em}
+.thinking-dots{display:flex;align-items:center;gap:4px;height:18px}
+.thinking-dots i{display:block;width:5px;height:5px;border-radius:50%;background:#345B6E;animation:sia-thinking-dot 1s ease-in-out infinite}
+.thinking-dots i:nth-child(2){animation-delay:.14s}
+.thinking-dots i:nth-child(3){animation-delay:.28s}
+.thinking-copy{min-width:0}
+.thinking-text{display:block;color:#345B6E;font-size:13px;font-weight:650;line-height:1.35;min-height:18px}
+.thinking-line{display:block;position:relative;height:2px;margin-top:8px;border-radius:999px;background:#d8e5e9;overflow:hidden}
+.thinking-line::after{content:"";position:absolute;inset:0 auto 0 0;width:38%;border-radius:inherit;background:#FF596F;animation:sia-thinking-line 1.45s ease-in-out infinite}
+@keyframes sia-thinking-dot{0%,60%,100%{transform:translateY(0);opacity:.38}30%{transform:translateY(-5px);opacity:1}}
+@keyframes sia-thinking-line{0%{transform:translateX(-110%)}50%{transform:translateX(105%)}100%{transform:translateX(270%)}}
+@media(max-width:600px), (hover:none) and (pointer:coarse){
+ .thinking{margin-top:2px;padding:15px 16px;gap:12px}
+ .thinking-mark{min-width:74px}
+ .thinking-text{font-size:12.5px}
+}
+@media(prefers-reduced-motion:reduce){
+ .thinking-dots i,.thinking-line::after{animation:none}
+ .thinking-dots i{opacity:.7}
+ .thinking-line::after{width:58%;transform:none}
+}
