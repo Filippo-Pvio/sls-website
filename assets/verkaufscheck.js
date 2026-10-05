@@ -948,6 +948,14 @@
   };
 
   root.addEventListener('click', event => {
+    if(event.target.closest('[data-sales-pdf]')){
+      downloadSummaryPdf();
+      return;
+    }
+    if(event.target.closest('[data-sales-email]')){
+      emailSummary();
+      return;
+    }
     const button = event.target.closest('[data-sia-question]');
     if (!button) return;
     const question = button.dataset.siaQuestion || '';
