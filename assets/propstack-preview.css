@@ -60,7 +60,8 @@ html:has(> body.property-preview),body.property-preview{overflow-x:clip;overscro
 .property-preview.pp-is-detail .pp-inquiry h3{color:#4e6878;font-size:20px;margin:0 0 15px}
 .property-preview.pp-is-detail .pp-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .property-preview.pp-is-detail .pp-form-grid label{min-width:0;display:block;font-size:13px;color:#405965}
-.property-preview.pp-is-detail .pp-form-grid label span{display:block;margin-bottom:3px}
+.property-preview.pp-is-detail .pp-form-grid label>span{display:block;margin-bottom:3px}
+.property-preview.pp-is-detail .pp-form-grid label>span>span{display:inline;margin:0}
 .property-preview.pp-is-detail .pp-form-grid .pp-full{grid-column:1/-1}
 .property-preview.pp-is-detail .pp-form-grid input{width:100%;min-width:0;border:1px solid #abc0c8;border-radius:2px;background:#fff;font:inherit;font-size:15px;padding:10px;color:#405965}
 .property-preview.pp-is-detail .pp-consent{display:flex;gap:8px;align-items:flex-start;margin:17px 0;font-size:13px;line-height:1.45;color:#405965}
