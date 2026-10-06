@@ -58,3 +58,5 @@ body.sales-check-page #main>.buy-final .lead{color:#edf3f5!important}
 /* Only placement is specific to the sales check; appearance is shared. */
 .sales-sia-link{margin-top:14px}
 .sales-summary-item .sales-sia-link{margin-top:8px}
+
+@media(min-width:541px){.sales-check-page .buy-final .page-actions{justify-content:center}}
