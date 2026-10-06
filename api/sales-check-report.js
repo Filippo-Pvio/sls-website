@@ -214,17 +214,17 @@ async function buildPdf(report, contact) {
     }
   }
 
-  ensure(96);
-  page.drawRectangle({ x: M, y: y - 74, width: CONTENT_W, height: 74, color: BRAND.blue });
-  page.drawText('Gut vorbereitet in den nächsten Schritt.', { x: M + 18, y: y - 21, size: 11.2, font: bold, color: BRAND.white });
+  ensure(76);
+  page.drawRectangle({ x: M, y: y - 64, width: CONTENT_W, height: 64, color: BRAND.blue });
+  page.drawText('Gut vorbereitet in den nächsten Schritt.', { x: M + 18, y: y - 18, size: 10.8, font: bold, color: BRAND.white });
   const cta = 'Wenn Sie offene Punkte gemeinsam einordnen möchten, begleiten wir Sie persönlich von der Vorbereitung bis zur Übergabe.';
-  let cy = y - 39;
+  let cy = y - 34;
   for (const row of wrapPdfText(cta, regular, 8.2, CONTENT_W - 36)) {
     page.drawText(row, { x: M + 18, y: cy, size: 8.2, font: regular, color: BRAND.white });
     cy -= 11;
   }
-  page.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: M + 18, y: y - 62, size: 7.6, font: bold, color: BRAND.white });
-  y -= 82;
+  page.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: M + 18, y: y - 54, size: 7.4, font: bold, color: BRAND.white });
+  y -= 70;
 
   const out = await pdfDoc.save({ useObjectStreams: false });
   return Uint8Array.from(out);
