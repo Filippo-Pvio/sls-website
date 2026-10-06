@@ -11,7 +11,8 @@ button { cursor:pointer; }
 .quickbar { position:fixed; right:24px; bottom:calc(24px + env(safe-area-inset-bottom,0px)); z-index:995; display:flex; align-items:stretch; border:1px solid #d6e1e7; border-radius:999px; overflow:hidden; background:#fff; box-shadow:0 8px 28px #18333f30; transition:transform .22s ease,box-shadow .22s ease; }
 .quickbar:hover { transform:translateY(-2px); box-shadow:0 12px 34px #18333f38; }
 .quick-call { border:0; background:#345B6E; color:#fff; min-height:48px; display:flex; align-items:center; justify-content:center; text-decoration:none; }
-.quick-call { width:47px; border-left:1px solid rgba(255,255,255,.22); }
+.quickbar .launch { border-radius:0; }
+.quick-call { flex-shrink:0; width:47px; border-left:1px solid rgba(255,255,255,.22); }
 .quick-call svg { width:19px; height:19px; }
 :host-context(body.menu-open) .quickbar { visibility:hidden; }
 dialog { position:fixed; overflow:hidden; width:min(510px,calc(100vw - 32px)); max-width:none; height:min(740px,calc(100dvh - 48px)); max-height:none; inset:auto 24px 24px auto; margin:0; padding:0; border:1px solid #d6e1e7; border-radius:22px; background:#fff; color:#345B6E; box-shadow:0 24px 90px #18333f40; font:15px/1.6 Raleway,Arial,sans-serif; }
@@ -65,7 +66,14 @@ button:disabled { opacity:.6; cursor:wait; }
  h3 { font-size:27px; }
 }
 
+/* Mobile quick contact starts expanded, then keeps SIA and phone as separate actions. */
+@media(max-width:980px){
+ .quickbar .launch{gap:0}
+ .quickbar .launch-label{display:block;max-width:55px;margin-left:7px;overflow:hidden;white-space:nowrap;opacity:1;transition:max-width .28s ease,opacity .2s ease,margin-left .28s ease}
+ .quickbar.is-compact .launch-label{max-width:0;margin-left:0;opacity:0}
+}
 @media(min-width:981px){.quickbar .quick-call{display:none}}
+@media(prefers-reduced-motion:reduce){.quickbar .launch-label{transition:none}}
 
 /* Calm question-first entry and a separate, reversible information view. */
 header{padding:18px 24px;background:#fff;gap:14px}
