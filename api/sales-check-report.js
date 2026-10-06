@@ -172,6 +172,116 @@ async function buildPdf(report, contact) {
     y = top - h - 5;
   };
 
+  const drawMarketingPage = () => {
+    const target = pdfDoc.addPage([PAGE_W, PAGE_H]);
+
+    target.drawRectangle({ x: 0, y: PAGE_H - 5, width: PAGE_W, height: 5, color: BRAND.coral });
+
+    if (logo) {
+      const dims = logo.scale(1);
+      const logoW = 148;
+      const logoH = logoW * (dims.height / dims.width);
+      target.drawImage(logo, { x: M, y: PAGE_H - 46 - logoH / 2, width: logoW, height: logoH });
+    } else {
+      target.drawText('SLS IMMOBILIENPARTNER', { x: M, y: PAGE_H - 39, size: 15, font: bold, color: BRAND.blue });
+    }
+
+    const kicker = 'IHR VERKAUF MIT SLS';
+    target.drawText(kicker, {
+      x: PAGE_W - M - bold.widthOfTextAtSize(kicker, 8.6),
+      y: PAGE_H - 37,
+      size: 8.6,
+      font: bold,
+      color: BRAND.blue
+    });
+    target.drawLine({ start: { x: M, y: PAGE_H - 66 }, end: { x: PAGE_W - M, y: PAGE_H - 66 }, thickness: 0.7, color: BRAND.line });
+
+    let my = PAGE_H - 105;
+    target.drawText('So begleiten wir Sie zum', { x: M, y: my, size: 23, font: serif, color: BRAND.blue });
+    my -= 27;
+    target.drawText('erfolgreichen Verkauf.', { x: M, y: my, size: 23, font: serif, color: BRAND.coral });
+    my -= 28;
+
+    const intro = 'Ihre Analyse zeigt, welche Punkte noch offen sind. Im gemeinsamen Verkaufsprozess übernehmen wir genau diese Themen - und führen Sie strukturiert bis zur Übergabe.';
+    for (const row of wrapPdfText(intro, regular, 9.2, CONTENT_W)) {
+      target.drawText(row, { x: M, y: my, size: 9.2, font: regular, color: BRAND.muted });
+      my -= 13;
+    }
+    my -= 8;
+
+    const steps = [
+      ['01', 'Persönliches Erstgespräch', 'Ziele verstehen und den passenden Verkaufsweg gemeinsam festlegen.'],
+      ['02', 'Bewertung & Preisstrategie', 'Markt, Immobilie und realistische Preisposition fundiert einordnen.'],
+      ['03', 'Unterlagen & Vorbereitung', 'Dokumente beschaffen und den Verkauf professionell vorbereiten.'],
+      ['04', 'Präsentation & Freigabe', 'Exposé, Fotografie, Grundrisse und digitale Präsentation abstimmen.'],
+      ['05', 'Vermarktung & Besichtigungen', 'Passende Käufer erreichen und Einzelbesichtigungen gezielt durchführen.'],
+      ['06', 'Auswahl & Verhandlung', 'Bonität prüfen, Angebote einordnen und den bestmöglichen Abschluss verhandeln.'],
+      ['07', 'Notar & Übergabe', 'Notartermin vorbereiten, Abwicklung begleiten und bis zur Übergabe an Ihrer Seite bleiben.']
+    ];
+
+    const colGap = 18;
+    const colW = (CONTENT_W - colGap) / 2;
+    const cardH = 78;
+    const leftX = M;
+    const rightX = M + colW + colGap;
+    const startY = my;
+
+    const drawStep = (x, topY, step) => {
+      target.drawRectangle({
+        x,
+        y: topY - cardH,
+        width: colW,
+        height: cardH,
+        color: BRAND.light,
+        borderColor: BRAND.line,
+        borderWidth: 0.55
+      });
+      target.drawRectangle({ x, y: topY - cardH, width: 4, height: cardH, color: BRAND.coral });
+      target.drawText(step[0], { x: x + 14, y: topY - 19, size: 7.2, font: bold, color: BRAND.coral });
+      target.drawText(step[1], { x: x + 42, y: topY - 20, size: 9.2, font: bold, color: BRAND.dark });
+
+      let sy = topY - 38;
+      for (const row of wrapPdfText(step[2], regular, 7.6, colW - 28)) {
+        target.drawText(row, { x: x + 14, y: sy, size: 7.6, font: regular, color: BRAND.muted });
+        sy -= 10.1;
+      }
+    };
+
+    steps.slice(0, 4).forEach((step, i) => drawStep(leftX, startY - i * (cardH + 8), step));
+    steps.slice(4).forEach((step, i) => drawStep(rightX, startY - i * (cardH + 8), step));
+
+    const benefitsTop = startY - 4 * (cardH + 8) + 10;
+    target.drawText('Was Sie dabei von uns erwarten können', { x: rightX, y: benefitsTop, size: 10.2, font: bold, color: BRAND.blue });
+
+    const benefits = [
+      'Professionelle Objektaufbereitung',
+      'Fotografie, Drohne & 360°-Rundgang',
+      'Top-Platzierung auf großen Portalen',
+      'Live-Eigentümer-Reporting',
+      'Bonitätsprüfung von Interessenten',
+      'Persönliche Betreuung bis zur Übergabe'
+    ];
+
+    let by = benefitsTop - 19;
+    benefits.forEach(text => {
+      target.drawRectangle({ x: rightX, y: by + 2, width: 4, height: 4, color: BRAND.coral });
+      target.drawText(text, { x: rightX + 12, y: by, size: 7.6, font: regular, color: BRAND.dark });
+      by -= 14;
+    });
+
+    const ctaY = 96;
+    target.drawRectangle({ x: M, y: ctaY, width: CONTENT_W, height: 104, color: BRAND.blue });
+    target.drawText('Ihr Zuhause ist besonders.', { x: M + 20, y: ctaY + 74, size: 13.2, font: bold, color: BRAND.white });
+    target.drawText('Der Verkauf sollte es auch sein.', { x: M + 20, y: ctaY + 55, size: 13.2, font: bold, color: BRAND.white });
+    target.drawText('Lassen Sie uns darüber sprechen, wie wir Ihre Immobilie optimal vermarkten.', { x: M + 20, y: ctaY + 34, size: 8.3, font: regular, color: BRAND.white });
+    target.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: M + 20, y: ctaY + 15, size: 7.8, font: bold, color: BRAND.white });
+
+    target.drawLine({ start: { x: M, y: 66 }, end: { x: PAGE_W - M, y: 66 }, thickness: 0.7, color: BRAND.line });
+    target.drawText('SLS Immobilienpartner GmbH', { x: M, y: 45, size: 7.6, font: bold, color: BRAND.blue });
+    const offices = 'Dorsten  |  Düsseldorf  |  Ruhrgebiet & Rheinland';
+    target.drawText(offices, { x: PAGE_W - M - regular.widthOfTextAtSize(offices, 7.2), y: 45, size: 7.2, font: regular, color: BRAND.muted });
+  };
+
   addPage(true);
 
   page.drawText('Ihre persönliche Verkaufsanalyse', { x: M, y, size: 24.5, font: serif, color: BRAND.blue });
@@ -214,17 +324,8 @@ async function buildPdf(report, contact) {
     }
   }
 
-  ensure(76);
-  page.drawRectangle({ x: M, y: y - 64, width: CONTENT_W, height: 64, color: BRAND.blue });
-  page.drawText('Gut vorbereitet in den nächsten Schritt.', { x: M + 18, y: y - 18, size: 10.8, font: bold, color: BRAND.white });
-  const cta = 'Wenn Sie offene Punkte gemeinsam einordnen möchten, begleiten wir Sie persönlich von der Vorbereitung bis zur Übergabe.';
-  let cy = y - 34;
-  for (const row of wrapPdfText(cta, regular, 8.2, CONTENT_W - 36)) {
-    page.drawText(row, { x: M + 18, y: cy, size: 8.2, font: regular, color: BRAND.white });
-    cy -= 11;
-  }
-  page.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: M + 18, y: y - 54, size: 7.4, font: bold, color: BRAND.white });
-  y -= 70;
+  drawMarketingPage();
+
 
   const out = await pdfDoc.save({ useObjectStreams: false });
   return Uint8Array.from(out);
