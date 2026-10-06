@@ -104,11 +104,8 @@ async function buildPdf(report, contact) {
 
   const drawFooter = target => {
     const note = 'Hinweis: Diese Auswertung dient der Orientierung und ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung.';
-    target.drawText(note, { x: M, y: 58, size: 6.3, font: regular, color: BRAND.muted });
-    target.drawLine({ start: { x: M, y: 45 }, end: { x: PAGE_W - M, y: 45 }, thickness: 0.7, color: BRAND.line });
-    target.drawText('SLS Immobilienpartner GmbH', { x: M, y: 28, size: 7.6, font: bold, color: BRAND.blue });
-    const right = 'www.sls.de  |  service@sls.de  |  02369 742 80 20';
-    target.drawText(right, { x: PAGE_W - M - regular.widthOfTextAtSize(right, 7.4), y: 28, size: 7.4, font: regular, color: BRAND.muted });
+    target.drawText(note, { x: M, y: 43, size: 6.3, font: regular, color: BRAND.muted });
+    target.drawRectangle({ x: 0, y: 0, width: PAGE_W, height: 24, color: rgb(0.47, 0.62, 0.70) });
   };
 
   const drawHeader = (target, first) => {
@@ -898,12 +895,14 @@ async function buildPdf(report, contact) {
     }
   }
 
-  drawMarketingPage();
-
   if (brochureDoc && brochureDoc.getPageCount() >= 16) {
+    const [differencePage] = await pdfDoc.copyPages(brochureDoc, [10]);
+    pdfDoc.addPage(differencePage);
+
     const closingPages = await pdfDoc.copyPages(brochureDoc, [14, 15]);
     closingPages.forEach(brochurePage => pdfDoc.addPage(brochurePage));
   } else {
+    drawMarketingPage();
     drawPersonalPage();
     drawClosingPage();
   }
