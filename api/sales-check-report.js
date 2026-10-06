@@ -45,6 +45,7 @@ async function buildPdf(report, contact) {
 
   let logo = null;
   let officeBackground = null;
+  let brochureDoc = null;
   let dennisPortrait = null;
   let filippoPortrait = null;
   let mischaPortrait = null;
@@ -59,6 +60,12 @@ async function buildPdf(report, contact) {
     if (response.ok) officeBackground = await pdfDoc.embedJpg(await response.arrayBuffer());
   } catch (error) {
     console.error('sales-check-report: office background unavailable', error);
+  }
+  try {
+    const response = await fetch('https://sls.de/wp-content/uploads/2026/02/Broschuere_web.pdf');
+    if (response.ok) brochureDoc = await PDFDocument.load(await response.arrayBuffer());
+  } catch (error) {
+    console.error('sales-check-report: brochure unavailable', error);
   }
 
   const embedRemoteJpg = async (url, label) => {
@@ -228,7 +235,57 @@ async function buildPdf(report, contact) {
     });
   };
 
-  const drawCoverPage = () => {
+  const drawCoverPage = async () => {
+    if (brochureDoc && brochureDoc.getPageCount() >= 16) {
+      const [cover] = await pdfDoc.copyPages(brochureDoc, [0]);
+      const target = pdfDoc.addPage(cover);
+      const { width: coverW } = target.getSize();
+
+      const panelX = 72;
+      const panelY = 50;
+      const panelW = coverW - 144;
+      const panelH = 96;
+      target.drawRectangle({
+        x: panelX,
+        y: panelY,
+        width: panelW,
+        height: panelH,
+        color: BRAND.white,
+        opacity: 0.80
+      });
+
+      const title = 'Ihre persönliche Verkaufsanalyse';
+      target.drawText(title, {
+        x: (coverW - serif.widthOfTextAtSize(title, 14.2)) / 2,
+        y: panelY + 62,
+        size: 14.2,
+        font: serif,
+        color: BRAND.blue
+      });
+
+      const subline = 'Erstellt auf Basis Ihres SLS Verkaufschecks';
+      target.drawText(subline, {
+        x: (coverW - regular.widthOfTextAtSize(subline, 7.7)) / 2,
+        y: panelY + 38,
+        size: 7.7,
+        font: regular,
+        color: BRAND.muted
+      });
+
+      const fullName = [contact.firstName, contact.lastName].filter(Boolean).join(' ');
+      const meta = [fullName, report.date ? 'Stand ' + report.date : ''].filter(Boolean).join('  |  ');
+      if (meta) {
+        target.drawText(meta, {
+          x: (coverW - bold.widthOfTextAtSize(meta, 8.2)) / 2,
+          y: panelY + 18,
+          size: 8.2,
+          font: bold,
+          color: BRAND.blue
+        });
+      }
+      return;
+    }
+
     const target = pdfDoc.addPage([PAGE_W, PAGE_H]);
     drawFullBleed(target, officeBackground, 1);
     target.drawRectangle({ x: 0, y: 0, width: PAGE_W, height: PAGE_H, color: BRAND.white, opacity: officeBackground ? 0.48 : 1 });
@@ -655,7 +712,7 @@ async function buildPdf(report, contact) {
     steps.slice(0, 4).forEach((step, i) => drawStep(leftX, startY - i * (cardH + 6), step, i));
     steps.slice(4).forEach((step, i) => drawStep(rightX, startY - i * (cardH + 6), step, i + 4));
 
-    const benefitsTop = startY - 4 * (cardH + 6) + 1;
+    const benefitsTop = startY - 4 * (cardH + 6) - 28;
     target.drawText('Was Sie dabei von uns erwarten können', { x: M, y: benefitsTop, size: 10.6, font: bold, color: BRAND.blue });
 
     const benefits = [
@@ -694,29 +751,13 @@ async function buildPdf(report, contact) {
       });
     });
 
-    const ctaY = 112;
-    target.drawRectangle({ x: M, y: ctaY, width: CONTENT_W, height: 110, color: BRAND.blue });
-    const claimSize = 13.0;
-    const claimX = M + 20;
-    const claimY = ctaY + 76;
-    const claimStart = 'Wir verkaufen ';
-    const claimHighlight = 'Ihre Immobilie';
-    target.drawText(claimStart, { x: claimX, y: claimY, size: claimSize, font: bold, color: BRAND.white });
-    const highlightX = claimX + bold.widthOfTextAtSize(claimStart, claimSize);
-    target.drawText(claimHighlight, { x: highlightX, y: claimY, size: claimSize, font: bold, color: BRAND.coral });
-    const commaX = highlightX + bold.widthOfTextAtSize(claimHighlight, claimSize);
-    target.drawText(',', { x: commaX, y: claimY, size: claimSize, font: bold, color: BRAND.white });
-    target.drawText('als wäre sie unsere eigene.', { x: claimX, y: ctaY + 55, size: claimSize, font: bold, color: BRAND.white });
-    target.drawText('Lassen Sie uns darüber sprechen, wie wir Ihre Immobilie optimal vermarkten.', { x: claimX, y: ctaY + 34, size: 8.2, font: regular, color: BRAND.white });
-    target.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: claimX, y: ctaY + 16, size: 7.8, font: bold, color: BRAND.white });
-
     target.drawLine({ start: { x: M, y: 66 }, end: { x: PAGE_W - M, y: 66 }, thickness: 0.7, color: BRAND.line });
     target.drawText('SLS Immobilienpartner GmbH', { x: M, y: 45, size: 7.6, font: bold, color: BRAND.blue });
     const offices = 'Dorsten  |  Düsseldorf  |  Ruhrgebiet & Rheinland';
     target.drawText(offices, { x: PAGE_W - M - regular.widthOfTextAtSize(offices, 7.2), y: 45, size: 7.2, font: regular, color: BRAND.muted });
   };
 
-  drawCoverPage();
+  await drawCoverPage();
   addPage(true);
 
   page.drawText('Ihre persönliche Verkaufsanalyse', { x: M, y, size: 24.5, font: serif, color: BRAND.blue });
@@ -724,8 +765,7 @@ async function buildPdf(report, contact) {
   drawWrapped('Die wichtigsten offenen Punkte aus Ihrem Verkaufscheck - nach Verkaufsphase sortiert und mit konkreten Bezugsquellen.', {
     size: 9.5, color: BRAND.muted, leading: 13.2
   });
-  gap(10);
-  drawMetaCard();
+  gap(18);
 
   const contradictions = Array.isArray(report.contradictions) ? report.contradictions : [];
   if (contradictions.length) {
@@ -859,8 +899,14 @@ async function buildPdf(report, contact) {
   }
 
   drawMarketingPage();
-  drawPersonalPage();
-  drawClosingPage();
+
+  if (brochureDoc && brochureDoc.getPageCount() >= 16) {
+    const closingPages = await pdfDoc.copyPages(brochureDoc, [14, 15]);
+    closingPages.forEach(brochurePage => pdfDoc.addPage(brochurePage));
+  } else {
+    drawPersonalPage();
+    drawClosingPage();
+  }
 
   const out = await pdfDoc.save({ useObjectStreams: false });
   return Uint8Array.from(out);
