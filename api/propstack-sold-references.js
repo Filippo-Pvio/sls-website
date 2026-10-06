@@ -70,11 +70,54 @@ async function soldListings(key, statusIds) {
   throw new Error('Too many Propstack result pages for a complete selection');
 }
 
+// The gallery reads only the requested slice; other consumers keep the complete feed.
+const GALLERY_SIZE = 12;
+const GALLERY_MAX_PAGE = Math.ceil(PAGE_SIZE * MAX_PAGES / GALLERY_SIZE);
+async function galleryPage(key, statusIds, cursor) {
+  let [page, offset] = cursor.split(':').map(Number);
+  const references = [], seen = new Set();
+  // Bound sparse/invalid results without skipping them: return a continuation cursor.
+  for (let scanned = 0; scanned < 8 && page <= GALLERY_MAX_PAGE; scanned++) {
+    const query = new URLSearchParams({with_meta:'1', status:[...statusIds].join(','),
+      marketing_type:'BUY', archived:'-1', per:String(GALLERY_SIZE), page:String(page),
+      sort_by:'unit_id.raw', order:'asc'});
+    const result = await propstack(`units?${query}`, key);
+    if (!Array.isArray(result.data) || result.data.length > GALLERY_SIZE) throw new Error('Propstack gallery format changed');
+    const rows = result.data;
+    const total = result.meta?.total_count == null ? NaN : Number(result.meta.total_count);
+    const lastPage = Number.isFinite(total) && total >= 0
+      ? (page - 1) * GALLERY_SIZE + rows.length >= total : rows.length < GALLERY_SIZE;
+    for (let index = offset; index < rows.length; index++) {
+      const unit = rows[index];
+      if (seen.has(String(unit.id))) throw new Error('Propstack pagination repeated a property');
+      seen.add(String(unit.id));
+      const reference = publicReference(unit, statusIds);
+      if (reference) references.push(reference);
+      if (references.length === GALLERY_SIZE) {
+        const nextCursor = index + 1 < rows.length ? `${page}:${index + 1}`
+          : lastPage ? null : `${page + 1}:0`;
+        return {references, nextCursor};
+      }
+    }
+    if (lastPage || rows.length === 0) return {references, nextCursor:null};
+    page++; offset = 0;
+  }
+  if (page > GALLERY_MAX_PAGE) throw new Error('Too many Propstack gallery pages');
+  return {references, nextCursor:`${page}:0`};
+}
+
 export default async function handler(req, res) {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Methode nicht erlaubt' });
+  }
+  const gallery = req.query?.gallery;
+  const cursor = req.query?.cursor ?? '1:0';
+  if (gallery !== undefined && (gallery !== '1' || typeof cursor !== 'string' ||
+      !/^[1-9]\d{0,3}:(?:[0-9]|1[01])$/.test(cursor) || Number(cursor.split(':')[0]) > GALLERY_MAX_PAGE)) {
+    res.setHeader('Cache-Control', 'no-store');
+    return res.status(400).json({error:'Ungültige Referenzseite'});
   }
   const key = process.env.PROPSTACK_API_KEY;
   if (!key) {
@@ -91,6 +134,12 @@ export default async function handler(req, res) {
     if (!soldStatusIds.size) {
       res.setHeader('Cache-Control', 'no-store');
       return res.status(503).json({ error: 'Verkaufsstatus in Propstack nicht gefunden' });
+    }
+
+    if (gallery === '1') {
+      const result = await galleryPage(key, soldStatusIds, cursor);
+      res.setHeader('Cache-Control', 'public, s-maxage=900, stale-while-revalidate=1800');
+      return res.status(200).json(result);
     }
 
     const listings = await soldListings(key, soldStatusIds);
