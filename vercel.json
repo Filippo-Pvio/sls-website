@@ -79,5 +79,6 @@
     "api/buyer-demand.js": {
       "maxDuration": 60
     }
-  }
+  },
+  "buildCommand": "node scripts/build-magazine.mjs"
 }
