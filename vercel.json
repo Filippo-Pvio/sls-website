@@ -80,5 +80,6 @@
       "maxDuration": 60
     }
   },
-  "buildCommand": "node scripts/build-magazine.mjs"
+  "buildCommand": "node scripts/build-magazine.mjs",
+  "outputDirectory": "."
 }
