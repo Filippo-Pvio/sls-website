@@ -1,0 +1,23 @@
+.home-magazine-section{background:#fff}
+.home-magazine-section .section-head{margin-bottom:32px}
+body.home-editorial main .home-magazine-section h2{color:#345b6e!important}
+.home-magazine-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.home-magazine-card{display:flex;flex-direction:column;min-width:0;border-top:1px solid #c5d5dd;padding-top:18px}
+.home-magazine-card[hidden]{display:none}
+.home-magazine-image{display:block;aspect-ratio:3/2;overflow:hidden;border-radius:8px;background:#edf3f5}
+.home-magazine-image img{display:block;width:100%;height:100%;object-fit:cover}
+.home-magazine-copy{display:flex;flex-direction:column;flex:1;padding:20px 0 0}
+.home-magazine-category{font-size:12px;font-weight:800;letter-spacing:.06em;color:#345b6e;margin:0 0 12px}
+.home-magazine-card h3{font-size:clamp(23px,2vw,29px);line-height:1.2;margin:0 0 14px}
+.home-magazine-card h3 a{color:inherit;text-decoration:none}
+.home-magazine-card h3 a:hover{text-decoration:underline;text-underline-offset:4px}
+.home-magazine-summary{font-size:15px;line-height:1.6;margin:0 0 18px}
+.home-magazine-date{font-size:13px;color:#52676e;margin-top:auto;margin-bottom:12px}
+.home-magazine-card .text-link{align-self:flex-start}
+.home-magazine-footer{margin-top:32px;text-align:center}
+.home-magazine-card a:focus-visible,.home-magazine-footer a:focus-visible{outline:2px solid #345b6e;outline-offset:4px}
+@media(max-width:700px){
+ .home-magazine-grid{grid-template-columns:1fr;gap:32px}
+ .home-magazine-section .section-head{margin-bottom:24px}
+ .home-magazine-card h3{font-size:27px}
+}
