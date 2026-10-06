@@ -44,11 +44,18 @@ async function buildPdf(report, contact) {
   const serif = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
 
   let logo = null;
+  let officeBackground = null;
   try {
     const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/logo-sls-horizontal-transparent.png');
     if (response.ok) logo = await pdfDoc.embedPng(await response.arrayBuffer());
   } catch (error) {
     console.error('sales-check-report: logo unavailable', error);
+  }
+  try {
+    const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/verkaufsanalyse-office-bg.jpg');
+    if (response.ok) officeBackground = await pdfDoc.embedJpg(await response.arrayBuffer());
+  } catch (error) {
+    console.error('sales-check-report: office background unavailable', error);
   }
 
   const PAGE_W = 595.28;
@@ -140,7 +147,7 @@ async function buildPdf(report, contact) {
     return { label: 'OFFEN', accent: BRAND.muted, note: 'Für die weitere Vermarktung bzw. Abwicklung vorbereiten.' };
   };
 
-  const drawItemCard = item => {
+  const itemCardMetrics = item => {
     const info = statusInfo(item.status);
     const title = clampText(item.label, 260);
     const source = item.source ? 'Bezugsquelle: ' + clampText(item.source, 320) : '';
@@ -148,6 +155,11 @@ async function buildPdf(report, contact) {
     const noteLines = wrapPdfText(info.note, regular, 7.8, CONTENT_W - 46);
     const sourceLines = source ? wrapPdfText(source, regular, 7.6, CONTENT_W - 46) : [];
     const h = 16 + titleLines.length * 11.8 + noteLines.length * 9.8 + sourceLines.length * 9.6 + 11;
+    return { info, titleLines, noteLines, sourceLines, h };
+  };
+
+  const drawItemCard = item => {
+    const { info, titleLines, noteLines, sourceLines, h } = itemCardMetrics(item);
     ensure(h + 7);
 
     const top = y;
@@ -176,6 +188,22 @@ async function buildPdf(report, contact) {
 
   const drawMarketingPage = () => {
     const target = pdfDoc.addPage([PAGE_W, PAGE_H]);
+
+    if (officeBackground) {
+      const dims = officeBackground.scale(1);
+      const areaY = 72;
+      const areaH = PAGE_H - areaY;
+      const scale = Math.max(PAGE_W / dims.width, areaH / dims.height);
+      const bgW = dims.width * scale;
+      const bgH = dims.height * scale;
+      target.drawImage(officeBackground, {
+        x: (PAGE_W - bgW) / 2 - 10,
+        y: areaY + (areaH - bgH) / 2,
+        width: bgW,
+        height: bgH
+      });
+      target.drawRectangle({ x: 0, y: areaY, width: PAGE_W, height: areaH, color: BRAND.white, opacity: 0.90 });
+    }
 
     target.drawRectangle({ x: 0, y: PAGE_H - 5, width: PAGE_W, height: 5, color: BRAND.coral });
 
@@ -228,7 +256,52 @@ async function buildPdf(report, contact) {
     const rightX = M + colW + colGap;
     const startY = my;
 
-    const drawStep = (x, topY, step) => {
+    const drawProcessIcon = (kind, cx, cy) => {
+      const line = (x1, y1, x2, y2, thickness = 0.85) =>
+        target.drawLine({ start: { x: x1, y: y1 }, end: { x: x2, y: y2 }, thickness, color: BRAND.blue });
+
+      target.drawCircle({ x: cx, y: cy, size: 9.5, color: BRAND.white, borderColor: BRAND.line, borderWidth: 0.7 });
+
+      if (kind === 0) {
+        target.drawEllipse({ x: cx, y: cy + 1, xScale: 4.6, yScale: 3.4, borderColor: BRAND.blue, borderWidth: 0.8 });
+        line(cx - 1.5, cy - 2.1, cx - 4.0, cy - 5.0);
+      } else if (kind === 1) {
+        line(cx - 5, cy - 2, cx - 5, cy + 3);
+        line(cx - 5, cy + 3, cx + 5, cy + 3);
+        line(cx + 5, cy + 3, cx + 5, cy - 2);
+        line(cx - 6, cy + 3, cx, cy + 7);
+        line(cx, cy + 7, cx + 6, cy + 3);
+        line(cx - 1.5, cy - 1, cx + 4, cy - 1);
+      } else if (kind === 2) {
+        target.drawRectangle({ x: cx - 4.5, y: cy - 5.5, width: 9, height: 11, borderColor: BRAND.blue, borderWidth: 0.8 });
+        line(cx - 2.8, cy + 2, cx + 2.8, cy + 2);
+        line(cx - 2.8, cy - 0.7, cx + 2.8, cy - 0.7);
+        line(cx - 2.8, cy - 3.4, cx + 1.5, cy - 3.4);
+      } else if (kind === 3) {
+        target.drawRectangle({ x: cx - 5.5, y: cy - 3.8, width: 11, height: 7.6, borderColor: BRAND.blue, borderWidth: 0.8 });
+        target.drawCircle({ x: cx, y: cy, size: 2.2, borderColor: BRAND.blue, borderWidth: 0.8 });
+        line(cx - 3.6, cy + 4.2, cx - 1.3, cy + 4.2);
+      } else if (kind === 4) {
+        line(cx - 5.5, cy + 2.5, cx + 2, cy + 5.5);
+        line(cx - 5.5, cy - 2.5, cx + 2, cy - 5.5);
+        line(cx + 2, cy + 5.5, cx + 2, cy - 5.5);
+        line(cx - 5.5, cy + 2.5, cx - 5.5, cy - 2.5);
+        line(cx - 3.5, cy - 2.7, cx - 2.5, cy - 6.2);
+      } else if (kind === 5) {
+        line(cx - 5.5, cy + 2.2, cx - 1.0, cy + 2.2);
+        line(cx - 1.0, cy + 2.2, cx + 1.5, cy + 4.5);
+        line(cx + 1.5, cy + 4.5, cx + 5.5, cy + 0.5);
+        line(cx - 5.5, cy - 2.2, cx - 1.0, cy - 2.2);
+        line(cx - 1.0, cy - 2.2, cx + 1.5, cy - 4.5);
+        line(cx + 1.5, cy - 4.5, cx + 5.5, cy - 0.5);
+      } else {
+        target.drawCircle({ x: cx - 2.5, y: cy + 1.5, size: 3.0, borderColor: BRAND.blue, borderWidth: 0.8 });
+        line(cx + 0.3, cy - 0.4, cx + 5.5, cy - 5.4);
+        line(cx + 3.5, cy - 3.5, cx + 5.8, cy - 1.2);
+      }
+    };
+
+    const drawStep = (x, topY, step, iconIndex) => {
       target.drawRectangle({
         x,
         y: topY - cardH,
@@ -239,29 +312,28 @@ async function buildPdf(report, contact) {
         borderWidth: 0.55
       });
       target.drawRectangle({ x, y: topY - cardH, width: 4, height: cardH, color: BRAND.coral });
-      target.drawText(step[0], { x: x + 14, y: topY - 17, size: 7.0, font: bold, color: BRAND.coral });
-      target.drawText(step[1], { x: x + 40, y: topY - 18, size: 8.9, font: bold, color: BRAND.dark });
+      drawProcessIcon(iconIndex, x + 20, topY - 18);
+      target.drawText(step[0], { x: x + colW - 27, y: topY - 16, size: 6.6, font: bold, color: BRAND.coral });
+      target.drawText(step[1], { x: x + 38, y: topY - 19, size: 8.7, font: bold, color: BRAND.dark });
 
-      let sy = topY - 34;
+      let sy = topY - 36;
       for (const row of wrapPdfText(step[2], regular, 7.3, colW - 28)) {
         target.drawText(row, { x: x + 14, y: sy, size: 7.3, font: regular, color: BRAND.muted });
         sy -= 9.4;
       }
     };
 
-    steps.slice(0, 4).forEach((step, i) => drawStep(leftX, startY - i * (cardH + 6), step));
-    steps.slice(4).forEach((step, i) => drawStep(rightX, startY - i * (cardH + 6), step));
+    steps.slice(0, 4).forEach((step, i) => drawStep(leftX, startY - i * (cardH + 6), step, i));
+    steps.slice(4).forEach((step, i) => drawStep(rightX, startY - i * (cardH + 6), step, i + 4));
 
     const benefitsTop = startY - 4 * (cardH + 6) + 5;
     target.drawText('Was Sie dabei von uns erwarten können', { x: rightX, y: benefitsTop, size: 10.2, font: bold, color: BRAND.blue });
 
     const benefits = [
-      'Professionelle Objektaufbereitung',
-      'Fotografie, Drohne & 360°-Rundgang',
-      'Top-Platzierung auf großen Portalen',
-      'Live-Eigentümer-Reporting',
+      'Professionelle Präsentation',
+      'Maximale Reichweite & Top-Platzierung',
       'Bonitätsprüfung von Interessenten',
-      'Persönliche Betreuung bis zur Übergabe'
+      'Persönliche Betreuung & Live-Reporting'
     ];
 
     const benefitColGap = 10;
@@ -297,10 +369,19 @@ async function buildPdf(report, contact) {
 
     const ctaY = 96;
     target.drawRectangle({ x: M, y: ctaY, width: CONTENT_W, height: 104, color: BRAND.blue });
-    target.drawText('Ihr Zuhause ist besonders.', { x: M + 20, y: ctaY + 74, size: 13.2, font: bold, color: BRAND.white });
-    target.drawText('Der Verkauf sollte es auch sein.', { x: M + 20, y: ctaY + 55, size: 13.2, font: bold, color: BRAND.white });
-    target.drawText('Lassen Sie uns darüber sprechen, wie wir Ihre Immobilie optimal vermarkten.', { x: M + 20, y: ctaY + 34, size: 8.3, font: regular, color: BRAND.white });
-    target.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: M + 20, y: ctaY + 15, size: 7.8, font: bold, color: BRAND.white });
+    const claimSize = 13.0;
+    const claimX = M + 20;
+    const claimY = ctaY + 70;
+    const claimStart = 'Wir verkaufen ';
+    const claimHighlight = 'Ihre Immobilie';
+    target.drawText(claimStart, { x: claimX, y: claimY, size: claimSize, font: bold, color: BRAND.white });
+    const highlightX = claimX + bold.widthOfTextAtSize(claimStart, claimSize);
+    target.drawText(claimHighlight, { x: highlightX, y: claimY, size: claimSize, font: bold, color: BRAND.coral });
+    const commaX = highlightX + bold.widthOfTextAtSize(claimHighlight, claimSize);
+    target.drawText(',', { x: commaX, y: claimY, size: claimSize, font: bold, color: BRAND.white });
+    target.drawText('als wäre sie unsere eigene.', { x: claimX, y: ctaY + 50, size: claimSize, font: bold, color: BRAND.white });
+    target.drawText('Lassen Sie uns darüber sprechen, wie wir Ihre Immobilie optimal vermarkten.', { x: claimX, y: ctaY + 31, size: 8.2, font: regular, color: BRAND.white });
+    target.drawText('02369 742 80 20  |  service@sls.de  |  www.sls.de', { x: claimX, y: ctaY + 14, size: 7.8, font: bold, color: BRAND.white });
 
     target.drawLine({ start: { x: M, y: 66 }, end: { x: PAGE_W - M, y: 66 }, thickness: 0.7, color: BRAND.line });
     target.drawText('SLS Immobilienpartner GmbH', { x: M, y: 45, size: 7.6, font: bold, color: BRAND.blue });
@@ -341,12 +422,20 @@ async function buildPdf(report, contact) {
     page.drawText('Prüfen Sie Unterlagen und Nachweise vor dem nächsten Schritt dennoch noch einmal auf Aktualität.', { x: M + 16, y: y - 38, size: 7.8, font: regular, color: BRAND.muted });
     y -= 65;
   } else {
-    for (const section of phases) {
-      ensure(36);
+    for (let sectionIndex = 0; sectionIndex < phases.length; sectionIndex += 1) {
+      const section = phases[sectionIndex];
+      const sectionItems = Array.isArray(section.items) ? section.items : [];
+
+      if (sectionIndex > 0) gap(13);
+
+      const firstCardHeight = sectionItems.length ? itemCardMetrics(sectionItems[0]).h : 0;
+      ensure(24 + firstCardHeight + 8);
+
       page.drawText(clampText(section.label, 120), { x: M, y, size: 14.2, font: serif, color: BRAND.blue });
-      y -= 18;
-      for (const item of (Array.isArray(section.items) ? section.items : [])) drawItemCard(item);
-      gap(3);
+      y -= 23;
+
+      for (const item of sectionItems) drawItemCard(item);
+      gap(5);
     }
   }
 
