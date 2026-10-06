@@ -874,6 +874,21 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
   let current='start', history=[], answers={}, selected=null;
   let autoTimer=null;
 
+  const scrollToWizard = (followHint = false) => {
+    const mobile = window.matchMedia('(max-width:800px)').matches;
+    const target = mobile && followHint && !explainer.hidden ? explainer : root;
+    window.requestAnimationFrame(() => {
+      const header = document.querySelector('.floating-header-shell') || document.querySelector('.site-header');
+      const clearance = Math.max(0, header?.getBoundingClientRect().bottom || 0) + 20;
+      // Measure the final position even if the section's reveal animation is still running.
+      const transform = window.getComputedStyle(root).transform;
+      const revealOffset = transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42;
+      const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - revealOffset - clearance);
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+      window.scrollTo({top, behavior: reducedMotion ? 'instant' : 'smooth'});
+    });
+  };
+
   const updateProgress = () => {
     const percent = getSalesCheckProgress(questions, {current, history, answers});
     progress.style.width = percent + '%';
@@ -934,6 +949,7 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
 
     if(hasInfo){
       next.hidden=false;
+      scrollToWizard(true);
       return;
     }
 
@@ -953,7 +969,7 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
     current=nextId;
     selected=answers[current]||null;
     render();
-    root.scrollIntoView({behavior:'smooth',block:'start'});
+    scrollToWizard();
   };
 
   const goBack=()=>{
@@ -962,7 +978,7 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
     current=history.pop();
     selected=answers[current]||null;
     render();
-    root.scrollIntoView({behavior:'smooth',block:'start'});
+    scrollToWizard(!questions[current].summary);
   };
 
   root.addEventListener('click', event => {
