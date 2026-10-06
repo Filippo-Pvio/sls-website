@@ -1,9 +1,13 @@
+import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progress.js';
+
 (() => {
   const root = document.querySelector('[data-sales-wizard]');
   if (!root) return;
 
   const stepLabel = root.querySelector('[data-wizard-step]');
   const progress = root.querySelector('[data-wizard-progress]');
+  const progressTrack = root.querySelector('[data-wizard-progress-track]');
+  const progressLabel = root.querySelector('[data-wizard-percent]');
   const kicker = root.querySelector('[data-wizard-kicker]');
   const title = root.querySelector('[data-wizard-title]');
   const text = root.querySelector('[data-wizard-text]');
@@ -870,10 +874,18 @@
   let current='start', history=[], answers={}, selected=null;
   let autoTimer=null;
 
+  const updateProgress = () => {
+    const percent = getSalesCheckProgress(questions, {current, history, answers});
+    progress.style.width = percent + '%';
+    progressLabel.textContent = percent + ' %';
+    progressTrack.setAttribute('aria-valuenow', String(percent));
+    progressTrack.setAttribute('aria-valuetext', percent + ' Prozent abgeschlossen');
+  };
+
   const render = () => {
     const q=questions[current];
-    stepLabel.textContent = q.summary ? 'Ihre Einordnung' : 'Schritt ' + (history.length + 1);
-    progress.style.width = Math.min(100, q.summary ? 100 : 8 + history.length * 8) + '%';
+    stepLabel.textContent = q.summary ? 'Ergebnis' : getSalesCheckSection(current) + ' · Schritt ' + (history.length + 1);
+    updateProgress();
     kicker.textContent=q.kicker; title.textContent=q.title; text.textContent=q.text;
     options.innerHTML=''; explainer.hidden=true; explainer.innerHTML=''; selected=answers[current] || null;
 
@@ -905,8 +917,14 @@
 
   const select=value=>{
     if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
+    if (answers[current] !== value) {
+      // A changed answer starts a new route; discard answers beyond this position.
+      const visited = new Set([...history, current]);
+      Object.keys(answers).forEach(id => { if (!visited.has(id)) delete answers[id]; });
+    }
     selected=value;
     answers[current]=value;
+    updateProgress();
     [...options.children].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===value)));
 
     const q=questions[current];
