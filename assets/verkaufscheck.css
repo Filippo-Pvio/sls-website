@@ -60,3 +60,17 @@ body.sales-check-page #main>.buy-final .lead{color:#edf3f5!important}
 .sales-summary-item .sales-sia-link{margin-top:8px}
 
 @media(min-width:541px){.sales-check-page .buy-final .page-actions{justify-content:center}}
+
+.sales-wizard-shell [hidden]{display:none!important}
+.sales-check-page .sales-check-hero-note{max-width:720px;color:#fff;font-size:14px;line-height:1.6;margin:20px 0 0}
+.sales-wizard-resume{min-height:0;margin-bottom:22px}
+.sales-resume-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.sales-resume-actions .sales-wizard-next{margin-left:0}
+.sales-wizard-storage{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-top:22px;color:#526873}
+.sales-wizard-storage>div{max-width:680px}
+.sales-wizard-save{display:flex;align-items:center;gap:10px;min-height:44px;font-size:14px;font-weight:700;cursor:pointer}
+.sales-wizard-save input{width:18px;height:18px;flex-shrink:0;accent-color:#345b6e}
+.sales-wizard-storage p{font-size:12px;line-height:1.55;margin:4px 0 0}
+.sales-wizard-save-status{color:#345b6e}
+.sales-wizard-storage>button{flex-shrink:0}
+@media(max-width:620px){.sales-wizard-storage{flex-direction:column;gap:14px}.sales-wizard-resume{padding:24px 18px}}

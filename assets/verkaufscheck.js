@@ -1,3 +1,4 @@
+import {SALES_CHECK_STORAGE_KEY, readSavedSalesCheck, writeSavedSalesCheck} from './verkaufscheck-storage.js';
 import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progress.js';
 
 (() => {
@@ -873,6 +874,39 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
 
   let current='start', history=[], answers={}, selected=null;
   let autoTimer=null;
+  let saveEnabled=false;
+  let pendingSaved=null;
+  const saveControl=root.querySelector('[data-wizard-save]');
+  const saveStatus=root.querySelector('[data-wizard-save-status]');
+  const resume=root.querySelector('[data-wizard-resume]');
+  const wizardParts=[root.querySelector('.sales-wizard-top'),root.querySelector('.sales-wizard-card:not([data-wizard-resume])'),root.querySelector('[data-wizard-storage]')];
+  const showResume=visible=>{
+    resume.hidden=!visible;
+    wizardParts.forEach(part=>{part.hidden=visible;});
+  };
+  const saveState=()=>{
+    if(!saveEnabled)return;
+    try{
+      writeSavedSalesCheck(window.localStorage,questions,{current,history,answers});
+      saveStatus.textContent='Zwischenstand gespeichert. Sie können diesen Check später in diesem Browser fortsetzen.';
+    }catch{
+      saveEnabled=false;
+      saveControl.checked=false;
+      saveStatus.textContent='Der aktuelle Stand konnte nicht gespeichert werden. Sie können den Check weiter durchlaufen; ein früher gespeicherter Stand wurde möglicherweise nicht aktualisiert.';
+    }
+  };
+  const removeSaved=()=>{
+    try{window.localStorage.removeItem(SALES_CHECK_STORAGE_KEY);return true;}
+    catch{return false;}
+  };
+  const restart=()=>{
+    if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
+    saveEnabled=false;saveControl.checked=false;pendingSaved=null;
+    const removed=removeSaved();
+    current='start';history=[];answers={};selected=null;
+    showResume(false);render();scrollToWizard();
+    saveStatus.textContent=removed?'Ihr Verkaufscheck wurde neu gestartet. Der gespeicherte Stand ist gelöscht.':'Ihr Check wurde neu gestartet. Der frühere Stand konnte nicht vom Gerät gelöscht werden. Bitte löschen Sie dafür die Website-Daten in Ihrem Browser.';
+  };
 
   const scrollToWizard = (followHint = false) => {
     const mobile = window.matchMedia('(max-width:800px)').matches;
@@ -921,6 +955,7 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
       explainer.hidden=false;
       renderSummary(q);
     } else if(selected) showExplain(q,selected);
+    saveState();
   };
 
   const showExplain=(q,value)=>{
@@ -939,6 +974,7 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
     }
     selected=value;
     answers[current]=value;
+    saveState();
     updateProgress();
     [...options.children].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===value)));
 
@@ -1029,7 +1065,27 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
     }
   });
 
+  saveControl.addEventListener('change',()=>{
+    saveEnabled=saveControl.checked;
+    if(saveEnabled)saveState();
+    else saveStatus.textContent=removeSaved()?'Speicherung deaktiviert. Der gespeicherte Stand ist gelöscht.':'Die Speicherung ist deaktiviert. Der frühere Stand konnte nicht gelöscht werden. Bitte löschen Sie dafür die Website-Daten in Ihrem Browser.';
+  });
+  root.querySelector('[data-wizard-restart]').addEventListener('click',restart);
+  root.querySelector('[data-wizard-reset-saved]').addEventListener('click',restart);
+  root.querySelector('[data-wizard-continue]').addEventListener('click',()=>{
+    if(!pendingSaved)return;
+    ({current,history,answers}=pendingSaved);pendingSaved=null;
+    saveEnabled=true;saveControl.checked=true;
+    showResume(false);render();scrollToWizard();
+    title.setAttribute('tabindex','-1');title.focus({preventScroll:true});
+  });
   next.addEventListener('click',goNext);
   back.addEventListener('click',goBack);
   render();
+  try{
+    pendingSaved=readSavedSalesCheck(window.localStorage,questions);
+    if(pendingSaved)showResume(true);
+  }catch{
+    saveStatus.textContent='Die Speicherung ist in diesem Browser nicht verfügbar. Sie können den Check ohne Speicherung durchlaufen.';
+  }
 })();
