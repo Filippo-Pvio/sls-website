@@ -284,7 +284,8 @@ async function buildPdf(report, contact) {
         borderWidth: 0.45
       });
       target.drawRectangle({ x: bx + 7, y: by - 3, width: 6, height: 6, color: BRAND.coral });
-      target.drawText('✓', { x: bx + 7.8, y: by - 2.2, size: 5.7, font: bold, color: BRAND.white });
+      target.drawLine({ start: { x: bx + 8.2, y: by - 0.4 }, end: { x: bx + 9.5, y: by - 1.8 }, thickness: 0.8, color: BRAND.white });
+      target.drawLine({ start: { x: bx + 9.5, y: by - 1.8 }, end: { x: bx + 12.0, y: by + 1.2 }, thickness: 0.8, color: BRAND.white });
 
       const rows = wrapPdfText(text, regular, 6.7, benefitColW - 25);
       let ty = by + 1;
