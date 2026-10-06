@@ -45,6 +45,9 @@ async function buildPdf(report, contact) {
 
   let logo = null;
   let officeBackground = null;
+  let dennisPortrait = null;
+  let filippoPortrait = null;
+  let mischaPortrait = null;
   try {
     const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/logo-sls-horizontal-transparent.png');
     if (response.ok) logo = await pdfDoc.embedPng(await response.arrayBuffer());
@@ -57,6 +60,30 @@ async function buildPdf(report, contact) {
   } catch (error) {
     console.error('sales-check-report: office background unavailable', error);
   }
+
+  const embedRemoteJpg = async (url, label) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return null;
+      return await pdfDoc.embedJpg(await response.arrayBuffer());
+    } catch (error) {
+      console.error('sales-check-report: ' + label + ' unavailable', error);
+      return null;
+    }
+  };
+
+  dennisPortrait = await embedRemoteJpg(
+    'https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/images/magazin/dennis.jpg',
+    'Dennis portrait'
+  );
+  filippoPortrait = await embedRemoteJpg(
+    'https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/images/magazin/filippo.jpg',
+    'Filippo portrait'
+  );
+  mischaPortrait = await embedRemoteJpg(
+    'https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/images/magazin/mischa.jpg',
+    'Mischa portrait'
+  );
 
   const PAGE_W = 595.28;
   const PAGE_H = 841.89;
@@ -186,6 +213,296 @@ async function buildPdf(report, contact) {
     y = top - h - 5;
   };
 
+  const drawFullBleed = (target, image, opacity = 1) => {
+    if (!image) return;
+    const dims = image.scale(1);
+    const scale = Math.max(PAGE_W / dims.width, PAGE_H / dims.height);
+    const drawW = dims.width * scale;
+    const drawH = dims.height * scale;
+    target.drawImage(image, {
+      x: (PAGE_W - drawW) / 2,
+      y: (PAGE_H - drawH) / 2,
+      width: drawW,
+      height: drawH,
+      opacity
+    });
+  };
+
+  const drawCoverPage = () => {
+    const target = pdfDoc.addPage([PAGE_W, PAGE_H]);
+    drawFullBleed(target, officeBackground, 1);
+    target.drawRectangle({ x: 0, y: 0, width: PAGE_W, height: PAGE_H, color: BRAND.white, opacity: officeBackground ? 0.48 : 1 });
+    target.drawRectangle({ x: 0, y: PAGE_H - 6, width: PAGE_W, height: 6, color: BRAND.coral });
+
+    if (logo) {
+      const dims = logo.scale(1);
+      const logoW = 255;
+      const logoH = logoW * (dims.height / dims.width);
+      target.drawImage(logo, {
+        x: (PAGE_W - logoW) / 2,
+        y: 600,
+        width: logoW,
+        height: logoH
+      });
+    } else {
+      const fallback = 'SLS IMMOBILIENPARTNER';
+      target.drawText(fallback, {
+        x: (PAGE_W - bold.widthOfTextAtSize(fallback, 22)) / 2,
+        y: 620,
+        size: 22,
+        font: bold,
+        color: BRAND.blue
+      });
+    }
+
+    const claim1 = 'Wir verkaufen Ihre Immobilie,';
+    const claim2 = 'als wäre sie unsere eigene.';
+    target.drawText(claim1, {
+      x: (PAGE_W - serif.widthOfTextAtSize(claim1, 20.5)) / 2,
+      y: 495,
+      size: 20.5,
+      font: serif,
+      color: BRAND.blue
+    });
+    target.drawText(claim2, {
+      x: (PAGE_W - serif.widthOfTextAtSize(claim2, 20.5)) / 2,
+      y: 465,
+      size: 20.5,
+      font: serif,
+      color: BRAND.coral
+    });
+
+    const cardX = 75;
+    const cardY = 105;
+    const cardW = PAGE_W - 150;
+    const cardH = 185;
+    target.drawRectangle({
+      x: cardX,
+      y: cardY,
+      width: cardW,
+      height: cardH,
+      color: BRAND.white,
+      opacity: 0.92,
+      borderColor: BRAND.line,
+      borderWidth: 0.6
+    });
+    target.drawRectangle({ x: cardX, y: cardY + cardH - 4, width: cardW, height: 4, color: BRAND.coral });
+
+    const kicker = 'IHRE PERSÖNLICHE VERKAUFSANALYSE';
+    target.drawText(kicker, {
+      x: cardX + 24,
+      y: cardY + 145,
+      size: 8.2,
+      font: bold,
+      color: BRAND.coral
+    });
+    target.drawText('Ihre persönliche', {
+      x: cardX + 24,
+      y: cardY + 105,
+      size: 23,
+      font: serif,
+      color: BRAND.blue
+    });
+    target.drawText('Verkaufsanalyse', {
+      x: cardX + 24,
+      y: cardY + 76,
+      size: 23,
+      font: serif,
+      color: BRAND.blue
+    });
+
+    const fullName = [contact.firstName, contact.lastName].filter(Boolean).join(' ');
+    const meta = [fullName, report.date ? 'Stand ' + report.date : ''].filter(Boolean).join('  |  ');
+    target.drawText('Erstellt auf Basis Ihres SLS Verkaufschecks', {
+      x: cardX + 24,
+      y: cardY + 42,
+      size: 8.7,
+      font: regular,
+      color: BRAND.muted
+    });
+    if (meta) {
+      target.drawText(meta, {
+        x: cardX + 24,
+        y: cardY + 22,
+        size: 8.1,
+        font: bold,
+        color: BRAND.blue
+      });
+    }
+  };
+
+  const drawPersonalPage = () => {
+    const target = pdfDoc.addPage([PAGE_W, PAGE_H]);
+    drawFullBleed(target, officeBackground, 1);
+    target.drawRectangle({ x: 0, y: 0, width: PAGE_W, height: PAGE_H, color: BRAND.white, opacity: officeBackground ? 0.64 : 1 });
+
+    const panelX = 55;
+    const panelY = 68;
+    const panelW = PAGE_W - 110;
+    const panelH = PAGE_H - 136;
+    target.drawRectangle({
+      x: panelX,
+      y: panelY,
+      width: panelW,
+      height: panelH,
+      color: BRAND.white,
+      opacity: 0.93,
+      borderColor: BRAND.line,
+      borderWidth: 0.5
+    });
+
+    const titleY = PAGE_H - 126;
+    const titleA = 'Wir begleiten Sie ';
+    target.drawText(titleA, { x: panelX + 30, y: titleY, size: 20.5, font: serif, color: BRAND.dark });
+    const titleAX = panelX + 30 + serif.widthOfTextAtSize(titleA, 20.5);
+    target.drawText('persönlich', { x: titleAX, y: titleY, size: 20.5, font: serif, color: BRAND.coral });
+
+    const people = [
+      { image: dennisPortrait, name: 'Dennis Sahlmen' },
+      { image: filippoPortrait, name: 'Filippo Livera' },
+      { image: mischaPortrait, name: 'Mischa Stratmann' }
+    ];
+    const cardGap = 18;
+    const imageW = (panelW - 60 - cardGap * 2) / 3;
+    const imageH = 116;
+    const imageY = PAGE_H - 292;
+
+    people.forEach((person, index) => {
+      const x = panelX + 30 + index * (imageW + cardGap);
+      if (person.image) {
+        const dims = person.image.scale(1);
+        const scale = Math.min(imageW / dims.width, imageH / dims.height);
+        const w = dims.width * scale;
+        const h = dims.height * scale;
+        target.drawRectangle({ x, y: imageY, width: imageW, height: imageH, color: BRAND.light });
+        target.drawImage(person.image, {
+          x: x + (imageW - w) / 2,
+          y: imageY + (imageH - h) / 2,
+          width: w,
+          height: h
+        });
+      } else {
+        target.drawRectangle({ x, y: imageY, width: imageW, height: imageH, color: BRAND.light });
+      }
+      const nameSize = 9.2;
+      target.drawText(person.name, {
+        x: x + (imageW - serif.widthOfTextAtSize(person.name, nameSize)) / 2,
+        y: imageY - 19,
+        size: nameSize,
+        font: serif,
+        color: BRAND.blue
+      });
+      const role = 'Geschäftsführer';
+      target.drawText(role, {
+        x: x + (imageW - regular.widthOfTextAtSize(role, 7.2)) / 2,
+        y: imageY - 34,
+        size: 7.2,
+        font: regular,
+        color: BRAND.muted
+      });
+    });
+
+    const message = 'Das gesamte Team hinter SLS steht Ihnen mit Expertise und persönlichem Einsatz zur Seite.';
+    const msgLines = wrapPdfText(message, serif, 12.2, panelW - 100);
+    let msgY = imageY - 82;
+    msgLines.forEach(row => {
+      target.drawText(row, {
+        x: panelX + (panelW - serif.widthOfTextAtSize(row, 12.2)) / 2,
+        y: msgY,
+        size: 12.2,
+        font: serif,
+        color: BRAND.dark
+      });
+      msgY -= 17;
+    });
+
+    target.drawText('Unser gesamtes Team finden Sie hier:', {
+      x: panelX + 30,
+      y: 280,
+      size: 9.0,
+      font: regular,
+      color: BRAND.muted
+    });
+    target.drawText('www.SLS.de/team', {
+      x: panelX + 30,
+      y: 252,
+      size: 14.2,
+      font: bold,
+      color: BRAND.blue
+    });
+    target.drawLine({ start: { x: panelX + 30, y: 247 }, end: { x: panelX + 142, y: 247 }, thickness: 1, color: BRAND.coral });
+
+    const partnerLead = 'Werden auch Sie ';
+    target.drawText(partnerLead, { x: panelX + 30, y: 190, size: 13.6, font: serif, color: BRAND.dark });
+    const partnerX = panelX + 30 + serif.widthOfTextAtSize(partnerLead, 13.6);
+    target.drawText('Immobilienpartner.', { x: partnerX, y: 190, size: 13.6, font: serif, color: BRAND.coral });
+    target.drawLine({ start: { x: panelX + 30, y: 167 }, end: { x: panelX + 30, y: 132 }, thickness: 1.1, color: BRAND.blue });
+    target.drawText('Wenn Sie den besten Preis erzielen wollen, sind wir bereit.', {
+      x: panelX + 42, y: 158, size: 8.7, font: regular, color: BRAND.muted
+    });
+    target.drawText('Lernen Sie uns kennen. Es lohnt sich.', {
+      x: panelX + 42, y: 141, size: 8.7, font: regular, color: BRAND.muted
+    });
+  };
+
+  const drawClosingPage = () => {
+    const target = pdfDoc.addPage([PAGE_W, PAGE_H]);
+    target.drawRectangle({ x: 0, y: 0, width: PAGE_W, height: PAGE_H, color: BRAND.white });
+
+    if (logo) {
+      const dims = logo.scale(1);
+      const logoW = 300;
+      const logoH = logoW * (dims.height / dims.width);
+      target.drawImage(logo, {
+        x: (PAGE_W - logoW) / 2,
+        y: 655,
+        width: logoW,
+        height: logoH
+      });
+    }
+
+    const centerText = (text, yPos, size, font, color) => {
+      target.drawText(text, {
+        x: (PAGE_W - font.widthOfTextAtSize(text, size)) / 2,
+        y: yPos,
+        size,
+        font,
+        color
+      });
+    };
+
+    centerText('Ihr Zuhause ist besonders.', 566, 17.6, serif, BRAND.blue);
+    centerText('Der Verkauf sollte es auch sein.', 542, 17.6, serif, BRAND.blue);
+    centerText('Lassen Sie uns sprechen -', 494, 12.3, regular, BRAND.blue);
+    centerText('unverbindlich, ehrlich und persönlich.', 472, 12.3, bold, BRAND.blue);
+
+    const leftX = 205;
+    const rightX = 342;
+    target.drawText('RUHRGEBIET', { x: leftX, y: 410, size: 8.0, font: bold, color: BRAND.blue });
+    target.drawText('RHEINLAND', { x: rightX, y: 410, size: 8.0, font: bold, color: BRAND.blue });
+    target.drawText('Büro Dorsten', { x: leftX - 18, y: 388, size: 12.0, font: serif, color: BRAND.coral });
+    target.drawText('Büro Düsseldorf', { x: rightX - 16, y: 388, size: 12.0, font: serif, color: BRAND.coral });
+    target.drawLine({ start: { x: 304, y: 330 }, end: { x: 304, y: 405 }, thickness: 0.8, color: BRAND.blue });
+
+    const contactSize = 8.8;
+    ['Ubierweg 2', '46286 Dorsten', '', '02369 742 80 20', 'dorsten@sls.de'].forEach((row, i) => {
+      if (row) target.drawText(row, { x: leftX - 8, y: 354 - i * 14, size: contactSize, font: regular, color: BRAND.blue });
+    });
+    ['Königsallee 19', '40213 Düsseldorf', '', '0211 90 999 950', 'duesseldorf@sls.de'].forEach((row, i) => {
+      if (row) target.drawText(row, { x: rightX - 2, y: 354 - i * 14, size: contactSize, font: regular, color: BRAND.blue });
+    });
+
+    centerText('www.SLS.de', 230, 19, serif, BRAND.blue);
+    target.drawLine({ start: { x: 235, y: 222 }, end: { x: 360, y: 222 }, thickness: 1.2, color: BRAND.coral });
+    centerText('Dennis Sahlmen  |  Filippo Livera  |  Mischa Stratmann', 185, 7.8, regular, BRAND.muted);
+
+    centerText('SLS Immobilienpartner GmbH', 80, 6.8, regular, BRAND.blue);
+    centerText('Amtsgericht Gelsenkirchen, HRB 18432', 68, 6.6, regular, BRAND.blue);
+    centerText('Geschäftsführende Gesellschafter: Dennis Sahlmen, Filippo Livera, Mischa Stratmann', 56, 6.4, regular, BRAND.blue);
+    centerText('Erlaubnis nach § 34c Gewerbeordnung (GewO) vom 15.07.2024 - Kreis Recklinghausen', 44, 6.2, regular, BRAND.blue);
+    target.drawRectangle({ x: 0, y: 0, width: PAGE_W, height: 28, color: rgb(0.47, 0.62, 0.70) });
+  };
+
   const drawMarketingPage = () => {
     const target = pdfDoc.addPage([PAGE_W, PAGE_H]);
 
@@ -313,15 +630,26 @@ async function buildPdf(report, contact) {
         borderWidth: 0.38
       });
       target.drawRectangle({ x, y: topY - cardH, width: 3.2, height: cardH, color: BRAND.coral });
-      drawProcessIcon(iconIndex, x + 19, topY - 17);
       target.drawText(step[0], { x: x + colW - 26, y: topY - 15, size: 6.4, font: bold, color: BRAND.coral });
-      target.drawText(step[1], { x: x + 36, y: topY - 18, size: 8.6, font: bold, color: BRAND.dark });
 
-      let sy = topY - 34;
-      for (const row of wrapPdfText(step[2], regular, 7.3, colW - 28)) {
-        target.drawText(row, { x: x + 14, y: sy, size: 7.3, font: regular, color: BRAND.muted });
-        sy -= 9.4;
-      }
+      const titleLines = wrapPdfText(step[1], bold, 8.6, colW - 60);
+      const bodyLines = wrapPdfText(step[2], regular, 7.3, colW - 60);
+      const titleLeading = 10.6;
+      const bodyLeading = 9.4;
+      const blockH = titleLines.length * titleLeading + 5 + bodyLines.length * bodyLeading;
+      let textY = topY - Math.max(20, (cardH - blockH) / 2 + 7);
+
+      drawProcessIcon(iconIndex, x + 19, topY - cardH / 2);
+
+      titleLines.forEach(row => {
+        target.drawText(row, { x: x + 40, y: textY, size: 8.6, font: bold, color: BRAND.dark });
+        textY -= titleLeading;
+      });
+      textY -= 4;
+      bodyLines.forEach(row => {
+        target.drawText(row, { x: x + 40, y: textY, size: 7.3, font: regular, color: BRAND.muted });
+        textY -= bodyLeading;
+      });
     };
 
     steps.slice(0, 4).forEach((step, i) => drawStep(leftX, startY - i * (cardH + 6), step, i));
@@ -388,6 +716,7 @@ async function buildPdf(report, contact) {
     target.drawText(offices, { x: PAGE_W - M - regular.widthOfTextAtSize(offices, 7.2), y: 45, size: 7.2, font: regular, color: BRAND.muted });
   };
 
+  drawCoverPage();
   addPage(true);
 
   page.drawText('Ihre persönliche Verkaufsanalyse', { x: M, y, size: 24.5, font: serif, color: BRAND.blue });
@@ -530,7 +859,8 @@ async function buildPdf(report, contact) {
   }
 
   drawMarketingPage();
-
+  drawPersonalPage();
+  drawClosingPage();
 
   const out = await pdfDoc.save({ useObjectStreams: false });
   return Uint8Array.from(out);
