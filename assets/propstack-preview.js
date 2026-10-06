@@ -108,7 +108,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
   const photo=(src,alt,loading="lazy")=>src?`<img src="${esc(src)}" alt="${esc(alt)}" loading="${loading}"${loading==="eager"?' fetchpriority="low"':''}>`:'<span class="pp-fallback">SLS Immobilienpartner</span>';
   const previewLink=p=>productionRoute?objectPath(p):`/immobilien-test/?objekt=${encodeURIComponent(p.id)}${demo?'&demo=1':''}`;
   const energyNotRequired=energy=>/^(?:wird\s+)?nicht\s+benötigt[.!]?$/i.test(String(energy.availability||'').trim());
-  const card=p=>propertyCardHtml(p,{href:previewLink(p),favorite:favoriteButton(p)});
+  const card=p=>propertyCardHtml(p,{href:previewLink(p),favorite:favoriteButton(p),priority:!id&&!favoritesView&&all.slice(0,window.innerWidth<=850?1:3).some(item=>String(item.id)===String(p.id))});
   const fact=(label,value)=>value==null||value===''?'':`<div class="pp-fact${String(label).split(/\s+/).some(word=>word.length>=18)?' pp-fact-wide':''}"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
   const activeFilters=()=>{
     const form=new FormData($('#pp-form'));
@@ -234,7 +234,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
         if(demo)items=all;
         else{
           const q=new URLSearchParams(committedQuery);q.set('map','1');
-          const response=await fetch(`/api/propstack-properties?${q}`,{signal:AbortSignal.timeout(20000)});
+          const response=await fetch(`/api/propstack-properties/?${q}`,{signal:AbortSignal.timeout(20000)});
           if(!response.ok)throw new Error('Kartenpunkte fehlen');
           const data=await response.json();if(!Array.isArray(data.items))throw new Error('Kartenpunkte fehlen');items=data.items;
         }
@@ -249,7 +249,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
     const timeout=setTimeout(()=>controller.abort(),20000);
     const q=new URLSearchParams(committedQuery);q.set('page',page);q.set('per',viewMode==='map'?6:9);
     try{
-      const response=await fetch(`/api/propstack-properties?${q}`,{signal:controller.signal});
+      const response=await fetch(`/api/propstack-properties/?${q}`,{signal:controller.signal});
       const data=await response.json();
       if(generation!==browseGeneration)return false;
       if(!response.ok||!Array.isArray(data.items))throw new Error(data.error||'Daten nicht abrufbar');
@@ -291,7 +291,9 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
       $('#pp-sort').value=restoringBrowse.sort||'default';
       $('#pp-quick-query').value=form.elements.query.value;
     }
-    await setupPropertyFilters(form,{demoItems:demo?[sample]:undefined,restore:restoringBrowse?.fields});
+    const filtersReady=setupPropertyFilters(form,{demoItems:demo?[sample]:undefined,restore:restoringBrowse?.fields});
+    // Restored subtype selections need their options; fresh browsing can start immediately.
+    if(demo||restoringBrowse)await filtersReady;
     history.scrollRestoration='manual';
     const saveBrowse=()=>{
       if(restoringBrowse)return;

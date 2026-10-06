@@ -59,7 +59,7 @@ export async function setupPropertyFilters(form,{demoItems,restore={}}={}){
       if(demoItems){
         filters={types:[...new Set(demoItems.map(p=>p.type))].map(value=>({value,label:value,subtypes:[]})),cities:[...new Set(demoItems.map(p=>p.city).filter(Boolean))]};
       }else{
-        const response=await fetch('/api/propstack-properties?filters=1',{signal:AbortSignal.timeout(15000)});
+        const response=await fetch('/api/propstack-properties/?filters=1',{signal:AbortSignal.timeout(15000)});
         if(!response.ok)throw new Error('filters unavailable');
         const data=await response.json();if(!Array.isArray(data.filters?.types)||!Array.isArray(data.filters?.cities))throw new Error('invalid filters');
         filters=data.filters;
