@@ -18,7 +18,6 @@ body.sell-page #main>.buy-final .lead{color:#edf3f5;max-width:720px;margin:0 aut
 .sell-page .sell-benefits li::before{content:'✓';position:absolute;left:0;color:#49854b;font-weight:700}
 body.sell-page #main .sell-decision h3{color:#b5e4a1}
 .sell-page .buy-path .buy-steps>.sell-decision::before{background:#b5e4a1}
-.sell-page .sell-decision>div{grid-column:2}
 .sell-page .sell-partner-logos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:32px}
 .sell-page .sell-partner-logos .trust-badge-card{display:flex;justify-content:center;align-items:center;min-width:0;padding:16px;background:transparent;border:0;box-shadow:none}
 .sell-page .sell-partner-logos img{width:100%;max-width:200px;height:150px;object-fit:contain}
@@ -64,3 +63,7 @@ body.sell-page #main .sell-video-intro{color:#edf3f5;font-size:16px;line-height:
 @media(hover:hover) and (pointer:fine){.sell-page .sell-partner-logos a:hover img{transform:translateY(-4px)}}
 @media(max-width:850px){.sell-page .sell-motion-ready{transform:none;transition-duration:.4s;transition-delay:0ms}.sell-page .sell-benefits .sell-motion-ready li::before{transform:none;transition-delay:0ms}}
 @media(prefers-reduced-motion:reduce){.sell-page .sell-motion-ready,.sell-page .sell-benefits .sell-motion-ready li::before{opacity:1;transform:none;transition:none}.sell-page .sell-partner-logos img,.sell-page .sell-partner-logos a:hover img{transform:none;transition:none}}
+
+.sell-page .sell-buyer-finder{text-align:center}
+.sell-page .sell-buyer-finder h2{max-width:760px;margin:0 auto 24px;text-wrap:balance}
+.sell-page .sell-buyer-finder p{max-width:680px;margin:0 auto 28px}
