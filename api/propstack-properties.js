@@ -103,7 +103,7 @@ async function pageListings(key,statusId,page,per,sort){
   });
   const result=await read(`units?${query}`,key);
   const rows=Array.isArray(result.data)?result.data:[];
-  const items=rows.filter(isPublished).map(publicUnit).map(propertyCard);
+  const items=rows.filter(isPublished).map(unit=>publicUnit(unit,{imageSize:'medium'})).map(propertyCard);
   const metaTotal=Number(result.meta?.total_count);
   const total=Number.isFinite(metaTotal)?metaTotal:((page-1)*per+rows.length+(rows.length===per?1:0));
   return {
@@ -158,7 +158,7 @@ export default async function handler(req,res){
       const row=await listingById(summary,key,status.id);
       if(!row)return unavailableResponse(summary,key,res);
       res.setHeader('Cache-Control','public, s-maxage=60');
-      return res.status(200).json({items:[propertyCard(publicUnit(row))]});
+      return res.status(200).json({items:[propertyCard(publicUnit(row,{imageSize:'medium'}))]});
     }
 
 
@@ -171,7 +171,7 @@ export default async function handler(req,res){
     let result;
     if(req.query.filters==='1'){
       const filters=propertyFilters(await getCatalog(key,status.id));
-      res.setHeader('Cache-Control','public, s-maxage=60');
+      res.setHeader('Cache-Control','public, s-maxage=300, stale-while-revalidate=600');
       return res.status(200).json({filters});
     }
     const needsCatalog=req.query.map==='1'||req.query.similarTo||['query','city','type','subtype','price','area','rooms'].some(k=>Boolean(req.query[k]));

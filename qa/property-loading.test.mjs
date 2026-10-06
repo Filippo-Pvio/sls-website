@@ -39,3 +39,10 @@ test('feed pages, slim map, full catalog search and recommendations use bounded 
   const similar=await run({similarTo:'1'});assert.ok(similar.items.length<=3);assert.ok(similar.items.every(p=>p.id!=='1'));
  }finally{global.fetch=previousFetch;if(previousKey===undefined)delete process.env.PROPSTACK_API_KEY;else process.env.PROPSTACK_API_KEY=previousKey}
 });
+test('list thumbnails prefer medium images while details retain large images and privacy filtering',async()=>{
+ const {publicUnit}=await import('../lib/propstack-preview.mjs');
+ const row={id:1,images:[{is_private:true,medium_url:'https://example.org/private.jpg'}, {is_private:false,medium_url:'https://example.org/medium.jpg',big_url:'https://example.org/large.jpg'}]};
+ assert.deepEqual(publicUnit(row,{imageSize:'medium'}).images,['https://example.org/medium.jpg']);
+ assert.deepEqual(publicUnit(row).images,['https://example.org/large.jpg']);
+ assert.deepEqual(publicUnit({id:2,images:[{is_private:false,big_url:'https://example.org/fallback.jpg'}]},{imageSize:'medium'}).images,['https://example.org/fallback.jpg']);
+});
