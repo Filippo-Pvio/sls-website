@@ -71,7 +71,7 @@
 
   const siaButton = id => {
     const question = siaQuestions[id];
-    return question ? '<button type="button" class="sales-sia-link" data-sia-question="'+question.replace(/"/g,'&quot;')+'">SIA fragen</button>' : '';
+    return question ? '<button type="button" class="sales-sia-link sia-button" data-sia-question="'+question.replace(/"/g,'&quot;')+'"><span class="sia-button-brand">SIA</span> <span class="sia-button-label">fragen</span></button>' : '';
   };
 
   const questions = {

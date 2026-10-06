@@ -120,7 +120,7 @@
 .knowledge-sia-hint{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:20px}
 .knowledge-sia-hint p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
 .knowledge-sia-hint .knowledge-sia-title{margin-bottom:4px;color:var(--ink);font-weight:600}
-.knowledge-sia-hint .button{flex:none}
+.knowledge-sia-hint .sia-button{flex:none}
 .knowledge-no-results>p{max-width:620px;margin:20px auto 24px;color:var(--muted);line-height:1.6}
 .knowledge-no-results .button{background:var(--coral);color:#fff}
 @media(max-width:600px){.knowledge-sia-hint{align-items:flex-start;flex-direction:column;gap:16px}}
