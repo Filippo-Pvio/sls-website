@@ -18,8 +18,7 @@ body.sell-page #main>.buy-final .lead{color:#edf3f5;max-width:720px;margin:0 aut
 .sell-page .sell-benefits li::before{content:'✓';position:absolute;left:0;color:#49854b;font-weight:700}
 body.sell-page #main .sell-decision h3{color:#b5e4a1}
 .sell-page .buy-path .buy-steps>.sell-decision::before{background:#b5e4a1}
-.sell-page .buy-path .buy-steps>.sell-decision>span{color:#b5e4a1;font-size:24px}
-.sell-page .sell-decision>div{border-left:3px solid #b5e4a1;padding-left:18px}
+.sell-page .sell-decision>div{grid-column:2}
 .sell-page .sell-partner-logos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:32px}
 .sell-page .sell-partner-logos .trust-badge-card{display:flex;justify-content:center;align-items:center;min-width:0;padding:16px;background:transparent;border:0;box-shadow:none}
 .sell-page .sell-partner-logos img{width:100%;max-width:200px;height:150px;object-fit:contain}
