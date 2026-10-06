@@ -13,8 +13,9 @@
     <img class="hero-scene hero-scene-next" alt="" decoding="async">
   </div>
   <div class="wrap">
-    <h1>Was bei einem Immobilienverkauf<br>wirklich organisiert werden muss.</h1>
-    <p class="lead">Der Verkaufscheck führt Sie Schritt für Schritt durch genau die Themen, die in Ihrer aktuellen Situation wichtig sind – von Unterlagen und Grundbuch bis Finanzierung, Notar und Übergabe.</p>
+    <h1>Wie gut sind Sie auf Ihren<br>Immobilienverkauf vorbereitet?</h1>
+    <p class="lead">Prüfen Sie Schritt für Schritt, was in Ihrer Verkaufssituation bereits geklärt ist. Am Ende erhalten Sie eine persönliche Übersicht Ihrer offenen Punkte und der nächsten Schritte.</p>
+    <p class="sales-check-hero-note">Sie können den Check ohne Kontaktdaten durchlaufen. Auf Wunsch erhalten Sie Ihre persönliche Auswertung als PDF per E-Mail – Ihre Kontaktdaten geben Sie erst für diese Anfrage am Ende an.</p>
     <div class="page-actions"><a class="button button-light" href="#check">Verkaufscheck starten</a><a class="button button-ghost" href="/kontakt/">Verkauf besprechen</a></div>
   </div>
 </section>
@@ -29,6 +30,12 @@
 
 <section class="section sales-check-tool" id="check"><div class="wrap">
   <div class="sales-wizard-shell reveal" data-sales-wizard>
+    <div class="sales-wizard-resume sales-wizard-card" data-wizard-resume hidden>
+      <p class="sales-wizard-kicker">Willkommen zurück</p>
+      <h2>Ihr Zwischenstand ist gespeichert.</h2>
+      <p>Sie können Ihren Verkaufscheck auf diesem Gerät fortsetzen oder mit einem neuen Check beginnen.</p>
+      <div class="sales-resume-actions"><button type="button" class="sales-wizard-next" data-wizard-continue>Fortsetzen</button><button type="button" class="sales-wizard-back" data-wizard-reset-saved>Neu starten</button></div>
+    </div>
     <div class="sales-wizard-top">
       <div><p class="eyebrow">Ihr Verkaufs-Navigator</p><p class="sales-wizard-step" data-wizard-step>Einstieg · Schritt 1</p></div>
       <div class="sales-wizard-progress-wrap"><span class="sales-wizard-percent" data-wizard-percent aria-hidden="true">0 %</span><div class="sales-wizard-progress" data-wizard-progress-track role="progressbar" aria-label="Fortschritt des Verkaufschecks" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0 Prozent abgeschlossen"><span data-wizard-progress></span></div></div>
@@ -46,6 +53,10 @@
         <button type="button" class="sales-wizard-back" data-wizard-back disabled>← Zurück</button>
         <button type="button" class="sales-wizard-next" data-wizard-next hidden>Weiter →</button>
       </div>
+    </div>
+    <div class="sales-wizard-storage" data-wizard-storage>
+      <div><label class="sales-wizard-save"><input type="checkbox" data-wizard-save aria-describedby="sales-save-help"><span>Zwischenstand auf diesem Gerät speichern</span></label><p id="sales-save-help">Freiwillig, nur in diesem Browser. Gespeichert werden Ihre Antworten im Check, keine Kontaktdaten. Mit „Neu starten“ löschen Sie den gespeicherten Stand.</p><p class="sales-wizard-save-status" data-wizard-save-status role="status"></p></div>
+      <button type="button" class="sales-wizard-back" data-wizard-restart>Neu starten</button>
     </div>
 
   </div>
