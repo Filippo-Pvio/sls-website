@@ -59,6 +59,7 @@ async function buildPdf(report, contact) {
 
   let page;
   let y = 0;
+  let analysisPageNumber = 0;
 
   const drawFooter = target => {
     const note = 'Hinweis: Diese Auswertung dient der Orientierung und ersetzt keine individuelle rechtliche, steuerliche oder finanzielle Beratung.';
@@ -93,6 +94,7 @@ async function buildPdf(report, contact) {
 
   const addPage = first => {
     page = pdfDoc.addPage([PAGE_W, PAGE_H]);
+    analysisPageNumber += 1;
     drawHeader(page, first);
     y = PAGE_H - 93;
   };
@@ -221,7 +223,7 @@ async function buildPdf(report, contact) {
 
     const colGap = 18;
     const colW = (CONTENT_W - colGap) / 2;
-    const cardH = 78;
+    const cardH = 68;
     const leftX = M;
     const rightX = M + colW + colGap;
     const startY = my;
@@ -237,20 +239,20 @@ async function buildPdf(report, contact) {
         borderWidth: 0.55
       });
       target.drawRectangle({ x, y: topY - cardH, width: 4, height: cardH, color: BRAND.coral });
-      target.drawText(step[0], { x: x + 14, y: topY - 19, size: 7.2, font: bold, color: BRAND.coral });
-      target.drawText(step[1], { x: x + 42, y: topY - 20, size: 9.2, font: bold, color: BRAND.dark });
+      target.drawText(step[0], { x: x + 14, y: topY - 17, size: 7.0, font: bold, color: BRAND.coral });
+      target.drawText(step[1], { x: x + 40, y: topY - 18, size: 8.9, font: bold, color: BRAND.dark });
 
-      let sy = topY - 38;
-      for (const row of wrapPdfText(step[2], regular, 7.6, colW - 28)) {
-        target.drawText(row, { x: x + 14, y: sy, size: 7.6, font: regular, color: BRAND.muted });
-        sy -= 10.1;
+      let sy = topY - 34;
+      for (const row of wrapPdfText(step[2], regular, 7.3, colW - 28)) {
+        target.drawText(row, { x: x + 14, y: sy, size: 7.3, font: regular, color: BRAND.muted });
+        sy -= 9.4;
       }
     };
 
-    steps.slice(0, 4).forEach((step, i) => drawStep(leftX, startY - i * (cardH + 8), step));
-    steps.slice(4).forEach((step, i) => drawStep(rightX, startY - i * (cardH + 8), step));
+    steps.slice(0, 4).forEach((step, i) => drawStep(leftX, startY - i * (cardH + 6), step));
+    steps.slice(4).forEach((step, i) => drawStep(rightX, startY - i * (cardH + 6), step));
 
-    const benefitsTop = startY - 4 * (cardH + 8) + 10;
+    const benefitsTop = startY - 4 * (cardH + 6) + 5;
     target.drawText('Was Sie dabei von uns erwarten können', { x: rightX, y: benefitsTop, size: 10.2, font: bold, color: BRAND.blue });
 
     const benefits = [
@@ -262,11 +264,34 @@ async function buildPdf(report, contact) {
       'Persönliche Betreuung bis zur Übergabe'
     ];
 
-    let by = benefitsTop - 19;
-    benefits.forEach(text => {
-      target.drawRectangle({ x: rightX, y: by + 2, width: 4, height: 4, color: BRAND.coral });
-      target.drawText(text, { x: rightX + 12, y: by, size: 7.6, font: regular, color: BRAND.dark });
-      by -= 14;
+    const benefitColGap = 10;
+    const benefitColW = (colW - benefitColGap) / 2;
+    const benefitStartY = benefitsTop - 22;
+
+    benefits.forEach((text, index) => {
+      const col = index % 2;
+      const row = Math.floor(index / 2);
+      const bx = rightX + col * (benefitColW + benefitColGap);
+      const by = benefitStartY - row * 25;
+
+      target.drawRectangle({
+        x: bx,
+        y: by - 12,
+        width: benefitColW,
+        height: 20,
+        color: BRAND.light,
+        borderColor: BRAND.line,
+        borderWidth: 0.45
+      });
+      target.drawRectangle({ x: bx + 7, y: by - 3, width: 6, height: 6, color: BRAND.coral });
+      target.drawText('✓', { x: bx + 7.8, y: by - 2.2, size: 5.7, font: bold, color: BRAND.white });
+
+      const rows = wrapPdfText(text, regular, 6.7, benefitColW - 25);
+      let ty = by + 1;
+      rows.slice(0, 2).forEach(rowText => {
+        target.drawText(rowText, { x: bx + 18, y: ty, size: 6.7, font: regular, color: BRAND.dark });
+        ty -= 8;
+      });
     });
 
     const ctaY = 96;
@@ -321,6 +346,66 @@ async function buildPdf(report, contact) {
       y -= 18;
       for (const item of (Array.isArray(section.items) ? section.items : [])) drawItemCard(item);
       gap(3);
+    }
+  }
+
+  // Use remaining space on a continued analysis page for a concise, personalized priority summary.
+  if (analysisPageNumber > 1) {
+    const priorityRank = { critical: 0, unsure: 1, open: 2 };
+    const priorityItems = phases
+      .flatMap((section, sectionIndex) =>
+        (Array.isArray(section.items) ? section.items : []).map((item, itemIndex) => ({
+          ...item,
+          phaseLabel: section.label,
+          sectionIndex,
+          itemIndex
+        }))
+      )
+      .sort((a, b) =>
+        (priorityRank[a.status] ?? 9) - (priorityRank[b.status] ?? 9) ||
+        a.sectionIndex - b.sectionIndex ||
+        a.itemIndex - b.itemIndex
+      )
+      .filter((item, index, all) => all.findIndex(other => other.label === item.label) === index)
+      .slice(0, 3);
+
+    const priorityBlockHeight = priorityItems.length ? 46 + priorityItems.length * 48 : 0;
+    if (priorityItems.length && y - priorityBlockHeight >= FOOTER_H + 30) {
+      gap(10);
+      page.drawLine({ start: { x: M, y }, end: { x: PAGE_W - M, y }, thickness: 0.7, color: BRAND.line });
+      y -= 21;
+      page.drawText('Ihre nächsten Prioritäten', { x: M, y, size: 13.6, font: serif, color: BRAND.blue });
+      y -= 17;
+      page.drawText('Damit Sie jetzt gezielt weiterkommen, würden wir diese Punkte zuerst angehen:', {
+        x: M,
+        y,
+        size: 7.9,
+        font: regular,
+        color: BRAND.muted
+      });
+      y -= 15;
+
+      priorityItems.forEach((item, index) => {
+        const accent = item.status === 'critical' ? BRAND.coral : item.status === 'unsure' ? BRAND.blue : BRAND.muted;
+        const top = y;
+        const h = 41;
+        page.drawRectangle({ x: M, y: top - h, width: CONTENT_W, height: h, color: BRAND.light, borderColor: BRAND.line, borderWidth: 0.5 });
+        page.drawRectangle({ x: M, y: top - h, width: 3, height: h, color: accent });
+        page.drawText(String(index + 1).padStart(2, '0'), { x: M + 13, y: top - 16, size: 7.0, font: bold, color: accent });
+
+        const titleLines = wrapPdfText(clampText(item.label, 180), bold, 8.8, CONTENT_W - 80);
+        let py = top - 16;
+        titleLines.slice(0, 2).forEach(row => {
+          page.drawText(row, { x: M + 39, y: py, size: 8.8, font: bold, color: BRAND.dark });
+          py -= 10.5;
+        });
+
+        const phase = clampText(item.phaseLabel || '', 90);
+        if (phase) {
+          page.drawText(phase, { x: M + 39, y: top - 33, size: 6.8, font: regular, color: BRAND.muted });
+        }
+        y = top - h - 5;
+      });
     }
   }
 
