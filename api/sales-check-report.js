@@ -896,7 +896,7 @@ async function buildPdf(report, contact) {
   }
 
   if (brochureDoc && brochureDoc.getPageCount() >= 16) {
-    const [differencePage] = await pdfDoc.copyPages(brochureDoc, [10]);
+    const [differencePage] = await pdfDoc.copyPages(brochureDoc, [12]);
     pdfDoc.addPage(differencePage);
 
     const closingPages = await pdfDoc.copyPages(brochureDoc, [14, 15]);
