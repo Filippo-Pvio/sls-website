@@ -8,7 +8,8 @@
   const scenes = ['handshake', 'viewing', 'presentation', 'consultation'];
   const dwell = 7000;
   const fade = 1600;
-  const path = (scene) => `/assets/images/hero-scenes/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
+  const legacyPath = (scene) => `/assets/images/hero-scenes/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
+  const path = (scene) => window.slsSceneImage(legacyPath(scene));
   let active = current;
   let standby = incoming;
   let index = 0;

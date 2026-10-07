@@ -2768,7 +2768,7 @@ body.home-editorial > main > section.section.section-dark.premium-final-cta .hom
 body.home-editorial > main > section.section.home-marketing-section{
   background:
     linear-gradient(rgba(249,247,242,.91), rgba(249,247,242,.91)),
-    url("/assets/images/home/marketing-hintergrund.jpeg") center 46% / cover no-repeat !important;
+    url("/assets/images/team-scenes/vermarktung-1280.webp") center 46% / cover no-repeat !important;
 }
 body.home-editorial > main > section.section.home-team-section:not(.section-dark){
   background:
@@ -2779,7 +2779,7 @@ body.home-editorial > main > section.section.home-team-section:not(.section-dark
   body.home-editorial > main > section.section.home-marketing-section{
     background:
       linear-gradient(rgba(249,247,242,.93), rgba(249,247,242,.93)),
-      url("/assets/images/home/marketing-hintergrund.jpeg") 62% center / cover no-repeat !important;
+      url("/assets/images/team-scenes/vermarktung-1280.webp") 62% center / cover no-repeat !important;
   }
   body.home-editorial > main > section.section.home-team-section:not(.section-dark){
     background:
@@ -2796,7 +2796,7 @@ body.home-editorial > main > section.section.home-team-section:not(.section-dark
 body.home-editorial > main > section.section.home-marketing-section{
   background:
     linear-gradient(rgba(249,247,242,.82), rgba(249,247,242,.82)),
-    url("/assets/images/home/marketing-hintergrund.jpeg") center 46% / cover no-repeat !important;
+    url("/assets/images/team-scenes/vermarktung-1280.webp") center 46% / cover no-repeat !important;
 }
 body.home-editorial > section.section.home-faq-section{
   background:
@@ -2807,7 +2807,7 @@ body.home-editorial > section.section.home-faq-section{
   body.home-editorial > main > section.section.home-marketing-section{
     background:
       linear-gradient(rgba(249,247,242,.87), rgba(249,247,242,.87)),
-      url("/assets/images/home/marketing-hintergrund.jpeg") 62% center / cover no-repeat !important;
+      url("/assets/images/team-scenes/vermarktung-1280.webp") 62% center / cover no-repeat !important;
   }
   body.home-editorial > section.section.home-faq-section{
     background:

@@ -1,0 +1,65 @@
+{
+  "hero-scenes/handshake": {
+    "scene": "team-scenes/beratung-laptop",
+    "source": "Groß (3EB3105E-8517-4224-980B-CB9E4DC8483F).jpeg",
+    "size": [
+      1280,
+      853
+    ],
+    "alt": "Team bei der gemeinsamen Immobilienberatung am Laptop"
+  },
+  "references-hero/besichtigung": {
+    "scene": "team-scenes/objektbesprechung",
+    "source": "Groß (5A067351-21F2-405A-9E9B-C76386F13244).jpeg",
+    "size": [
+      1280,
+      853
+    ],
+    "alt": "Zwei Mitarbeitende besprechen Immobilienunterlagen am Laptop"
+  },
+  "search-hero/kontakt": {
+    "scene": "team-scenes/kundenservice",
+    "source": "Groß (4371651D-7A96-4DA8-A556-209DC4C9D1E7).jpeg",
+    "size": [
+      1280,
+      853
+    ],
+    "alt": "Zwei Mitarbeitende bearbeiten gemeinsam eine Anfrage am Laptop"
+  },
+  "references-hero/kontakt": {
+    "scene": "team-scenes/verkaufsplanung",
+    "source": "Groß (58004329-FAAA-4862-BBD6-8F1882DB31CF).jpeg",
+    "size": [
+      1280,
+      853
+    ],
+    "alt": "Zwei Mitarbeitende besprechen Grundrisse und Immobilienunterlagen"
+  },
+  "buy-hero/kontakt": {
+    "scene": "team-scenes/anfragen",
+    "source": "Groß (A9E4C221-56F3-425D-A6E4-762FBA7141DF).jpeg",
+    "size": [
+      1280,
+      853
+    ],
+    "alt": "Zwei Mitarbeitende bei der gemeinsamen Bearbeitung am Laptop"
+  },
+  "home/marketing-hintergrund": {
+    "scene": "team-scenes/vermarktung",
+    "source": "Groß (E0593C2F-165B-480C-BDA5-5F2D9B5189B4).jpeg",
+    "size": [
+      1280,
+      853
+    ],
+    "alt": "Zwei Mitarbeitende prüfen Grundrisse und Vermarktungsunterlagen"
+  },
+  "hero-scenes/consultation": {
+    "scene": "team-scenes/preisstrategie",
+    "source": "Groß (EDA136F1-0CB2-4B56-80A2-8831023B52DE).jpeg",
+    "size": [
+      1280,
+      853
+    ],
+    "alt": "Zwei Mitarbeitende besprechen Immobilienunterlagen am Laptop"
+  }
+}
