@@ -1,3 +1,4 @@
+import {logOperationalFailure} from '../lib/operational-log.mjs';
 const API_BASE = 'https://api.propstack.de/v1/';
 const PAGE_SIZE = 100;
 const MAX_PAGES = 40;
@@ -299,7 +300,7 @@ res.setHeader('Cache-Control', 'no-store');
     res.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=1200');
     return res.status(200).json({ listings });
   } catch (error) {
-    console.error('Propstack active listings unavailable:', error);
+    logOperationalFailure('active_listings_failed',error);
     res.setHeader('Cache-Control', 'no-store');
     return res.status(503).json({ error: 'Aktuelle Immobilien vorübergehend nicht verfügbar' });
   }

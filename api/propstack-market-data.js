@@ -1,3 +1,4 @@
+import {logOperationalFailure} from '../lib/operational-log.mjs';
 const API_BASE='https://api.propstack.de/v1/';
 const PAGE_SIZE=100;
 const MAX_PAGES=8;
@@ -107,7 +108,7 @@ export default async function handler(req,res){
       methodology:'asking and realized sold prices are kept separate; distributions are suppressed below 5 usable records'
     });
   }catch(error){
-    console.error('Propstack market data unavailable:',error);
+    logOperationalFailure('market_data_failed',error);
     return res.status(503).json({error:'market_data_unavailable'});
   }
 }

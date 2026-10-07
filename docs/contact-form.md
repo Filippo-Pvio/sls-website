@@ -1,6 +1,6 @@
 # Kontaktseite und Propstack
 
-Die neue Kontaktseite verwendet vorhandene API-Zugänge serverseitig (optional PROPSTACK_CONTACT_API_KEY, sonst PROPSTACK_INQUIRY_API_KEY bzw. PROPSTACK_API_KEY). Keine Schlüssel im Browser.
+Die Kontaktseite verwendet serverseitig ausschließlich `PROPSTACK_CONTACT_API_KEY` in veröffentlichten Produktions- und Vorschauversionen. Fehlt dieser Zugang, bleibt die Übergabe gesperrt; Anfrage- und Allgemeinschlüssel sind dort kein Ersatz. Nur lokale Entwicklung erlaubt den allgemeinen Testzugang als Fallback. Keine Schlüssel im Browser. Der zentrale Redis-Schutz prüft Origin, Formularfreigabe, Mengenbegrenzung und Doppelübermittlung vor CRM-Schreibvorgängen. Zusätzlich bleiben die fachlichen Kontakt-/Notizprüfungen aktiv.
 
 ## Vom Eigentümer in Propstack einzurichten
 

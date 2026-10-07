@@ -1,3 +1,4 @@
+import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {sendViaMicrosoftGraph} from '../lib/m365-mail.mjs';
 import {withFormSecurity, FormSecurityError} from '../lib/form-security.mjs';
 import {verifyReportEmail} from '../lib/email-verification.mjs';
@@ -56,19 +57,19 @@ async function buildPdf(report, contact) {
     const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/logo-sls-horizontal-transparent.png',{signal:AbortSignal.timeout(10000)});
     if (response.ok) logo = await pdfDoc.embedPng(await response.arrayBuffer());
   } catch (error) {
-    console.error('sales-check-report: logo unavailable', error);
+    logOperationalFailure('sales_report_logo_failed',error);
   }
   try {
     const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/verkaufsanalyse-office-bg.jpg',{signal:AbortSignal.timeout(10000)});
     if (response.ok) officeBackground = await pdfDoc.embedJpg(await response.arrayBuffer());
   } catch (error) {
-    console.error('sales-check-report: office background unavailable', error);
+    logOperationalFailure('sales_report_background_failed',error);
   }
   try {
     const response = await fetch('https://sls.de/wp-content/uploads/2026/02/Broschuere_web.pdf',{signal:AbortSignal.timeout(10000)});
     if (response.ok) brochureDoc = await PDFDocument.load(await response.arrayBuffer());
   } catch (error) {
-    console.error('sales-check-report: brochure unavailable', error);
+    logOperationalFailure('sales_report_brochure_failed',error);
   }
 
   const embedRemoteJpg = async (url, label) => {
@@ -77,7 +78,7 @@ async function buildPdf(report, contact) {
       if (!response.ok) return null;
       return await pdfDoc.embedJpg(await response.arrayBuffer());
     } catch (error) {
-      console.error('sales-check-report: ' + label + ' unavailable', error);
+      logOperationalFailure('sales_report_asset_failed',error);
       return null;
     }
   };

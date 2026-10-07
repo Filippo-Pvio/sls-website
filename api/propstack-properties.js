@@ -1,3 +1,4 @@
+import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {propertyCard,queryProperties,cachedCatalog,propertyFilters} from '../lib/property-catalog.mjs';
 import {similarProperties} from '../assets/property-similarity.mjs';
 import {publicUnit} from '../lib/propstack-preview.mjs';
@@ -190,7 +191,7 @@ export default async function handler(req,res){
     res.setHeader('Cache-Control','public, s-maxage=300, stale-while-revalidate=600');
     return res.status(200).json(result);
   }catch(error){
-    console.error('Propstack property feed failed:',error.message);
+    logOperationalFailure('property_feed_failed',error);
     return res.status(502).json({error:'Propstack-Objekte sind momentan nicht abrufbar.'});
   }
 }
@@ -217,7 +218,7 @@ async function detailResponse(id,key,status,res){
           const full=all.find(b=>String(b.id)===String(brokerId));
           if(full)combined.broker={...full,...Object.fromEntries(Object.entries(combined.broker||{}).filter(([,value])=>value))};
         }catch(error){
-          console.warn('Propstack broker details unavailable:',error.message);
+          logOperationalFailure('property_broker_details_failed',error,'warn');
         }
       }
 
@@ -246,5 +247,5 @@ export async function propertyDetailResult(id){
   const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
   if(!key)return res.status(503).json({code:'PROPERTY_SERVICE_UNAVAILABLE'});
   try{return await detailResponse(id,key,await resolvePublicStatus(key),res)}
-  catch(error){console.error('Property HTML data unavailable:',error.message);return res.status(502).json({code:'PROPERTY_SERVICE_UNAVAILABLE'})}
+  catch(error){logOperationalFailure('property_html_failed',error);return res.status(502).json({code:'PROPERTY_SERVICE_UNAVAILABLE'})}
 }

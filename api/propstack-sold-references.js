@@ -1,3 +1,4 @@
+import {logOperationalFailure} from '../lib/operational-log.mjs';
 const API_BASE = 'https://api.propstack.de/v1/';
 const PAGE_SIZE = 100;
 const MAX_PAGES = 40;
@@ -149,7 +150,7 @@ export default async function handler(req, res) {
       const brokers = Array.isArray(brokerResult) ? brokerResult : Array.isArray(brokerResult.data) ? brokerResult.data : [];
       brokersById = new Map(brokers.map(broker => [String(broker.id), broker]));
     } catch (error) {
-      console.warn('Propstack broker list unavailable:', error.message);
+      logOperationalFailure('reference_broker_list_failed',error,'warn');
     }
 
     const publicListings = [];
@@ -161,7 +162,7 @@ export default async function handler(req, res) {
             const detail = await propstack('units/' + encodeURIComponent(unit.id) + '?new=1', key);
             if (String(detail?.id) === String(unit.id)) source = { ...unit, ...detail, status: unit.status, images: detail.images?.length ? detail.images : unit.images };
           } catch (error) {
-            console.warn('Sold reference broker detail unavailable for ' + unit.id + ':', error.message);
+            logOperationalFailure('reference_broker_details_failed',error,'warn');
           }
         }
         const ref = publicReference(source, soldStatusIds);
@@ -180,7 +181,7 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'public, s-maxage=900, stale-while-revalidate=1800');
     return res.status(200).json({ references });
   } catch (error) {
-    console.error('Propstack references unavailable:', error);
+    logOperationalFailure('sold_references_failed',error);
     res.setHeader('Cache-Control', 'no-store');
     return res.status(503).json({ error: 'Referenzen vorübergehend nicht verfügbar' });
   }

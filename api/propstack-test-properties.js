@@ -1,3 +1,4 @@
+import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {allowedIds,mayDisplay,publicUnit} from '../lib/propstack-preview.mjs';
 import {publicPropertyFacts,publicPropertySourceFields} from '../lib/public-property-facts.mjs';
 async function read(path, key) {
@@ -54,7 +55,7 @@ export default async function handler(req,res) {
           if (full) combined.broker={...full,...Object.fromEntries(Object.entries(combined.broker).filter(([,value])=>value))};
         } catch(error) {
           // Broker read permission is optional; never substitute a central number.
-          console.warn('Propstack broker details unavailable:',error.message);
+          logOperationalFailure('preview_broker_details_failed',error,'warn');
         }
       }
       // The detail endpoint can return null for facts that are populated in the public listing.
@@ -103,7 +104,7 @@ export default async function handler(req,res) {
           if (item.type==='Immobilie' && more.type!=='Immobilie') item.type=more.type;
           return item;
         } catch(error) {
-          console.warn('Propstack preview listing detail unavailable:',error.message);
+          logOperationalFailure('preview_property_details_failed',error,'warn');
           return item;
         }
       }));
@@ -111,7 +112,7 @@ export default async function handler(req,res) {
     }
     return res.status(200).json({items});
   } catch(error) {
-    console.error('Propstack test fetch failed:',error.message);
+    logOperationalFailure('preview_property_feed_failed',error);
     return res.status(502).json({error:'Propstack-Objekte sind momentan nicht abrufbar.'});
   }
 }
