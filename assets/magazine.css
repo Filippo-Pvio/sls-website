@@ -44,7 +44,7 @@ body.magazine-page #main>.mag-closing h2,body.magazine-page #main>.mag-closing p
 .mag-byline{border-top:1px solid #d8e3e8;padding-top:20px}
 .mag-byline p{font-size:13px}
 .mag-article-visual{max-width:900px;margin-bottom:40px}
-.mag-article-visual>img{max-height:400px;border-radius:6px}
+.mag-article-visual>img{max-height:none;border-radius:6px}
 .mag-article-layout{grid-template-columns:220px minmax(0,720px);gap:64px}
 .mag-article-compact{grid-template-columns:minmax(0,720px);margin-top:20px}
 .mag-takeaways{padding:24px 0 24px 26px;background:transparent;border-radius:0;border-left:2px solid #d87873}
@@ -69,3 +69,5 @@ body.magazine-page #main>.mag-closing h2,body.magazine-page #main>.mag-closing p
 .magazine-page .footer-unified .footer-navigation,.magazine-page .footer-unified .footer-legal,.magazine-page .footer-unified .footer-group,.magazine-page .site-footer.footer-unified .footer-contact-link,.magazine-page .site-footer.footer-unified .footer-social a{border-color:#345b6e40}
 .magazine-page .site-footer.footer-unified .footer-social a:hover{background:#345b6e0d}
 .magazine-page .site-footer.footer-unified a:focus-visible,.magazine-page .footer-unified summary:focus-visible{outline-color:#345b6e}
+
+.mag-card-visual{min-width:0;margin-top:18px}.mag-card-visual .mag-card-image{border-radius:6px}.mag-feature .mag-card-visual{margin-top:0}.mag-image-note{font-size:12px;line-height:1.5;color:var(--mag-muted);margin:8px 0 0}.mag-article-visual figcaption{font-size:12px;line-height:1.5}
