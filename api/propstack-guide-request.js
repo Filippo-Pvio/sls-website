@@ -1,3 +1,4 @@
+import {withFormSecurity} from '../lib/form-security.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
 import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION, GUIDE_PRIVACY_ACK_VERSION, GUIDE_PRIVACY_ACK_TEXT, GUIDE_PRIVACY_URL} from '../lib/guide-consent.mjs';
 import {newsletterConfig, requestNewsletter} from '../lib/guide-newsletter.mjs';
@@ -179,7 +180,7 @@ async function recordRequest(key, email, firstName, lastName, salutation, catego
   return {outcome, contactId};
 }
 
-export default async function handler(req, res) {
+export async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
   if (!['GET','POST'].includes(req.method)) {
@@ -267,3 +268,5 @@ export default async function handler(req, res) {
     if (pending.get(lock) === work) pending.delete(lock);
   }
 }
+
+export default withFormSecurity('propstack-guide-request',handler,{});

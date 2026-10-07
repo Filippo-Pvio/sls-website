@@ -14,7 +14,7 @@ function fixture(){
  Object.assign(fields.propertyType,{value:'house'});fields.place.value='Dorsten';fields.area.value='120';fields.rooms.value='3';fields.method.value='email';form.elements=fields;
  const steps=Array.from({length:4},()=>({hidden:false,querySelectorAll:()=>[],querySelector:()=>element()}));
  form.querySelectorAll=s=>s==='[data-step]'?steps:Object.values(fields);
- runInNewContext(code,{document:{querySelector:get,querySelectorAll:()=>[]},Option:function(){},URLSearchParams,AbortController,AbortSignal,
+ runInNewContext(code.replace(/const secureFormFetch=.*?;\n/, "").replaceAll("secureFormFetch(","fetch("),{document:{querySelector:get,querySelectorAll:()=>[]},Option:function(){},URLSearchParams,AbortController,AbortSignal,
   setInterval:f=>{intervals.set(++timerId,f);return timerId},clearInterval:id=>intervals.delete(id),setTimeout,clearTimeout,
   fetch:(url,options)=>{if(url==='/api/propstack-contact-request')return Promise.resolve({ok:true,json:async()=>({token:'test',availableTopics:['buyerfinder'],callbackAvailable:true})});const d=deferred();requests.push({url,options,...d});return d.promise;}
  });

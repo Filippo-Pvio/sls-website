@@ -1,4 +1,5 @@
 (()=>{
+  const secureFormFetch=(...args)=>import('/assets/form-security.js').then(module=>module.formFetch(...args));
   const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const money=value=>value?new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(Number(value)):'';
   const area=value=>value?`${new Intl.NumberFormat('de-DE',{maximumFractionDigits:1}).format(Number(value))} m²`:'';
@@ -47,7 +48,7 @@
         <label><span>E-Mail <span aria-hidden="true">*</span></span><input name="email" type="email" autocomplete="email" required></label>
         <label><span>Telefon <span aria-hidden="true">*</span></span><input name="phone" type="tel" autocomplete="tel" required></label>
       </div>
-      <label class="sls-search-profile-consent"><input type="checkbox" name="privacy" required><span>Ich habe die <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meiner Daten zur Einrichtung meines Suchauftrags ein. <span aria-hidden="true">*</span></span></label>
+      <label class="sls-search-profile-consent"><input type="checkbox" name="privacy" required><span>Ich habe die <a href="/datenschutz/" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meiner Daten zur Einrichtung meines Suchauftrags ein. <span aria-hidden="true">*</span></span></label>
       <p class="form-required-note">* Pflichtfelder.</p><p class="sls-search-profile-status" role="status" aria-live="polite"></p>
       <button class="pp-button sls-search-profile-submit" type="submit">Suchauftrag speichern</button>
     </form>`;
@@ -85,7 +86,7 @@
       const submit=form.querySelector('.sls-search-profile-submit');
       submit.disabled=true;status.textContent='Suchauftrag wird gespeichert …';
       try{
-        const response=await fetch('/api/propstack-search-profile',{
+        const response=await secureFormFetch('/api/propstack-search-profile',{
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({...fields,privacy:fields.privacy==='on',criteria})

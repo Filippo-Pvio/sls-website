@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHmac,randomUUID} from 'node:crypto';
 import {parseApplication,sendApplication,careerConfigured,MAX_FILE_BYTES} from '../lib/career-application.mjs';
-import handler from '../api/career-application.js';
+import {handler} from '../api/career-application.js';
 const pdf=Buffer.from('%PDF-1.4\nTest CV\n%%EOF');
 const file=(bytes=pdf,name='cv.pdf',field='cv')=>({field,name,content:bytes.toString('base64')});
 const body=()=>({firstName:'Test',lastName:'Bewerbung',email:'test@example.org',website:'',privacy:true,files:[file()]});

@@ -1,4 +1,5 @@
 (() => {
+  const secureFormFetch=(...args)=>import('/assets/form-security.js').then(module=>module.formFetch(...args));
   const form=document.querySelector('#contact-form');if(!form)return;
   const endpoint='/api/propstack-contact-request';
   const title=document.querySelector('#contact-form-title'),intro=document.querySelector('#contact-form-intro'),status=document.querySelector('#contact-status'),submit=form.querySelector('[type=submit]');
@@ -26,14 +27,14 @@
     }
   }
   async function renewToken(){
-    const response=await fetch(endpoint,{headers:{Accept:'application/json','X-SLS-Form-Token':token},cache:'no-store',signal:AbortSignal.timeout(20000)}),data=await response.json();
+    const response=await secureFormFetch(endpoint,{headers:{Accept:'application/json','X-SLS-Form-Token':token},cache:'no-store',signal:AbortSignal.timeout(20000)}),data=await response.json();
     if(!response.ok||!data.token)throw new Error('Die Formularfreigabe konnte gerade nicht erneuert werden. Ihre Eingaben bleiben erhalten. Bitte versuchen Sie es erneut.');
     token=data.token;readiness=data;
   }
   async function sendRequest(body){
     const expiresAt=readiness?.expiresAt || Number(token.split('.')[0])+30*60*1000;
     if(Date.now()>=expiresAt-60000)await renewToken();
-    const post=()=>fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,token})});
+    const post=()=>secureFormFetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,token})});
     let response=await post(),result=await response.json();
     // Only this explicit pre-write rejection is safe to retry automatically.
     if(!response.ok&&result.code==='FORM_TOKEN_EXPIRED'){await renewToken();response=await post();result=await response.json();}
@@ -41,7 +42,7 @@
   }
   async function initialise(){
     submit.disabled=true;
-    try{const response=await fetch(endpoint,{headers:{Accept:'application/json'},cache:'no-store',signal:AbortSignal.timeout(20000)});const data=await response.json();if(!response.ok||!data.token)throw new Error(data.error||'Das Kontaktformular ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.');token=data.token;readiness=data;sync();}
+    try{const response=await secureFormFetch(endpoint,{headers:{Accept:'application/json'},cache:'no-store',signal:AbortSignal.timeout(20000)});const data=await response.json();if(!response.ok||!data.token)throw new Error(data.error||'Das Kontaktformular ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.');token=data.token;readiness=data;sync();}
     catch(error){showStatus(error.name==='TimeoutError'?'Das Kontaktformular konnte gerade nicht geladen werden. Bitte kontaktieren Sie uns direkt.':error.message,'error');}
   }
   form.addEventListener('change',event=>{if(event.target.name==='topic'||event.target.name==='method')sync();});
@@ -50,7 +51,7 @@
     if(!form.reportValidity())return;
     if(!token||submit.disabled){showStatus('Das Kontaktformular ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.','error');return;}
     const data=new FormData(form);
-    const body=Object.fromEntries(data);body.privacy=form.elements.privacy.checked;body.privacyVersion='2026-10-03';body.token=token;
+    const body=Object.fromEntries(data);body.privacy=form.elements.privacy.checked;body.privacyVersion='2026-10-07';body.token=token;
     busy=true;sync();submit.textContent='Wird gesendet …';showStatus('Ihre Nachricht wird übermittelt.');
     try{
       const {response,result}=await sendRequest(body);

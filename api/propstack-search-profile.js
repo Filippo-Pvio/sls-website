@@ -1,3 +1,4 @@
+import {withFormSecurity} from '../lib/form-security.mjs';
 import {buildSavedQuery,publicCriteria,sameSavedQuery} from '../lib/search-profile.mjs';
 
 const text=(value,max=150)=>typeof value==='string'?value.trim().slice(0,max):'';
@@ -13,13 +14,13 @@ async function propstack(path,key,options={}){
       signal:controller.signal
     });
     const data=await response.json().catch(()=>({}));
-    if(!response.ok)throw new Error(`Propstack ${path} returned ${response.status}`);
+    if(!response.ok)throw new Error(`Propstack ${path.split('?')[0].replace(/\/\d+/g,'/:id')} returned ${response.status}`);
     return data;
   }finally{clearTimeout(timer)}
 }
 
 function isAllowedHost(req){
-  const host=String(req.headers?.['x-forwarded-host']||req.headers?.host||'').toLowerCase().split(':')[0];
+  const host=String(req.headers?.host||'').toLowerCase().split(':')[0];
   return host==='sls.de'||host==='www.sls.de'||host.endsWith('.vercel.app')||host==='localhost';
 }
 
@@ -70,7 +71,7 @@ async function createSearchProfile(key,savedQuery){
   return id;
 }
 
-export default async function handler(req,res){
+export async function handler(req,res){
   res.setHeader('Cache-Control','no-store');
   res.setHeader('X-Robots-Tag','noindex, nofollow');
   if(req.method!=='POST')return res.status(405).json({error:'Methode nicht erlaubt'});
@@ -105,7 +106,9 @@ export default async function handler(req,res){
     const profileId=await createSearchProfile(key,candidate);
     return res.status(200).json({ok:true,reusedContact:contact.reused,duplicate:false,profileId});
   }catch(error){
-    console.error('Propstack search profile failed:',error);
+    console.error(JSON.stringify({event:'search_profile_failed'}));
     return res.status(502).json({error:'Der Suchauftrag konnte gerade nicht gespeichert werden. Bitte versuchen Sie es später erneut.'});
   }
 }
+
+export default withFormSecurity('propstack-search-profile',handler,{});

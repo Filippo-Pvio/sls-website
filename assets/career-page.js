@@ -1,4 +1,5 @@
 (() => {
+  const secureFormFetch=(...args)=>import('/assets/form-security.js').then(module=>module.formFetch(...args));
   const form=document.querySelector('[data-career-form]');if(!form)return;
   const submit=form.querySelector('[data-career-submit]'), availability=form.querySelector('[data-career-availability]'), status=form.querySelector('[data-career-status]');
   const fields=['cv','letter','certificates','other'];
@@ -42,7 +43,7 @@
     try {
       const payload={token,firstName:form.elements.firstName.value,lastName:form.elements.lastName.value,email:form.elements.email.value,phone:form.elements.phone.value,area:form.elements.area.value,message:form.elements.message.value,privacy:form.elements.privacy.checked,website:form.elements.website.value,files:await Promise.all(selected.map(async entry=>({field:entry.field,name:entry.file.name,content:await encode(entry.file)})))};
       attempted=true;
-      const response=await fetch('/api/career-application',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(payload),signal:AbortSignal.timeout(45000)});
+      const response=await secureFormFetch('/api/career-application',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(payload),signal:AbortSignal.timeout(45000)});
       const result=await response.json();
       if(response.ok && result.accepted===true){sent=true;show(`Vielen Dank. Der Versand Ihrer Bewerbung an bewerbung@sls.de wurde angenommen. Ihre Referenz: ${result.reference}`);form.reset();fields.forEach(updateFile);submit.textContent='Bewerbung übermittelt';}
       else {uncertain=response.status>=500||response.status===409;show(`${result.error||'Ihre Bewerbung konnte nicht übertragen werden.'}${result.reference?` Referenz: ${result.reference}`:''}`,true);}

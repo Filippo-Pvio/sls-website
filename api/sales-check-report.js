@@ -1,3 +1,5 @@
+import {withFormSecurity, FormSecurityError} from '../lib/form-security.mjs';
+import {verifyReportEmail} from '../lib/email-verification.mjs';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
 const BRAND = {
@@ -50,19 +52,19 @@ async function buildPdf(report, contact) {
   let filippoPortrait = null;
   let mischaPortrait = null;
   try {
-    const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/logo-sls-horizontal-transparent.png');
+    const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/logo-sls-horizontal-transparent.png',{signal:AbortSignal.timeout(10000)});
     if (response.ok) logo = await pdfDoc.embedPng(await response.arrayBuffer());
   } catch (error) {
     console.error('sales-check-report: logo unavailable', error);
   }
   try {
-    const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/verkaufsanalyse-office-bg.jpg');
+    const response = await fetch('https://raw.githubusercontent.com/Filippo-Pvio/sls-website/main/assets/verkaufsanalyse-office-bg.jpg',{signal:AbortSignal.timeout(10000)});
     if (response.ok) officeBackground = await pdfDoc.embedJpg(await response.arrayBuffer());
   } catch (error) {
     console.error('sales-check-report: office background unavailable', error);
   }
   try {
-    const response = await fetch('https://sls.de/wp-content/uploads/2026/02/Broschuere_web.pdf');
+    const response = await fetch('https://sls.de/wp-content/uploads/2026/02/Broschuere_web.pdf',{signal:AbortSignal.timeout(10000)});
     if (response.ok) brochureDoc = await PDFDocument.load(await response.arrayBuffer());
   } catch (error) {
     console.error('sales-check-report: brochure unavailable', error);
@@ -70,7 +72,7 @@ async function buildPdf(report, contact) {
 
   const embedRemoteJpg = async (url, label) => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url,{signal:AbortSignal.timeout(10000)});
       if (!response.ok) return null;
       return await pdfDoc.embedJpg(await response.arrayBuffer());
     } catch (error) {
@@ -945,41 +947,6 @@ function buildEmailHtml(contact) {
     '</table></td></tr></table></body></html>';
 }
 
-async function rateLimit(req, email) {
-  const url = process.env.KV_REST_API_URL;
-  const token = process.env.KV_REST_API_TOKEN;
-  if (!url || !token) return true;
-  const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
-  const hour = Math.floor(Date.now() / 3600000);
-  const keys = [
-    'sales-check:ip:' + ip + ':' + hour,
-    'sales-check:mail:' + String(email || '').toLowerCase() + ':' + hour
-  ];
-  try {
-    for (const key of keys) {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
-        body: JSON.stringify(['INCR', key])
-      });
-      if (!response.ok) continue;
-      const data = await response.json();
-      const count = Number(data?.result || 0);
-      if (count === 1) {
-        await fetch(url, {
-          method: 'POST',
-          headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
-          body: JSON.stringify(['EXPIRE', key, 3700])
-        }).catch(() => {});
-      }
-      if (count > 4) return false;
-    }
-  } catch (error) {
-    console.error('sales-check-report: rate limit unavailable', error);
-  }
-  return true;
-}
-
 async function getGraphAccessToken() {
   const tenantId = process.env.MS_GRAPH_TENANT_ID;
   const clientId = process.env.MS_GRAPH_CLIENT_ID;
@@ -998,7 +965,7 @@ async function getGraphAccessToken() {
   });
 
   const response = await fetch('https://login.microsoftonline.com/' + encodeURIComponent(tenantId) + '/oauth2/v2.0/token', {
-    method: 'POST',
+    method: 'POST',signal:AbortSignal.timeout(10000),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body
   });
@@ -1013,25 +980,25 @@ async function getGraphAccessToken() {
 }
 
 async function sendViaMicrosoftGraph({ to, subject, html, attachmentBase64 }) {
-  const sender = process.env.MS_GRAPH_SENDER || 'service@sls.de';
+  const sender = 'service@sls.de';
   const accessToken = await getGraphAccessToken();
   const payload = {
     message: {
       subject,
       body: { contentType: 'HTML', content: html },
       toRecipients: [{ emailAddress: { address: to } }],
-      attachments: [{
+      ...(attachmentBase64 ? {attachments: [{
         '@odata.type': '#microsoft.graph.fileAttachment',
         name: 'SLS-Verkaufsanalyse.pdf',
         contentType: 'application/pdf',
         contentBytes: attachmentBase64
-      }]
+      }]} : {})
     },
     saveToSentItems: true
   };
 
   const response = await fetch('https://graph.microsoft.com/v1.0/users/' + encodeURIComponent(sender) + '/sendMail', {
-    method: 'POST',
+    method: 'POST',signal:AbortSignal.timeout(15000),
     headers: {
       Authorization: 'Bearer ' + accessToken,
       'Content-Type': 'application/json'
@@ -1040,15 +1007,14 @@ async function sendViaMicrosoftGraph({ to, subject, html, attachmentBase64 }) {
   });
 
   if (!response.ok) {
-    const text = await response.text().catch(() => '');
-    console.error('sales-check-report: graph sendMail error', response.status, text.slice(0, 800));
+    console.error(JSON.stringify({event:'sales_report_mail_failed',status:response.status}));
     const error = new Error('Microsoft Graph send failed');
     error.code = 'GRAPH_SEND_FAILED';
     throw error;
   }
 }
 
-export default async function handler(req, res) {
+export async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ message: 'Methode nicht erlaubt.' });
@@ -1066,9 +1032,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: 'Bitte prüfen Sie Ihre Kontaktdaten und versuchen Sie es erneut.' });
   }
 
-  if (!(await rateLimit(req, contact.email))) {
-    return res.status(429).json({ message: 'Bitte warten Sie etwas, bevor Sie eine weitere Auswertung anfordern.' });
-  }
+  if(req.body.privacy!==true || req.body.privacyVersion!=='2026-10-07-v1')return res.status(400).json({message:'Bitte bestätigen Sie den Datenschutzhinweis.'});
+  if(!Array.isArray(report.phases)||report.phases.length>20||!Array.isArray(report.contradictions)||report.contradictions.length>30)return res.status(400).json({message:'Ungültige Auswertung.'});
+  if(report.phases.some(p=>!p||typeof p!=='object'||!Array.isArray(p.items)||p.items.length>80||p.items.some(i=>!i||typeof i!=='object'))||report.phases.reduce((n,p)=>n+p.items.length,0)>100)return res.status(400).json({message:'Die Auswertung ist zu umfangreich.'});
 
   if (!process.env.MS_GRAPH_TENANT_ID || !process.env.MS_GRAPH_CLIENT_ID || !process.env.MS_GRAPH_CLIENT_SECRET) {
     console.error('sales-check-report: Microsoft Graph credentials missing');
@@ -1076,6 +1042,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    const challenge=await verifyReportEmail(req.body,contact,(to,code)=>sendViaMicrosoftGraph({to,subject:'Bestätigung Ihrer SLS Verkaufsanalyse',html:`<p>Ihr Bestätigungscode für die angeforderte Verkaufsanalyse lautet: <strong>${code}</strong>.</p><p>Er ist zehn Minuten gültig. Geben Sie ihn auf der SLS Website ein. Falls Sie keine Auswertung angefordert haben, können Sie diese Nachricht ignorieren.</p>`}));
+    if(challenge)return res.status(200).json(challenge);
     const pdf = await buildPdf(report, contact);
     const pdfBase64 = Buffer.from(pdf).toString('base64');
 
@@ -1088,8 +1056,10 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ ok: true });
   } catch (error) {
-    console.error('sales-check-report:', error);
-    const status = error?.code === 'GRAPH_CONFIG_MISSING' ? 503 : 502;
-    return res.status(status).json({ message: 'Die E-Mail konnte gerade nicht versendet werden. Bitte versuchen Sie es später erneut.' });
+    console.error(JSON.stringify({event:'sales_report_failed',status:error instanceof FormSecurityError?error.status:502}));
+    const status = error instanceof FormSecurityError?error.status:error?.code === 'GRAPH_CONFIG_MISSING' ? 503 : 502;
+    return res.status(status).json({ message: error instanceof FormSecurityError?error.message:'Der Versand konnte nicht bestätigt werden. Bitte kontaktieren Sie SLS vor einer Wiederholung.' });
   }
 }
+
+export default withFormSecurity('sales-check-report',handler,{"maxBytes": 100000, "postLimit": 8, "windowSeconds": 3600});

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
-import handler from '../api/propstack-guide-request.js';
+import {handler as handler} from '../api/propstack-guide-request.js';
 
 const NOTE='SLS_RATGEBER_VERKAUF_ANGEFORDERT';
 const host='sls-guide-test.vercel.app';
@@ -56,7 +56,7 @@ async function fixture(run,options={}) {
  };
  try{
   const ready=await request('GET');now+=2000;
-  const payload={salutation:'ms',guide:'VERKAUF',email,firstName:'Anna',lastName:'Muster',token:ready.body.token,website:'',privacyAcknowledged:true,privacyVersion:'2026-10-02-v1'};
+  const payload={salutation:'ms',guide:'VERKAUF',email,firstName:'Anna',lastName:'Muster',token:ready.body.token,website:'',privacyAcknowledged:true,privacyVersion:'2026-10-07-v1'};
   await run({request,ready,payload,writes,activities,calls,contacts,advance:ms=>now+=ms});
  }finally{global.fetch=oldFetch;Date.now=oldNow;names.forEach((n,i)=>before[i]===undefined?delete process.env[n]:process.env[n]=before[i]);}
 }
@@ -236,9 +236,9 @@ test('privacy acknowledgement is recorded in the guide note without marketing pe
  await request('POST',payload);
  assert.equal(writes.length,1);assert.deepEqual(contacts,before);
  const body=writes[0].payload.task.body;
- assert.match(body,/Pflicht-Checkbox aktiv bestätigt.*2026-10-02-v1/);
+ assert.match(body,/Pflicht-Checkbox aktiv bestätigt.*2026-10-07-v1/);
  assert.match(body,/Ich habe die Datenschutzerklärung zur Kenntnis genommen/);
- assert.match(body,/https:\/\/sls.de\/datenschutz\//);
+ assert.match(body,/https:\/\/sls-website-eight.vercel.app\/datenschutz\//);
  assert.match(body,/keine Newsletter-Einwilligung/);
  assert.equal(writes[0].payload.task.note_type_id,741093);
 }));

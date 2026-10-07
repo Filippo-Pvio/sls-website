@@ -37,3 +37,10 @@ test('website only calls frag-sls, forwards context and citation metadata, and d
   global.fetch=async()=>new Response(null,{status:405});res=response();await config({method:'GET'},res);assert.equal(res.data.dialogueEnabled,false);
  }finally{global.fetch=original;delete process.env.VERCEL_ENV;delete process.env.OPENAI_API_KEY;}
 });
+
+test('public backend rejects missing or forged service authentication before any model calls',async()=>{
+ let calls=0;const handler=backend.createHandler({env:{VERCEL_ENV:'production',OPENAI_API_KEY:'synthetic-key',SIA_SERVICE_SECRET:'synthetic-service-secret'},fetcher:async()=>{calls++;throw Error('Unexpected model call');},legacy:async()=>{calls++;}});
+ for(const authorization of [undefined,'Bearer wrong']){const req=request({question:'Was ist ein Grundbuch?'});if(authorization)req.headers.authorization=authorization;const res=response();await handler(req,res);assert.equal(res.statusCode,401);}
+ assert.equal(calls,0);
+ const req=request({question:'Was ist ein Grundbuch?'});req.headers.authorization='Bearer synthetic-service-secret';const res=response();await handler(req,res);assert.equal(res.statusCode,502);assert.equal(calls,1);
+});

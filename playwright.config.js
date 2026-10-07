@@ -1,4 +1,4 @@
-import { defineConfig } from "playwright/test";
+import { defineConfig } from "@playwright/test";
 
 const port = Number(process.env.QA_PORT || 4173);
 
@@ -8,6 +8,7 @@ export default defineConfig({
   fullyParallel: false,
   reporter: [["line"], ["html", { outputFolder: "playwright-report", open: "never" }]],
   use: {
+    ...(process.env.QA_BROWSER_CHANNEL?{channel:process.env.QA_BROWSER_CHANNEL}:{}),
     baseURL: `http://127.0.0.1:${port}`,
     trace: "retain-on-failure",
     screenshot: "only-on-failure"

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import handler from '../api/propstack-test-inquiry.js';
+import {handler as handler} from '../api/propstack-test-inquiry.js';
 for(const override of [undefined,'12345'])test(`production inquiry uses ${override?'configured':'verified SLS'} note category`,async()=>{
  const names=['VERCEL_ENV','PROPSTACK_API_KEY','PROPSTACK_INQUIRY_SOURCE_ID','PROPSTACK_WEBSITE_INQUIRY_NOTE_TYPE_ID'];
  const previous=names.map(n=>process.env[n]),before=global.fetch,writes=[];

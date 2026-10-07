@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
-import handler from '../api/propstack-contact-request.js';
+import {handler as handler} from '../api/propstack-contact-request.js';
 import {CONTACT_TOPICS,CALLBACK_TITLE,CONTACT_WINDOWS,CONTACT_PRIVACY_VERSION} from '../lib/contact-request.mjs';
 const titles=[...Object.values(CONTACT_TOPICS).map(x=>x.title),CALLBACK_TITLE];
 async function fixture(run,options={}) {

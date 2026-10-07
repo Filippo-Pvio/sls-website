@@ -6,7 +6,7 @@ for(const [file,state] of [['contact-page.js','readiness'],['buyer-finder.js','r
  const source=await readFile(new URL('../assets/'+file,import.meta.url),'utf8');
  const helpers=source.slice(source.indexOf('  async function renewToken()'),source.indexOf('  async function initialise()'));
  function fixture(fetch,expiresAt=0){
-  const context=vm.createContext({fetch,AbortSignal,Date,JSON,Number});
+  const context=vm.createContext({fetch,secureFormFetch:fetch,AbortSignal,Date,JSON,Number});
   vm.runInContext(`const endpoint='/api/propstack-contact-request';let token='old-token',${state}={expiresAt:${expiresAt}};${helpers};globalThis.send=sendRequest;`,context);return context;
  }
  test(file+': expired permission refreshes before POST and preserves all submitted data',async()=>{

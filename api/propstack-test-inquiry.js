@@ -1,3 +1,4 @@
+import {withFormSecurity} from '../lib/form-security.mjs';
 const text=(value,max=150)=>typeof value==='string'?value.trim().slice(0,max):'';
 const normalise=value=>String(value||'').trim().toLocaleLowerCase('de-DE');
 const html=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -12,14 +13,14 @@ async function propstack(path,key,options={}){
       signal:controller.signal
     });
     const data=await response.json().catch(()=>({}));
-    if(!response.ok)throw new Error(`Propstack ${path} returned ${response.status}`);
+    if(!response.ok)throw new Error(`Propstack ${path.split('?')[0].replace(/\/\d+/g,'/:id')} returned ${response.status}`);
     return data;
   }finally{clearTimeout(timer)}
 }
 
 function isPreviewRequest(req){
-  const host=String(req.headers?.['x-forwarded-host']||req.headers?.host||'').toLowerCase();
-  return host.endsWith('.vercel.app')||host.includes('localhost');
+  const host=String(req.headers?.host||'').toLowerCase();
+  return ['sls-website-eight.vercel.app','sls.de','www.sls.de'].includes(host)||(process.env.VERCEL_ENV==='preview'&&/^[a-z0-9-]+\.vercel\.app$/.test(host))||(process.env.NODE_ENV!=='production'&&/^localhost(?::\d+)?$/.test(host));
 }
 
 async function publicStatusId(key){
@@ -184,7 +185,7 @@ async function waitForDeal(key,clientId,propertyId,attempts=4){
   return null;
 }
 
-export default async function handler(req,res){
+export async function handler(req,res){
   res.setHeader('Cache-Control','no-store');
   res.setHeader('X-Robots-Tag','noindex, nofollow');
   if(req.method!=='POST')return res.status(405).json({error:'Methode nicht erlaubt'});
@@ -340,3 +341,5 @@ export default async function handler(req,res){
     return res.status(502).json({error:'Die Website-Anfrage konnte nicht vollständig an Propstack übergeben werden.'});
   }
 }
+
+export default withFormSecurity('propstack-test-inquiry',handler,{});

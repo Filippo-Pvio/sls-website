@@ -20,6 +20,9 @@ async function coordinates(items){
   return items.flatMap(item=>{const point=lookup[String(item.zip||'').trim()];return point?[{item,point}]:[]});
 }
 export async function createPropertyMap(container,status,onSelect,detailLink){
+  const notice=document.createElement('div'),text=document.createElement('p'),button=document.createElement('button');
+  notice.className='external-service-notice';text.textContent='Beim Laden der Karte werden Verbindungsdaten an Google Maps beziehungsweise OpenStreetMap übertragen.';button.type='button';button.className='button';button.textContent='Karte laden';notice.append(text,button);container.append(notice);
+  await new Promise(resolve=>button.addEventListener('click',resolve,{once:true}));notice.remove();
   const L=await loadLeaflet();
   const map=L.map(container,{scrollWheelZoom:false,maxZoom:14}).setView([51.3,7.2],7);
   const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · Orte: <a href="https://www.geonames.org/" target="_blank" rel="noopener">GeoNames</a>'}).addTo(map);
