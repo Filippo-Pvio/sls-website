@@ -991,9 +991,12 @@ export async function handler(req, res) {
     return res.status(200).json({ ok: true });
   } catch (error) {
     console.error(JSON.stringify({event:'sales_report_failed',status:error instanceof FormSecurityError?error.status:502}));
-    const status = error instanceof FormSecurityError?error.status:error?.code === 'GRAPH_CONFIG_MISSING' ? 503 : 502;
-    return res.status(status).json({ message: error instanceof FormSecurityError?error.message:'Der Versand konnte nicht bestätigt werden. Bitte kontaktieren Sie SLS vor einer Wiederholung.' });
+    const status = error instanceof FormSecurityError?error.status:error.mailRejected?424:error?.code === 'GRAPH_CONFIG_MISSING' ? 503 : 502;
+    return res.status(status).json({ message: error instanceof FormSecurityError?error.message:error.mailRejected?'Microsoft 365 hat den Versand abgelehnt. Es wurde keine E-Mail angenommen. Bitte kontaktieren Sie SLS.':'Der Versand konnte nicht bestätigt werden. Bitte kontaktieren Sie SLS vor einer Wiederholung.' });
   }
 }
 
-export default withFormSecurity('sales-check-report',handler,{"maxBytes": 100000, "postLimit": 8, "windowSeconds": 3600});
+export default withFormSecurity('sales-check-report',handler,{maxBytes:100000,postLimit:8,windowSeconds:3600,
+ // Production logs confirm Graph sendMail 404 for these two requests (7 Oct 2026).
+ // This bounded migration releases only their pending records, never accepted/unknown sends.
+ rejectedRequestPrefixes:['60cd8fa4d0ce','de060616be52'],recoveryUntil:Date.parse('2026-10-08T10:00:00Z')});

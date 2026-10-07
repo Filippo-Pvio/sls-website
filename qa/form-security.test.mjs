@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {withFormSecurity,rateScript,claimScript,finishScript} from '../lib/form-security.mjs';
+import {withFormSecurity,rateScript,claimScript,finishScript,recoverRejectedScript,securityStore} from '../lib/form-security.mjs';
 import {verifyReportEmail,consumeVerificationScript} from '../lib/email-verification.mjs';
 function memoryRedis(){const values=new Map(),calls=[];let down=false;return {values,calls,setDown:v=>down=v,fetch:async(url,init)=>{calls.push(JSON.parse(init.body));if(down)return {ok:false};const args=JSON.parse(init.body);let result;const get=k=>values.get(k),set=(k,v)=>values.set(k,v);
  if(args[0]==='SET'){set(args[1],args[2]);result='OK';}
@@ -9,6 +9,7 @@ function memoryRedis(){const values=new Map(),calls=[];let down=false;return {va
   if(script===rateScript){result=Number(get(keys[0])||0)+1;set(keys[0],result);}
   else if(script===claimScript){if(get(keys[0]))result=['existing',get(keys[0])];else if(get(keys[1])&&get(keys[1])!==v[0])result=['changed',''];else if(get(keys[2]))result=['busy',''];else{set(keys[0],'{"pending":true}');set(keys[1],v[0]);set(keys[2],v[0]);result=['claimed',''];}}
   else if(script===finishScript){if(get(keys[1])===v[0])values.delete(keys[1]);if(v[1]==='release'){values.delete(keys[0]);values.delete(keys[2]);}else set(keys[0],v[1]);result=1;}
+  else if(script===recoverRejectedScript){if(get(keys[3]))result=0;else{set(keys[3],'done');if(get(keys[0])!=='{"pending":true}')result=0;else{values.delete(keys[0]);if(get(keys[1])===v[0])values.delete(keys[1]);if(get(keys[2])&&JSON.parse(get(keys[2])).request===v[0].slice(0,12))values.delete(keys[2]);result=1;}}}
   else if(script===consumeVerificationScript){result=get(keys[0])===v[0]?1:0;if(result)values.delete(keys[0]);}
   else throw Error('Unexpected script');
  }else throw Error('Unexpected command');return {ok:true,json:async()=>({result})};}};}
@@ -22,3 +23,20 @@ test('parallel instances serialize same recipient and prevent simultaneous write
 test('uncertain write stays blocked after restart and across new tokens',()=>fixture(async({request})=>{let writes=0;const business=async(req,res)=>{writes++;res.status(502).json({error:'uncertain'});};const h=withFormSecurity('test',business),token=(await request(h,'GET')).body.securityToken;assert.equal((await request(h,'POST',{email:'a@example.org',securityToken:token})).code,502);const restarted=withFormSecurity('test',business),newToken=(await request(restarted,'GET')).body.securityToken;assert.equal((await request(restarted,'POST',{email:'a@example.org',securityToken:newToken})).code,409);assert.equal(writes,1);}));
 test('limits apply centrally and failure does not bypass them',()=>fixture(async({request})=>{let writes=0;const h=withFormSecurity('test',async(req,res)=>{writes++;res.status(200).json({ok:true});},{postLimit:2});for(let i=0;i<3;i++){const token=(await request(h,'GET')).body.securityToken;assert.equal((await request(h,'POST',{email:'a@example.org',message:String(i),securityToken:token})).code,i<2?200:429);}assert.equal(writes,2);}));
 test('confirmation code is report-bound, recipient-bound and consumed once',()=>fixture(async({db})=>{let sentCode;const contact={email:'a@example.org',firstName:'Anna',lastName:'Muster',phone:''},body={report:{phases:[],contradictions:[]}};const challenge=await verifyReportEmail(body,contact,async(to,code)=>{assert.equal(to,contact.email);sentCode=code;});assert.equal(challenge.status,'email_confirmation_required');assert.ok([...db.values.values()].every(v=>!String(v).includes(sentCode)));await assert.rejects(verifyReportEmail({...body,verificationRef:challenge.verificationRef,verificationCode:sentCode},{...contact,email:'b@example.org'},()=>{}));await assert.rejects(verifyReportEmail({...body,report:{phases:[{}]},verificationRef:challenge.verificationRef,verificationCode:sentCode},contact,()=>{}));assert.equal(await verifyReportEmail({...body,verificationRef:challenge.verificationRef,verificationCode:sentCode},contact,()=>{}),null);await assert.rejects(verifyReportEmail({...body,verificationRef:challenge.verificationRef,verificationCode:sentCode},contact,()=>{}));}));
+test('verified rejected-request recovery applies once and preserves new uncertain writes',()=>fixture(async({request})=>{
+ const email='a@example.org',fp=securityStore().hash('test:'+JSON.stringify({email}));let writes=0;
+ const business=async(req,res)=>{writes++;res.status(502).json({error:'uncertain'});};
+ const original=withFormSecurity('test',business);let token=(await request(original,'GET')).body.securityToken;
+ assert.equal((await request(original,'POST',{email,securityToken:token})).code,502);
+ const recovered=withFormSecurity('test',business,{rejectedRequestPrefixes:[fp.slice(0,12)],recoveryUntil:Date.now()+60000});
+ token=(await request(recovered,'GET')).body.securityToken;assert.equal((await request(recovered,'POST',{email,securityToken:token})).code,502);assert.equal(writes,2);
+ token=(await request(recovered,'GET')).body.securityToken;assert.equal((await request(recovered,'POST',{email,securityToken:token})).code,409);assert.equal(writes,2);
+}));
+test('recovery does not release unknown requests or completed results',()=>fixture(async({request})=>{
+ let writes=0;const business=async(req,res)=>{writes++;res.status(200).json({ok:true});};const original=withFormSecurity('test',business);let token=(await request(original,'GET')).body.securityToken;
+ assert.equal((await request(original,'POST',{email:'a@example.org',securityToken:token})).code,200);
+ const fp=securityStore().hash('test:'+JSON.stringify({email:'a@example.org'})),recovered=withFormSecurity('test',business,{rejectedRequestPrefixes:[fp.slice(0,12)],recoveryUntil:Date.now()+60000});token=(await request(recovered,'GET')).body.securityToken;
+ assert.equal((await request(recovered,'POST',{email:'a@example.org',securityToken:token})).code,200);assert.equal(writes,1);
+ const uncertain=withFormSecurity('other',async(req,res)=>{res.status(502).json({error:'uncertain'});});token=(await request(uncertain,'GET')).body.securityToken;assert.equal((await request(uncertain,'POST',{email:'b@example.org',securityToken:token})).code,502);
+ const notKnown=withFormSecurity('other',business,{rejectedRequestPrefixes:[fp.slice(0,12)],recoveryUntil:Date.now()+60000});token=(await request(notKnown,'GET')).body.securityToken;assert.equal((await request(notKnown,'POST',{email:'b@example.org',securityToken:token})).code,409);
+}));
