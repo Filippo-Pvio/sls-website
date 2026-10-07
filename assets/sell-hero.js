@@ -9,8 +9,8 @@
   const mobileWidths = (hero.dataset.heroWidths || '').split(',');
   const desktopWidths = (hero.dataset.heroDesktopWidths || '').split(',');
   const scenes = customScenes.length ? customScenes : ['beratung', 'kontakt', 'besichtigung'];
-  const dwell = 7000;
-  const fade = 1600;
+  const dwell = 10000;
+  const fade = 3200;
   const legacyPath = (scene) => customScenes.length
     ? `/assets/images/${scene}-${window.innerWidth <= 900 ? (mobileWidths[scenes.indexOf(scene)] || 900) : (desktopWidths[scenes.indexOf(scene)] || 1536)}.webp`
     : `/assets/images/sell-hero/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;

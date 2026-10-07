@@ -60,7 +60,7 @@
       timer = setInterval(() => {
         slides[active].classList.remove('is-visible'); active = (active + 1) % slides.length;
         slides[active].classList.add('is-visible');
-      }, 6500);
+      }, 13200);
     }
     motion.addEventListener('change', sync); document.addEventListener('visibilitychange', sync); sync();
   });
