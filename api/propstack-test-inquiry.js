@@ -1,3 +1,4 @@
+import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {withFormSecurity} from '../lib/form-security.mjs';
 import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 const text=(value,max=150)=>typeof value==='string'?value.trim().slice(0,max):'';
@@ -63,7 +64,7 @@ async function resolveInquirySource(key){
       const found=sources.find(source=>preferred.includes(normalise(source?.name)));
       if(found&&Number.isSafeInteger(Number(found.id)))return Number(found.id);
     }catch(error){
-      console.warn(`Propstack source lookup via ${endpoint} unavailable:`,error.message);
+      logOperationalFailure('inquiry_source_lookup_failed',error,'warn');
     }
   }
   return null;
@@ -131,7 +132,7 @@ async function resolveWebsiteInquiryNoteType(key){
       const id=Number(found?.id);
       if(Number.isSafeInteger(id)&&id>0)return id;
     }catch(error){
-      console.warn(`Propstack note type lookup via ${endpoint} unavailable:`,error.message);
+      logOperationalFailure('inquiry_note_type_lookup_failed',error,'warn');
     }
   }
   return null;
@@ -250,7 +251,7 @@ export async function handler(req,res){
       existingDeals=await dealsForContactAndProperty(writeKey,contactId,Number(id));
     }catch(error){
       dealCheckAvailable=false;
-      console.warn('Propstack deal pre-check unavailable:',error.message);
+      logOperationalFailure('inquiry_deal_precheck_failed',error,'warn');
     }
     const hadDealBefore=existingDeals.length>0;
 
@@ -304,7 +305,7 @@ export async function handler(req,res){
         activityType=activity?.activatable_type||activity?.type||activity?.task?.activatable_type||null;
         activityVerified=activitySourceId===sourceId;
       }catch(error){
-        console.warn('Propstack activity verification unavailable:',error.message);
+        logOperationalFailure('inquiry_activity_verification_failed',error,'warn');
       }
     }
 
@@ -314,7 +315,7 @@ export async function handler(req,res){
         deal=await waitForDeal(writeKey,contactId,Number(id));
       }catch(error){
         dealCheckAvailable=false;
-        console.warn('Propstack deal post-check unavailable:',error.message);
+        logOperationalFailure('inquiry_deal_postcheck_failed',error,'warn');
       }
     }
     return res.status(200).json({
@@ -338,7 +339,7 @@ export async function handler(req,res){
       dealStageId:deal?.deal_stage_id||deal?.deal_stage?.id||null
     });
   }catch(error){
-    console.error('Propstack website inquiry failed:',error.message);
+    logOperationalFailure('property_inquiry_failed',error);
     return res.status(502).json({error:'Die Website-Anfrage konnte nicht vollständig an Propstack übergeben werden.'});
   }
 }

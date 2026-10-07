@@ -1,3 +1,4 @@
+import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {withFormSecurity} from '../lib/form-security.mjs';
 import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
@@ -86,7 +87,7 @@ export async function handler(req,res) {
       if(oldToken&&!previous)return res.status(400).json({error:'Die Formularfreigabe konnte nicht erneuert werden.'});
       const categories=await noteCategories(key),token=issueToken(key,previous);
       return res.status(200).json({token,expiresAt:Number(token.split('.')[0])+30*60*1000,availableTopics:Object.entries(CONTACT_TOPICS).filter(([,v])=>categories[v.title]).map(([k])=>k),callbackAvailable:Boolean(categories[CALLBACK_TITLE])});}
-    catch {return res.status(503).json({error:'Das Kontaktformular ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.'});}
+    catch(error) {logOperationalFailure('contact_readiness_failed',error);return res.status(503).json({error:'Das Kontaktformular ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.'});}
   }
   if(req.headers?.origin!==`${local?'http':'https'}://${host}`)return res.status(403).json({error:'Anfrage nicht erlaubt.'});
   if(!req.headers?.['content-type']?.startsWith('application/json') || !req.body || typeof req.body!=='object' || JSON.stringify(req.body).length>6500)return res.status(400).json({error:'Ungültige Anfrage.'});
@@ -112,7 +113,7 @@ export async function handler(req,res) {
     const {status,...output}=result;return res.status(status).json(output);
   }catch(e){
     pending.delete(id);
-    console.error('SLS contact request failed:',e.message);
+    logOperationalFailure('contact_request_failed',e);
     return res.status(502).json({error:'Ihre Anfrage konnte noch nicht vollständig bestätigt werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.'});
   }
 }

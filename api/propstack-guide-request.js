@@ -1,3 +1,4 @@
+import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {withFormSecurity} from '../lib/form-security.mjs';
 import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
@@ -203,7 +204,7 @@ export async function handler(req, res) {
       const marketingConfig = await newsletterConfig(key, propstack).catch(() => null);
       return res.status(200).json({availableGuides:[GUIDE], token:issueToken(key), deliveryReady:true, marketingAvailable:Boolean(marketingConfig), consentVersion:GUIDE_MARKETING_CONSENT_VERSION});
     } catch (error) {
-      console.error('Guide request readiness check failed:', error.message);
+      logOperationalFailure('guide_readiness_failed',error);
       return res.status(503).json({error:'Die Ratgeberanforderung wird noch eingerichtet. Bitte versuchen Sie es später erneut.'});
     }
   }
@@ -248,7 +249,7 @@ export async function handler(req, res) {
       try {
         newsletterStatus = await requestNewsletter({key, contactId:result.contactId, email, firstName, lastName, salutation, requestId, config:marketingConfig, propstack});
       } catch (error) {
-        console.error('Newsletter confirmation request needs checking:', error.message);
+        logOperationalFailure('newsletter_confirmation_uncertain',error);
         // Guide dispatch was already recorded. Do not present a total failure or encourage resending it.
         newsletterStatus = 'needs_check';
       }
@@ -263,7 +264,7 @@ export async function handler(req, res) {
       : newsletterStatus === 'needs_check' ? ' Ihre zusätzliche Newsletter-Anmeldung konnte noch nicht bestätigt werden. Bitte kontaktieren Sie uns hierzu; Ihre Ratgeberanforderung ist bereits aufgenommen.' : '';
     return res.status(200).json({ok:true, status:outcome, newsletterStatus, message:outcome === 'review_required' ? reviewMessage : received + newsletterMessage, deliveryReady:true});
   } catch (error) {
-    console.error('Guide request could not be confirmed:', error.message);
+    logOperationalFailure('guide_request_failed',error);
     return res.status(502).json({error:'Ihre Anforderung konnte gerade nicht bestätigt werden. Bitte kontaktieren Sie uns direkt, bevor Sie sie erneut absenden.'});
   } finally {
     if (pending.get(lock) === work) pending.delete(lock);

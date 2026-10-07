@@ -1,4 +1,4 @@
-# Ratgeberanforderung: Vorschau
+# Ratgeberanforderung: bestehende Arbeitswebsite
 
 ## Freigegebener Ratgeber
 
@@ -12,7 +12,7 @@
 
 GET /api/propstack-guide-request prüft den Zugang und die eindeutige Notizkategorie in Propstack und liefert ein signiertes, 30 Minuten gültiges Formulartoken. Erst dann wird das Formular aktiviert. POST akzeptiert ausschließlich VERKAUF und Vorname, Nachname und E-Mail-Adresse. Namen werden nach dem Trimmen mit jeweils maximal 100 Zeichen validiert; Telefonnummern werden nicht verlangt.
 
-Vorhandene Kontakte werden anhand ihrer primären E-Mail-Adresse eindeutig zugeordnet. Bei mehreren Treffern oder einer abweichenden primären E-Mail wird abgebrochen. Neue Kontakte werden mit Vorname, Nachname und E-Mail-Adresse angelegt. Vor jeder Versandnotiz werden Vor- und Nachname des erneut gelesenen Kontakts verglichen. Unicode-Normalisierung, Groß-/Kleinschreibung und zusätzliche Leerzeichen werden berücksichtigt; andere Abweichungen und fehlende Bestandsnamen führen zur Prüfung. Die angegebenen Namen werden zudem in der Ratgebernotiz dokumentiert. Die Website ändert bestehende Daten, Newsletter- und Einwilligungsfelder nicht. Eine zusätzliche Newsletter-Anmeldung benötigt eine eigene Bestätigung über Propstack.
+Vorhandene Kontakte werden anhand ihrer primären E-Mail-Adresse eindeutig zugeordnet. Bei mehreren Treffern oder einer abweichenden primären E-Mail wird abgebrochen. Neue Kontakte werden mit Vorname, Nachname und E-Mail-Adresse angelegt. Vor jeder Versandnotiz werden Vor- und Nachname des erneut gelesenen Kontakts verglichen. Unicode-Normalisierung, Groß-/Kleinschreibung und zusätzliche Leerzeichen werden berücksichtigt; andere Abweichungen und fehlende Bestandsnamen führen zur Prüfung. Die angegebenen Namen werden zudem in der Ratgebernotiz dokumentiert. Bei eindeutiger Identitätszuordnung kann ausschließlich eine fehlende Anrede ergänzt und anschließend erneut geprüft werden. Vorhandene Namen, Newsletter- und Einwilligungsfelder werden nicht geändert. Eine zusätzliche Newsletter-Anmeldung benötigt eine eigene Bestätigung über Propstack.
 
 Die Notiz wird über POST /tasks erstellt, mit der aus /activity_types gelesenen Notizkategorie und client_ids. Keine Immobilien-/Portalanfrage und keine allgemeine Werbeeinwilligung. Die Notiz enthält angegebenen Namen, Ratgeber, Dateiname, Zeitpunkt, Quelle, Verwendungszweck, Datenschutzhinweis-Version und Anforderungs-ID. Erfolg wird nur nach bestätigter Notizanlage zurückgegeben. Die Antwort verrät keine Kontakt- oder Notiz-IDs.
 
@@ -20,20 +20,20 @@ Die Notiz wird über POST /tasks erstellt, mit der aus /activity_types gelesenen
 
 Der Nutzer hat den Ratgeberversand über Propstack am 02.10.2026 als funktionierend bestätigt. Die Oberfläche zeigt jetzt: „Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.“ Die Website erstellt weiterhin die Versandnotiz; den Ratgeber versendet der bestehende Propstack-Prozess.
 
-Die Produktionsfreigabe bleibt ein eigener Schritt: aktuell sind nur VERCEL_ENV=preview mit *.vercel.app und lokale Entwicklung erlaubt.
+Aktuell freigegeben ist die bestehende Arbeitsadresse `sls-website-eight.vercel.app` in Produktion. Der endgültige Onlinegang auf sls.de ist weiterhin ausgeschlossen. Vorschauen benötigen eigene scoped Zugänge; API-Schreibmethoden sind dort zusätzlich durch die Vercel-Firewall gesperrt. Lokale Entwicklung bleibt für synthetische Tests möglich.
 
 ## Konfiguration und Rechte
 
-Schlüssel-Reihenfolge: PROPSTACK_GUIDES_API_KEY, PROPSTACK_INQUIRY_API_KEY, PROPSTACK_API_KEY. Erforderlich: Aktivitätstypen lesen, Kontakte lesen/anlegen, Aktivitäten lesen, Notizen anlegen. ID 741093, Bezeichnung und Notiztyp werden gemeinsam gegen die gelesene Kategorie geprüft. Fehlende Rechte/Kategorie: Formular bleibt gesperrt; es wird kein Erfolg simuliert.
+In veröffentlichten Umgebungen ausschließlich `PROPSTACK_GUIDES_API_KEY`; fehlt er, wird vor dem Provider-Aufruf abgebrochen. `PROPSTACK_API_KEY` ist nur für lokale Entwicklung ein Fallback. Erforderlich: Aktivitätstypen lesen, Kontakte lesen/anlegen, Aktivitäten lesen, Notizen anlegen. ID 741093, Bezeichnung und Notiztyp werden gemeinsam gegen die gelesene Kategorie geprüft. Fehlende Rechte/Kategorie: Formular bleibt gesperrt; es wird kein Erfolg simuliert.
 
 ## Schutz und Grenzen
 
 - Same-origin-POST, serverseitige Zulassung nur des freigegebenen Ratgebers, begrenzte Eingabelänge, signiertes Formulartoken und unsichtbares Bot-Feld.
 - Doppelklickschutz im Browser und Sperre gleicher E-Mail innerhalb einer Serverinstanz.
 - Prüfung vorhandener Propstack-Notizen: gleiche Anforderungs-ID bzw. Anfrage derselben Kategorie innerhalb von zehn Minuten wird wiederverwendet.
-- Pro Instanz maximal acht gültige POST-Versuche pro IP in 15 Minuten; IP wird nur als HMAC-Schlüssel gespeichert. Keine Formulardaten im Browser-Speicher oder in URL/Serverlogs.
-- Unklar beantwortete Schreibvorgänge werden innerhalb der Instanz nicht blind wiederholt.
-- Propstack bietet hier keine dokumentierte atomare Idempotenz. Gleichzeitige Erstzugriffe auf verschiedene Serverinstanzen bzw. Neustarts nach unklarem Schreibausgang sind daher nicht vollständig abgesichert. Vor öffentlicher Produktionsfreigabe zentralen Rate-Limiter/Idempotenzspeicher ergänzen und Versand in Propstack ebenfalls gegen Duplikate absichern. Dies ist aktuell eine geschützte Vorschau.
+- Zentral maximal acht POST-Versuche pro Netzwerkkennung und E-Mail in 15 Minuten; zusätzlich gilt eine GET-/Gesamtgrenze. Kennungen werden per HMAC pseudonymisiert. Kein Name, keine E-Mail und kein Notiztext werden im zentralen Schutzspeicher gespeichert. Fehlerprotokolle enthalten feste technische Ereignisse statt Providertexte.
+- Unklar beantwortete Schreibvorgänge bleiben im zentralen Schutzspeicher für dieselben Eingaben gesperrt und erzeugen eine Prüfmarkierung; nicht blind erneut absenden. Instanzlokale und CRM-Notizprüfungen ergänzen diesen Schutz.
+- Zentrale atomare Bearbeitungssperren und Ergebnisspeicherung sind eingerichtet; bei fehlendem Redis bleibt der Versand gesperrt. Schutzwerte verfallen spätestens nach 24 Stunden. Dies ersetzt keine anbieterübergreifende Transaktion oder dauerhafte Deduplizierung: nach Ablauf und bei manuellen Wiederholungen zuerst CRM und Postfach abgleichen; die Propstack-Automatisierung muss ebenfalls Doppelversand verhindern.
 
 ## Prüfung
 
@@ -49,7 +49,7 @@ Bei abweichenden Namen wird am eindeutig zugeordneten Kontakt eine separate Noti
 
 Der Besucher erhält den neutralen Hinweis zur nicht eindeutigen Zuordnung, keine Auskunft über den gespeicherten Namen oder CRM-IDs. „Angaben korrigieren“ erhält die Eingaben und lädt ein neues Formulartoken; „SLS kontaktieren“ führt zu /kontakt/. Korrigierte, übereinstimmende Namen durchlaufen anschließend die normale Anforderung. Bei korrekten abweichenden Angaben klärt SLS die Zuordnung persönlich; keine automatische Namensänderung.
 
-Prüfnotizen werden separat von Versandnotizen dedupliziert. Gleichzeitige Anfragen mit verschiedenen Namen werden innerhalb einer Instanz nacheinander geprüft und bekommen ihr eigenes Ergebnis. Die bestehenden Grenzen zur Idempotenz über mehrere Serverinstanzen gelten weiterhin.
+Prüfnotizen werden separat von Versandnotizen dedupliziert. Gleichzeitige Anfragen mit verschiedenen Namen werden innerhalb einer Instanz nacheinander geprüft und bekommen ihr eigenes Ergebnis. Der zentrale Schutz aus dem Abschnitt Schutz und Grenzen gilt zusätzlich; nach Ablauf der Schutzfrist ist ein CRM-Abgleich weiterhin nötig.
 
 **Propstack-Prozess einrichten:** Nur die Kategorie 741093 / SLS_RATGEBER_VERKAUF_ANGEFORDERT als Versand-Auslöser verwenden, niemals jede neue Notiz. Prüfnotizen bleiben ausgeschlossen. Nach persönlicher Klärung Bestandsdaten und neuere Anforderungen prüfen, eventuell Namen manuell berichtigen und einmalig die Versandnotiz anlegen, sofern noch keine korrigierte Anforderung diese erzeugt hat. Prüfnotiz anschließend als geklärt kennzeichnen. Die Website löst keine früheren Prüfnotizen automatisch auf und stoppt keine bereits laufenden Versandprozesse.
 
@@ -71,7 +71,7 @@ Bei Zustimmung und passender Kontaktzuordnung erstellt die Website eine kategori
 
 Die Website setzt **weder newsletter noch accept_contact** beim Absenden. Diese Felder dürfen erst durch die tatsächliche Bestätigung in Propstack gesetzt werden. Auch der Ratgeberprozess darf sie nicht setzen. Immobilienmailings werden nicht durch die Website aktiviert. Bestehende Einstellungen werden nicht zurückgesetzt. Eine neue Anmeldung nach Abmeldung benötigt erneut eine Bestätigung.
 
-Wiederholungen derselben Anforderung sowie gleichartige Anforderungen innerhalb von zehn Minuten werden anhand gespeicherter Notizen unterdrückt. Frühere unkategorisierte DOI-Absichten lösen keinen automatischen Neuversand aus; sie werden als klärungsbedürftig behandelt. Bei ungewisser Notizanlage verhindert zusätzlich eine instanzlokale Sperre blinde Wiederholung für dieselbe Anforderungskennung. Die bereits beschriebenen Grenzen über mehrere Instanzen gelten weiterhin.
+Wiederholungen derselben Anforderung sowie gleichartige Anforderungen innerhalb von zehn Minuten werden anhand gespeicherter Notizen unterdrückt. Frühere unkategorisierte DOI-Absichten lösen keinen automatischen Neuversand aus; sie werden als klärungsbedürftig behandelt. Bei ungewisser Notizanlage verhindert zusätzlich eine instanzlokale Sperre blinde Wiederholung für dieselbe Anforderungskennung. Zusätzlich gelten die zentralen Bearbeitungssperren und Prüfmarkierungen aus Schutz und Grenzen.
 
 ### Einrichtung und Abschlussprüfung in Propstack
 
@@ -81,7 +81,7 @@ Wiederholungen derselben Anforderung sowie gleichartige Anforderungen innerhalb 
 - Abschlussprüfung mit der freigegebenen Adresse service@sls.de: Ratgeber plus Bestätigungsmail, vor Bestätigung unveränderte Felder, danach die vereinbarten Einstellungen und unveränderte Immobilienmailings. Auch Abmeldung prüfen. Die Website kann weder Posteingang noch eine durch den Empfänger bestätigte Einwilligung simulieren.
 - Produktive Datenschutzerklärung um den tatsächlichen Ratgeber-/Newsletterablauf ergänzen. Die produktive Seite sls.de/datenschutz wurde hier nicht bearbeitet.
 
-Die vorherigen Website-Konfigurationen PROPSTACK_GUIDES_DOI_BROKER_ID, PROPSTACK_GUIDES_DOI_SNIPPET_ID und PROPSTACK_GUIDES_DOI_VERIFIED werden nicht mehr ausgewertet: Versand und Bestätigung liegen jetzt im vom Nutzer eingerichteten Propstack-Prozess. Die gesamte Website-Integration bleibt auf Vorschau/localhost beschränkt.
+Die vorherigen Website-Konfigurationen PROPSTACK_GUIDES_DOI_BROKER_ID, PROPSTACK_GUIDES_DOI_SNIPPET_ID und PROPSTACK_GUIDES_DOI_VERIFIED werden nicht mehr ausgewertet: Versand und Bestätigung liegen jetzt im vom Nutzer eingerichteten Propstack-Prozess. Der aktuelle Zugriff auf die bestehende Arbeitswebsite und die zusätzliche Vorschau-Firewall stehen im Abschnitt Aktueller Versandstatus.
 
 ### Vorheriger direkter Versandversuch
 
@@ -113,4 +113,4 @@ API-Referenz: https://docs.propstack.de/reference/kontakte (salutation mr/ms, PU
 
 Am 02.10.2026 hat der Nutzer die Übernahme aller Vorschau-Änderungen auf https://sls-website-eight.vercel.app/ mit Erhalt des dortigen Fortschritts freigegeben. Basis auf main: 4cc67f646a897bf81262993c6d3afc2d7e734c84 (SIA). Die bestehende SIA-Einbindung, ihre API und Konfiguration werden durch einen Merge erhalten. In vercel.json bleiben sowohl SIA als auch Ratgeber mit eigener Funktionskonfiguration bestehen.
 
-Die vorherige reine Vorschau-Sperre des Ratgeberendpunkts ist für genau sls-website-eight.vercel.app aufgehoben. Andere Produktionsadressen, insbesondere sls.de/www.sls.de, bleiben gesperrt. Vorschau und lokale Tests bleiben verfügbar. Die ursprünglichen Veröffentlichungen und Git-Eltern bleiben als Rückkehrpunkte erhalten. Die Freigabe ersetzt keine rechtliche Gesamtprüfung des Newsletterprozesses.
+Die vorherige reine Vorschau-Sperre des Ratgeberendpunkts ist für genau sls-website-eight.vercel.app aufgehoben. Andere Produktionsadressen, insbesondere sls.de/www.sls.de, bleiben gesperrt. Lokale synthetische Tests bleiben verfügbar; schreibende API-Aufrufe aus Vorschauen sind inzwischen durch die zusätzliche Firewall gesperrt. Die ursprünglichen Veröffentlichungen und Git-Eltern bleiben als Rückkehrpunkte erhalten. Die Freigabe ersetzt keine rechtliche Gesamtprüfung des Newsletterprozesses.
