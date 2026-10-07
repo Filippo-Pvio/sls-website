@@ -47,7 +47,13 @@
     "originalAuthor": "Filippo Livera",
     "originalTitle": "Wahlsieg der Linken in Berlin: Warum die Folgen auch NRW treffen könnten",
     "originalUrl": "https://sls.de/wahlsieg-linke-berlin-immobilienmarkt-nrw/",
-    "editorialNote": "Der frühere politische Kommentar wurde zu einer sachlichen Einordnung überarbeitet. Wahlzahlen und nicht belegte Aussagen über Kapitalverlagerungen wurden nicht übernommen."
+    "editorialNote": "Der frühere politische Kommentar wurde zu einer sachlichen Einordnung überarbeitet. Wahlzahlen und nicht belegte Aussagen über Kapitalverlagerungen wurden nicht übernommen.",
+    "image": {
+      "src": "/assets/images/magazin/articles/wahlsieg-linke-berlin-immobilienmarkt-nrw-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/wahlsieg-linke-berlin-immobilienmarkt-nrw-600.jpg",
+      "alt": "Symbolbild zum Thema: Berliner Wohnungspolitik: Was davon für NRW relevant ist",
+      "generated": true
+    }
   },
   {
     "id": 1,
@@ -116,7 +122,13 @@
     "originalAuthor": "Mischa Stratmann",
     "originalTitle": "Immobilienverkauf: Ist das höchste Angebot das beste?",
     "originalUrl": "https://sls.de/immobilienverkauf-kaufangebote-vergleichen/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienverkauf-kaufangebote-vergleichen-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienverkauf-kaufangebote-vergleichen-600.jpg",
+      "alt": "Symbolbild zum Thema: Kaufangebote vergleichen: Warum der höchste Preis nicht alles ist",
+      "generated": true
+    }
   },
   {
     "id": 2,
@@ -166,7 +178,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "KI in Immobilienanzeigen: Wie viel ist noch ehrlich? 2026",
     "originalUrl": "https://sls.de/ki-immobilienanzeigen-digitales-home-staging/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/ki-immobilienanzeigen-digitales-home-staging-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/ki-immobilienanzeigen-digitales-home-staging-600.jpg",
+      "alt": "Symbolbild zum Thema: KI in Immobilienanzeigen: Möglichkeiten zeigen, Zustand ehrlich darstellen",
+      "generated": true
+    }
   },
   {
     "id": 3,
@@ -216,7 +234,13 @@
     "originalAuthor": "Filippo Livera",
     "originalTitle": "Jung kauft Alt 2026: Bis zu 180.000 Euro KfW Kredit",
     "originalUrl": "https://sls.de/jung-kauft-alt-2026-kfw-foerderung/",
-    "editorialNote": "Die frühere Nennung eines konkreten Werbezinses wurde entfernt. Konditionen und Fördervoraussetzungen sind veränderlich und werden unmittelbar bei der KfW nachgewiesen."
+    "editorialNote": "Die frühere Nennung eines konkreten Werbezinses wurde entfernt. Konditionen und Fördervoraussetzungen sind veränderlich und werden unmittelbar bei der KfW nachgewiesen.",
+    "image": {
+      "src": "/assets/images/magazin/articles/jung-kauft-alt-2026-kfw-foerderung-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/jung-kauft-alt-2026-kfw-foerderung-600.jpg",
+      "alt": "Symbolbild zum Thema: Jung kauft Alt: Förderung und Sanierung zusammen planen",
+      "generated": true
+    }
   },
   {
     "id": 4,
@@ -287,7 +311,13 @@
     "originalAuthor": "Mischa Stratmann",
     "originalTitle": "Immobilie richtig bewerten - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilie-richtig-bewerten/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilie-richtig-bewerten-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilie-richtig-bewerten-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilie richtig bewerten: Vom Marktwert zum Angebotspreis",
+      "generated": true
+    }
   },
   {
     "id": 5,
@@ -337,7 +367,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Informativ: Babyboomer und Immobilienmarkt: Warum der „Silver Tsunami“ nicht überall kommt",
     "originalUrl": "https://sls.de/babyboomer-immobilienmarkt-silver-tsunami-2026/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/babyboomer-immobilienmarkt-silver-tsunami-2026-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/babyboomer-immobilienmarkt-silver-tsunami-2026-600.jpg",
+      "alt": "Symbolbild zum Thema: Babyboomer und Immobilien: Warum Demografie lokal wirkt",
+      "generated": true
+    }
   },
   {
     "id": 6,
@@ -387,7 +423,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "2026 - Straße von Hormus vor der Öffnung: Was das jetzt für Bauzinsen und Immobilienpreise bedeuten könnte",
     "originalUrl": "https://sls.de/strasse-von-hormus-bauzinsen-immobilienmarkt-2026/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/strasse-von-hormus-bauzinsen-immobilienmarkt-2026-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/strasse-von-hormus-bauzinsen-immobilienmarkt-2026-600.jpg",
+      "alt": "Symbolbild zum Thema: Straße von Hormus: Wie Energiepreise den Immobilienmarkt berühren",
+      "generated": true
+    }
   },
   {
     "id": 7,
@@ -438,7 +480,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Haus verkaufen trotz Kredit: So sichern Eigentümer ihren Verkaufserlös",
     "originalUrl": "https://sls.de/haus-verkaufen-trotz-kredit-2026/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/haus-verkaufen-trotz-kredit-2026-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/haus-verkaufen-trotz-kredit-2026-600.jpg",
+      "alt": "Symbolbild zum Thema: Haus verkaufen trotz Kredit: Ablösung und Erlös früh klären",
+      "generated": true
+    }
   },
   {
     "id": 8,
@@ -489,7 +537,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Baufinanzierung 2027: Wegfall des Kapitalpuffers",
     "originalUrl": "https://sls.de/baufinanzierung-2027-kapitalpuffer-immobilienpreise/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/baufinanzierung-2027-kapitalpuffer-immobilienpreise-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/baufinanzierung-2027-kapitalpuffer-immobilienpreise-600.jpg",
+      "alt": "Symbolbild zum Thema: Kapitalpuffer und Baufinanzierung: Warum Entlastung keine Zinsgarantie ist",
+      "generated": true
+    }
   },
   {
     "id": 9,
@@ -539,7 +593,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Hausübernahme nach der Scheidung: Teure Fehler vermeiden",
     "originalUrl": "https://sls.de/hausuebernahme-ehepartner-auszahlen-scheidung/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/hausuebernahme-ehepartner-auszahlen-scheidung-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/hausuebernahme-ehepartner-auszahlen-scheidung-600.jpg",
+      "alt": "Symbolbild zum Thema: Hausübernahme nach Trennung: Auszahlung und Finanzierung klären",
+      "generated": true
+    }
   },
   {
     "id": 10,
@@ -589,7 +649,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Baukosten-Schock 2026: Welche Sanierung vor dem Immobilienverkauf wirklich lohnt",
     "originalUrl": "https://sls.de/baukosten-schock-sanierung-vor-immobilienverkauf-2026/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/baukosten-schock-sanierung-vor-immobilienverkauf-2026-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/baukosten-schock-sanierung-vor-immobilienverkauf-2026-600.jpg",
+      "alt": "Symbolbild zum Thema: Sanieren vor dem Verkauf: Welche Arbeiten sich rechnen können",
+      "generated": true
+    }
   },
   {
     "id": 11,
@@ -639,7 +705,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilienverkauf trotz hoher Zinsen 2026 - Top Immobilien",
     "originalUrl": "https://sls.de/immobilienverkauf-trotz-hoher-zinsen-2026/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienverkauf-trotz-hoher-zinsen-2026-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienverkauf-trotz-hoher-zinsen-2026-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilienverkauf bei höheren Zinsen: Was Eigentümer beeinflussen können",
+      "generated": true
+    }
   },
   {
     "id": 12,
@@ -689,7 +761,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Erbimmobilie verkaufen 2026: Die beste Lösung für Erben",
     "originalUrl": "https://sls.de/erbimmobilie-verkaufen-2026/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/erbimmobilie-verkaufen-2026-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/erbimmobilie-verkaufen-2026-600.jpg",
+      "alt": "Symbolbild zum Thema: Erbimmobilie: Verkaufen, vermieten oder selbst nutzen?",
+      "generated": true
+    }
   },
   {
     "id": 13,
@@ -737,7 +815,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Käuferverhalten Immobilien 2026: Warum Interessenten heute genauer prüfen",
     "originalUrl": "https://sls.de/kaeuferverhalten-immobilien-2026/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/kaeuferverhalten-immobilien-2026-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/kaeuferverhalten-immobilien-2026-600.jpg",
+      "alt": "Symbolbild zum Thema: Warum Käufer genauer prüfen – und wie Verkäufer darauf reagieren",
+      "generated": true
+    }
   },
   {
     "id": 14,
@@ -785,7 +869,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilie verkaufen 2026: Warum Finanzierbarkeit jetzt zum Preisfaktor wird",
     "originalUrl": "https://sls.de/immobilie-verkaufen-2026-finanzierbarkeit-preisfaktor/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilie-verkaufen-2026-finanzierbarkeit-preisfaktor-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilie-verkaufen-2026-finanzierbarkeit-preisfaktor-600.jpg",
+      "alt": "Symbolbild zum Thema: Finanzierbarkeit und Verkaufspreis: Die Rechnung hinter dem Angebot",
+      "generated": true
+    }
   },
   {
     "id": 15,
@@ -835,7 +925,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Käufermarkt oder Verkäufermarkt 2026? Was stimmt wirklich?",
     "originalUrl": "https://sls.de/kaeufermarkt-verkaeufermarkt-2026-immobilienmarkt/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/kaeufermarkt-verkaeufermarkt-2026-immobilienmarkt-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/kaeufermarkt-verkaeufermarkt-2026-immobilienmarkt-600.jpg",
+      "alt": "Symbolbild zum Thema: Käufermarkt oder Verkäufermarkt? Auf das konkrete Angebot kommt es an",
+      "generated": true
+    }
   },
   {
     "id": 16,
@@ -883,7 +979,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Bestandsimmobilie verkaufen 2026: Warum gebrauchte Häuser wieder stärker gefragt sind",
     "originalUrl": "https://sls.de/bestandsimmobilie-verkaufen-2026/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/bestandsimmobilie-verkaufen-2026-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/bestandsimmobilie-verkaufen-2026-600.jpg",
+      "alt": "Symbolbild zum Thema: Bestandsimmobilie kaufen: Potenzial und Folgekosten zusammen sehen",
+      "generated": true
+    }
   },
   {
     "id": 17,
@@ -945,7 +1047,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilienverkauf 2026: Warum vollständige Unterlagen jetzt zum Preisfaktor werden",
     "originalUrl": "https://sls.de/immobilienverkauf-unterlagen-2026/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienverkauf-unterlagen-2026-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienverkauf-unterlagen-2026-600.jpg",
+      "alt": "Symbolbild zum Thema: Unterlagen für den Immobilienverkauf: Was früh vorliegen sollte",
+      "generated": true
+    }
   },
   {
     "id": 18,
@@ -993,7 +1101,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Luxusimmobilie 2026: zu lange am Markt, ist sie zu teuer",
     "originalUrl": "https://sls.de/luxusimmobilie-zu-teuer-vermarktungsdauer/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/luxusimmobilie-zu-teuer-vermarktungsdauer-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/luxusimmobilie-zu-teuer-vermarktungsdauer-600.jpg",
+      "alt": "Symbolbild zum Thema: Luxusimmobilie lange am Markt: Preis, Zielgruppe und Präsentation prüfen",
+      "generated": true
+    }
   },
   {
     "id": 19,
@@ -1041,7 +1155,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilienverkauf Dauer 2026: Wie lange dauert es?",
     "originalUrl": "https://sls.de/immobilienverkauf-dauer-2026-zinsen/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienverkauf-dauer-2026-zinsen-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienverkauf-dauer-2026-zinsen-600.jpg",
+      "alt": "Symbolbild zum Thema: Wie lange dauert ein Immobilienverkauf? Die Phasen realistisch planen",
+      "generated": true
+    }
   },
   {
     "id": 20,
@@ -1091,7 +1211,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Krieg, Ölpreise, Inflation: Was 2026 jetzt drohen kann",
     "originalUrl": "https://sls.de/immobilienpreise-2026-krieg-zinsen-inflation/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienpreise-2026-krieg-zinsen-inflation-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienpreise-2026-krieg-zinsen-inflation-600.jpg",
+      "alt": "Symbolbild zum Thema: Ölpreise, Inflation und Immobilien: Drei Wirkungen auseinanderhalten",
+      "generated": true
+    }
   },
   {
     "id": 21,
@@ -1141,7 +1267,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Bauzinsen 2026: Warum kleine Zinsänderungen große Auswirkungen auf Käufer haben - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/bauzinsen-2026-auswirkungen-immobilienkaeufer/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/bauzinsen-2026-auswirkungen-immobilienkaeufer-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/bauzinsen-2026-auswirkungen-immobilienkaeufer-600.jpg",
+      "alt": "Symbolbild zum Thema: Bauzinsen verstehen: Was kleine Änderungen für die Monatsrate bedeuten",
+      "generated": true
+    }
   },
   {
     "id": 22,
@@ -1189,7 +1321,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Mit 5 Tipps die Chancen beim Kauf einer Immobilie erhöhen",
     "originalUrl": "https://sls.de/5-tipps-immobilie-kaufen-chancen-verbessern/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/5-tipps-immobilie-kaufen-chancen-verbessern-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/5-tipps-immobilie-kaufen-chancen-verbessern-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilie kaufen: Fünf Schritte zu einer gut vorbereiteten Anfrage",
+      "generated": true
+    }
   },
   {
     "id": 23,
@@ -1239,7 +1377,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Reform des Heizungsgesetzes 2026: Was ändert sich wirklich?",
     "originalUrl": "https://sls.de/reform-heizungsgesetz-2026-aenderungen-heizungstausch/",
-    "editorialNote": "Die frühere Darstellung einer Reform wurde durch eine zeitunabhängige Prüfanleitung ersetzt. Konkrete Pflichten richten sich nach geltendem Recht und dem Einzelfall."
+    "editorialNote": "Die frühere Darstellung einer Reform wurde durch eine zeitunabhängige Prüfanleitung ersetzt. Konkrete Pflichten richten sich nach geltendem Recht und dem Einzelfall.",
+    "image": {
+      "src": "/assets/images/magazin/articles/reform-heizungsgesetz-2026-aenderungen-heizungstausch-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/reform-heizungsgesetz-2026-aenderungen-heizungstausch-600.jpg",
+      "alt": "Symbolbild zum Thema: Heizungstausch: Was Eigentümer vor einer Entscheidung prüfen sollten",
+      "generated": true
+    }
   },
   {
     "id": 24,
@@ -1287,7 +1431,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilienverkauf 2026: Die 5 größten Irrtümer der Verkäufer",
     "originalUrl": "https://sls.de/immobilienverkauf-2026-5-groesste-irrtuemer/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienverkauf-2026-5-groesste-irrtuemer-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienverkauf-2026-5-groesste-irrtuemer-600.jpg",
+      "alt": "Symbolbild zum Thema: Fünf Irrtümer beim Immobilienverkauf – und die bessere Vorbereitung",
+      "generated": true
+    }
   },
   {
     "id": 25,
@@ -1338,7 +1488,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilienmarkt 2026: Wo stehen Preise & Nachfrage wirklich? - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilienmarkt-2026-preise-nachfrage-deutschland/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienmarkt-2026-preise-nachfrage-deutschland-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienmarkt-2026-preise-nachfrage-deutschland-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilienmarkt 2026: Wie Sie Preise und Nachfrage richtig einordnen",
+      "generated": true
+    }
   },
   {
     "id": 26,
@@ -1389,7 +1545,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "BGH stärkt klare Strategien: Warum das Eigenbedarf-Urteil neue Chancen für Investoren eröffnet - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/bgh-eigenbedarf-urteil-chancen-investoren/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/bgh-eigenbedarf-urteil-chancen-investoren-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/bgh-eigenbedarf-urteil-chancen-investoren-600.jpg",
+      "alt": "Symbolbild zum Thema: Eigenbedarf beim Immobilienkauf: Voraussetzungen statt Renditeversprechen",
+      "generated": true
+    }
   },
   {
     "id": 27,
@@ -1437,7 +1599,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Scheidung und Immobilie: Was Eigentümer 2026 jetzt unbedingt wissen müssen - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/scheidung-und-immobilie-was-eigentuemer-2026-wissen-muessen/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/scheidung-und-immobilie-was-eigentuemer-2026-wissen-muessen-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/scheidung-und-immobilie-was-eigentuemer-2026-wissen-muessen-600.jpg",
+      "alt": "Symbolbild zum Thema: Gemeinsame Immobilie bei Trennung: Welche Wege offenstehen",
+      "generated": true
+    }
   },
   {
     "id": 28,
@@ -1487,7 +1655,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Wie KI den Immobilienverkauf verändert – und was das für Eigentümer bedeutet - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/wie-ki-den-immobilienverkauf-veraendert/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/wie-ki-den-immobilienverkauf-veraendert-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/wie-ki-den-immobilienverkauf-veraendert-600.jpg",
+      "alt": "Symbolbild zum Thema: KI im Immobilienverkauf: Wo sie hilft und wo Prüfung nötig bleibt",
+      "generated": true
+    }
   },
   {
     "id": 29,
@@ -1537,7 +1711,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "5 Fehler bei der Immobilienbewertung – und wie Sie sie vermeiden - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/5-fehler-bei-der-immobilienbewertung/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/5-fehler-bei-der-immobilienbewertung-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/5-fehler-bei-der-immobilienbewertung-600.jpg",
+      "alt": "Symbolbild zum Thema: Fünf Bewertungsfehler: Was den Immobilienwert verzerren kann",
+      "generated": true
+    }
   },
   {
     "id": 30,
@@ -1587,7 +1767,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilienmarkt 2025: Wo stehen wir – was kommt? - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilienmarkt-2025-prognose-chancen-risiken/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienmarkt-2025-prognose-chancen-risiken-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienmarkt-2025-prognose-chancen-risiken-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilienmarkt 2025 im Rückblick: Welche Vergleiche heute helfen",
+      "generated": true
+    }
   },
   {
     "id": 31,
@@ -1637,7 +1823,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Checkliste für den Immobilienverkauf: So vermeiden Eigentümer teure Fehler - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilienverkauf-checkliste-fehler-vermeiden/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienverkauf-checkliste-fehler-vermeiden-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienverkauf-checkliste-fehler-vermeiden-600.jpg",
+      "alt": "Symbolbild zum Thema: Checkliste Immobilienverkauf: Von den Unterlagen bis zur Übergabe",
+      "generated": true
+    }
   },
   {
     "id": 32,
@@ -1685,7 +1877,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Digitale Immobiliensuche 2025: Wie Käufer wirklich suchen - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/digitale-immobiliensuche-2025-wie-kaeufer-wirklich-suchen/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/digitale-immobiliensuche-2025-wie-kaeufer-wirklich-suchen-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/digitale-immobiliensuche-2025-wie-kaeufer-wirklich-suchen-600.jpg",
+      "alt": "Symbolbild zum Thema: Digitale Immobiliensuche: So vergleichen Käufer Angebote sinnvoll",
+      "generated": true
+    }
   },
   {
     "id": 33,
@@ -1735,7 +1933,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "EZB belässt Zinsen unverändert – was bedeutet das für Eigentümer? - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/ezb-belaesst-zinsen-unveraendert-was-bedeutet-das/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/ezb-belaesst-zinsen-unveraendert-was-bedeutet-das-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/ezb-belaesst-zinsen-unveraendert-was-bedeutet-das-600.jpg",
+      "alt": "Symbolbild zum Thema: EZB hält die Zinsen: Warum Baufinanzierungen trotzdem anders ausfallen können",
+      "generated": true
+    }
   },
   {
     "id": 34,
@@ -1783,7 +1987,13 @@
     "originalAuthor": "Filippo Livera",
     "originalTitle": "Investmentmarkt 2025 – Vielfalt statt Einheitlichkeit",
     "originalUrl": "https://sls.de/investmentmarkt-2025-vielfalt-statt-einheitlichkeit/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/investmentmarkt-2025-vielfalt-statt-einheitlichkeit-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/investmentmarkt-2025-vielfalt-statt-einheitlichkeit-600.jpg",
+      "alt": "Symbolbild zum Thema: Investmentimmobilien vergleichen: Warum die Objektart allein nicht reicht",
+      "generated": true
+    }
   },
   {
     "id": 35,
@@ -1833,7 +2043,13 @@
     "originalAuthor": "Filippo Livera",
     "originalTitle": "Wohnfläche: Warum Quadratmeter nicht gleich Quadratmeter ist",
     "originalUrl": "https://sls.de/wohnflaeche-warum-quadratmeter-nicht-quadratmeter-ist/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/wohnflaeche-warum-quadratmeter-nicht-quadratmeter-ist-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/wohnflaeche-warum-quadratmeter-nicht-quadratmeter-ist-600.jpg",
+      "alt": "Symbolbild zum Thema: Wohnfläche prüfen: Warum die Berechnungsgrundlage zählt",
+      "generated": true
+    }
   },
   {
     "id": 36,
@@ -1883,7 +2099,13 @@
     "originalAuthor": "Filippo Livera",
     "originalTitle": "Wärmewende 2025: Was Eigentümer & Investoren wissen sollten",
     "originalUrl": "https://sls.de/waermewende-2025-was-eigentuemer-und-investoren-jetzt-wissen-sollten/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/waermewende-2025-was-eigentuemer-und-investoren-jetzt-wissen-sollten-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/waermewende-2025-was-eigentuemer-und-investoren-jetzt-wissen-sollten-600.jpg",
+      "alt": "Symbolbild zum Thema: Wärmeplanung und Immobilie: Welche Informationen Eigentümer brauchen",
+      "generated": true
+    }
   },
   {
     "id": 37,
@@ -1931,7 +2153,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilienverkauf: Wann ist der richtige Zeitpunkt? | SLS",
     "originalUrl": "https://sls.de/der-richtige-zeitpunkt-fuer-den-immobilienverkauf-marktanalyse-und-tipps/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/der-richtige-zeitpunkt-fuer-den-immobilienverkauf-marktanalyse-und-tipps-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/der-richtige-zeitpunkt-fuer-den-immobilienverkauf-marktanalyse-und-tipps-600.jpg",
+      "alt": "Symbolbild zum Thema: Verkaufszeitpunkt wählen: Markt, Lebensplanung und Kosten abwägen",
+      "generated": true
+    }
   },
   {
     "id": 38,
@@ -1981,7 +2209,13 @@
     "originalAuthor": "Filippo Livera",
     "originalTitle": "Trumps Zollpolitik: Was sie für die Bauzinsen bedeutet",
     "originalUrl": "https://sls.de/donald-trumps-neue-zollpolitik-was-sie-fuer-deutschland-und-die-bauzinsen-bedeutet/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/donald-trumps-neue-zollpolitik-was-sie-fuer-deutschland-und-die-bauzinsen-bedeutet-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/donald-trumps-neue-zollpolitik-was-sie-fuer-deutschland-und-die-bauzinsen-bedeutet-600.jpg",
+      "alt": "Symbolbild zum Thema: Zollpolitik und Bauzinsen: Warum der Zusammenhang nicht eindeutig ist",
+      "generated": true
+    }
   },
   {
     "id": 39,
@@ -2031,7 +2265,13 @@
     "originalAuthor": "Filippo Livera",
     "originalTitle": "Schuldenbremse: Was bedeutet das für die Immobilienbranche",
     "originalUrl": "https://sls.de/schuldenbremse-was-bedeutet-das-fuer-die-immobilienbranche/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/schuldenbremse-was-bedeutet-das-fuer-die-immobilienbranche-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/schuldenbremse-was-bedeutet-das-fuer-die-immobilienbranche-600.jpg",
+      "alt": "Symbolbild zum Thema: Staatliche Investitionen und Immobilien: Welche Folgen vor Ort zählen",
+      "generated": true
+    }
   },
   {
     "id": 40,
@@ -2081,7 +2321,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "EZB senkt Leitzins: Was bedeutet das für Immobilienbesitzer?",
     "originalUrl": "https://sls.de/ezb-senkt-leitzins-was-bedeutet-das-fuer-immobilienbesitzer/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/ezb-senkt-leitzins-was-bedeutet-das-fuer-immobilienbesitzer-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/ezb-senkt-leitzins-was-bedeutet-das-fuer-immobilienbesitzer-600.jpg",
+      "alt": "Symbolbild zum Thema: EZB senkt den Leitzins: Was das für Immobilienkäufer bedeutet",
+      "generated": true
+    }
   },
   {
     "id": 41,
@@ -2131,7 +2377,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Bundestagswahl 2025: Auswirkungen auf die Immobilienbranche und die Positionen der Parteien",
     "originalUrl": "https://sls.de/bundestagswahl-2025-auswirkungen-auf-die-immobilienbranche-und-die-positionen-der-parteien/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/bundestagswahl-2025-auswirkungen-auf-die-immobilienbranche-und-die-positionen-der-parteien-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/bundestagswahl-2025-auswirkungen-auf-die-immobilienbranche-und-die-positionen-der-parteien-600.jpg",
+      "alt": "Symbolbild zum Thema: Wohnungspolitik nach einer Wahl: Was Eigentümer wirklich prüfen sollten",
+      "generated": true
+    }
   },
   {
     "id": 42,
@@ -2181,7 +2433,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Gesetzesänderungen 2025 – Was Immobilienbesitzer und -käufer jetzt wissen müssen",
     "originalUrl": "https://sls.de/gesetzesaenderungen-2025-was-immobilienbesitzer-und-kaeufer-jetzt-wissen-muessen/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/gesetzesaenderungen-2025-was-immobilienbesitzer-und-kaeufer-jetzt-wissen-muessen-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/gesetzesaenderungen-2025-was-immobilienbesitzer-und-kaeufer-jetzt-wissen-muessen-600.jpg",
+      "alt": "Symbolbild zum Thema: Neue Regeln für Immobilien: Eine Prüfliste für Eigentümer",
+      "generated": true
+    }
   },
   {
     "id": 43,
@@ -2231,7 +2489,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Erbbaurecht – Eine moderne Lösung mit Tradition und neuer Relevanz",
     "originalUrl": "https://sls.de/erbbaurecht-eine-moderne-loesung-mit-tradition-und-neuer-relevanz/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/erbbaurecht-eine-moderne-loesung-mit-tradition-und-neuer-relevanz-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/erbbaurecht-eine-moderne-loesung-mit-tradition-und-neuer-relevanz-600.jpg",
+      "alt": "Symbolbild zum Thema: Erbbaurecht kaufen: Laufzeit, Erbbauzins und Vertrag verstehen",
+      "generated": true
+    }
   },
   {
     "id": 44,
@@ -2281,7 +2545,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Jahreswechsel 2025: Ein Wendepunkt für den Immobilienmarkt",
     "originalUrl": "https://sls.de/https-sls-de-jahreswechsel-2025-ein-wendepunkt-fuer-den-immobilienmarkt/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/https-sls-de-jahreswechsel-2025-ein-wendepunkt-fuer-den-immobilienmarkt-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/https-sls-de-jahreswechsel-2025-ein-wendepunkt-fuer-den-immobilienmarkt-600.jpg",
+      "alt": "Symbolbild zum Thema: Jahreswechsel am Immobilienmarkt: Fünf Zahlen für einen klaren Überblick",
+      "generated": true
+    }
   },
   {
     "id": 45,
@@ -2331,7 +2601,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Wohneigentum im Ruhrgebiet – Warum die Region so attraktiv ist",
     "originalUrl": "https://sls.de/wohneigentum-im-ruhrgebiet-warum-die-region-so-attraktiv-ist/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/wohneigentum-im-ruhrgebiet-warum-die-region-so-attraktiv-ist-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/wohneigentum-im-ruhrgebiet-warum-die-region-so-attraktiv-ist-600.jpg",
+      "alt": "Symbolbild zum Thema: Wohneigentum im Ruhrgebiet: Lage und Alltag gemeinsam prüfen",
+      "generated": true
+    }
   },
   {
     "id": 46,
@@ -2379,7 +2655,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Die Renaissance der Bestandsimmobilie: Warum der Altbau wieder gefragt ist - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/die-renaissance-der-bestandsimmobilie-warum-der-altbau-wieder-gefragt-ist/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/die-renaissance-der-bestandsimmobilie-warum-der-altbau-wieder-gefragt-ist-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/die-renaissance-der-bestandsimmobilie-warum-der-altbau-wieder-gefragt-ist-600.jpg",
+      "alt": "Symbolbild zum Thema: Altbau kaufen: Charakter erhalten, Substanz prüfen",
+      "generated": true
+    }
   },
   {
     "id": 47,
@@ -2429,7 +2711,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Aktuelle Entwicklungen auf dem deutschen Immobilienmarkt: Chancen und Herausforderungen - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/entwicklungen-auf-dem-deutschen-immobilienmarkt/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/entwicklungen-auf-dem-deutschen-immobilienmarkt-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/entwicklungen-auf-dem-deutschen-immobilienmarkt-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilienmarkt beobachten: Welche Informationen wirklich weiterhelfen",
+      "generated": true
+    }
   },
   {
     "id": 48,
@@ -2479,7 +2767,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Die Wiederwahl von Trump: Mögliche Auswirkungen auf den deutschen Immobilienmarkt - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/wiederwahl-trump-auswirkungen-deutschen-immobilienmarkt/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/wiederwahl-trump-auswirkungen-deutschen-immobilienmarkt-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/wiederwahl-trump-auswirkungen-deutschen-immobilienmarkt-600.jpg",
+      "alt": "Symbolbild zum Thema: US-Politik und deutsche Immobilien: Direkte Folgen nicht unterstellen",
+      "generated": true
+    }
   },
   {
     "id": 49,
@@ -2527,7 +2821,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilien-Trends 2024: Die meistverkauften Objekte auf dem Markt - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilien-trends-2024-die-meistverkauften-objekte-auf-dem-markt/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilien-trends-2024-die-meistverkauften-objekte-auf-dem-markt-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilien-trends-2024-die-meistverkauften-objekte-auf-dem-markt-600.jpg",
+      "alt": "Symbolbild zum Thema: Welche Immobilie passt zur Nachfrage? Objektarten sinnvoll vergleichen",
+      "generated": true
+    }
   },
   {
     "id": 50,
@@ -2577,7 +2877,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Wärmepumpen im Spannungsfeld: Diskussionen um Nachhaltigkeit und Effizienz - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/waermepumpen-im-spannungsfeld-diskussionen-um-nachhaltigkeit-und-effizienz/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/waermepumpen-im-spannungsfeld-diskussionen-um-nachhaltigkeit-und-effizienz-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/waermepumpen-im-spannungsfeld-diskussionen-um-nachhaltigkeit-und-effizienz-600.jpg",
+      "alt": "Symbolbild zum Thema: Wärmepumpe im Bestand: Welche Fragen vor dem Einbau zählen",
+      "generated": true
+    }
   },
   {
     "id": 51,
@@ -2627,7 +2933,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilienmarkt aktuell: Zeichen der Stabilisierung und die Folgen für Eigentümer und Käufer - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilienmarkt-aktuell-zeichen-der-stabilisierung-und-die-folgen-fuer-eigentuemer-und-kaeufer/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienmarkt-aktuell-zeichen-der-stabilisierung-und-die-folgen-fuer-eigentuemer-und-kaeufer-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienmarkt-aktuell-zeichen-der-stabilisierung-und-die-folgen-fuer-eigentuemer-und-kaeufer-600.jpg",
+      "alt": "Symbolbild zum Thema: Stabilisiert sich der Immobilienmarkt? Signale richtig lesen",
+      "generated": true
+    }
   },
   {
     "id": 52,
@@ -2677,7 +2989,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilien mit schlechter Energiebilanz: Was Eigentümer und Käufer jetzt beachten sollten - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilien-mit-schlechter-energiebilanz-was-eigentuemer-und-kaeufer-jetzt-beachten-sollten/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilien-mit-schlechter-energiebilanz-was-eigentuemer-und-kaeufer-jetzt-beachten-sollten-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilien-mit-schlechter-energiebilanz-was-eigentuemer-und-kaeufer-jetzt-beachten-sollten-600.jpg",
+      "alt": "Symbolbild zum Thema: Schlechte Energiebilanz: Wie Käufer und Verkäufer den Aufwand einordnen",
+      "generated": true
+    }
   },
   {
     "id": 53,
@@ -2725,7 +3043,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Investoren kehren auf den deutschen Immobilienmarkt zurück: Neue Chancen und Risiken - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/investoren-kehren-auf-den-deutschen-immobilienmarkt-zurueck-neue-chancen-und-risiken/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/investoren-kehren-auf-den-deutschen-immobilienmarkt-zurueck-neue-chancen-und-risiken-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/investoren-kehren-auf-den-deutschen-immobilienmarkt-zurueck-neue-chancen-und-risiken-600.jpg",
+      "alt": "Symbolbild zum Thema: Investoreninteresse am Immobilienmarkt: Was Verkäufer daraus ableiten können",
+      "generated": true
+    }
   },
   {
     "id": 54,
@@ -2775,7 +3099,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Zinswende – und was sie für Eigentümer bedeutet - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/zinswende-und-was-sie-fuer-eigentuemer-bedeutet/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/zinswende-und-was-sie-fuer-eigentuemer-bedeutet-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/zinswende-und-was-sie-fuer-eigentuemer-bedeutet-600.jpg",
+      "alt": "Symbolbild zum Thema: Zinswende und Immobilie: Bestehenden Kredit und neuen Kauf getrennt betrachten",
+      "generated": true
+    }
   },
   {
     "id": 55,
@@ -2823,7 +3153,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Der richtige Zeitpunkt für den Verkauf einer Immobilie - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/der-richtige-zeitpunkt-fuer-den-verkauf-einer-immobilie/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/der-richtige-zeitpunkt-fuer-den-verkauf-einer-immobilie-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/der-richtige-zeitpunkt-fuer-den-verkauf-einer-immobilie-600.jpg",
+      "alt": "Symbolbild zum Thema: Verkauf vorbereiten oder noch warten? Eine Entscheidung in drei Schritten",
+      "generated": true
+    }
   },
   {
     "id": 56,
@@ -2880,7 +3216,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Der Dorstener Immobilienmarkt: Entwicklung, Prognosen und Ausblick - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/der-dorstener-immobilienmarkt-entwicklung-prognosen-und-ausblick/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/der-dorstener-immobilienmarkt-entwicklung-prognosen-und-ausblick-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/der-dorstener-immobilienmarkt-entwicklung-prognosen-und-ausblick-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilienmarkt Dorsten: Was für den Wert vor Ort zählt",
+      "generated": true
+    }
   },
   {
     "id": 57,
@@ -2928,7 +3270,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilien als Altersvorsorge: Sichere Anlage für Ihre Zukunft - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilien-als-altersvorsorge-sichere-anlage-fuer-ihre-zukunft/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilien-als-altersvorsorge-sichere-anlage-fuer-ihre-zukunft-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilien-als-altersvorsorge-sichere-anlage-fuer-ihre-zukunft-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilie im Alter: Vermögen, Wohnkomfort und Liquidität zusammen denken",
+      "generated": true
+    }
   },
   {
     "id": 58,
@@ -2976,7 +3324,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilienfinanzierung für Selbstständige: Wie Sie erfolgreich finanzieren - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilienfinanzierung-fuer-selbststaendige-wie-sie-erfolgreich-finanzieren/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilienfinanzierung-fuer-selbststaendige-wie-sie-erfolgreich-finanzieren-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilienfinanzierung-fuer-selbststaendige-wie-sie-erfolgreich-finanzieren-600.jpg",
+      "alt": "Symbolbild zum Thema: Baufinanzierung für Selbstständige: Unterlagen und Reserven vorbereiten",
+      "generated": true
+    }
   },
   {
     "id": 59,
@@ -3024,7 +3378,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Fortgeschrittene Strategien zur Optimierung Ihres Immobilien-Investmentportfolios - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/fortgeschrittene-strategien-zur-optimierung-ihres-immobilien-investmentportfolios/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/fortgeschrittene-strategien-zur-optimierung-ihres-immobilien-investmentportfolios-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/fortgeschrittene-strategien-zur-optimierung-ihres-immobilien-investmentportfolios-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilienportfolio prüfen: Risiken sichtbar machen, bevor sie sich bündeln",
+      "generated": true
+    }
   },
   {
     "id": 60,
@@ -3072,7 +3432,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Immobilien als Kapitalanlage: Ein Leitfaden für Einsteiger - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/immobilien-als-kapitalanlage-ein-leitfaden-fuer-einsteiger/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/immobilien-als-kapitalanlage-ein-leitfaden-fuer-einsteiger-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/immobilien-als-kapitalanlage-ein-leitfaden-fuer-einsteiger-600.jpg",
+      "alt": "Symbolbild zum Thema: Immobilie als Kapitalanlage: Die erste Rechnung realistisch aufbauen",
+      "generated": true
+    }
   },
   {
     "id": 61,
@@ -3143,7 +3509,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Der ultimative Leitfaden zum Immobilienkauf für Erstkäufer - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/der-ultimative-leitfaden-zum-immobilienkauf-fuer-erstkaeufer/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/der-ultimative-leitfaden-zum-immobilienkauf-fuer-erstkaeufer-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/der-ultimative-leitfaden-zum-immobilienkauf-fuer-erstkaeufer-600.jpg",
+      "alt": "Symbolbild zum Thema: Der erste Immobilienkauf: Ein verständlicher Ablauf von Suche bis Schlüssel",
+      "generated": true
+    }
   },
   {
     "id": 62,
@@ -3191,7 +3563,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Renovierung und Modernisierung: So steigern Sie den Wert Ihrer Immobilie - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/renovierung-und-modernisierung-so-steigern-sie-den-wert-ihrer-immobilie/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/renovierung-und-modernisierung-so-steigern-sie-den-wert-ihrer-immobilie-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/renovierung-und-modernisierung-so-steigern-sie-den-wert-ihrer-immobilie-600.jpg",
+      "alt": "Symbolbild zum Thema: Renovierung und Modernisierung: Maßnahmen sinnvoll priorisieren",
+      "generated": true
+    }
   },
   {
     "id": 63,
@@ -3239,7 +3617,13 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Sinkende Tilgungssätze bei Baufinanzierungen: Worauf Immobilienkäufer jetzt achten sollten - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/sinkende-tilgungssaetze-bei-baufinanzierungen-worauf-immobilienkaeufer-jetzt-achten-sollten/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/sinkende-tilgungssaetze-bei-baufinanzierungen-worauf-immobilienkaeufer-jetzt-achten-sollten-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/sinkende-tilgungssaetze-bei-baufinanzierungen-worauf-immobilienkaeufer-jetzt-achten-sollten-600.jpg",
+      "alt": "Symbolbild zum Thema: Niedrigere Tilgung: Heute weniger Rate, später mehr Restschuld",
+      "generated": true
+    }
   },
   {
     "id": 64,
@@ -3287,6 +3671,12 @@
     "originalAuthor": "Dennis Sahlmen",
     "originalTitle": "Willkommen - SLS Immobilienpartner GmbH",
     "originalUrl": "https://sls.de/willkommen/",
-    "editorialNote": ""
+    "editorialNote": "",
+    "image": {
+      "src": "/assets/images/magazin/articles/willkommen-1200.jpg",
+      "thumbnail": "/assets/images/magazin/articles/willkommen-600.jpg",
+      "alt": "Symbolbild zum Thema: Willkommen im Magazin von SLS Immobilienpartner: Orientierung für Ihre Immobilienentscheidung",
+      "generated": true
+    }
   }
 ]
