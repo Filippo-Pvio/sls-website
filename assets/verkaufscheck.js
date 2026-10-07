@@ -889,7 +889,7 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
     if(!saveEnabled)return;
     try{
       writeSavedSalesCheck(window.localStorage,questions,{current,history,answers});
-      saveStatus.textContent='Zwischenstand gespeichert. Sie können diesen Check später in diesem Browser fortsetzen.';
+      saveStatus.textContent='Zwischenstand gespeichert. Sie können diesen Check 30 Tage nach der letzten Speicherung in diesem Browser fortsetzen.';
     }catch{
       saveEnabled=false;
       saveControl.checked=false;
