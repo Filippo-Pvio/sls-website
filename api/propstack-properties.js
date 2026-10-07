@@ -146,7 +146,7 @@ export default async function handler(req,res){
   res.setHeader('X-Robots-Tag','noindex, nofollow');
   if(req.method!=='GET')return res.status(405).json({error:'Methode nicht erlaubt'});
 
-  const key=process.env.PROPSTACK_API_KEY;
+  const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
   if(!key)return res.status(503).json({error:'Propstack ist noch nicht verbunden.'});
 
   try{
@@ -232,7 +232,7 @@ async function detailResponse(id,key,status,res){
         if(publicDetail[field]==null)publicDetail[field]=publicListing[field];
       }
       publicDetail.objectFacts=publicPropertyFacts(combined,publicDetail);
-      publicDetail.inquiryEnabled=['preview','production'].includes(process.env.VERCEL_ENV)&&Boolean(process.env.PROPSTACK_API_KEY);
+      publicDetail.inquiryEnabled=['preview','production'].includes(process.env.VERCEL_ENV)&&Boolean(process.env.PROPSTACK_INQUIRY_API_KEY||process.env.PROPSTACK_API_KEY);
       publicDetail.inquiryTestMode=publicDetail.inquiryEnabled;
 
       return res.status(200).json({items:[publicDetail]});
@@ -243,7 +243,7 @@ export async function propertyDetailResult(id){
   const result={status:200,body:null};
   const res={status(code){result.status=code;return this},json(body){result.body=body;return result}};
   if(!/^\d+$/.test(String(id)))return res.status(404).json({code:'PROPERTY_NOT_FOUND'});
-  const key=process.env.PROPSTACK_API_KEY;
+  const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
   if(!key)return res.status(503).json({code:'PROPERTY_SERVICE_UNAVAILABLE'});
   try{return await detailResponse(id,key,await resolvePublicStatus(key),res)}
   catch(error){console.error('Property HTML data unavailable:',error.message);return res.status(502).json({code:'PROPERTY_SERVICE_UNAVAILABLE'})}

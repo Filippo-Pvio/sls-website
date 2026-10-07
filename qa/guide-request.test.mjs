@@ -9,8 +9,8 @@ const names=['VERCEL_ENV','NODE_ENV','PROPSTACK_API_KEY','PROPSTACK_INQUIRY_API_
 async function fixture(run,options={}) {
  const before=names.map(n=>process.env[n]), oldFetch=global.fetch, oldNow=Date.now;
  let now=oldNow();
- Object.assign(process.env,{VERCEL_ENV:'preview',NODE_ENV:'production',PROPSTACK_API_KEY:'fixture-only'});
- delete process.env.PROPSTACK_INQUIRY_API_KEY;delete process.env.PROPSTACK_GUIDES_API_KEY;
+ Object.assign(process.env,{VERCEL_ENV:'preview',NODE_ENV:'production',PROPSTACK_API_KEY:'legacy-fixture-only',PROPSTACK_GUIDES_API_KEY:'fixture-only'});
+ delete process.env.PROPSTACK_INQUIRY_API_KEY;
  for(const name of names.slice(5)) delete process.env[name];
  Date.now=()=>now;
  const email=`${randomUUID()}@example.org`,writes=[],activities=[],contacts=options.newContact?[]:[{id:12,email,salutation:options.salutation===undefined?'ms':options.salutation,first_name:options.firstName ?? 'Anna',last_name:options.lastName ?? 'Muster'}];

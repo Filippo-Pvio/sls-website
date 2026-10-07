@@ -2,12 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {handler as handler} from '../api/propstack-test-inquiry.js';
 for(const override of [undefined,'12345'])test(`production inquiry uses ${override?'configured':'verified SLS'} note category`,async()=>{
- const names=['VERCEL_ENV','PROPSTACK_API_KEY','PROPSTACK_INQUIRY_SOURCE_ID','PROPSTACK_WEBSITE_INQUIRY_NOTE_TYPE_ID'];
+ const names=['VERCEL_ENV','PROPSTACK_API_KEY','PROPSTACK_PUBLIC_API_KEY','PROPSTACK_INQUIRY_API_KEY','PROPSTACK_INQUIRY_SOURCE_ID','PROPSTACK_WEBSITE_INQUIRY_NOTE_TYPE_ID'];
  const previous=names.map(n=>process.env[n]),before=global.fetch,writes=[];
- Object.assign(process.env,{VERCEL_ENV:'production',PROPSTACK_API_KEY:'fixture',PROPSTACK_INQUIRY_SOURCE_ID:'42'});
+ Object.assign(process.env,{VERCEL_ENV:'production',PROPSTACK_API_KEY:'legacy-fixture',PROPSTACK_PUBLIC_API_KEY:'public-fixture',PROPSTACK_INQUIRY_API_KEY:'inquiry-fixture',PROPSTACK_INQUIRY_SOURCE_ID:'42'});
  if(override)process.env.PROPSTACK_WEBSITE_INQUIRY_NOTE_TYPE_ID=override;else delete process.env.PROPSTACK_WEBSITE_INQUIRY_NOTE_TYPE_ID;
  global.fetch=async(input,options={})=>{
   const path=new URL(input).pathname.replace('/v1/','');let data;
+  assert.equal(options.headers['X-API-KEY'],['property_statuses','units'].includes(path)?'public-fixture':'inquiry-fixture',`Wrong access scope for ${path}`);
   if(path==='property_statuses')data=[{id:7,name:'Vermarktung'}];
   else if(path==='units')data={data:[{id:17,marketing_type:'BUY',status:{id:7},broker_id:9}]};
   else if(path==='contacts')data={data:[{id:123,first_name:'Anna',last_name:'Muster'}]};

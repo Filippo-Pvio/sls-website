@@ -1,4 +1,5 @@
 import {withFormSecurity} from '../lib/form-security.mjs';
+import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {buildSavedQuery,publicCriteria,sameSavedQuery} from '../lib/search-profile.mjs';
 
 const text=(value,max=150)=>typeof value==='string'?value.trim().slice(0,max):'';
@@ -79,7 +80,7 @@ export async function handler(req,res){
   if(!req.headers?.['content-type']?.startsWith('application/json')||Number(req.headers?.['content-length']||0)>6000)
     return res.status(400).json({error:'Ungültige Anfrage.'});
 
-  const key=process.env.PROPSTACK_SEARCH_PROFILE_API_KEY||process.env.PROPSTACK_INQUIRY_API_KEY||process.env.PROPSTACK_API_KEY;
+  const key=scopedPropstackKey('PROPSTACK_SEARCH_PROFILE_API_KEY');
   if(!key)return res.status(503).json({error:'Der Suchauftrag kann derzeit nicht gespeichert werden.'});
 
   const body=req.body||{};

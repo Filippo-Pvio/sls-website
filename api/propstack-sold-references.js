@@ -119,7 +119,7 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store');
     return res.status(400).json({error:'Ungültige Referenzseite'});
   }
-  const key = process.env.PROPSTACK_API_KEY;
+  const key = process.env.PROPSTACK_PUBLIC_API_KEY || process.env.PROPSTACK_API_KEY;
   if (!key) {
     res.setHeader('Cache-Control', 'no-store');
     return res.status(503).json({ error: 'Referenzen noch nicht verbunden' });

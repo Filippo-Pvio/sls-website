@@ -7,7 +7,7 @@ const titles=[...Object.values(CONTACT_TOPICS).map(x=>x.title),CALLBACK_TITLE];
 async function fixture(run,options={}) {
  const vars=['NODE_ENV','VERCEL_ENV','PROPSTACK_API_KEY','PROPSTACK_CONTACT_API_KEY','PROPSTACK_INQUIRY_API_KEY'];
  const env=vars.map(x=>process.env[x]),fetchBefore=global.fetch,nowBefore=Date.now;let now=Date.now();
- Object.assign(process.env,{NODE_ENV:'production',VERCEL_ENV:'production',PROPSTACK_API_KEY:'test-only'});delete process.env.PROPSTACK_CONTACT_API_KEY;delete process.env.PROPSTACK_INQUIRY_API_KEY;Date.now=()=>now;
+ Object.assign(process.env,{NODE_ENV:'production',VERCEL_ENV:'production',PROPSTACK_API_KEY:'legacy-test-only',PROPSTACK_CONTACT_API_KEY:'test-only'});delete process.env.PROPSTACK_INQUIRY_API_KEY;Date.now=()=>now;
  const email=`${randomUUID()}@example.org`,contacts=options.newContact?[]:[{id:17,first_name:'Anna',last_name:options.conflict?'Andere':'Muster',email}],notes=[],writes=[];
  let failed=false;
  global.fetch=async(url,init)=>{

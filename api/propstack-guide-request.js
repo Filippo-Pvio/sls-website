@@ -1,4 +1,5 @@
 import {withFormSecurity} from '../lib/form-security.mjs';
+import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
 import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION, GUIDE_PRIVACY_ACK_VERSION, GUIDE_PRIVACY_ACK_TEXT, GUIDE_PRIVACY_URL} from '../lib/guide-consent.mjs';
 import {newsletterConfig, requestNewsletter} from '../lib/guide-newsletter.mjs';
@@ -193,7 +194,7 @@ export async function handler(req, res) {
   const approvedPublic = process.env.VERCEL_ENV === 'production' && host === 'sls-website-eight.vercel.app';
   const local = process.env.NODE_ENV !== 'production' && /^localhost(?::\d+)?$/.test(host);
   if (!preview && !approvedPublic && !local) return res.status(403).json({error:'Ratgeberanforderungen sind hier noch nicht freigeschaltet.'});
-  const key = process.env.PROPSTACK_GUIDES_API_KEY || process.env.PROPSTACK_INQUIRY_API_KEY || process.env.PROPSTACK_API_KEY;
+  const key = scopedPropstackKey('PROPSTACK_GUIDES_API_KEY');
   if (!key) return res.status(503).json({error:'Die Ratgeberanforderung ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.'});
 
   if (req.method === 'GET') {

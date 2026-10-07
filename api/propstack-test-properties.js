@@ -12,7 +12,7 @@ async function read(path, key) {
 export default async function handler(req,res) {
   res.setHeader('Cache-Control','no-store');res.setHeader('X-Robots-Tag','noindex, nofollow');
   if (req.method !== 'GET') return res.status(405).json({error:'Methode nicht erlaubt'});
-  const key=process.env.PROPSTACK_API_KEY;
+  const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
   const ids=allowedIds(process.env.PROPSTACK_TEST_PROPERTY_IDS);
   const statusName=process.env.PROPSTACK_PUBLIC_STATUS_NAME?.trim();
   if (!key || !ids.size || !statusName) return res.status(503).json({error:'Propstack-Testzugang noch nicht vollständig konfiguriert.'});
