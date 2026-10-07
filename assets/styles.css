@@ -3336,25 +3336,29 @@ html body .fullscreen-nav-bottom .offcanvas-contact-cta:hover{background:#294b5c
 html body .fullscreen-nav-bottom .offcanvas-contact-cta:focus-visible{outline:3px solid #345b6e;outline-offset:4px}
 @media(max-width:980px){html body .fullscreen-nav-bottom .offcanvas-contact-cta{width:100%;padding-inline:16px}}
 
-/* Desktop hero framing: keep people below the navigation and limit cover zoom. */
+/* Full-width desktop photos: adjust the crop without narrowing the image layer. */
 @media (min-width:901px) {
   body #main :is(.hero-premium,.buy-intro:not(.profile-intro-portrait),.finance-intro) .hero-scene,
-  body #main .knowledge-intro-hero .knowledge-hero-scene,
   body #main .mag-hero .mag-hero-scenes img {
-    inset:92px 0 0 auto!important;
-    width:min(100%,1100px)!important;
-    height:calc(100% - 92px)!important;
-    object-position:50% 0%!important;
-    background-position:50% 0%!important;
-    mask-image:linear-gradient(90deg,transparent,#000 16%),linear-gradient(180deg,transparent,#000 32px);
-    mask-composite:intersect;
-  }
-  /* Aerial scenes use their full width; their subjects sit further down the image. */
-  body #main :is(.hero-premium,.buy-intro,.finance-intro) .hero-scene:is([src*="/references-hero/beratung-"],[src*="/sell-hero/kontakt-"]) {
     inset:0!important;
     width:100%!important;
     height:100%!important;
-    object-position:50% 45%!important;
+    object-position:50% 0%!important;
     mask-image:none;
+  }
+  body #main .knowledge-intro-hero .knowledge-hero-scene {
+    background-position:50% 0%!important;
+  }
+  body #main :is(.hero-premium,.buy-intro,.finance-intro) .hero-scene:is([src*="/references-hero/beratung-"],[src*="/sell-hero/kontakt-"]) {
+    object-position:50% 45%!important;
+  }
+}
+
+/* Match the fade duration to the slideshow controller; keep reset frames instant. */
+@media (prefers-reduced-motion:no-preference) {
+  body #main :is(.hero-premium,.buy-intro,.finance-intro) .hero-scene:not(.is-resetting),
+  body #main .knowledge-intro-hero .knowledge-hero-scene,
+  body #main .mag-hero .mag-hero-scenes img {
+    transition:opacity 3.2s ease-in-out;
   }
 }

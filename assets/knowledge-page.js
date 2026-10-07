@@ -20,7 +20,7 @@
         scenes[activeScene].classList.remove("is-active");
         activeScene = (activeScene + 1) % scenes.length;
         scenes[activeScene].classList.add("is-active");
-      }, 5600);
+      }, 13200);
     }
   }
 
