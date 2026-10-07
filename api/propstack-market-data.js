@@ -23,7 +23,7 @@ export default async function handler(req,res){
   res.setHeader('X-Robots-Tag','noindex,nofollow');
   res.setHeader('Cache-Control','private,no-store');
   if(req.method!=='GET') return res.status(405).json({error:'method_not_allowed'});
-  const key=process.env.PROPSTACK_API_KEY;
+  const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
   if(!key) return res.status(503).json({error:'propstack_not_connected'});
 
   try{

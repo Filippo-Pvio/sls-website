@@ -1,4 +1,5 @@
 import {withFormSecurity} from '../lib/form-security.mjs';
+import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 const text=(value,max=150)=>typeof value==='string'?value.trim().slice(0,max):'';
 const normalise=value=>String(value||'').trim().toLocaleLowerCase('de-DE');
 const html=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -193,8 +194,8 @@ export async function handler(req,res){
   if(!req.headers?.['content-type']?.startsWith('application/json')||Number(req.headers?.['content-length']||0)>5000)
     return res.status(400).json({error:'Ungültige Anfrage.'});
 
-  const readKey=process.env.PROPSTACK_API_KEY;
-  const writeKey=process.env.PROPSTACK_INQUIRY_API_KEY||readKey;
+  const readKey=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
+  const writeKey=scopedPropstackKey('PROPSTACK_INQUIRY_API_KEY');
   if(!readKey||!writeKey)return res.status(503).json({error:'Propstack-Anfragezugang ist noch nicht verfügbar.'});
 
   const body=req.body||{};
@@ -214,7 +215,7 @@ export async function handler(req,res){
     const unit=await publicUnit(id,readKey,statusId);
     if(!unit)return res.status(404).json({error:'Objekt nicht verfügbar.'});
 
-    const sourceId=await resolveInquirySource(readKey);
+    const sourceId=await resolveInquirySource(writeKey);
     if(!sourceId){
       return res.status(503).json({
         error:'In Propstack fehlt noch die Kontaktquelle „SLS Website“ bzw. deren API-ID. Es wurde noch keine Portalanfrage ausgelöst.',
@@ -222,7 +223,7 @@ export async function handler(req,res){
       });
     }
 
-    const noteTypeId=await resolveWebsiteInquiryNoteType(readKey);
+    const noteTypeId=await resolveWebsiteInquiryNoteType(writeKey);
     if(!noteTypeId){
       return res.status(503).json({
         error:'Die Propstack-Notiz-Kategorie „SLS Website Anfrage“ konnte mit den aktuellen API-Rechten nicht automatisch gelesen werden. Es wurde keine Anfrage ausgelöst.',
@@ -246,7 +247,7 @@ export async function handler(req,res){
     let existingDeals=[];
     let dealCheckAvailable=true;
     try{
-      existingDeals=await dealsForContactAndProperty(readKey,contactId,Number(id));
+      existingDeals=await dealsForContactAndProperty(writeKey,contactId,Number(id));
     }catch(error){
       dealCheckAvailable=false;
       console.warn('Propstack deal pre-check unavailable:',error.message);
@@ -298,7 +299,7 @@ export async function handler(req,res){
     let activityType=null;
     if(Number.isSafeInteger(inquiryId)&&inquiryId>0){
       try{
-        const activity=await propstack(`activities/${inquiryId}`,readKey);
+        const activity=await propstack(`activities/${inquiryId}`,writeKey);
         activitySourceId=Number(activity?.source_id||activity?.client_source_id||activity?.task?.client_source_id)||null;
         activityType=activity?.activatable_type||activity?.type||activity?.task?.activatable_type||null;
         activityVerified=activitySourceId===sourceId;
@@ -310,7 +311,7 @@ export async function handler(req,res){
     let deal=hadDealBefore?existingDeals[0]:null;
     if(!hadDealBefore&&dealCheckAvailable){
       try{
-        deal=await waitForDeal(readKey,contactId,Number(id));
+        deal=await waitForDeal(writeKey,contactId,Number(id));
       }catch(error){
         dealCheckAvailable=false;
         console.warn('Propstack deal post-check unavailable:',error.message);

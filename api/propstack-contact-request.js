@@ -1,4 +1,5 @@
 import {withFormSecurity} from '../lib/form-security.mjs';
+import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
 import {CONTACT_TOPICS, CALLBACK_TITLE, parseContactRequest, contactNoteBody} from '../lib/contact-request.mjs';
 const attempts = new Map(), pending = new Map(), uncertain = new Map();
@@ -77,7 +78,7 @@ export async function handler(req,res) {
   const local=process.env.NODE_ENV!=='production' && /^localhost(?::\d+)?$/.test(host);
   const allowed=['sls-website-eight.vercel.app','sls.de','www.sls.de'].includes(host) || (process.env.VERCEL_ENV==='preview'&&/^[a-z0-9-]+\.vercel\.app$/.test(host));
   if(!allowed&&!local)return res.status(403).json({error:'Anfrage nicht erlaubt.'});
-  const key=process.env.PROPSTACK_CONTACT_API_KEY || process.env.PROPSTACK_INQUIRY_API_KEY || process.env.PROPSTACK_API_KEY;
+  const key=scopedPropstackKey('PROPSTACK_CONTACT_API_KEY');
   if(!key)return res.status(503).json({error:'Das Kontaktformular ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.'});
   if(req.method==='GET'){
     try {

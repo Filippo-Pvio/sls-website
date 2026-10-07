@@ -271,7 +271,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Methode nicht erlaubt' });
   }
 
-  const key = process.env.PROPSTACK_API_KEY;
+  const key = process.env.PROPSTACK_PUBLIC_API_KEY || process.env.PROPSTACK_API_KEY;
   if (!key) {
     res.setHeader('Cache-Control', 'no-store');
     return res.status(503).json({ error: 'Immobilienfeed noch nicht verbunden' });
