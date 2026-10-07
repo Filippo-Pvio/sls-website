@@ -1,5 +1,5 @@
 import {timingSafeEqual} from 'node:crypto';
-import {securityStore} from './lib/form-security.js';
+import {securityStore} from '../lib/form-security.mjs';
 export default async function handler(req,res){
  res.setHeader('Cache-Control','no-store');res.setHeader('X-Robots-Tag','noindex, nofollow');
  if(req.method!=='GET')return res.status(405).json({error:'Methode nicht erlaubt.'});

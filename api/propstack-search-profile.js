@@ -1,4 +1,4 @@
-import {withFormSecurity} from './lib/form-security.js';
+import {withFormSecurity} from '../lib/form-security.mjs';
 import {buildSavedQuery,publicCriteria,sameSavedQuery} from '../lib/search-profile.mjs';
 
 const text=(value,max=150)=>typeof value==='string'?value.trim().slice(0,max):'';

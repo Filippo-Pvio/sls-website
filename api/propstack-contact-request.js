@@ -1,4 +1,4 @@
-import {withFormSecurity} from './lib/form-security.js';
+import {withFormSecurity} from '../lib/form-security.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
 import {CONTACT_TOPICS, CALLBACK_TITLE, parseContactRequest, contactNoteBody} from '../lib/contact-request.mjs';
 const attempts = new Map(), pending = new Map(), uncertain = new Map();

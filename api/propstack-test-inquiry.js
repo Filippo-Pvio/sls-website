@@ -1,4 +1,4 @@
-import {withFormSecurity} from './lib/form-security.js';
+import {withFormSecurity} from '../lib/form-security.mjs';
 const text=(value,max=150)=>typeof value==='string'?value.trim().slice(0,max):'';
 const normalise=value=>String(value||'').trim().toLocaleLowerCase('de-DE');
 const html=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));

@@ -1,4 +1,4 @@
-import {withFormSecurity} from './lib/form-security.js';
+import {withFormSecurity} from '../lib/form-security.mjs';
 import {createHmac,randomUUID,timingSafeEqual} from 'node:crypto';
 import {careerConfigured,parseApplication,sendApplication,CAREER_RECIPIENT,MAX_BODY_BYTES,MAX_FILE_BYTES,MAX_TOTAL_BYTES} from '../lib/career-application.mjs';
 export const config = {api:{bodyParser:false}};

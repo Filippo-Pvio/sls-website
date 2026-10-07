@@ -1,4 +1,4 @@
-import {withFormSecurity} from './lib/form-security.js';
+import {withFormSecurity} from '../lib/form-security.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
 import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION, GUIDE_PRIVACY_ACK_VERSION, GUIDE_PRIVACY_ACK_TEXT, GUIDE_PRIVACY_URL} from '../lib/guide-consent.mjs';
 import {newsletterConfig, requestNewsletter} from '../lib/guide-newsletter.mjs';

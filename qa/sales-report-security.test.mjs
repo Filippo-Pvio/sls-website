@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import secured,{handler} from '../api/sales-check-report.js';
-import {consumeVerificationScript} from '../api/lib/email-verification.js';
+import {consumeVerificationScript} from '../lib/email-verification.mjs';
 const response=()=>({setHeader(){},status(code){this.code=code;return this},json(body){this.body=body;return this}});
 test('personal report sends only a confirmation first and only the confirmed report as PDF',async()=>{
  const names=['KV_REST_API_URL','KV_REST_API_TOKEN','UPSTASH_REDIS_REST_URL','UPSTASH_REDIS_REST_TOKEN','MS_GRAPH_TENANT_ID','MS_GRAPH_CLIENT_ID','MS_GRAPH_CLIENT_SECRET'],before=names.map(n=>process.env[n]),oldFetch=global.fetch;

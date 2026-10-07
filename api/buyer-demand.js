@@ -1,4 +1,4 @@
-import {withReadSecurity} from './lib/form-security.js';
+import {withReadSecurity} from '../lib/form-security.mjs';
 import {createHmac} from 'node:crypto';
 import {parseDemand,countDemand,demandInventory} from '../lib/buyer-demand.mjs';
 let snapshot=null,inflight=null;const limits=new Map();

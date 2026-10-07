@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {withFormSecurity,rateScript,claimScript,finishScript} from '../api/lib/form-security.js';
-import {verifyReportEmail,consumeVerificationScript} from '../api/lib/email-verification.js';
+import {withFormSecurity,rateScript,claimScript,finishScript} from '../lib/form-security.mjs';
+import {verifyReportEmail,consumeVerificationScript} from '../lib/email-verification.mjs';
 function memoryRedis(){const values=new Map(),calls=[];let down=false;return {values,calls,setDown:v=>down=v,fetch:async(url,init)=>{calls.push(JSON.parse(init.body));if(down)return {ok:false};const args=JSON.parse(init.body);let result;const get=k=>values.get(k),set=(k,v)=>values.set(k,v);
  if(args[0]==='SET'){set(args[1],args[2]);result='OK';}
  else if(args[0]==='EVAL'){

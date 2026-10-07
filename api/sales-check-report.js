@@ -1,5 +1,5 @@
-import {withFormSecurity, FormSecurityError} from './lib/form-security.js';
-import {verifyReportEmail} from './lib/email-verification.js';
+import {withFormSecurity, FormSecurityError} from '../lib/form-security.mjs';
+import {verifyReportEmail} from '../lib/email-verification.mjs';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
 const BRAND = {
