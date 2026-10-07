@@ -63,7 +63,7 @@
         <h4>Ihre Frage und Ihre Daten</h4><p>Zum Absenden einer Frage sind keine Kontaktdaten erforderlich. Geben Sie bitte keine Namen, Kontaktdaten oder andere personenbezogene oder vertrauliche Informationen ein. Ihre Frage wird über den SLS-Fragedienst zur Verarbeitung an OpenAI übermittelt. Wenn die KI-Antwort nicht verfügbar ist, können Informationen aus der Wissensbasis von SLS Immobilienpartner angezeigt werden.</p>
         ${dialogueEnabled ? '<h4>Ihr Gespräch</h4><p>SIA kann eine kurze Rückfrage stellen, wenn eine wesentliche Angabe fehlt. Die letzten drei Frage-Antwort-Paare werden zur Einordnung Ihrer nächsten Nachricht an OpenAI übermittelt. Sie bleiben nur im geöffneten Widget gespeichert. Mit „Neues Gespräch“ oder durch Neuladen der Seite löschen Sie diesen Kontext.</p>' : ''}
         ${dailyLimit === 10 ? `<h4>Ihr Tageskontingent</h4><p>Pro Browser sind täglich zehn Antworten möglich. Technische Fehler${dialogueEnabled ? ' und reine Klärungsfragen' : ''} zählen nicht mit. Für den Zähler verwenden wir ein anonymes Cookie, das bei Nutzung auf 24 Stunden verlängert wird. Es enthält keine Fragen oder Kontaktdaten. Das Kontingent wird um Mitternacht deutscher Zeit zurückgesetzt.</p>` : ''}
-        <p>Weitere Informationen finden Sie in unserer <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
+        <p>Weitere Informationen finden Sie in unserer <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
         <button class="notes-back" type="button">Zurück zu SIA</button>
       </section>
     </dialog>`;

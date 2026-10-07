@@ -8,6 +8,10 @@
     if (fallback) fallback.hidden = false;
   };
 
+  const notice=document.createElement('div');notice.className='external-service-notice';
+  const text=document.createElement('p');text.textContent='Die Immobilienbewertung wird von PriceHubble bereitgestellt. Beim Laden werden Verbindungsdaten an PriceHubble übertragen. Ihre Eingaben erfolgen direkt beim Anbieter.';
+  const button=document.createElement('button');button.type='button';button.className='button';button.textContent='Bewertungsrechner laden';notice.append(text,button);frame.before(notice);frame.hidden=true;
+  button.addEventListener('click',()=>{notice.remove();frame.hidden=false;
   const script = document.createElement("script");
   script.src = "https://fisher.pricehubble.com/widget.js";
   script.async = true;
@@ -32,4 +36,5 @@
   };
   script.onerror = showFallback;
   document.head.appendChild(script);
+  },{once:true});
 })();

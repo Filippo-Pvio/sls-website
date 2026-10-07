@@ -38,7 +38,7 @@ async function fixture(withViewport = true, mobile = true, sources = [], reply =
   const viewport = Object.assign(element(), { height: 780, offsetTop: 0 });
   const window = Object.assign(element(), {
     innerHeight: 780, scrollX: 0, scrollY: 1250,
-    setTimeout: () => 1, clearTimeout() {},
+    setTimeout: () => 1, clearTimeout() {},setInterval:()=>1,clearInterval(){},
     matchMedia: () => ({ matches: mobile }),
     scrollTo(options) { scrollCalls.push(options); },
     visualViewport: withViewport ? viewport : undefined,
@@ -46,8 +46,8 @@ async function fixture(withViewport = true, mobile = true, sources = [], reply =
     cancelAnimationFrame(id) { frames.delete(id); },
   });
   await runInNewContext(code, {
-    window,
-    document: { querySelector: () => null, createElement: tag => tag === 'sls-sia' ? ({ attachShadow: () => root }) : element(), body },
+    window,location:{pathname:'/kontakt/'},
+    document: { title:'SLS Test',querySelector: () => null, createElement: tag => tag === 'sls-sia' ? ({ attachShadow: () => root }) : element(), body },
     fetch: async (url, options) => { if(options?.body) requests.push(JSON.parse(options.body)); return { ok: url === '/api/sia-config' || !reply?.code, status: reply?.code ? 429 : 200, json: async () => url === '/api/sia-config' ? { enabled: true, dailyLimit: 10, dialogueEnabled: dialogue } : reply || { provider: 'OpenAI', answer: 'Antwort', sources } }; },
     AbortController, setTimeout, clearTimeout,
   });

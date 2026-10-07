@@ -157,7 +157,7 @@ footer.innerHTML = `
   </div>
   <div class="footer-menu-band"><div class="footer-unified-wrap">
     <div class="footer-navigation">${footerGroups}</div>
-    <div class="footer-legal"><span>&copy; ${new Date().getFullYear()} SLS Immobilienpartner GmbH</span><nav aria-label="Rechtliche Informationen"><a href="https://sls.de/datenschutz/">Datenschutz</a><a href="https://sls.de/impressum/">Impressum</a></nav></div>
+    <div class="footer-legal"><span>&copy; ${new Date().getFullYear()} SLS Immobilienpartner GmbH</span><nav aria-label="Rechtliche Informationen"><a href="/datenschutz/">Datenschutz</a><a href="https://sls.de/impressum/">Impressum</a></nav></div>
   </div></div>`;
 // Resolve the real closing surface, including transparent property-page wrappers.
 function syncFooterTone() {
@@ -349,3 +349,15 @@ if (form) {
     }
   });
 }
+
+// External calculators load only after the visitor activates them.
+window.slsPrepareExternalFrames=(root=document)=>root.querySelectorAll('iframe[data-external-src]:not([data-external-ready])').forEach(frame=>{
+ frame.dataset.externalReady='1';
+ const notice=document.createElement('div');notice.className='external-service-notice';
+ const text=document.createElement('p');text.textContent='Dieser Rechner wird von Justhome bereitgestellt. Beim Laden werden Verbindungsdaten an den Anbieter übertragen.';
+ const button=document.createElement('button');button.type='button';button.className='button';button.textContent='Rechner laden';
+ notice.append(text,button);frame.before(notice);frame.hidden=true;
+ button.addEventListener('click',()=>{frame.src=frame.dataset.externalSrc;frame.hidden=false;notice.remove();},{once:true});
+});
+
+window.slsPrepareExternalFrames();

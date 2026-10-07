@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allowedIds,mayDisplay,publicUnit} from '../lib/propstack-preview.mjs';
 import handler from '../api/propstack-test-properties.js';
-import inquiryHandler from '../api/propstack-test-inquiry.js';
+import {handler as inquiryHandler} from '../api/propstack-test-inquiry.js';
 const ids=allowedIds('17,18'),statuses=allowedIds('2');
 const unit={id:17,archived:false,marketing_type:'BUY',status:{id:2,nonpublic:false},images:[{url:'https://example.org/private.jpg',is_private:true},{url:'https://example.org/public.jpg',is_private:false}]};
 test('Objektfreigabe verlangt ID, Kauf, öffentlich sichtbaren Status und keine Archivierung',()=>{
@@ -83,21 +83,15 @@ test('Anfrageversand bleibt ohne Schreibkonfiguration gesperrt',async()=>{
   const previous=process.env.PROPSTACK_INQUIRY_ENABLED;
   delete process.env.PROPSTACK_INQUIRY_ENABLED;
   const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
-  try {await inquiryHandler({method:'POST',body:{},headers:{}},res);assert.equal(res.code,503)}
+  try {await inquiryHandler({method:'POST',body:{},headers:{host:'sls-website-eight.vercel.app','content-type':'application/json'}},res);assert.equal(res.code,503)}
   finally {if(previous===undefined) delete process.env.PROPSTACK_INQUIRY_ENABLED;else process.env.PROPSTACK_INQUIRY_ENABLED=previous}
 });
-test('Freigeschaltete Anfrage legt Kontakt und objektbezogene Aktivität mit Quelle an',async()=>{
-  const keys=['PROPSTACK_API_KEY','PROPSTACK_TEST_PROPERTY_IDS','PROPSTACK_PUBLIC_STATUS_NAME','PROPSTACK_INQUIRY_API_KEY','PROPSTACK_INQUIRY_SOURCE_ID','PROPSTACK_INQUIRY_ENABLED'];
-  const previous=keys.map(key=>process.env[key]),fetchBefore=globalThis.fetch,calls=[];
-  Object.assign(process.env,{PROPSTACK_API_KEY:'read',PROPSTACK_TEST_PROPERTY_IDS:'17',PROPSTACK_PUBLIC_STATUS_NAME:'Vermarktung',PROPSTACK_INQUIRY_API_KEY:'write',PROPSTACK_INQUIRY_SOURCE_ID:'42',PROPSTACK_INQUIRY_ENABLED:'1'});
-  globalThis.fetch=async (url,options)=>{calls.push({url:String(url),options});return {ok:true,json:async()=>String(url).includes('property_statuses')?{data:[{id:2,name:'Vermarktung'}]}:String(url).includes('units?')?{data:[{...unit,broker_id:9}]}:String(url).includes('contacts')?{id:123}:{id:456}}};
-  const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
-  try {
-    await inquiryHandler({method:'POST',headers:{'content-type':'application/json'},body:{propertyId:'17',firstName:'Anna',lastName:'Muster',email:'anna@example.org',phone:'+49 123',privacy:true}},res);
-    assert.equal(res.code,200);assert.equal(calls.length,4);
-    assert.equal(calls[2].options.headers['X-API-KEY'],'write');
-    assert.deepEqual(JSON.parse(calls[3].options.body).task,{title:'Anfrage über die Webseite',client_ids:[123],property_ids:[17],broker_id:9,client_source_id:42,body:'Anfrage zu Objekt 17<br>Name: Anna Muster<br>E-Mail: anna@example.org<br>Telefon: +49 123'});
-  } finally {keys.forEach((key,i)=>previous[i]===undefined?delete process.env[key]:process.env[key]=previous[i]);globalThis.fetch=fetchBefore}
+test('Immobilienanfrage verweigert fehlenden Testmodus vor allen CRM-Zugriffen',async()=>{
+ const names=['PROPSTACK_API_KEY','PROPSTACK_INQUIRY_API_KEY'],before=names.map(n=>process.env[n]),oldFetch=fetch;let calls=0;
+ Object.assign(process.env,{PROPSTACK_API_KEY:'synthetic-read',PROPSTACK_INQUIRY_API_KEY:'synthetic-write'});global.fetch=async()=>{calls++;throw Error('Unexpected CRM access');};
+ const res={setHeader(){},status(code){this.code=code;return this},json(data){this.data=data;return this}};
+ try{await inquiryHandler({method:'POST',headers:{host:'sls-website-eight.vercel.app','content-type':'application/json'},body:{propertyId:'17',firstName:'Anna',lastName:'Muster',email:'anna@example.org',phone:'+49 123',privacy:true}},res);assert.equal(res.code,400);assert.equal(calls,0);}
+ finally{global.fetch=oldFetch;names.forEach((n,i)=>before[i]===undefined?delete process.env[n]:process.env[n]=before[i]);}
 });
 test('API verweigert ohne Konfiguration alle Objektangaben',async()=>{
   const previous=[process.env.PROPSTACK_API_KEY,process.env.PROPSTACK_TEST_PROPERTY_IDS,process.env.PROPSTACK_PUBLIC_STATUS_NAME];

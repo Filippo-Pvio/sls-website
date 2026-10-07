@@ -26,6 +26,31 @@
   ],
   "headers": [
     {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com https://fisher.pricehubble.com https://*.propstack.de; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.googleapis.com https://*.gstatic.com https://*.pricehubble.com https://*.propstack.de; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://budget-check.justhome.com https://calculator.justhome.com https://*.pricehubble.com https://*.propstack.de; media-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+        }
+      ]
+    },
+    {
       "source": "/immobilien-test/:path*",
       "headers": [
         {
@@ -78,8 +103,14 @@
     },
     "api/buyer-demand.js": {
       "maxDuration": 60
+    },
+    "api/sales-check-report.js": {
+      "maxDuration": 60,
+      "regions": [
+        "fra1"
+      ]
     }
   },
-  "buildCommand": "node scripts/build-magazine.mjs",
-  "outputDirectory": "."
+  "buildCommand": "node scripts/build-magazine.mjs && node scripts/build-public-site.mjs",
+  "outputDirectory": ".site-output"
 }

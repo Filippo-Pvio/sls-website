@@ -1,3 +1,4 @@
+import {withFormSecurity} from './lib/form-security.js';
 import {createHmac,randomUUID,timingSafeEqual} from 'node:crypto';
 import {careerConfigured,parseApplication,sendApplication,CAREER_RECIPIENT,MAX_BODY_BYTES,MAX_FILE_BYTES,MAX_TOTAL_BYTES} from '../lib/career-application.mjs';
 export const config = {api:{bodyParser:false}};
@@ -25,7 +26,7 @@ async function readBody(req) {
   for await (const chunk of req) { size+=chunk.length;if(size>MAX_BODY_BYTES)throw Object.assign(new Error('Ihre Unterlagen sind zu groß. Bitte reduzieren Sie die Dateigröße.'),{status:413});parts.push(chunk); }
   try{return JSON.parse(Buffer.concat(parts).toString('utf8'));}catch{throw Object.assign(new Error('Die Bewerbung konnte nicht gelesen werden.'),{status:400});}
 }
-export default async function handler(req,res) {
+export async function handler(req,res) {
   res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');
   if(req.method==='GET')return res.status(200).json({available:careerConfigured(process.env),recipient:CAREER_RECIPIENT,maxFileBytes:MAX_FILE_BYTES,maxTotalBytes:MAX_TOTAL_BYTES,...(careerConfigured(process.env)?{token:issue(process.env.CAREER_TOKEN_SECRET)}:{})});
   if(req.method!=='POST'){res.setHeader('Allow','GET, POST');return res.status(405).json({error:'Diese Anfrage wird nicht unterstützt.'});}
@@ -54,3 +55,6 @@ export default async function handler(req,res) {
     catch {states.set(id,{status:'uncertain',until:now+60*60*1000});return res.status(502).json({error:'Der Versand konnte nicht eindeutig bestätigt werden. Bitte fragen Sie bei bewerbung@sls.de nach und nennen Sie die Referenz.',reference:id});}
   } catch(error) {return res.status(error.status||400).json({error:error.status?error.message:'Bitte prüfen Sie Ihre Angaben und Unterlagen.'});}
 }
+
+const securedCareer=withFormSecurity("career-application",handler,{maxBytes:MAX_BODY_BYTES,postLimit:6,windowSeconds:1800});
+export default function dispatch(req,res){return careerConfigured(process.env)?securedCareer(req,res):handler(req,res);}

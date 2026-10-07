@@ -1,3 +1,4 @@
+import {withFormSecurity} from './lib/form-security.js';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
 import {CONTACT_TOPICS, CALLBACK_TITLE, parseContactRequest, contactNoteBody} from '../lib/contact-request.mjs';
 const attempts = new Map(), pending = new Map(), uncertain = new Map();
@@ -69,7 +70,7 @@ async function record(key,request,id,categories) {
   }
   return {status:200,ok:true};
 }
-export default async function handler(req,res) {
+export async function handler(req,res) {
   res.setHeader('Cache-Control','no-store');res.setHeader('X-Robots-Tag','noindex, nofollow');
   if(!['GET','POST'].includes(req.method)){res.setHeader('Allow','GET, POST');return res.status(405).json({error:'Methode nicht erlaubt.'});}
   const host=String(req.headers?.host || '').toLowerCase();
@@ -114,3 +115,5 @@ export default async function handler(req,res) {
     return res.status(502).json({error:'Ihre Anfrage konnte noch nicht vollständig bestätigt werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.'});
   }
 }
+
+export default withFormSecurity('propstack-contact-request',handler,{});

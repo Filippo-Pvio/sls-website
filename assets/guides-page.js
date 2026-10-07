@@ -1,4 +1,5 @@
 (() => {
+  const secureFormFetch=(...args)=>import('/assets/form-security.js').then(module=>module.formFetch(...args));
  const form = document.getElementById('guide-form');
  const select = document.getElementById('guide-select');
  if (!form || !select) return;
@@ -30,7 +31,7 @@
  async function prepare(correction = false) {
   token = null;
   try {
-   const response = await fetch(endpoint, {headers:{Accept:'application/json'}, cache:'no-store'});
+   const response = await secureFormFetch(endpoint, {headers:{Accept:'application/json'}, cache:'no-store'});
    const data = await response.json();
    if (!response.ok || !data.availableGuides?.includes('VERKAUF') || !data.token) throw new Error(data.error || 'Die Ratgeberanforderung ist gerade nicht verfügbar. Bitte versuchen Sie es später erneut.');
    token = data.token;
@@ -77,7 +78,7 @@
   button.textContent = 'Wird übermittelt …';
   message('Ihre Anforderung wird aufgenommen …');
   try {
-   const response = await fetch(endpoint, {
+   const response = await secureFormFetch(endpoint, {
     method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
    });
    const data = await response.json();

@@ -364,7 +364,7 @@ export default async function handler(req, res) {
     }
 
     const upstream = await fetch(endpoint, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...(process.env.SIA_SERVICE_SECRET?{Authorization:`Bearer ${process.env.SIA_SERVICE_SECRET}`}:{}) },
       body: JSON.stringify({ question: upstreamQuestion, ...(history.length ? { history } : {}), ...(context ? { context } : {}) }), signal: AbortSignal.timeout(50000), redirect: 'error'
     });
     if (!upstream.ok) throw new Error('Upstream unavailable');

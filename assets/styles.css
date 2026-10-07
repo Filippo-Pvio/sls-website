@@ -3362,3 +3362,5 @@ html body .fullscreen-nav-bottom .offcanvas-contact-cta:focus-visible{outline:3p
     transition:opacity 3.2s ease-in-out;
   }
 }
+
+.external-service-notice{padding:28px;border:1px solid #d7e0e4;border-radius:12px;background:#f5f8f8;color:#26353c;max-width:760px;margin:20px auto}.external-service-notice p{margin:0 0 16px;line-height:1.6}

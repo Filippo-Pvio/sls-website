@@ -14,7 +14,7 @@ async function run(kind,rows,{fail=false,storage}={}){
  await new Promise(resolve=>setImmediate(resolve));
  return {status,grid};
 }
-const item={id:'123',title:'Haus in Dorsten',city:'Dorsten',image:'https://example.com/a.webp',images:['https://example.com/a.webp'],price:200000,area:100};
+const item={id:'123',title:'Haus in Dorsten',city:'Dorsten',zip:'46286',image:'https://example.com/a.webp',images:['https://example.com/a.webp'],price:200000,area:100};
 test('only local references, deduplicated and limited to two',async()=>{
  const {grid}=await run('references',[item,item,{...item,id:'2',city:'Essen'},{...item,id:'3'},{...item,id:'4'}]);assert.equal(grid.children.length,2);
 });
@@ -50,9 +50,9 @@ test('small pools and unavailable storage still show valid references',async()=>
 
 test('market matching supports district labels without substring collisions',()=>{
  assert.equal(matchesMarketCity({city:'Dorsten-Lembeck'},'Dorsten'),true);
- assert.equal(matchesMarketCity({city:'Lembeck'},'Dorsten'),true);
+ assert.equal(matchesMarketCity({city:'Lembeck',zip:'46286'},'Dorsten'),true);
  assert.equal(matchesMarketCity({city:'Duesseldorf'},'Düsseldorf'),true);
- assert.equal(matchesMarketCity({city:'Haltern'},'Haltern am See'),true);
+ assert.equal(matchesMarketCity({city:'Haltern',zip:'45721'},'Haltern am See'),true);
  assert.equal(matchesMarketCity({city:'Essenbach'},'Essen'),false);
  assert.equal(matchesMarketCity({city:'Borken',zip:'34582'},'Borken'),false);
 });

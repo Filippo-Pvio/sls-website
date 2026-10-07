@@ -1,4 +1,5 @@
 (() => {
+  const secureFormFetch=(...args)=>import('/assets/form-security.js').then(module=>module.formFetch(...args));
   const form=document.querySelector('#buyer-form');if(!form)return;
   const steps=[...form.querySelectorAll('[data-step]')],next=document.querySelector('#buyer-next'),back=document.querySelector('#buyer-back'),submit=document.querySelector('#buyer-submit'),status=document.querySelector('#buyer-status');
   const endpoint='/api/propstack-contact-request';let step=0,token='',ready=null,busy=false,complete=false,analysing=false,analysisKey='',activeAnalysis=null;
@@ -70,25 +71,25 @@
     }
   }
   async function renewToken(){
-    const response=await fetch(endpoint,{headers:{Accept:'application/json','X-SLS-Form-Token':token},cache:'no-store',signal:AbortSignal.timeout(20000)}),data=await response.json();
+    const response=await secureFormFetch(endpoint,{headers:{Accept:'application/json','X-SLS-Form-Token':token},cache:'no-store',signal:AbortSignal.timeout(20000)}),data=await response.json();
     if(!response.ok||!data.token)throw new Error('Die Formularfreigabe konnte gerade nicht erneuert werden. Ihre Eingaben bleiben erhalten. Bitte versuchen Sie es erneut.');
     token=data.token;ready=data;
   }
   async function sendRequest(body){
     const expiresAt=ready?.expiresAt || Number(token.split('.')[0])+30*60*1000;
     if(Date.now()>=expiresAt-60000)await renewToken();
-    const post=()=>fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,token})});
+    const post=()=>secureFormFetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,token})});
     let response=await post(),result=await response.json();
     // Only this explicit pre-write rejection is safe to retry automatically.
     if(!response.ok&&result.code==='FORM_TOKEN_EXPIRED'){await renewToken();response=await post();result=await response.json();}
     return {response,result};
   }
-  async function initialise(){try{const response=await fetch(endpoint,{cache:'no-store',signal:AbortSignal.timeout(20000)});const data=await response.json();if(response.ok&&data.token){ready=data;token=data.token;}sync();}catch{sync();}}
+  async function initialise(){try{const response=await secureFormFetch(endpoint,{cache:'no-store',signal:AbortSignal.timeout(20000)});const data=await response.json();if(response.ok&&data.token){ready=data;token=data.token;}sync();}catch{sync();}}
   form.addEventListener('submit',async event=>{
     event.preventDefault();if(busy||complete)return;if(step<3){if(validStep(step)){go(step+1);if(step===2)analyse();}return;}
     for(let i=0;i<4;i++)if(!validStep(i)){go(i);return;}
     if(!available()){sync();return;}
-    const body=Object.fromEntries(new FormData(form));Object.assign(body,{topic:'buyerfinder',rooms:body.rooms||'0',privacy:form.elements.privacy.checked,privacyVersion:'2026-10-03',token});
+    const body=Object.fromEntries(new FormData(form));Object.assign(body,{topic:'buyerfinder',rooms:body.rooms||'0',privacy:form.elements.privacy.checked,privacyVersion:'2026-10-07',token});
     busy=true;sync();submit.textContent='Wird gesendet …';notify('Ihre Anfrage wird übermittelt.');
     try{const {response,result}=await sendRequest(body);if(!response.ok||!result.ok)throw new Error(result.error||'Ihre Anfrage konnte nicht bestätigt werden.');complete=true;form.querySelectorAll('input,select,textarea').forEach(x=>x.disabled=true);notify('Vielen Dank! Ihre Anfrage ist eingegangen. Unser Team prüft Ihre Angaben und meldet sich bei Ihnen.');submit.textContent='Anfrage eingegangen';back.hidden=true;status.focus();}
     catch(error){notify(error.message||'Ihre Anfrage konnte nicht bestätigt werden. Bitte kontaktieren Sie uns direkt.',true);submit.textContent='Nachfragecheck anfragen';status.focus();}

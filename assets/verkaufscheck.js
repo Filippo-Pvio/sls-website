@@ -1,3 +1,4 @@
+const secureFormFetch=(...args)=>import('/assets/form-security.js').then(module=>module.formFetch(...args));
 import {SALES_CHECK_STORAGE_KEY, readSavedSalesCheck, writeSavedSalesCheck} from './verkaufscheck-storage.js';
 import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progress.js';
 
@@ -867,7 +868,7 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
     }
 
     html+='<div class="sales-summary-note"><strong>Hinweis zum Notartermin</strong><p>Die interne Vereinbarung, dass der Käufer Notar- und Grundbuchkosten trägt, bedeutet nicht in jedem Fall, dass gegenüber dem Notar ausschließlich der Käufer als Kostenschuldner in Betracht kommt. Deshalb sollte die Finanzierung möglichst vor der Beurkundung belastbar geprüft sein. Rechtliche Einzelfragen bitte mit dem Notar oder einer Rechtsberatung klären.</p></div>';
-    html+='<div class="sales-report-request"><div class="sales-report-head"><span>Ihre persönliche SLS-Auswertung</span><h4>Verkaufsanalyse als PDF per E-Mail erhalten</h4><p>Wir senden Ihnen Ihre individuelle Auswertung mit offenen Punkten, Bezugsquellen und den nächsten Schritten übersichtlich als SLS-PDF zu.</p></div><form class="sales-report-form" data-sales-report-form><div class="sales-report-fields"><label><span>Vorname *</span><input name="firstName" autocomplete="given-name" required maxlength="80"></label><label><span>Nachname *</span><input name="lastName" autocomplete="family-name" required maxlength="80"></label><label><span>E-Mail *</span><input name="email" type="email" autocomplete="email" required maxlength="160"></label><label><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" maxlength="60"></label></div><label class="sales-report-consent"><input name="consent" type="checkbox" required><span>Ich möchte meine persönliche Verkaufsanalyse per E-Mail erhalten und stimme der Verarbeitung meiner Angaben hierfür zu. Hinweise finden Sie in unserer <a href="https://sls.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label><button class="sales-report-submit" type="submit">Meine Verkaufsanalyse anfordern</button><p class="sales-report-status" data-sales-report-status role="status" aria-live="polite"></p></form></div>';
+    html+='<div class="sales-report-request"><div class="sales-report-head"><span>Ihre persönliche SLS-Auswertung</span><h4>Verkaufsanalyse als PDF per E-Mail erhalten</h4><p>Wir senden Ihnen Ihre individuelle Auswertung mit offenen Punkten, Bezugsquellen und den nächsten Schritten übersichtlich als SLS-PDF zu.</p></div><form class="sales-report-form" data-sales-report-form><div class="sales-report-fields"><label><span>Vorname *</span><input name="firstName" autocomplete="given-name" required maxlength="80"></label><label><span>Nachname *</span><input name="lastName" autocomplete="family-name" required maxlength="80"></label><label><span>E-Mail *</span><input name="email" type="email" autocomplete="email" required maxlength="160"></label><label><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" maxlength="60"></label></div><label class="sales-report-consent"><input name="consent" type="checkbox" required><span>Ich möchte meine persönliche Verkaufsanalyse per E-Mail erhalten und stimme der Verarbeitung meiner Angaben hierfür zu. Hinweise finden Sie in unserer <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label><button class="sales-report-submit" type="submit">Meine Verkaufsanalyse anfordern</button><p class="sales-report-status" data-sales-report-status role="status" aria-live="polite"></p></form></div>';
     html+='<p class="sales-summary-cta"><a class="text-link" href="/kontakt/">Verkauf mit SLS besprechen →</a></p></div>';
     explainer.innerHTML=html;
   };
@@ -1040,7 +1041,7 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
     submit.disabled=true;
     status.textContent='Ihre persönliche Auswertung wird vorbereitet …';
     try{
-      const response=await fetch('/api/sales-check-report',{
+      const response=await secureFormFetch('/api/sales-check-report',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
@@ -1050,13 +1051,22 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
             email:String(data.get('email')||'').trim(),
             phone:String(data.get('phone')||'').trim()
           },
+          privacy:data.get('consent')==='on',privacyVersion:'2026-10-07-v1',
+          verificationRef:form.dataset.verificationRef||'',verificationCode:String(data.get('verificationCode')||'').trim(),
           report:buildExportData()
         })
       });
       const result=await response.json().catch(()=>({}));
       if(!response.ok) throw new Error(result?.message||'Versand derzeit nicht möglich.');
+      if(result.status==='email_confirmation_required'){
+        form.dataset.verificationRef=result.verificationRef;
+        let input=form.querySelector('[name=verificationCode]');
+        if(!input){const label=document.createElement('label');label.textContent='Bestätigungscode aus Ihrer E-Mail';input=document.createElement('input');input.name='verificationCode';input.inputMode='numeric';input.autocomplete='one-time-code';input.pattern='[0-9]{6}';input.maxLength=6;input.required=true;label.append(input);submit.before(label);}
+        status.textContent=result.message;submit.textContent='E-Mail bestätigen und Auswertung erhalten';input.focus();return;
+      }
+      delete form.dataset.verificationRef;form.querySelector('[name=verificationCode]')?.closest('label').remove();
       form.reset();
-      status.textContent='Vielen Dank. Ihre persönliche Verkaufsanalyse wurde an die angegebene E-Mail-Adresse gesendet.';
+      status.textContent='Vielen Dank. Der Versand Ihrer persönlichen Verkaufsanalyse wurde angenommen. Bitte prüfen Sie Ihr E-Mail-Postfach.';
       form.classList.add('is-sent');
     }catch(error){
       status.textContent=error?.message||'Die Auswertung konnte gerade nicht versendet werden. Bitte versuchen Sie es später erneut.';

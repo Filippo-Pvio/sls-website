@@ -1,3 +1,4 @@
+const {timingSafeEqual}=require('node:crypto');
 // Runs in frag-sls, where the existing OpenAI key and company knowledge live.
 const send = (res, status, data) => {
   res.statusCode = status;
@@ -10,6 +11,12 @@ function createHandler({ legacy, env = process.env, fetcher = (...args) => fetch
   return async function handler(req, res) {
     if (req.method === 'GET') return send(res, 200, { version: 'frag-dialogue-1', dialogueEnabled: !!env.OPENAI_API_KEY });
     if (req.method !== 'POST') { res.setHeader('Allow', 'GET, POST'); return send(res, 405, { error: 'Nur POST erlaubt.' }); }
+    const secret=env.SIA_SERVICE_SECRET;
+    if(secret || env.VERCEL_ENV==='production' || env.VERCEL_ENV==='preview'){
+      if(!secret)return send(res,503,{error:'SIA ist gerade nicht verfügbar.'});
+      const provided=Buffer.from(req.headers.authorization||''),expected=Buffer.from(`Bearer ${secret}`);
+      if(provided.length!==expected.length||!timingSafeEqual(provided,expected))return send(res,401,{error:'Anfrage nicht erlaubt.'});
+    }
     if (!(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) return send(res, 415, { error: 'Bitte JSON senden.' });
     let body, history, question;
     try {

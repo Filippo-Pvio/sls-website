@@ -3,3 +3,7 @@ playwright-report/
 test-results/
 qa-artifacts/
 .DS_Store
+
+.site-output/
+.vercel/
+.env*
