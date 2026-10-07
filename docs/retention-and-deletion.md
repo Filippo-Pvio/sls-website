@@ -2,17 +2,17 @@
 
 Stand: 7. Oktober 2026. Verantwortlicher für die Entscheidungen: Filippo Livera, gemäß seiner Zuständigkeitsbestätigung. Der endgültige Onlinegang bleibt zurückgestellt.
 
-## Technisch vorbereitete Browserfrist
+## Freigegebene Browserfrist
 
 Der freiwillig gespeicherte Verkaufscheck-Fortschritt erhält eine Frist von 30 Tagen ab letzter tatsächlicher Speicherung. Bloßes Lesen verlängert sie nicht. Nach Ablauf wird er nicht wiederhergestellt und beim nächsten Aufruf des Checks entfernt. Ohne Website-Aufruf kann der Eintrag technisch länger im Browser liegen; eine Hintergrundlöschung auf geschlossenen oder ausgeschalteten Geräten wird nicht behauptet. Nutzer können jederzeit selbst löschen. Nur der Check-Schlüssel wird entfernt, keine anderen Website-Daten.
 
-Vorhandene valide Stände ohne Zeitstempel bleiben erhalten. Beim ersten Aufruf nach der Umstellung startet einmalig eine 30-Tage-Frist; unbekanntes Alter wird nicht erfunden. Gespeichert werden nur validierte Checkantworten, keine Kontaktangaben. Die Änderung benötigt die konkrete Freigabe für diese Frist und die bestehende Arbeitswebsite vor ihrer Veröffentlichung.
+Vorhandene valide Stände ohne Zeitstempel bleiben erhalten. Beim ersten Aufruf nach der Umstellung startet einmalig eine 30-Tage-Frist; unbekanntes Alter wird nicht erfunden. Gespeichert werden nur validierte Checkantworten, keine Kontaktangaben. Filippo Livera hat am 7. Oktober 2026 diese Frist und die Übernahme auf der bestehenden Arbeitswebsite ausdrücklich freigegeben. Der endgültige Onlinegang bleibt ausgeschlossen.
 
-## Vorschlag für die SLS-Bestandsprüfung
+## Freigegebene SLS-Bestandsprüfung
 
-Die folgenden Fristen sind organisatorische Vorschläge zur Prüfung, keine gesetzlich vorgegebenen Löschfristen und keine bereits eingerichteten automatischen Löschregeln. Abgelaufene Zwecke werden nicht allein wegen eines turnusmäßigen Termins weiter gespeichert; eine Löschanfrage wird unabhängig von der Prüfliste bearbeitet.
+Die folgenden organisatorischen Prüfpunkte wurden von Filippo Livera am 7. Oktober 2026 bestätigt. Sie sind keine gesetzlich vorgegebenen Löschfristen und keine bereits eingerichteten automatischen Löschregeln. Abgelaufene Zwecke werden nicht allein wegen eines turnusmäßigen Termins weiter gespeichert; eine Löschanfrage wird unabhängig von der Prüfliste bearbeitet.
 
-| Bestand | Anlass und vorgeschlagener Prüfpunkt | Entscheidung vor Löschung |
+| Bestand | Anlass und festgelegter Prüfpunkt | Entscheidung vor Löschung |
 | --- | --- | --- |
 | Einmalige Kontakt-/Ratgeberanfrage ohne Folgegeschäft | Nach dokumentiertem Abschluss in die nächste monatliche Prüfung aufnehmen; spätestens nach 6 Monaten ohne begründeten weiteren Zweck erneut kontrollieren | Ist die Anfrage tatsächlich abgeschlossen? Besteht ein anderer Zweck, Vertrag, Anspruch, bestätigte Einwilligung oder eine Aufbewahrungspflicht? Reicht die Entfernung der betreffenden Notiz statt des gesamten Kontakts? |
 | Inaktiver oder erledigter Suchauftrag | In der nächsten monatlichen Prüfung, spätestens 90 Tage nach dokumentiertem Ende | Deaktivierung ist keine Löschung. Profil gezielt beurteilen; gemeinsame Kontaktakte nicht pauschal löschen. Aktive Aufträge ausnehmen. |
