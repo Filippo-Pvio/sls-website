@@ -22,3 +22,5 @@ for city in data:
 print(f'{len(data)} Stadtseiten aktualisiert; Dorsten bleibt Layoutvorlage.')
 import runpy
 runpy.run_path(str(ROOT/'scripts/market-page-images.py'))['apply_images']()
+
+runpy.run_path(str(ROOT/'scripts/build-market-area-search.py'))['build']()

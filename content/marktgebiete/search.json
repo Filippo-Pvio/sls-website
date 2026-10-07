@@ -1,0 +1,367 @@
+{
+  "note": "Editorial routing to regional market areas, not municipal membership or a distance-based service guarantee. Actual address and assignment are discussed personally.",
+  "sources": [
+    "https://www.rhein-kreis-neuss.de/de/verwaltung-politik/kreisportrait/kommunen/",
+    "https://www.kreis-mettmann.de/Kreis-St%C3%A4dte/Landrat",
+    "https://www.kreis-re.de/inhalte/wirtschaft/index.asp",
+    "https://www.kreis-borken.de/de/kreisregion/borken-erleben/staedte-und-gemeinden.php",
+    "https://www.kreis-unna.de/%C3%9Cber-uns/St%C3%A4dte-und-Gemeinden/",
+    "https://www.kreis-coesfeld.de/kreisportrait/staedte-gemeinden",
+    "https://www.kreis-wesel.de/laendliche-regionalentwicklung",
+    "https://www.enkreis.de/ennepe-ruhr-kreis-staedte/ennepe-ruhr-kreis/portraet",
+    "https://www.kreis-viersen.de/system/files/dokumente/50J-KV-Magazin_2025_WEB.pdf"
+  ],
+  "areas": [
+    {
+      "url": "/immobilienmakler-dorsten/",
+      "aliases": [],
+      "districts": [
+        "Altstadt",
+        "Hardt",
+        "Feldmark",
+        "Hervest",
+        "Holsterhausen",
+        "Lembeck",
+        "Rhade",
+        "Deuten",
+        "Wulfen",
+        "Östrich",
+        "Altendorf-Ulfkotte"
+      ],
+      "nearby": [
+        "Raesfeld"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-bochum/",
+      "aliases": [],
+      "districts": [
+        "Wattenscheid",
+        "Stiepel",
+        "Linden",
+        "Langendreer"
+      ],
+      "nearby": [
+        "Herne"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-borken/",
+      "aliases": [],
+      "districts": [
+        "Gemen",
+        "Weseke",
+        "Burlo",
+        "Marbeck"
+      ],
+      "nearby": [
+        "Heiden",
+        "Reken",
+        "Bocholt",
+        "Rhede",
+        "Südlohn",
+        "Gescher",
+        "Velen"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-bottrop/",
+      "aliases": [],
+      "districts": [
+        "Kirchhellen"
+      ],
+      "nearby": [
+        "Oberhausen"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-castrop-rauxel/",
+      "aliases": [],
+      "districts": [
+        "Ickern",
+        "Habinghorst",
+        "Castrop",
+        "Rauxel"
+      ],
+      "nearby": []
+    },
+    {
+      "url": "/immobilienmakler-coesfeld/",
+      "aliases": [],
+      "districts": [
+        "Lette"
+      ],
+      "nearby": [
+        "Billerbeck",
+        "Nottuln",
+        "Rosendahl",
+        "Havixbeck",
+        "Senden",
+        "Ascheberg",
+        "Nordkirchen",
+        "Münster"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-datteln/",
+      "aliases": [],
+      "districts": [
+        "Ahsen",
+        "Horneburg"
+      ],
+      "nearby": [
+        "Waltrop",
+        "Olfen",
+        "Selm"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-dortmund/",
+      "aliases": [],
+      "districts": [
+        "Hörde",
+        "Hombruch"
+      ],
+      "nearby": [
+        "Lünen",
+        "Schwerte",
+        "Holzwickede"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-essen/",
+      "aliases": [],
+      "districts": [
+        "Werden",
+        "Heisingen"
+      ],
+      "nearby": [
+        "Mülheim an der Ruhr"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-gladbeck/",
+      "aliases": [],
+      "districts": [
+        "Rentfort",
+        "Zweckel",
+        "Brauck"
+      ],
+      "nearby": [
+        "Gelsenkirchen"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-haltern-am-see/",
+      "aliases": [
+        "Haltern"
+      ],
+      "districts": [
+        "Haltern",
+        "Haltern-Mitte",
+        "Sythen",
+        "Lippramsdorf",
+        "Hullern",
+        "Flaesheim"
+      ],
+      "nearby": [
+        "Dülmen",
+        "Lüdinghausen"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-herten/",
+      "aliases": [],
+      "districts": [
+        "Westerholt",
+        "Scherlebeck"
+      ],
+      "nearby": []
+    },
+    {
+      "url": "/immobilienmakler-marl/",
+      "aliases": [],
+      "districts": [
+        "Alt-Marl",
+        "Drewer",
+        "Hüls",
+        "Polsum"
+      ],
+      "nearby": []
+    },
+    {
+      "url": "/immobilienmakler-recklinghausen/",
+      "aliases": [],
+      "districts": [
+        "Suderwich",
+        "Hochlarmark"
+      ],
+      "nearby": [
+        "Oer-Erkenschwick"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-schermbeck/",
+      "aliases": [],
+      "districts": [
+        "Altschermbeck",
+        "Gahlen"
+      ],
+      "nearby": [
+        "Hünxe",
+        "Wesel",
+        "Dinslaken",
+        "Voerde",
+        "Hamminkeln"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-unna/",
+      "aliases": [],
+      "districts": [
+        "Koenigsborn",
+        "Lünern",
+        "Hemmerde"
+      ],
+      "nearby": [
+        "Kamen",
+        "Bergkamen",
+        "Bönen",
+        "Fröndenberg/Ruhr",
+        "Werne",
+        "Hamm"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-witten/",
+      "aliases": [],
+      "districts": [
+        "Herbede",
+        "Annen",
+        "Heven"
+      ],
+      "nearby": [
+        "Hattingen",
+        "Herdecke",
+        "Wetter (Ruhr)",
+        "Sprockhövel",
+        "Hagen",
+        "Ennepetal",
+        "Gevelsberg",
+        "Schwelm",
+        "Breckerfeld"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-dusseldorf/",
+      "aliases": [
+        "Dusseldorf"
+      ],
+      "districts": [
+        "Bilk",
+        "Unterbilk",
+        "Hamm",
+        "Volmerswerth"
+      ],
+      "nearby": [
+        "Neuss",
+        "Dormagen",
+        "Grevenbroich",
+        "Rommerskirchen",
+        "Hilden",
+        "Langenfeld",
+        "Monheim am Rhein"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-meerbusch/",
+      "aliases": [],
+      "districts": [
+        "Büderich",
+        "Osterath",
+        "Lank-Latum"
+      ],
+      "nearby": [
+        "Kaarst"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-mettmann/",
+      "aliases": [],
+      "districts": [
+        "Metzkausen",
+        "Obschwarzbach"
+      ],
+      "nearby": [
+        "Erkrath",
+        "Haan",
+        "Wülfrath",
+        "Velbert",
+        "Wuppertal",
+        "Solingen"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-moers/",
+      "aliases": [],
+      "districts": [
+        "Meerbeck",
+        "Kapellen",
+        "Repelen"
+      ],
+      "nearby": [
+        "Neukirchen-Vluyn",
+        "Kamp-Lintfort",
+        "Rheinberg",
+        "Alpen",
+        "Duisburg"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-krefeld/",
+      "aliases": [],
+      "districts": [
+        "Uerdingen",
+        "Hüls",
+        "Fischeln"
+      ],
+      "nearby": [
+        "Tönisvorst",
+        "Kempen",
+        "Willich"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-ratingen/",
+      "aliases": [],
+      "districts": [
+        "Lintorf",
+        "Hösel",
+        "Breitscheid"
+      ],
+      "nearby": [
+        "Heiligenhaus"
+      ]
+    },
+    {
+      "url": "/immobilienmakler-viersen/",
+      "aliases": [],
+      "districts": [
+        "Alt-Viersen",
+        "Dülken",
+        "Süchteln",
+        "Boisheim"
+      ],
+      "nearby": [
+        "Mönchengladbach",
+        "Nettetal",
+        "Schwalmtal",
+        "Brüggen",
+        "Niederkrüchten",
+        "Grefrath",
+        "Jüchen",
+        "Korschenbroich"
+      ]
+    }
+  ]
+}

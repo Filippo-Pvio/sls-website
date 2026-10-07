@@ -1,3 +1,5 @@
+import { searchMarketAreas } from './market-area-search.mjs';
+
 (() => {
   const filters = document.querySelector('.network-filters');
   const cards = [...document.querySelectorAll('.network-directory .network-partner')];
@@ -6,31 +8,69 @@
   const reset = document.querySelector('[data-network-reset]');
   const status = document.querySelector('.network-results');
   const empty = document.querySelector('.network-empty');
+  const context = document.querySelector('.market-search-context');
+  const showAll = document.querySelector('[data-market-show-all]');
   let category = 'all';
-  const normalize = text => text.toLocaleLowerCase('de').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ß/g, 'ss');
-  function update() {
-    const terms = normalize(input.value.trim()).split(/\s+/).filter(Boolean);
-    cards.forEach(card => {
-      const text = normalize(card.textContent);
-      card.hidden = (category !== 'all' && !card.dataset.category.split(' ').includes(category)) || !terms.every(term => text.includes(term));
+  let areas;
+  try { areas = JSON.parse(document.getElementById('market-area-search-config').textContent); }
+  catch { areas = cards.map(card => ({ city: card.querySelector('h3').textContent, url: card.querySelector('h3 a').getAttribute('href'), regions: card.dataset.category.split(' '), text: card.textContent })); }
+  const cardByUrl = new Map(cards.map(card => [card.querySelector('h3 a').getAttribute('href'), card]));
+  const regionMatches = match => category === 'all' || match.area.regions.includes(category);
+  const syncFilters = () => filters.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === category)));
+  function update(expandRegion = false) {
+    const query = input.value.trim();
+    const matches = searchMarketAreas(areas, query);
+    if (expandRegion && query && matches.length && !matches.some(regionMatches)) {
+      category = 'all'; syncFilters();
+    }
+    const visible = matches.filter(regionMatches);
+    cards.forEach(card => { card.hidden = true; card.querySelector('[data-place-match]')?.remove(); });
+    visible.forEach(match => {
+      const card = cardByUrl.get(match.area.url);
+      if (!card) return;
+      card.hidden = false;
+      if (match.exact && ['nearby', 'district'].includes(match.kind)) {
+        const note = document.createElement('p'); note.dataset.placeMatch = '';
+        note.className = 'market-place-match';
+        note.textContent = match.kind === 'nearby' ? `Ihr regionaler Anlaufpunkt für ${match.place}` : `Passend zum Stadtteil ${match.place}`;
+        card.querySelector('h3').after(note);
+      }
     });
-    const total = cards.filter(card => !card.hidden).length;
-    status.textContent = terms.length || category !== 'all' ? `${total} ${total === 1 ? 'Marktgebiet' : 'Marktgebiete'} gefunden` : '';
-    empty.hidden = total !== 0;
-    reset.hidden = !input.value;
+    status.textContent = query || category !== 'all' ? `${visible.length} ${visible.length === 1 ? 'Marktgebiet' : 'Marktgebiete'} gefunden` : '';
+    if (visible.length === 1 && visible[0].exact && ['nearby', 'district'].includes(visible[0].kind)) status.textContent += `: ${visible[0].area.city} – passend zu ${visible[0].place}.`;
+    empty.hidden = visible.length !== 0;
+    if (!empty.hidden) {
+      const outside = matches.length > 0;
+      empty.querySelector('h3').textContent = outside ? 'Ihr Ort liegt in einer anderen Region.' : 'Ihr Ort ist nicht aufgeführt?';
+      empty.querySelector('p').textContent = outside ? 'Für Ihre Suche gibt es ein passendes Marktgebiet außerhalb des gewählten Regionsfilters.' : 'Wir prüfen gern, wie wir Sie dort begleiten können. Sprechen Sie mit uns über Ihre Immobilie und Ihr Vorhaben.';
+      showAll.textContent = outside ? 'Passendes Marktgebiet anzeigen' : 'Alle Marktgebiete anzeigen';
+    }
+    reset.hidden = !query;
+    if (context) {
+      context.replaceChildren(); context.hidden = true;
+      if (visible.length === 1 && visible[0].kind === 'nearby' && visible[0].exact) {
+        const { place, area } = visible[0];
+        const heading = document.createElement('h3'); heading.textContent = `${place}: Ihr passendes Marktgebiet`;
+        const text = document.createElement('p'); text.textContent = `Für ${place} ist ${area.city} und Umgebung Ihr regionaler Anlaufpunkt. Im persönlichen Gespräch klären wir Ihr Vorhaben und die Betreuung Ihrer konkreten Adresse.`;
+        const link = document.createElement('a'); link.href = '/kontakt/'; link.className = 'network-link'; link.textContent = `Beratung für ${place} anfragen →`;
+        context.append(heading, text, link); context.hidden = false;
+      }
+    }
   }
   if (filters && form && input && reset && status && empty) {
     filters.hidden = false; form.hidden = false;
     filters.addEventListener('click', event => {
       const button = event.target.closest('button[data-filter]');
       if (!button) return;
-      category = button.dataset.filter;
-      filters.querySelectorAll('button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-      update();
+      category = button.dataset.filter; syncFilters(); update();
     });
-    form.addEventListener('submit', event => { event.preventDefault(); update(); });
-    input.addEventListener('input', update);
+    form.addEventListener('submit', event => { event.preventDefault(); update(true); });
+    input.addEventListener('input', () => update(true));
     reset.addEventListener('click', () => { input.value = ''; update(); input.focus(); });
+    showAll?.addEventListener('click', () => {
+      if (!searchMarketAreas(areas, input.value).length) input.value = '';
+      category = 'all'; syncFilters(); update(); input.focus();
+    });
   }
   // Add up to three original-photo variants in the JSON configuration in standorte/index.html.
   const config = document.getElementById('network-hero-config');
