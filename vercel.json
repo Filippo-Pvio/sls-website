@@ -109,8 +109,20 @@
       "regions": [
         "fra1"
       ]
+    },
+    "api/security-monitor.js": {
+      "maxDuration": 60,
+      "regions": [
+        "fra1"
+      ]
     }
   },
   "buildCommand": "node scripts/build-magazine.mjs && node scripts/build-public-site.mjs",
-  "outputDirectory": ".site-output"
+  "outputDirectory": ".site-output",
+  "crons": [
+    {
+      "path": "/api/security-monitor/",
+      "schedule": "0 * * * *"
+    }
+  ]
 }
