@@ -1,8 +1,8 @@
-import {
-  const secureFormFetch=(...args)=>import('/assets/form-security.js').then(module=>module.formFetch(...args));setupPropertyFilters} from './property-filters.mjs';
+import {setupPropertyFilters} from './property-filters.mjs';
 import {propertyCardHtml} from './property-card.mjs';
 import {objectPath,buildPropertySeo} from './property-seo.mjs';
 (() => {
+  const secureFormFetch=(...args)=>import('/assets/form-security.js').then(module=>module.formFetch(...args));
   const $=s=>document.querySelector(s);
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const format=n=>n==null?'Preis auf Anfrage':new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
