@@ -1,3 +1,13 @@
+// TEAM-PHOTOS:START
+// Keep supplied group photos on general pages; individual profiles stay unchanged.
+window.slsSceneImage = (url) => {
+  if (location.pathname.startsWith('/team/') || document.body.classList.contains('magazine-page')) return url;
+  const aliases = {"hero-scenes/handshake": "team-scenes/beratung-laptop", "references-hero/besichtigung": "team-scenes/objektbesprechung", "search-hero/kontakt": "team-scenes/kundenservice", "references-hero/kontakt": "team-scenes/verkaufsplanung", "buy-hero/kontakt": "team-scenes/anfragen", "hero-scenes/consultation": "team-scenes/preisstrategie"};
+  const match = url.match(/^\/assets\/images\/(.+)-(\d+)\.webp$/);
+  const scene = match && aliases[match[1]];
+  return scene ? `/assets/images/${scene}-${Number(match[2]) <= 900 ? 900 : 1280}.webp` : url;
+};
+// TEAM-PHOTOS:END
 const navGroups = [
   { label: "Verkaufen", href: "/verkaufen/", kicker: "Für Eigentümer", items: [
     ["Immobilie verkaufen", "/verkaufen/", "Unser Prozess von Bewertung bis Übergabe"],

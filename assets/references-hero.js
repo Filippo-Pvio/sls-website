@@ -8,7 +8,8 @@
   const scenes = ['beratung', 'kontakt', 'besichtigung'];
   const dwell = 7000;
   const fade = 1600;
-  const path = (scene) => `/assets/images/references-hero/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
+  const legacyPath = (scene) => `/assets/images/references-hero/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
+  const path = (scene) => window.slsSceneImage(legacyPath(scene));
   let active = current;
   let standby = incoming;
   let index = 0;

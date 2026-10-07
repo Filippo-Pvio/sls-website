@@ -27,6 +27,9 @@ def apply_images():
         page = re.sub(r'(<figure class="city-image"[^>]*>)<img[^>]*>', lambda m: m[1] + photo, page)
         page = re.sub(r'(<meta property="og:image" content=")[^"]*', r'\1https://sls.de' + first, page)
         target.write_text(page)
+    # Reapply the centrally selected group photos after regeneration.
+    import runpy
+    runpy.run_path(str(ROOT / "scripts/apply-team-photos.py"))["apply_photos"]()
 
 if __name__ == '__main__':
     apply_images()
