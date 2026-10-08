@@ -3,16 +3,16 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const code=await readFile(new URL('../assets/guides-page.js',import.meta.url),'utf8');
-async function fixture(result={ok:true,message:'Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.'},ready=true,marketingReady=true){
+async function fixture(result={ok:true,message:'Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.'},ready=true,marketingReady=true,availableGuides=['VERKAUF']){
  const callbacks={},requests=[],timers=[];
  const marketingAvailability={textContent:''};
  const status={textContent:'',classList:{toggle(){}},focus(){}};
  const reviewActions={hidden:true},correctButton={disabled:false,addEventListener:(event,fn)=>callbacks.correct=fn};
  const button={disabled:true,textContent:''},fields={disabled:true};
- const select={value:'VERKAUF',disabled:false,options:[{value:'VERKAUF',disabled:false}]};
+ const select={value:'VERKAUF',disabled:false,options:['VERKAUF','BEWERTUNG','ERBSCHAFT','WOHNEN_IM_ALTER','TRENNUNG','UNTERLAGEN'].map(value=>({value,disabled:value!=='VERKAUF'}))};
  const form={elements:{salutation:{value:'ms'},firstName:{value:'Anna',focus(){}},lastName:{value:'Muster'},email:{value:'service@example.org',focus(){}},website:{value:''},privacyAcknowledged:{checked:true,dataset:{privacyVersion:'2026-10-07-v1'},focus(){}},marketingConsent:{checked:false,dataset:{consentVersion:'2026-10-02-v2'}}},querySelector:s=>s==='fieldset'?fields:button,addEventListener:(event,fn)=>callbacks[event]=fn,reportValidity:()=>true,setAttribute(){},removeAttribute(){}};
  runInNewContext(code.replace(/const secureFormFetch=.*?;\n/, "").replaceAll("secureFormFetch(","fetch("),{document:{getElementById:id=>({'guide-form':form,'guide-select':select,'guide-availability':status,'guide-review-actions':reviewActions,'guide-correct':correctButton,'guide-marketing-availability':marketingAvailability})[id],querySelectorAll:()=>[]},window:{setTimeout:fn=>timers.push(fn)},fetch:async(url,init={})=>{
-  requests.push({url,...init});return {ok:init.method==='POST'?result.ok:ready,json:async()=>init.method==='POST'?result:ready?{availableGuides:['VERKAUF'],token:'signed-token',marketingAvailable:marketingReady,consentVersion:'2026-10-02-v2'}:{error:'Nicht verfügbar'}};
+  requests.push({url,...init});return {ok:init.method==='POST'?result.ok:ready,json:async()=>init.method==='POST'?result:ready?{availableGuides,token:'signed-token',marketingAvailable:marketingReady,consentVersion:'2026-10-02-v2'}:{error:'Nicht verfügbar'}};
  }});
  await new Promise(resolve=>setImmediate(resolve));timers.splice(0).forEach(fn=>fn());
  return {fields,button,select,form,status,requests,reviewActions,correctButton,correct:async()=>{callbacks.correct();await new Promise(resolve=>setImmediate(resolve));timers.splice(0).forEach(fn=>fn());},submit:()=>callbacks.submit({preventDefault(){}})};
@@ -100,4 +100,17 @@ test('salutation is required, has no preselected personal value and is kept on e
   const f=await fixture(result);await f.submit();assert.equal(f.form.elements.salutation.value,'ms');
  }
  const f=await fixture();await f.submit();assert.equal(f.form.elements.salutation.value,'');
+});
+
+test('server readiness enables only configured guide options and selected guide is submitted',async()=>{
+ const f=await fixture(undefined,true,false,['VERKAUF','BEWERTUNG']);
+ assert.equal(f.select.options.find(g=>g.value==='BEWERTUNG').disabled,false);
+ assert.equal(f.select.options.find(g=>g.value==='ERBSCHAFT').disabled,true);
+ f.select.value='BEWERTUNG'; await f.submit();
+ assert.equal(JSON.parse(f.requests[1].body).guide,'BEWERTUNG');
+});
+test('another available guide works when sale is temporarily unavailable',async()=>{
+ const f=await fixture(undefined,true,false,['UNTERLAGEN']);
+ assert.equal(f.fields.disabled,false); assert.equal(f.select.value,'UNTERLAGEN');
+ await f.submit(); assert.equal(JSON.parse(f.requests[1].body).guide,'UNTERLAGEN');
 });

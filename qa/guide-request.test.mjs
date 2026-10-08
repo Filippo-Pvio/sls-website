@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {handler as handler} from '../api/propstack-guide-request.js';
+import {GUIDE_CATALOG} from '../lib/guide-catalog.mjs';
 
 const NOTE='SLS_RATGEBER_VERKAUF_ANGEFORDERT';
 const host='sls-guide-test.vercel.app';
@@ -20,7 +21,7 @@ async function fixture(run,options={}) {
   assert.equal(parsed.origin,'https://api.propstack.de');
   if(options.failPath===path) return {ok:false,status:503,text:async()=>'Service unavailable'};
   let data;
-  if(path==='activity_types')data={data:options.missingType?[]:[{id:741093,name:NOTE,category:options.wrongType?'reminder':'for_notes'},...(options.marketing?[{id:123,name:'SLS_NEWSLETTER_DOI_ANGEFORDERT',category:'for_notes'}]:[])]};
+  if(path==='activity_types')data={data:options.missingType?[]:[...(options.allGuides ? GUIDE_CATALOG.filter(g=>g.id!==options.omitGuide).map(g=>({id:g.categoryId,name:g.note,category:'for_notes'})) : [{id:741093,name:NOTE,category:options.wrongType?'reminder':'for_notes'}]),...(options.marketing?[{id:123,name:'SLS_NEWSLETTER_DOI_ANGEFORDERT',category:'for_notes'}]:[])]};
   else if(path==='contacts'&&init.method==='GET')data={data:options.conflict?[{id:12,email:'different@example.org'}]:contacts};
   else if(path==='contacts'&&init.method==='POST'){
    const payload=JSON.parse(init.body);writes.push({path,payload});contacts.push({id:12,...payload.client});data={id:12};
@@ -32,7 +33,7 @@ async function fixture(run,options={}) {
   }
   else if(path==='contacts/12')data=contacts[0];
   else if(path==='activities'){
-   assert.equal(parsed.searchParams.get('client_id'),'12');assert.ok([null,'741093'].includes(parsed.searchParams.get('category_id')));
+   assert.equal(parsed.searchParams.get('client_id'),'12');assert.ok([null,...GUIDE_CATALOG.map(g=>String(g.categoryId))].includes(parsed.searchParams.get('category_id')));
    data={data:activities};
   }
   else if(path==='messages'){
@@ -83,7 +84,7 @@ test('a new token within cooldown reuses the recent request',()=>fixture(async({
  await request('POST',payload);const ready=await request('GET');advance(2000);
  assert.equal((await request('POST',{...payload,token:ready.body.token})).code,200);assert.equal(writes.length,1);
 }));
-for(const update of [{firstName:''},{lastName:'  '},{firstName:null},{lastName:'x'.repeat(101)},{firstName:'Anna\nInjected'},{guide:'ERBSCHAFT'},{guide:'UNKNOWN'},{email:'invalid'},{email:'a@b.c\nHeader:x'},{website:'spam'},{token:'tampered'}])
+for(const update of [{firstName:''},{lastName:'  '},{firstName:null},{lastName:'x'.repeat(101)},{firstName:'Anna\nInjected'},{guide:'UNKNOWN'},{email:'invalid'},{email:'a@b.c\nHeader:x'},{website:'spam'},{token:'tampered'}])
  test(`rejects invalid payload ${JSON.stringify(update)}`,()=>fixture(async({request,payload,writes})=>{
   assert.equal((await request('POST',{...payload,...update})).code,400);assert.equal(writes.length,0);
  }));
@@ -284,3 +285,32 @@ test('approved public hostname supports readiness and requests while other produ
  const res=await request('POST',payload,allowed);
  assert.equal(res.code,200);assert.equal(writes.length,1);
 }));
+
+for (const guide of GUIDE_CATALOG) test(`selected ${guide.id} records only its matching category and PDF`,()=>fixture(async({request,ready,payload,writes})=>{
+ assert.deepEqual(ready.body.availableGuides,GUIDE_CATALOG.map(g=>g.id));
+ assert.equal((await request('POST',{...payload,guide:guide.id})).code,200);
+ const task=writes.find(w=>w.path==='tasks').payload.task;
+ assert.equal(task.note_type_id,guide.categoryId); assert.equal(task.title,guide.note);
+ assert.ok(task.body.includes(guide.file)); assert.ok(task.body.includes(guide.title));
+ assert.equal(writes.filter(w=>w.path==='tasks').length,1);
+},{allGuides:true}));
+test('different guides can be requested concurrently without suppressing each other',()=>fixture(async({request,payload,writes})=>{
+ const results=await Promise.all(GUIDE_CATALOG.map(g=>request('POST',{...payload,guide:g.id})));
+ assert.ok(results.every(r=>r.code===200));
+ assert.equal(writes.filter(w=>w.path==='tasks').length,6);
+},{allGuides:true}));
+test('unavailable category is hidden and fails before any contact write',()=>fixture(async({request,ready,payload,writes})=>{
+ assert.ok(!ready.body.availableGuides.includes('ERBSCHAFT'));
+ assert.equal((await request('POST',{...payload,guide:'ERBSCHAFT'})).code,502);
+ assert.equal(writes.length,0);
+},{allGuides:true,omitGuide:'ERBSCHAFT'}));
+test('review and deduplication remain separate for each selected guide',()=>fixture(async({request,payload,writes})=>{
+ for(const g of GUIDE_CATALOG.slice(0,2)) {
+  const changed={...payload,guide:g.id,firstName:'Eva'};
+  assert.equal((await request('POST',changed)).body.status,'review_required');
+  assert.equal((await request('POST',changed)).body.status,'review_required');
+ }
+ assert.equal(writes.length,2);
+ assert.ok(writes.every(w=>w.payload.task.note_type_id===undefined));
+ assert.deepEqual(writes.map(w=>w.payload.task.title),GUIDE_CATALOG.slice(0,2).map(g=>g.review));
+},{allGuides:true}));

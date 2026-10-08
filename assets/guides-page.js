@@ -23,8 +23,8 @@
   status.textContent = text;
   status.classList.toggle('is-error', error);
  }
- document.querySelectorAll('[data-guide]').forEach(link => link.addEventListener('click', () => {
-  if (sending || completed || ![...select.options].some(option => !option.disabled && option.value === link.dataset.guide)) return;
+ document.querySelectorAll('[data-guide]').forEach(link => link.addEventListener('click', event => {
+  if (sending || completed || ![...select.options].some(option => !option.disabled && option.value === link.dataset.guide)) { event.preventDefault(); return; }
   select.value = link.dataset.guide;
   (fields.disabled ? select : firstName).focus({preventScroll:true});
  }));
@@ -33,8 +33,15 @@
   try {
    const response = await secureFormFetch(endpoint, {headers:{Accept:'application/json'}, cache:'no-store'});
    const data = await response.json();
-   if (!response.ok || !data.availableGuides?.includes('VERKAUF') || !data.token) throw new Error(data.error || 'Die Ratgeberanforderung ist gerade nicht verfügbar. Bitte versuchen Sie es später erneut.');
+   if (!response.ok || !Array.isArray(data.availableGuides) || !data.availableGuides.length || !data.token) throw new Error(data.error || 'Die Ratgeberanforderung ist gerade nicht verfügbar. Bitte versuchen Sie es später erneut.');
    token = data.token;
+   for (const option of select.options) option.disabled = !data.availableGuides.includes(option.value);
+   if (![...select.options].some(option => option.value === select.value && !option.disabled)) select.value = [...select.options].find(option => !option.disabled)?.value || '';
+   document.querySelectorAll('[data-guide]').forEach(link => {
+    const available = data.availableGuides.includes(link.dataset.guide);
+    link.setAttribute('aria-disabled', String(!available));
+    link.textContent = available ? 'Ratgeber auswählen ↗' : 'Derzeit nicht verfügbar';
+   });
    const marketingAvailable = data.marketingAvailable === true && data.consentVersion === marketingConsent.dataset.consentVersion;
    marketingConsent.disabled = !marketingAvailable;
    if (!marketingAvailable) marketingConsent.checked = false;

@@ -5,11 +5,8 @@ import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
 import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION, GUIDE_PRIVACY_ACK_VERSION, GUIDE_PRIVACY_ACK_TEXT, GUIDE_PRIVACY_URL} from '../lib/guide-consent.mjs';
 import {newsletterConfig, requestNewsletter} from '../lib/guide-newsletter.mjs';
 
-const GUIDE = 'VERKAUF';
-const NOTE = 'SLS_RATGEBER_VERKAUF_ANGEFORDERT';
-const TITLE = 'Immobilie verkaufen. Mit einem guten Gefühl.';
+import {GUIDE_CATALOG, findGuide} from '../lib/guide-catalog.mjs';
 const received = 'Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.';
-const REVIEW = 'SLS_RATGEBER_VERKAUF_PRUEFUNG';
 const reviewMessage = 'Ihre Anforderung wurde gespeichert. Wir konnten Ihre Angaben jedoch nicht eindeutig zuordnen. Bitte prüfen Sie Ihre Anrede, Ihren Vor- und Nachnamen sowie Ihre E-Mail-Adresse. Sind die Angaben korrekt, kontaktieren Sie uns bitte kurz zur Klärung.';
 const normaliseName = value => String(value || '').normalize('NFC').trim().replace(/\s+/gu, ' ').toLocaleLowerCase('de-DE');
 const normalise = value => String(value || '').trim().toLowerCase();
@@ -41,7 +38,7 @@ async function propstack(path, key, payload, method = payload ? 'POST' : 'GET') 
   return response.json();
 }
 
-async function noteType(key) {
+async function noteTypes(key) {
   const types = [];
   for (let page = 1; page <= 20; page++) {
     const result = await propstack(`activity_types?per=100&page=${page}`, key);
@@ -51,11 +48,11 @@ async function noteType(key) {
     const total = Number(result?.meta?.total_count);
     if (!fresh.length || (Number.isFinite(total) && total <= types.length) || (!Number.isFinite(total) && items.length < 100)) break;
   }
-  // SLS category 741093 was checked against the live API. Its category is "for_notes";
-  // Propstack's published examples also use "note" for note categories.
-  const matches = types.filter(type => Number(type.id) === 741093 && normalise(type.name) === normalise(NOTE) && ['note','for_notes'].includes(normalise(type.category)));
-  if (matches.length !== 1) throw new Error('Guide note category missing or ambiguous');
-  return Number(matches[0].id);
+  // Require the verified category ID, exact name and note type for each dispatch.
+  return GUIDE_CATALOG.filter(guide => {
+    const matches = types.filter(type => Number(type.id) === guide.categoryId && normalise(type.name) === normalise(guide.note) && ['note','for_notes'].includes(normalise(type.category)));
+    return guide.categoryId > 0 && matches.length === 1;
+  });
 }
 
 function sign(value, key) {
@@ -90,7 +87,7 @@ function limited(req, key) {
   return entry.count > 8;
 }
 
-async function recordRequest(key, email, firstName, lastName, salutation, categoryId, requestId, marketingConsent = false) {
+async function recordRequest(key, email, firstName, lastName, salutation, categoryId, requestId, marketingConsent = false, guide) {
   const query = new URLSearchParams({email, archived:'-1', with_meta:'1', per:'100'});
   const contacts = rows(await propstack(`contacts?${query}`, key));
   // A secondary/shared email must not trigger delivery to a different primary address.
@@ -124,7 +121,7 @@ async function recordRequest(key, email, firstName, lastName, salutation, catego
   }
   const outcome = needsReview ? 'review_required' : 'recorded';
   // Separate review notes have no dispatch category. Never overwrite a contact to force a match.
-  const fingerprint = sign(JSON.stringify([email, normaliseName(firstName), normaliseName(lastName), salutation, outcome, needsReview && marketingConsent]), key);
+  const fingerprint = sign(JSON.stringify([guide.id, email, normaliseName(firstName), normaliseName(lastName), salutation, outcome, needsReview && marketingConsent]), key);
   const activityQuery = new URLSearchParams({client_id:String(contactId), item_type:'note', expand:'1', order:'desc', per:'100'});
   if (!needsReview) activityQuery.set('category_id', String(categoryId));
   const activities = rows(await propstack(`activities?${activityQuery}`, key));
@@ -133,7 +130,7 @@ async function recordRequest(key, email, firstName, lastName, salutation, catego
   const alreadyRecorded = activities.some(activity => {
     const task = activity.activatable || activity.task || activity;
     if (needsReview) {
-      if ((task.title || activity.title) !== REVIEW || !String(task.body || activity.body || '').includes(reviewMarker)) return false;
+      if ((task.title || activity.title) !== guide.review || !String(task.body || activity.body || '').includes(reviewMarker)) return false;
     } else if (Number(activity.category_id ?? task.note_type_id) !== categoryId) return false;
     const sameRequest = String(task.body || activity.body || '').includes(marker);
     const created = Date.parse(activity.created_at || task.created_at || '');
@@ -147,7 +144,7 @@ async function recordRequest(key, email, firstName, lastName, salutation, catego
   // Retrying a timed-out write automatically could launch the future email process twice.
   uncertain.set(retryKey, Date.now() + 30 * 60 * 1000);
   const result = await propstack('tasks', key, {task:{
-    title:needsReview ? REVIEW : NOTE,
+    title:needsReview ? guide.review : guide.note,
     ...(needsReview ? {} : {note_type_id:categoryId}),
     client_ids:[contactId],
     body:[
@@ -158,8 +155,8 @@ async function recordRequest(key, email, firstName, lastName, salutation, catego
         'Vor personalisiertem Versand Angaben mit der anfordernden Person klären. Danach Kontakt und neuere Anforderungen prüfen, gegebenenfalls Anrede oder Namen manuell berichtigen und Versand einmalig freigeben. Diese Prüfnotiz allein darf keinen Versand auslösen.',
         reviewMarker
       ] : []),
-      `Ratgeber: ${TITLE}`,
-      'Datei: SLS-Immobilie-verkaufen.pdf · Ausgabe Oktober 2026',
+      `Ratgeber: ${escapeHtml(guide.title)}`,
+      `Datei: ${guide.file} · Ausgabe Oktober 2026`,
       `Angegebene Anrede: ${salutation === 'mr' ? 'Herr' : 'Frau'}`,
       `Angegebener Name: ${escapeHtml(firstName)} ${escapeHtml(lastName)}`,
       `E-Mail für den angeforderten Versand: ${escapeHtml(email)}`,
@@ -200,9 +197,10 @@ export async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
-      await noteType(key);
+      const available = await noteTypes(key);
+      if (!available.length) throw new Error('No guide dispatch available');
       const marketingConfig = await newsletterConfig(key, propstack).catch(() => null);
-      return res.status(200).json({availableGuides:[GUIDE], token:issueToken(key), deliveryReady:true, marketingAvailable:Boolean(marketingConfig), consentVersion:GUIDE_MARKETING_CONSENT_VERSION});
+      return res.status(200).json({availableGuides:available.map(guide => guide.id), token:issueToken(key), deliveryReady:true, marketingAvailable:Boolean(marketingConfig), consentVersion:GUIDE_MARKETING_CONSENT_VERSION});
     } catch (error) {
       logOperationalFailure('guide_readiness_failed',error);
       return res.status(503).json({error:'Die Ratgeberanforderung wird noch eingerichtet. Bitte versuchen Sie es später erneut.'});
@@ -229,7 +227,7 @@ export async function handler(req, res) {
   }
   const email = normalise(rawEmail);
   const requestId = verifyToken(token, key);
-  if (guide !== GUIDE || typeof rawEmail !== 'string' || email.length > 254 || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) || website || !requestId) {
+  if (!findGuide(guide) || typeof rawEmail !== 'string' || email.length > 254 || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) || website || !requestId) {
     return res.status(400).json({error:'Bitte prüfen Sie Ihre E-Mail-Adresse. Falls das Formular länger geöffnet war, laden Sie die Seite erneut.'});
   }
   if (limited(req, key)) {
@@ -238,12 +236,15 @@ export async function handler(req, res) {
   }
   const marketingConfig = marketingConsent ? await newsletterConfig(key, propstack).catch(() => null) : null;
   if (marketingConsent && !marketingConfig) return res.status(503).json({error:'Die Newsletter-Anmeldung ist noch nicht verfügbar. Sie können den Ratgeber ohne Newsletter-Anmeldung anfordern.'});
-  const lock = sign(`${email}:${GUIDE}`, key);
+  const lock = sign(email, key);
   // Serialize all requests for an address, but do not reuse the result for different names.
   const previous = pending.get(lock);
   const work = (async () => {
     if (previous) await previous.catch(() => {});
-    const result = await recordRequest(key, email, firstName, lastName, salutation, await noteType(key), requestId, marketingConsent);
+    const available = await noteTypes(key);
+    const selected = available.find(item => item.id === guide);
+    if (!selected) throw new Error('Selected guide dispatch unavailable');
+    const result = await recordRequest(key, email, firstName, lastName, salutation, selected.categoryId, requestId, marketingConsent, selected);
     let newsletterStatus = marketingConsent ? 'review_required' : 'not_requested';
     if (marketingConsent && result.outcome === 'recorded') {
       try {
