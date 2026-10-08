@@ -118,33 +118,34 @@ test('secure PDF flow asks for email code before completing the request',async({
  await expect(form.locator('[data-sales-report-status]')).toContainText('angenommen');expect(requests).toHaveLength(2);expect(requests[1].verificationRef).toBe('synthetic-verification-reference');expect(requests[1].verificationCode).toBe('123456');
 });
 
-test('external calculators make no provider request before activation',async({page})=>{
- const external=[];page.on('request',request=>{if(/pricehubble|justhome/.test(new URL(request.url()).hostname))external.push(request.url());});
- await page.goto('/immobilienbewertung/');await expect(page.getByRole('button',{name:'Bewertungsrechner laden'})).toBeVisible();expect(external).toEqual([]);
- await page.goto('/finanzierung/');await expect(page.getByRole('button',{name:'Finanzierungsrechner laden'})).toBeVisible();expect(external).toEqual([]);
+
+// Mock provider responses so automatic loading never submits real customer data.
+const mockValuationScript="window.FisherWidget={init(options){document.querySelector(options.iframe).src='https://fisher.pricehubble.com/?qa=1';}}";
+async function mockEmbedProviders(page){
+ await page.route('https://fisher.pricehubble.com/widget.js',route=>route.fulfill({contentType:'application/javascript',body:mockValuationScript}));
+ await page.route(/https:\/\/(tour\.sls\.de|www\.google\.com|calculator\.justhome\.com|budget-check\.justhome\.com|fisher\.pricehubble\.com)\//,route=>route.request().url().endsWith('/widget.js')?route.fallback():route.fulfill({contentType:'text/html',body:'<h1>Externer Inhalt geladen</h1>'}));
+}
+
+test('external calculators load without an activation click',async({page})=>{
+ await mockEmbedProviders(page);
+ for(const [path,selector] of [['/immobilienbewertung/','#fisher-widget'],['/finanzierung/','#finance-calculator-frame'],['/kaufen/','#buy-budget-frame']]){
+  await page.goto(path);
+  await expect(page.frameLocator(selector).getByRole('heading',{name:'Externer Inhalt geladen'})).toBeVisible();
+  await expect(page.getByRole('button',{name:/Rechner laden|rechner laden/})).toHaveCount(0);
+ }
 });
 
-
-test('property embeds wait for activation and load under the deployed CSP',async({page})=>{
+test('property embeds load automatically under the deployed CSP',async({page})=>{
  const config=JSON.parse(await readFile('vercel.json','utf8'));
  const csp=config.headers.flatMap(group=>group.headers).find(header=>header.key==='Content-Security-Policy').value;
- const providers=[];
  await page.route('**/immobilien-test/?objekt=17',async route=>{const response=await route.fetch();await route.fulfill({response,headers:{...response.headers(),'content-security-policy':csp}});});
  await page.route('**/api/propstack-properties**',route=>route.fulfill({json:{items:[{id:'17',title:'Testimmobilie',city:'Lünen',zip:'44534',images:['/assets/images/hero.webp'],tour:'https://tour.sls.de/syF2',tourEmbed:true,broker:{},inquiryEnabled:false}]}}));
- await page.route(/https:\/\/(tour\.sls\.de|www\.google\.com|calculator\.justhome\.com)\//,route=>{providers.push(new URL(route.request().url()).hostname);return route.fulfill({contentType:'text/html',body:'<h1>Externer Inhalt geladen</h1>'});});
+ await mockEmbedProviders(page);
  await page.goto('/immobilien-test/?objekt=17');
- await expect(page.getByRole('button',{name:'Rundgang starten',exact:true})).toBeVisible();
- await expect(page.getByRole('button',{name:'Karte anzeigen',exact:true})).toBeVisible();
- await expect(page.getByRole('button',{name:'Finanzierungsrechner laden',exact:true})).toBeVisible();
- expect(providers).toEqual([]);
- await expect(page.locator('.pp-tour-frame')).toBeHidden();
- await expect(page.locator('.pp-map-frame')).toBeHidden();
- await expect(page.locator('.pp-financing iframe')).toBeHidden();
- for(const [label,selector,host] of [['Rundgang starten','.pp-tour-frame','tour.sls.de'],['Karte anzeigen','.pp-map-frame','www.google.com'],['Finanzierungsrechner laden','.pp-financing iframe','calculator.justhome.com']]){
-  await page.getByRole('button',{name:label,exact:true}).click();
+ for(const selector of ['.pp-tour-frame','.pp-map-frame','.pp-financing iframe','#pp-fisher-widget']){
   await expect(page.frameLocator(selector).getByRole('heading',{name:'Externer Inhalt geladen'})).toBeVisible();
-  expect(providers).toContain(host);
  }
+ await expect(page.getByRole('button',{name:/Rundgang starten|Karte anzeigen|rechner laden/})).toHaveCount(0);
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
  expect(overflow).toBeLessThanOrEqual(1);
 });
