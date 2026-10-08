@@ -1,13 +1,11 @@
 // This browser widget uses the public PriceHubble key already present on sls.de.
 // Propstack credentials stay server-side.
-window.ppInitValuation = () => {
+window.ppInitValuation = async () => {
   const iframe = document.getElementById('pp-fisher-widget');
   if (!iframe || iframe.dataset.externalReady) return;
-  iframe.dataset.externalReady='1';iframe.hidden=true;
-  const {notice,text,button}=window.slsExternalNotice({frame:iframe,title:'Eine erste Einschätzung für Ihre Immobilie',description:'Die Bewertung wird von PriceHubble bereitgestellt. Erst beim Laden werden Verbindungsdaten an den Anbieter übertragen. Ihre Eingaben erfolgen direkt dort.',buttonLabel:'Bewertungsrechner laden'});
-  button.addEventListener('click',async()=>{button.disabled=true;try{
+  iframe.dataset.externalReady='1';iframe.hidden=false;iframe.loading='eager';
+  try{
     if(!window.FisherWidget?.init)await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://fisher.pricehubble.com/widget.js';script.onload=resolve;script.onerror=reject;document.head.append(script);});
-    iframe.hidden=false;notice.remove();
   window.FisherWidget.init({
     apiKey: "SMPfz9cTNasXXRESOj168p59kPPKaDFN",
     iframe: '#pp-fisher-widget',
@@ -21,6 +19,8 @@ window.ppInitValuation = () => {
     custom: 'SLS Exposé Vorschau',
     consentGranted: false,
   });
-  }catch{text.textContent='Der Bewertungsrechner konnte nicht geladen werden. Bitte kontaktieren Sie SLS direkt.';button.disabled=false;}
-  });
+  }catch{
+    iframe.hidden=true;
+    const status=document.createElement('p');status.setAttribute('role','status');status.textContent='Der Bewertungsrechner konnte nicht geladen werden. Bitte kontaktieren Sie SLS direkt.';iframe.before(status);
+  }
 };
