@@ -8,9 +8,7 @@
     if (fallback) fallback.hidden = false;
   };
 
-  const notice=document.createElement('div');notice.className='external-service-notice';
-  const text=document.createElement('p');text.textContent='Die Immobilienbewertung wird von PriceHubble bereitgestellt. Beim Laden werden Verbindungsdaten an PriceHubble übertragen. Ihre Eingaben erfolgen direkt beim Anbieter.';
-  const button=document.createElement('button');button.type='button';button.className='button';button.textContent='Bewertungsrechner laden';notice.append(text,button);frame.before(notice);frame.hidden=true;
+  const {notice,button}=window.slsExternalNotice({frame,title:'Eine erste Einschätzung für Ihre Immobilie',description:'Die Bewertung wird von PriceHubble bereitgestellt. Erst beim Laden werden Verbindungsdaten an den Anbieter übertragen. Ihre Eingaben erfolgen direkt dort.',buttonLabel:'Bewertungsrechner laden'});
   button.addEventListener('click',()=>{notice.remove();frame.hidden=false;
   const script = document.createElement("script");
   script.src = "https://fisher.pricehubble.com/widget.js";
