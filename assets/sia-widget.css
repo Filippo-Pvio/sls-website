@@ -8,10 +8,10 @@ button,textarea,a { font:inherit; }
 button,a { -webkit-tap-highlight-color:transparent; }
 button { cursor:pointer; }
 :focus-visible { outline:3px solid #345B6E; outline-offset:4px; }
-.quickbar { position:fixed; right:24px; bottom:calc(24px + env(safe-area-inset-bottom,0px)); z-index:995; display:flex; align-items:stretch; border:1px solid #d6e1e7; border-radius:999px; overflow:hidden; background:#fff; box-shadow:0 8px 28px #18333f30; transition:transform .22s ease,box-shadow .22s ease; }
+.quickbar { position:fixed; right:24px; bottom:calc(24px + env(safe-area-inset-bottom,0px)); z-index:995; display:flex; align-items:stretch; border:2px solid #fff; border-radius:999px; overflow:hidden; background:#fff; box-shadow:0 8px 28px #18333f30; transition:transform .22s ease,box-shadow .22s ease; }
 .quickbar:hover { transform:translateY(-2px); box-shadow:0 12px 34px #18333f38; }
 .quick-call { border:0; background:#345B6E; color:#fff; min-height:48px; display:flex; align-items:center; justify-content:center; text-decoration:none; }
-.quickbar .launch { border-radius:0; }
+.quickbar .launch { border:0; border-radius:0; }
 .quick-call { flex-shrink:0; width:47px; border-left:1px solid rgba(255,255,255,.22); }
 .quick-call svg { width:19px; height:19px; }
 :host-context(body.menu-open) .quickbar { visibility:hidden; }

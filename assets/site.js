@@ -146,7 +146,7 @@ footer.innerHTML = `
         <h2>Persönlich für Sie da</h2>
         <a class="footer-phone" href="tel:+4923697428020">02369 742 80 20</a>
         <a href="mailto:service@sls.de">service@sls.de</a>
-        <a class="footer-contact-link" href="/kontakt/">Kontakt aufnehmen <span aria-hidden="true">→</span></a>
+        <a class="footer-contact-link" href="/kontakt/">Kontakt aufnehmen</a>
       </div>
       <div class="footer-offices">
         <h2>Unsere Büros</h2>

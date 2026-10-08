@@ -40,7 +40,7 @@
    document.querySelectorAll('[data-guide]').forEach(link => {
     const available = data.availableGuides.includes(link.dataset.guide);
     link.setAttribute('aria-disabled', String(!available));
-    link.textContent = available ? 'Ratgeber auswählen ↗' : 'Derzeit nicht verfügbar';
+    link.textContent = available ? 'Ratgeber auswählen' : 'Derzeit nicht verfügbar';
    });
    const marketingAvailable = data.marketingAvailable === true && data.consentVersion === marketingConsent.dataset.consentVersion;
    marketingConsent.disabled = !marketingAvailable;
