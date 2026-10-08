@@ -3367,7 +3367,7 @@ html body .fullscreen-nav-bottom .offcanvas-contact-cta:focus-visible{outline:3p
 
 /* Shared alignment for concluding contact invitations on every page. */
 html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish,.contact-finish,.knowledge-final,.mag-closing,.mag-article-cta){text-align:center}
-html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish,.contact-finish,.knowledge-final,.mag-closing,.mag-article-cta) :is(h2,p){margin-inline:auto}
+html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish,.contact-finish,.knowledge-final,.mag-closing,.mag-article-cta) :is(h2,p){margin-inline:auto!important}
 html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish,.contact-finish) .page-actions{justify-content:center}
 html body main .knowledge-final-layout,html body main .mag-closing>.mag-wrap{display:flex;flex-direction:column;align-items:center;gap:28px}
 html body main .knowledge-final-actions,html body main .mag-closing-links{align-items:center}
