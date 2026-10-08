@@ -3364,3 +3364,10 @@ html body .fullscreen-nav-bottom .offcanvas-contact-cta:focus-visible{outline:3p
 }
 
 .external-service-notice{padding:28px;border:1px solid #d7e0e4;border-radius:12px;background:#f5f8f8;color:#26353c;max-width:760px;margin:20px auto}.external-service-notice p{margin:0 0 16px;line-height:1.6}
+
+/* Shared alignment for concluding contact invitations on every page. */
+html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish,.contact-finish,.knowledge-final,.mag-closing,.mag-article-cta){text-align:center}
+html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish,.contact-finish,.knowledge-final,.mag-closing,.mag-article-cta) :is(h2,p){margin-inline:auto}
+html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish,.contact-finish) .page-actions{justify-content:center}
+html body main .knowledge-final-layout,html body main .mag-closing>.mag-wrap{display:flex;flex-direction:column;align-items:center;gap:28px}
+html body main .knowledge-final-actions,html body main .mag-closing-links{align-items:center}
