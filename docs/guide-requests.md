@@ -1,16 +1,25 @@
 # Ratgeberanforderung: bestehende Arbeitswebsite
 
-## Freigegebener Ratgeber
+## Freigegebene Ratgeberserie (08.10.2026)
 
-- ID: VERKAUF
-- Titel: Immobilie verkaufen. Mit einem guten Gefühl.
-- PDF: SLS-Immobilie-verkaufen.pdf, 12 Seiten, Ausgabe Oktober 2026, vom Nutzer zum Versand freigegeben.
-- Propstack-Notizkategorie (ID 741093, im Live-System category=for_notes) und Notiztitel: SLS_RATGEBER_VERKAUF_ANGEFORDERT
-- Die fünf weiteren Ratgeber bleiben deaktiviert. Der Nutzer hat den Ratgeberversand über Propstack am 02.10.2026 bestätigt; sie ist kein öffentlicher Direktdownload auf der Website.
+Die Nutzeranweisung „umsetzen“ bezieht sich auf die Fertigstellung und Einbindung aller sechs vorgesehenen Ratgeber. Der bestehende Verkaufsratgeber bleibt erhalten; fünf neue PDFs im selben SLS-Design ergänzen die Serie. Die Dateien sind als Anhänge der jeweiligen Propstack-Textbausteine hinterlegt, keine öffentlichen Direktdownloads.
+
+| ID | PDF / Seiten | Notizkategorie | Textbaustein |
+| --- | --- | --- | --- |
+| VERKAUF | SLS-Immobilie-verkaufen.pdf / 12 | 741093 | 1115390 |
+| BEWERTUNG | SLS-Immobilie-bewerten.pdf / 7 | 741094 | 1118670 |
+| ERBSCHAFT | SLS-Immobilie-geerbt.pdf / 7 | 741095 | 1118671 |
+| WOHNEN_IM_ALTER | SLS-Wohnen-im-Alter.pdf / 7 | 741096 | 1118672 |
+| TRENNUNG | SLS-Immobilie-bei-Trennung.pdf / 7 | 741097 | 1118673 |
+| UNTERLAGEN | SLS-Unterlagen-Checkliste.pdf / 7 | 741098 | 1118674 |
+
+Alle Kategorien sind Notiztypen und tragen `SLS_RATGEBER_<ID>_ANGEFORDERT`. Eine eigene aktive Automatisierung je Kategorie verwendet „Notiz erstellt“, „Kategorie ist genau“, Absender service@ (228065), die zugeordnete Vorlage und „Kontakt → E-Mail-Adresse“ als Empfänger. Keine CC/BCC, Folgeautomatisierung, Verzögerung oder Newsletter-Freigabe. Neue Automatiken: Bewertung 560526, Erbschaft 560527, Wohnen im Alter 560528, Trennung 560529, Unterlagen 560530. Bestehender Verkaufsprozess: 558325.
+
+Bearbeitbare Layoutquelle und Inhalte liegen im lokalen Projekt unter output/pdf/sls-ratgeber-serie/quelle/. Originalfonts, Logo und Fotos stammen aus dem freigegebenen Verkaufsratgeber. Alle 35 neuen PDF-Seiten wurden gerendert und visuell geprüft; Quellen sind in den PDFs verlinkt. Allgemeine Orientierung, keine individuelle fachliche Beratung.
 
 ## Websiteablauf
 
-GET /api/propstack-guide-request prüft den Zugang und die eindeutige Notizkategorie in Propstack und liefert ein signiertes, 30 Minuten gültiges Formulartoken. Erst dann wird das Formular aktiviert. POST akzeptiert ausschließlich VERKAUF und Vorname, Nachname und E-Mail-Adresse. Namen werden nach dem Trimmen mit jeweils maximal 100 Zeichen validiert; Telefonnummern werden nicht verlangt.
+GET /api/propstack-guide-request prüft den Zugang und die eindeutigen Notizkategorien in Propstack und liefert ein signiertes, 30 Minuten gültiges Formulartoken. Erst dann wird das Formular aktiviert. POST akzeptiert ausschließlich IDs aus lib/guide-catalog.mjs mit aktuell verfügbarer, passender Kategorie sowie Anrede, Vorname, Nachname und E-Mail-Adresse. Namen werden nach dem Trimmen mit jeweils maximal 100 Zeichen validiert; Telefonnummern werden nicht verlangt.
 
 Vorhandene Kontakte werden anhand ihrer primären E-Mail-Adresse eindeutig zugeordnet. Bei mehreren Treffern oder einer abweichenden primären E-Mail wird abgebrochen. Neue Kontakte werden mit Vorname, Nachname und E-Mail-Adresse angelegt. Vor jeder Versandnotiz werden Vor- und Nachname des erneut gelesenen Kontakts verglichen. Unicode-Normalisierung, Groß-/Kleinschreibung und zusätzliche Leerzeichen werden berücksichtigt; andere Abweichungen und fehlende Bestandsnamen führen zur Prüfung. Die angegebenen Namen werden zudem in der Ratgebernotiz dokumentiert. Bei eindeutiger Identitätszuordnung kann ausschließlich eine fehlende Anrede ergänzt und anschließend erneut geprüft werden. Vorhandene Namen, Newsletter- und Einwilligungsfelder werden nicht geändert. Eine zusätzliche Newsletter-Anmeldung benötigt eine eigene Bestätigung über Propstack.
 
@@ -24,11 +33,11 @@ Aktuell freigegeben ist die bestehende Arbeitsadresse `sls-website-eight.vercel.
 
 ## Konfiguration und Rechte
 
-In veröffentlichten Umgebungen ausschließlich `PROPSTACK_GUIDES_API_KEY`; fehlt er, wird vor dem Provider-Aufruf abgebrochen. `PROPSTACK_API_KEY` ist nur für lokale Entwicklung ein Fallback. Erforderlich: Aktivitätstypen lesen, Kontakte lesen/anlegen, Aktivitäten lesen, Notizen anlegen. ID 741093, Bezeichnung und Notiztyp werden gemeinsam gegen die gelesene Kategorie geprüft. Fehlende Rechte/Kategorie: Formular bleibt gesperrt; es wird kein Erfolg simuliert.
+In veröffentlichten Umgebungen ausschließlich `PROPSTACK_GUIDES_API_KEY`; fehlt er, wird vor dem Provider-Aufruf abgebrochen. `PROPSTACK_API_KEY` ist nur für lokale Entwicklung ein Fallback. Erforderlich: Aktivitätstypen lesen, Kontakte lesen/anlegen, Aktivitäten lesen, Notizen anlegen. Je Ratgeber werden die festgelegte ID, Bezeichnung und der Notiztyp gemeinsam geprüft. Fehlende oder mehrdeutige Kategorien deaktivieren nur das betroffene Thema; ohne verfügbare Themen bleibt das Formular gesperrt. Ein Versandbeleg wird nicht simuliert.
 
 ## Schutz und Grenzen
 
-- Same-origin-POST, serverseitige Zulassung nur des freigegebenen Ratgebers, begrenzte Eingabelänge, signiertes Formulartoken und unsichtbares Bot-Feld.
+- Same-origin-POST, serverseitige Zulassung nur der freigegebenen Ratgeber, begrenzte Eingabelänge, signiertes Formulartoken und unsichtbares Bot-Feld.
 - Doppelklickschutz im Browser und Sperre gleicher E-Mail innerhalb einer Serverinstanz.
 - Prüfung vorhandener Propstack-Notizen: gleiche Anforderungs-ID bzw. Anfrage derselben Kategorie innerhalb von zehn Minuten wird wiederverwendet.
 - Zentral maximal acht POST-Versuche pro Netzwerkkennung und E-Mail in 15 Minuten; zusätzlich gilt eine GET-/Gesamtgrenze. Kennungen werden per HMAC pseudonymisiert. Kein Name, keine E-Mail und kein Notiztext werden im zentralen Schutzspeicher gespeichert. Fehlerprotokolle enthalten feste technische Ereignisse statt Providertexte.
@@ -39,25 +48,25 @@ In veröffentlichten Umgebungen ausschließlich `PROPSTACK_GUIDES_API_KEY`; fehl
 
 node --test qa/guide-request.test.mjs qa/guide-form.test.mjs
 
-Testet Kontaktzuordnung/Neuanlage, unveränderte Kontaktpräferenzen, korrekte Notiz, Duplikate, ungültige Angaben, fremde Herkunft, Token, Fehler/Timeouts, Drosselung, Produktionssperre sowie Formularzustände. Live-Testadresse auf ausdrücklichen Nutzerwunsch: service@sls.de. Den Ratgeberversand hat der Nutzer bestätigt. Der separate Newsletter-Bestätigungsprozess ist noch nicht eingerichtet.
+Testet zusätzlich alle sechs Themen, passende Kategorie/PDF, parallele Anforderungen verschiedener Themen und getrennte Prüfnotizen. Testet Kontaktzuordnung/Neuanlage, unveränderte Kontaktpräferenzen, korrekte Notiz, Duplikate, ungültige Angaben, fremde Herkunft, Token, Fehler/Timeouts, Drosselung, Produktionssperre sowie Formularzustände. Live-Testadresse auf ausdrücklichen Nutzerwunsch: service@sls.de. Den Ratgeberversand hat der Nutzer bestätigt. Der separate Newsletter-Prozess ist wie unten dokumentiert eingerichtet; diese Erweiterung verändert dessen Bestätigungswirkung nicht.
 
 API-Referenzen: https://docs.propstack.de/reference/kontakte und https://docs.propstack.de/reference/aktivitaeten-1
 
 ## Namensabweichungen / Prüfablauf
 
-Bei abweichenden Namen wird am eindeutig zugeordneten Kontakt eine separate Notiz mit Titel `SLS_RATGEBER_VERKAUF_PRUEFUNG` ohne Versandkategorie angelegt. Sie enthält die eingegebenen Angaben und den Hinweis „PRÜFUNG ERFORDERLICH – KEIN VERSAND FREIGEGEBEN“. Es wird weder ein zweiter Kontakt erstellt noch der bestehende Kontakt überschrieben. Die Erfolgsmeldung zur Prüfung wird erst nach bestätigter Notizanlage ausgegeben. Mehrere Treffer oder eine abweichende primäre E-Mail bleiben ein Zuordnungsfehler ohne Schreibvorgang.
+Bei abweichenden Namen wird am eindeutig zugeordneten Kontakt eine separate Notiz mit Titel `SLS_RATGEBER_<ID>_PRUEFUNG` ohne Versandkategorie angelegt. Sie enthält die eingegebenen Angaben und den Hinweis „PRÜFUNG ERFORDERLICH – KEIN VERSAND FREIGEGEBEN“. Es wird weder ein zweiter Kontakt erstellt noch der bestehende Kontakt überschrieben. Die Erfolgsmeldung zur Prüfung wird erst nach bestätigter Notizanlage ausgegeben. Mehrere Treffer oder eine abweichende primäre E-Mail bleiben ein Zuordnungsfehler ohne Schreibvorgang.
 
 Der Besucher erhält den neutralen Hinweis zur nicht eindeutigen Zuordnung, keine Auskunft über den gespeicherten Namen oder CRM-IDs. „Angaben korrigieren“ erhält die Eingaben und lädt ein neues Formulartoken; „SLS kontaktieren“ führt zu /kontakt/. Korrigierte, übereinstimmende Namen durchlaufen anschließend die normale Anforderung. Bei korrekten abweichenden Angaben klärt SLS die Zuordnung persönlich; keine automatische Namensänderung.
 
 Prüfnotizen werden separat von Versandnotizen dedupliziert. Gleichzeitige Anfragen mit verschiedenen Namen werden innerhalb einer Instanz nacheinander geprüft und bekommen ihr eigenes Ergebnis. Der zentrale Schutz aus dem Abschnitt Schutz und Grenzen gilt zusätzlich; nach Ablauf der Schutzfrist ist ein CRM-Abgleich weiterhin nötig.
 
-**Propstack-Prozess einrichten:** Nur die Kategorie 741093 / SLS_RATGEBER_VERKAUF_ANGEFORDERT als Versand-Auslöser verwenden, niemals jede neue Notiz. Prüfnotizen bleiben ausgeschlossen. Nach persönlicher Klärung Bestandsdaten und neuere Anforderungen prüfen, eventuell Namen manuell berichtigen und einmalig die Versandnotiz anlegen, sofern noch keine korrigierte Anforderung diese erzeugt hat. Prüfnotiz anschließend als geklärt kennzeichnen. Die Website löst keine früheren Prüfnotizen automatisch auf und stoppt keine bereits laufenden Versandprozesse.
+**Propstack-Prozesse:** Jede Vorlage ausschließlich mit ihrer zugeordneten Kategorie aus der Tabelle auslösen, niemals mit jeder neuen Notiz. Prüfnotizen bleiben ausgeschlossen. Nach persönlicher Klärung Bestandsdaten und neuere Anforderungen prüfen, eventuell Namen manuell berichtigen und einmalig die Versandnotiz anlegen, sofern noch keine korrigierte Anforderung diese erzeugt hat. Prüfnotiz anschließend als geklärt kennzeichnen. Die Website löst keine früheren Prüfnotizen automatisch auf und stoppt keine bereits laufenden Versandprozesse.
 
 ## Zwei getrennte Checkboxen
 
-Die Pflicht-Checkbox lautet „Ich habe die Datenschutzerklärung zur Kenntnis genommen.“ und verlinkt https://sls.de/datenschutz/. Sie ist initial nicht angekreuzt. Ohne `privacyAcknowledged=true` und die aktuelle `privacyVersion` (`2026-10-02-v1`) lehnt die API die Anforderung ab, bevor Kontakte oder Notizen geschrieben werden. Browservalidierung allein reicht nicht aus.
+Die Pflicht-Checkbox lautet „Ich habe die Datenschutzerklärung zur Kenntnis genommen.“ und verlinkt https://sls.de/datenschutz/. Sie ist initial nicht angekreuzt. Ohne `privacyAcknowledged=true` und die aktuelle `privacyVersion` (`2026-10-07-v1`) lehnt die API die Anforderung ab, bevor Kontakte oder Notizen geschrieben werden. Browservalidierung allein reicht nicht aus.
 
-Die vorhandene Ratgeber- bzw. Prüfnotiz dokumentiert die aktive Kenntnisnahme mit Wortlaut, Version, Datenschutzlink und Eingangszeitpunkt. Die Kenntnisnahme ist keine Werbeeinwilligung. Sie ändert weder Newsletter, Kontakterlaubnis noch DSGVO-Speicherstatus. Für sie ist keine zusätzliche Propstack-Automatisierung nötig. Die bestehende Ratgeberkategorie 741093 bleibt unverändert.
+Die vorhandene Ratgeber- bzw. Prüfnotiz dokumentiert die aktive Kenntnisnahme mit Wortlaut, Version, Datenschutzlink und Eingangszeitpunkt. Die Kenntnisnahme ist keine Werbeeinwilligung. Sie ändert weder Newsletter, Kontakterlaubnis noch DSGVO-Speicherstatus. Für sie ist keine zusätzliche Propstack-Automatisierung nötig. Die sechs Ratgeberkategorien aus der Tabelle bleiben von der Kenntnisnahme getrennt.
 
 Die zweite Checkbox bleibt freiwillig und initial leer. Nur ihre aktive Auswahl erzeugt bei passender Kontaktzuordnung zusätzlich die kategorisierte DOI-Notiz. In Propstack müssen Newsletter/Kontakterlaubnis weiterhin erst nach tatsächlicher Bestätigung aktiviert werden. Versand und Linkwirkung wurden nicht durch diese Checkbox-Änderung getestet.
 
