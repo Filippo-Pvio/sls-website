@@ -4,8 +4,7 @@ window.ppInitValuation = () => {
   const iframe = document.getElementById('pp-fisher-widget');
   if (!iframe || iframe.dataset.externalReady) return;
   iframe.dataset.externalReady='1';iframe.hidden=true;
-  const notice=document.createElement('div'),text=document.createElement('p'),button=document.createElement('button');
-  notice.className='external-service-notice';text.textContent='Beim Laden des Bewertungsrechners werden Verbindungsdaten an PriceHubble übertragen. Ihre Eingaben erfolgen direkt beim Anbieter.';button.type='button';button.className='button';button.textContent='Bewertungsrechner laden';notice.append(text,button);iframe.before(notice);
+  const {notice,text,button}=window.slsExternalNotice({frame:iframe,title:'Eine erste Einschätzung für Ihre Immobilie',description:'Die Bewertung wird von PriceHubble bereitgestellt. Erst beim Laden werden Verbindungsdaten an den Anbieter übertragen. Ihre Eingaben erfolgen direkt dort.',buttonLabel:'Bewertungsrechner laden'});
   button.addEventListener('click',async()=>{button.disabled=true;try{
     if(!window.FisherWidget?.init)await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://fisher.pricehubble.com/widget.js';script.onload=resolve;script.onerror=reject;document.head.append(script);});
     iframe.hidden=false;notice.remove();

@@ -350,14 +350,26 @@ if (form) {
   });
 }
 
-// External calculators load only after the visitor activates them.
+// External services connect only when the visitor activates them.
+window.slsExternalNotice=({frame,title,description,buttonLabel,kind='calculator',preview})=>{
+ const notice=document.createElement('div');notice.className=`external-service-notice external-service-${kind}`;
+ const visual=document.createElement('div');visual.className='external-service-visual';visual.setAttribute('aria-hidden','true');
+ if(preview){const image=document.createElement('img');image.src=preview;image.alt='';image.loading='lazy';visual.append(image);}
+ else visual.innerHTML=kind==='map'?'<svg viewBox="0 0 120 80" fill="none"><path d="M5 16 40 6l40 12 35-10v56L80 74 40 62 5 72Z" fill="#dae7e9" stroke="currentColor" stroke-width="2"/><path d="M40 6v56m40-44v56M10 44l31-9 39 11 29-10" stroke="currentColor" stroke-width="2"/><path d="M60 17c-10 0-17 7-17 17 0 12 17 27 17 27s17-15 17-27c0-10-7-17-17-17Z" fill="#345b6e"/><circle cx="60" cy="34" r="6" fill="white"/></svg>':'<svg viewBox="0 0 120 80" fill="none"><rect x="33" y="4" width="54" height="72" rx="8" fill="#dae7e9" stroke="currentColor" stroke-width="2"/><rect x="41" y="13" width="38" height="17" rx="3" fill="white"/><path d="M43 42h7m-3-3v6m11-3h7m8-3v6M43 55h7m8 0h7m8-3v6M43 66h7m8 0h7" stroke="currentColor" stroke-width="3"/></svg>';
+ const copy=document.createElement('div');copy.className='external-service-copy';
+ const heading=document.createElement('p');heading.className='external-service-title';heading.textContent=title;
+ const text=document.createElement('p');text.textContent=description;
+ const button=document.createElement('button');button.type='button';button.className='button';button.textContent=buttonLabel;
+ copy.append(heading,text,button);notice.append(visual,copy);frame.before(notice);frame.hidden=true;
+ return {notice,text,button};
+};
 window.slsPrepareExternalFrames=(root=document)=>root.querySelectorAll('iframe[data-external-src]:not([data-external-ready])').forEach(frame=>{
  frame.dataset.externalReady='1';
- const notice=document.createElement('div');notice.className='external-service-notice';
- const text=document.createElement('p');text.textContent='Dieser Rechner wird von Justhome bereitgestellt. Beim Laden werden Verbindungsdaten an den Anbieter übertragen.';
- const button=document.createElement('button');button.type='button';button.className='button';button.textContent='Rechner laden';
- notice.append(text,button);frame.before(notice);frame.hidden=true;
+ const kind=frame.dataset.externalKind||'calculator',budget=frame.dataset.externalSrc.includes('budget-check.justhome.com');
+ const title=frame.dataset.externalTitle||(budget?'Ihr Budget im Blick':'Ihre Finanzierung im Blick');
+ const description=frame.dataset.externalDescription||'Der Rechner wird von Justhome bereitgestellt. Erst beim Laden werden Verbindungsdaten an den Anbieter übertragen. Ihre Eingaben erfolgen direkt dort.';
+ const buttonLabel=frame.dataset.externalButton||(budget?'Budgetrechner laden':'Finanzierungsrechner laden');
+ const {notice,button}=window.slsExternalNotice({frame,title,description,buttonLabel,kind,preview:frame.dataset.externalPreview});
  button.addEventListener('click',()=>{frame.src=frame.dataset.externalSrc;frame.hidden=false;notice.remove();},{once:true});
 });
-
 window.slsPrepareExternalFrames();
