@@ -361,3 +361,33 @@
 #sls-sales-journey .controls .chapter-arrow{width:36px;height:36px;padding:9px}
 #sls-sales-journey #chapter-position{font-size:11px}
 }
+
+/* One headline, icon-only starts, and a header-safe playback anchor. */
+.home-sales-journey .home-process-intro h2{font-size:clamp(30px,3.7vw,48px)!important;line-height:1.16!important}
+#sls-sales-journey.in-experience{scroll-margin-top:var(--journey-anchor-offset,88px);margin-left:0;margin-right:0}
+#sls-sales-journey .choices button{position:relative}
+#sls-sales-journey .choice-play{display:grid;place-items:center;width:34px;height:34px;border:1px solid #6c97ab70;border-radius:50%;color:#47758b;margin-top:4px}
+#sls-sales-journey .choice-play i{display:flex;width:16px;height:16px;margin-left:2px}
+#sls-sales-journey .choice-play svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7}
+#sls-sales-journey.in-experience{position:relative}
+@media(min-width:761px){
+#sls-sales-journey.in-experience{padding:16px}
+#sls-sales-journey.in-experience .journey-toolbar{position:absolute;top:16px;right:16px;z-index:10;min-height:44px;padding:0;border:0;margin:0}
+#sls-sales-journey .experience{padding:0;gap:12px 4%}
+#sls-sales-journey .top-status{min-height:44px;height:44px}
+#sls-sales-journey .stage,#sls-sales-journey[data-scene] .stage{height:var(--journey-stage-height,620px);min-height:0}
+#sls-sales-journey .visual,#sls-sales-journey[data-scene] .visual{height:588px;width:calc(100% / var(--journey-art-scale,1));transform:scale(var(--journey-art-scale,1));transform-origin:top left}
+#sls-sales-journey .story-copy{padding-top:0}
+#sls-sales-journey .story-copy h2{min-height:0}
+}
+@media(max-width:760px){
+#sls-sales-journey.in-experience .journey-toolbar{position:absolute;right:12px;top:12px;z-index:10;padding:0;border:0;margin:0;min-height:44px}
+#sls-sales-journey .top-status{width:100%;min-height:44px;height:44px;padding:0;margin-bottom:4px}
+#sls-sales-journey #mobile-play{display:none}
+#sls-sales-journey #change-type{max-width:calc(100% - 140px)}
+#sls-sales-journey #chosen-icon{display:none}
+#sls-sales-journey #chosen-label{font-size:11px}
+#sls-sales-journey .story-copy{height:100px;min-height:100px}
+#sls-sales-journey .stage,#sls-sales-journey[data-scene] .stage{height:var(--journey-stage-height,360px);min-height:0}
+#sls-sales-journey .visual,#sls-sales-journey[data-scene] .visual{height:var(--journey-art-height,344px);width:calc(100% / var(--journey-art-scale,1));transform:scale(var(--journey-art-scale,1));transform-origin:top left}
+}
