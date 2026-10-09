@@ -43,7 +43,7 @@ function publicReference(unit, soldStatusIds) {
   return { id: String(unit.id), title, city, zip: zip || null, image, brokerName: brokerName || null, brokerId: brokerId || null };
 }
 
-async function soldListings(key, statusIds) {
+async function soldListings(key, statusIds, ordered = false) {
   const units = [];
   const seen = new Set();
   for (let page = 1; page <= MAX_PAGES; page++) {
@@ -52,6 +52,7 @@ async function soldListings(key, statusIds) {
       marketing_type: 'BUY', archived: '-1',
       per: String(PAGE_SIZE), page: String(page)
     });
+    if (ordered) { query.set('sort_by','unit_id.raw'); query.set('order','asc'); }
     const response = await propstack(`units?${query}`, key);
     if (!Array.isArray(response.data)) throw new Error('Propstack listing format changed');
     for (const unit of response.data) {
@@ -115,6 +116,12 @@ export default async function handler(req, res) {
   }
   const gallery = req.query?.gallery;
   const cursor = req.query?.cursor ?? '1:0';
+  const requestedPage = req.query?.page;
+  if (requestedPage !== undefined && (gallery !== '1' || typeof requestedPage !== 'string' ||
+      !/^[1-9]\d{0,3}$/.test(requestedPage) || Number(requestedPage) > GALLERY_MAX_PAGE || req.query?.cursor !== undefined)) {
+    res.setHeader('Cache-Control','no-store');
+    return res.status(400).json({error:'Ungültige Referenzseite'});
+  }
   if (gallery !== undefined && (gallery !== '1' || typeof cursor !== 'string' ||
       !/^[1-9]\d{0,3}:(?:[0-9]|1[01])$/.test(cursor) || Number(cursor.split(':')[0]) > GALLERY_MAX_PAGE)) {
     res.setHeader('Cache-Control', 'no-store');
@@ -135,6 +142,16 @@ export default async function handler(req, res) {
     if (!soldStatusIds.size) {
       res.setHeader('Cache-Control', 'no-store');
       return res.status(503).json({ error: 'Verkaufsstatus in Propstack nicht gefunden' });
+    }
+
+    if (gallery === '1' && requestedPage !== undefined) {
+      // Count only references that can actually be shown, not every sold CRM unit.
+      const listings = await soldListings(key, soldStatusIds, true);
+      const references = listings.map(unit => publicReference(unit, soldStatusIds)).filter(Boolean);
+      const totalPages = Math.ceil(references.length / GALLERY_SIZE);
+      const page = Math.min(Number(requestedPage), totalPages || 1);
+      res.setHeader('Cache-Control','public, s-maxage=900, stale-while-revalidate=1800');
+      return res.status(200).json({references:references.slice((page-1)*GALLERY_SIZE,page*GALLERY_SIZE), page, totalPages});
     }
 
     if (gallery === '1') {

@@ -38,5 +38,5 @@ body.references-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin
 .references-page .references-pagination button{min-width:44px;min-height:44px;padding:8px 14px;border:1px solid #6c97ab;border-radius:4px;background:#fff;color:#345b6e;font:700 15px/1.4 Raleway,Arial,sans-serif;cursor:pointer}
 .references-page .references-pagination button:hover:not(:disabled){background:#eaf0f3}
 .references-page .references-pagination button[aria-current="page"]{background:#345b6e;color:#fff;border-color:#345b6e;opacity:1}
-.references-page .references-pagination button:disabled{cursor:default;opacity:.45}
+.references-page .references-pagination button:disabled:not([aria-current="page"]){cursor:default;opacity:.45}
 .references-page .references-pagination button:focus-visible{outline:2px solid #345b6e;outline-offset:3px}
