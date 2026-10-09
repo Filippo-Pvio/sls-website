@@ -10,8 +10,9 @@ body.references-page #main .section-head>p:not(.eyebrow){max-width:700px;margin:
 .references-page .reference-card .reference-tag{display:block;margin:20px 0 12px;color:#345b6e;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 body.references-page #main .reference-card h3{font:500 25px/1.22 'Playfair Display',Georgia,serif;color:#345b6e;margin:0 0 12px;overflow-wrap:break-word}
 .references-page .reference-card p{margin:0;color:#526873;font-size:15px}
-.references-page .references-more{text-align:center;margin-top:32px}
-.references-page .references-more button[hidden]{display:none}
+.references-page .references-load-sentinel{text-align:center;min-height:1px}
+.references-page .references-load-sentinel p{margin-top:24px}
+.references-page .references-load-sentinel [hidden]{display:none}
 body.references-page #main>.references-approach{background:#eaf0f3}
 .references-page .references-values{display:grid;gap:28px}
 .references-page .references-values article{display:grid;grid-template-columns:1fr 1.5fr;gap:48px;border-top:1px solid #b9ced7;padding-top:28px}
@@ -26,7 +27,7 @@ body.references-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin
 @media(max-width:540px){.references-page .references-grid{grid-template-columns:1fr}.references-page .reference-card.is-entering{animation:none}}
 @media(prefers-reduced-motion:reduce){.references-page .reference-card.is-entering{animation:none}}
 
-.references-page #references-more{background:transparent;border:0;border-bottom:1px solid #6c97ab;border-radius:0;padding:10px 0;min-height:44px;font:700 16px/1.5 Raleway,Arial,sans-serif;cursor:pointer}
-.references-page #references-more:disabled{opacity:.55;cursor:wait}
-.references-page #references-more:focus-visible{outline:2px solid #345b6e;outline-offset:5px}
+.references-page #references-retry{background:transparent;border:0;border-bottom:1px solid #6c97ab;border-radius:0;padding:10px 0;min-height:44px;font:700 16px/1.5 Raleway,Arial,sans-serif;cursor:pointer}
+.references-page #references-retry:disabled{opacity:.55;cursor:wait}
+.references-page #references-retry:focus-visible{outline:2px solid #345b6e;outline-offset:5px}
 .references-page .reference-card{scroll-margin-top:100px}

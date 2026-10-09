@@ -1,8 +1,9 @@
 (async () => {
  const grid = document.getElementById('references-grid');
  const status = document.getElementById('references-status');
- const more = document.getElementById('references-more');
- if (!grid || !status || !more) return;
+ const sentinel = document.getElementById('references-load-sentinel');
+ const retry = document.getElementById('references-retry');
+ if (!grid || !status || !sentinel || !retry) return;
  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
  const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -20,13 +21,21 @@
   article.append(image,tag,heading,location); return article;
  };
  const seen = new Set();
- let cursor = '1:0', loading = false;
- const loadMore = async (focus = false) => {
+ let cursor = '1:0', loading = false, failed = false, scheduled = false;
+ const scheduleMore = () => {
+  if (scheduled) return;
+  scheduled = true;
+  requestAnimationFrame(() => {
+   scheduled = false;
+   if (!loading && !failed && cursor !== null && sentinel.getBoundingClientRect().top <= window.innerHeight + 600) loadMore();
+  });
+ };
+ const loadMore = async () => {
   if (loading || cursor === null) return;
-  loading = true; more.disabled = true;
+  loading = true; failed = false; retry.hidden = true;
   grid.setAttribute('aria-busy','true');
-  more.textContent = 'Referenzen werden geladen …';
-  status.textContent = seen.size ? `${seen.size} Referenzimmobilien angezeigt. Weitere werden geladen …` : 'Referenzimmobilien werden geladen …';
+  status.hidden = false;
+  status.textContent = 'Referenzimmobilien werden geladen …';
   try {
    const query = new URLSearchParams({gallery:'1',cursor});
    const response = await fetch('/api/propstack-sold-references/?'+query,{signal:AbortSignal.timeout(15000)});
@@ -42,27 +51,27 @@
    const batch = items.map(card);
    grid.append(...batch); batch.forEach(item => observer?.observe(item));
    cursor = data.nextCursor;
-   more.hidden = cursor === null;
-   status.textContent = seen.size ? `${seen.size} Referenzimmobilien angezeigt.` : cursor === null
-     ? 'Derzeit sind keine Referenzimmobilien verfügbar.' : 'Weitere Referenzen können geladen werden.';
-   if (focus && batch[0]) {
-    batch[0].tabIndex = -1;
-    batch[0].focus({preventScroll:true});
-    batch[0].scrollIntoView({block:'start',behavior:reduced.matches?'instant':'smooth'});
+   status.textContent = !seen.size && cursor === null ? 'Derzeit sind keine Referenzimmobilien verfügbar.' : '';
+   status.hidden = !status.textContent;
+   if (cursor === null) {
+    window.removeEventListener('scroll',scheduleMore);
+    window.removeEventListener('resize',scheduleMore);
    }
   } catch {
-   more.hidden = false;
-   status.textContent = seen.size ? `${seen.size} Referenzimmobilien angezeigt. Weitere konnten gerade nicht geladen werden. Bitte versuchen Sie es erneut.`
+   failed = true; retry.hidden = false;
+   status.textContent = seen.size ? 'Weitere Referenzen konnten gerade nicht geladen werden. Bitte versuchen Sie es erneut.'
      : 'Die Referenzgalerie konnte gerade nicht geladen werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns. ';
    if (!seen.size) {
     const link = document.createElement('a');link.href='/kontakt/';link.textContent='Kontakt aufnehmen';status.append(link);
    }
   } finally {
-   loading = false; more.disabled = false;
-   more.textContent = seen.size ? 'Weitere Referenzen anzeigen' : 'Referenzen laden';
+   loading = false;
    grid.setAttribute('aria-busy','false');
+   if (!failed && cursor !== null) scheduleMore();
   }
  };
- more.addEventListener('click',()=>loadMore(true));
+ retry.addEventListener('click',()=>loadMore());
+ window.addEventListener('scroll',scheduleMore,{passive:true});
+ window.addEventListener('resize',scheduleMore);
  await loadMore();
 })();
