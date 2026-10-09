@@ -433,3 +433,39 @@
 #sls-sales-journey .contract-terms b{font-size:16px}
 #sls-sales-journey .contract-terms p{font-size:14px;line-height:1.35;margin-top:6px}
 }
+
+/* Virtual views keep a balanced position in the same stable frame. */
+#sls-sales-journey[data-story-step="5"] .presentation-scene{height:100%;display:flex;flex-direction:column;justify-content:center;gap:14px}
+#sls-sales-journey[data-story-step="5"] .tour-label{flex:none;align-self:stretch}
+#sls-sales-journey[data-story-step="5"] .scene .flight-card{padding:0!important;width:100%;display:flex;flex-direction:column;align-items:stretch;min-height:0;gap:10px}
+#sls-sales-journey[data-story-step="5"] .flight-card :is(video,.photo-pan){width:100%;height:auto;aspect-ratio:16/9;max-height:420px;object-fit:cover;flex:none}
+#sls-sales-journey .flight-card small{padding:0;font-size:14px;line-height:1.4;text-align:center}
+#sls-sales-journey .staging-open{align-self:center;border:1px solid #6c97ab66;border-radius:24px;background:#edf4f6;color:#315b6b;padding:10px 16px;font:600 14px/1.3 Raleway,sans-serif;cursor:pointer}
+#sls-sales-journey .staging-open:hover{background:#dcebf0}
+#sls-sales-journey .staging-demo h2{margin:0 0 20px;font-size:clamp(26px,4vw,40px)}
+#sls-sales-journey .staging-view{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:12px;background:#edf4f6}
+#sls-sales-journey .staging-view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#sls-sales-journey .staging-after{clip-path:inset(0 100% 0 0)}
+#sls-sales-journey .staging-state{position:absolute;top:12px;left:12px;background:#fffefdeb;padding:7px 12px;border-radius:20px;color:#315b6b;font-size:13px;font-weight:600}
+#sls-sales-journey .staging-controls{display:flex;gap:20px;align-items:center;margin:20px 0}
+#sls-sales-journey .staging-play{background:#ff526f;color:white;padding:12px 18px;border:0;border-radius:24px;cursor:pointer;font:600 14px Raleway,sans-serif;min-width:210px}
+#sls-sales-journey .staging-controls label{flex:1;font-size:13px;color:#315b6b}
+#sls-sales-journey .staging-range{display:block;width:100%;margin-top:10px;accent-color:#47758b}
+#sls-sales-journey .staging-note{font-size:13px;line-height:1.5;color:#5f5d5b;margin:0}
+#sls-sales-journey #details-dialog:has(.staging-demo){width:min(820px,calc(100vw - 24px));max-height:calc(100svh - 24px);padding:24px}
+#sls-sales-journey .staging-demo h2{font-size:30px;margin-bottom:14px}
+#sls-sales-journey .staging-demo .eyebrow{margin:0 0 12px}
+#sls-sales-journey .staging-view{width:min(100%,calc(44svh * 16 / 9));margin-inline:auto}
+#sls-sales-journey .staging-open:focus-visible,#sls-sales-journey .staging-controls :focus-visible{outline:3px solid #47758b;outline-offset:3px}
+#sls-sales-journey[data-story-step="16"] .brand-finale{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:20px}
+@media(max-width:760px){
+#sls-sales-journey[data-story-step="5"] .presentation-scene{gap:10px}
+#sls-sales-journey[data-story-step="5"] .tour-label{font-size:13px;padding:7px 10px}
+#sls-sales-journey .flight-card small{font-size:12px}
+#sls-sales-journey .staging-open{font-size:12px;padding:9px 12px}
+#sls-sales-journey .staging-controls{flex-direction:column;align-items:stretch;gap:16px;margin:16px 0}
+#sls-sales-journey .staging-state{font-size:11px;top:8px;left:8px}
+#sls-sales-journey .staging-note{font-size:12px}
+#sls-sales-journey #details-dialog:has(.staging-demo){padding:18px}
+#sls-sales-journey .staging-demo h2{font-size:25px;padding-right:24px}
+}
