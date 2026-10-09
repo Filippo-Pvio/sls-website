@@ -3387,7 +3387,7 @@ body.home-editorial #main .hero-premium :is(.hero-media,h1,.hero-intro-mobile,.h
   body #main :is(.hero-premium,.buy-intro:not(.profile-intro-portrait),.finance-intro) .hero-scene,
   body #main .knowledge-intro-hero .knowledge-hero-scene,
   body #main .mag-hero .mag-hero-scenes img{
-    animation:hero-ken-burns 20s linear infinite alternate;
+    animation:hero-ken-burns 14s linear infinite alternate;
     animation-play-state:paused;
     transform-origin:center;
   }
@@ -3405,11 +3405,11 @@ body.home-editorial #main .hero-premium :is(.hero-media,h1,.hero-intro-mobile,.h
 }
 @keyframes hero-ken-burns{
   from{transform:scale(1) translate(0,0)}
-  to{transform:scale(1.05) translate(-.5%,-.3%)}
+  to{transform:scale(1.14) translate(-1.2%,-.6%)}
 }
 @keyframes hero-ken-burns-mobile{
   from{transform:scale(1) translate(0,0)}
-  to{transform:scale(1.025) translate(-.2%,0)}
+  to{transform:scale(1.08) translate(-.6%,0)}
 }
 @media(prefers-reduced-motion:reduce){
   body #main :is(.hero-premium,.buy-intro:not(.profile-intro-portrait),.finance-intro) .hero-scene,
