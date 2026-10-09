@@ -29,7 +29,7 @@ const navGroups = [
     ["Netzwerk", "/netzwerk/", "Fachbetriebe und Experten"]
   ]},
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
-    ["Unsere Marktgebiete", "/standorte/", "Ruhrgebiet & Rheinland"],
+    ["Unsere Marktgebiete", "/standorte/", "Nordrhein-Westfalen"],
     ["Büro Dorsten", "/buero-dorsten/", "Unser Büro im Ruhrgebiet"],
     ["Büro Düsseldorf", "/buero-duesseldorf/", "Unser Büro im Rheinland"],
     ["Kontakt", "/kontakt/", "Direkt mit uns sprechen"]

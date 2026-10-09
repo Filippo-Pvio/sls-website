@@ -754,7 +754,7 @@ async function buildPdf(report, contact) {
 
     target.drawLine({ start: { x: M, y: 66 }, end: { x: PAGE_W - M, y: 66 }, thickness: 0.7, color: BRAND.line });
     target.drawText('SLS Immobilienpartner GmbH', { x: M, y: 45, size: 7.6, font: bold, color: BRAND.blue });
-    const offices = 'Dorsten  |  Düsseldorf  |  Ruhrgebiet & Rheinland';
+    const offices = 'Dorsten  |  Düsseldorf  |  Nordrhein-Westfalen';
     target.drawText(offices, { x: PAGE_W - M - regular.widthOfTextAtSize(offices, 7.2), y: 45, size: 7.2, font: regular, color: BRAND.muted });
   };
 
