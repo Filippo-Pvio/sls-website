@@ -341,3 +341,23 @@
 }
 #sls-sales-journey h2,#sls-sales-journey h3,#sls-sales-journey strong{color:#0b1112!important}
 #sls-sales-journey .report-stats strong,#sls-sales-journey .eyebrow{color:#47758b!important}
+
+/* A single invitation and compact chapter navigation. */
+#sls-sales-journey .choose-label{font-size:clamp(18px,2vw,23px);line-height:1.45;max-width:760px;margin:0 0 24px}
+#sls-sales-journey .choices small{display:flex;align-items:center;gap:7px}
+#sls-sales-journey .choices small i{display:inline-flex;width:14px;height:14px}
+#sls-sales-journey .choices small svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7}
+#sls-sales-journey .journey-toolbar{justify-content:flex-end}
+#sls-sales-journey .controls{display:flex;align-items:center;justify-content:space-between;gap:16px}
+#sls-sales-journey .chapter-navigation{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+#sls-sales-journey #chapter-position{font-size:13px;line-height:1.3;white-space:nowrap;text-align:center;color:#47758b;font-variant-numeric:tabular-nums}
+#sls-sales-journey .chapter-arrow{width:44px;height:44px;flex:none;padding:12px}
+#sls-sales-journey .chapter-arrow svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#sls-sales-journey .chapter-arrow:disabled{opacity:.3;cursor:default}
+@media(max-width:760px){
+#sls-sales-journey .choose-label{font-size:18px;margin-bottom:18px}
+#sls-sales-journey .controls{gap:8px}
+#sls-sales-journey .chapter-navigation{flex:1;gap:4px}
+#sls-sales-journey .controls .chapter-arrow{width:36px;height:36px;padding:9px}
+#sls-sales-journey #chapter-position{font-size:11px}
+}
