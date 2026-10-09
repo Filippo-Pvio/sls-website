@@ -22,11 +22,12 @@
   article.append(image,tag,heading,location); return article;
  };
  const pages = [];
- let current = 0, loading = false, retryPage = 0;
+ let current = 0, loading = false, retryPage = 0, totalPages = 0;
  const renderPagination = () => {
   pagination.replaceChildren();
-  const last = pages.length - 1 + (pages.at(-1)?.nextCursor ? 1 : 0);
+  const last = totalPages - 1;
   pagination.hidden = last < 1;
+  pagination.setAttribute('aria-label',`Referenzseiten, insgesamt ${totalPages} Seiten`);
   if (pagination.hidden) return;
   const button = (label, index, disabled = false, active = false) => {
    const control = document.createElement('button');
@@ -60,40 +61,32 @@
   }
  };
  const loadPage = async (index, focus = false) => {
-  if (loading || index < 0 || index > pages.length) return;
-  let cursor = index === 0 ? '1:0' : pages[index-1]?.nextCursor;
-  if (!pages[index] && !cursor) return;
+  if (loading || index < 0 || (totalPages && index >= totalPages)) return;
   loading=true; retryPage=index; retry.hidden=true;
   grid.setAttribute('aria-busy','true'); renderPagination();
   status.hidden=false; status.textContent='Referenzimmobilien werden geladen …';
   try {
    if (!pages[index]) {
-    const visited = new Set();
-    let items=[], nextCursor;
-    do {
-     if (visited.has(cursor) || visited.size >= 40) throw new Error('Invalid continuation');
-     visited.add(cursor);
-     const query = new URLSearchParams({gallery:'1',cursor});
-     const response = await fetch('/api/propstack-sold-references/?'+query,{signal:AbortSignal.timeout(15000)});
-     if (!response.ok) throw new Error('Feed unavailable');
-     const data = await response.json();
-     if (!Array.isArray(data.references) || data.references.length > 12 ||
-         !(data.nextCursor === null || typeof data.nextCursor === 'string' && /^[1-9]\d{0,3}:(?:[0-9]|1[01])$/.test(data.nextCursor)) ||
-         data.nextCursor === cursor) throw new Error('Invalid reference page');
-     const seen = new Set();
-     items = data.references.filter(item => {
-      if (!item || typeof item.id !== 'string' || seen.has(item.id) || typeof item.title !== 'string' || typeof item.city !== 'string' || typeof item.image !== 'string' || !item.image.startsWith('https://')) return false;
-      seen.add(item.id); return true;
-     });
-     nextCursor=data.nextCursor; cursor=nextCursor;
-    } while (!items.length && cursor !== null);
-    pages[index]={items,nextCursor};
+    const query = new URLSearchParams({gallery:'1',page:String(index+1)});
+    const response = await fetch('/api/propstack-sold-references/?'+query,{signal:AbortSignal.timeout(30000)});
+    if (!response.ok) throw new Error('Feed unavailable');
+    const data = await response.json();
+    if (!Array.isArray(data.references) || data.references.length > 12 ||
+        !Number.isInteger(data.totalPages) || data.totalPages < 0 || data.totalPages > 334 ||
+        !Number.isInteger(data.page) || data.page < 1 || data.page > Math.max(data.totalPages,1)) throw new Error('Invalid reference page');
+    const seen = new Set();
+    const items = data.references.filter(item => {
+     if (!item || typeof item.id !== 'string' || seen.has(item.id) || typeof item.title !== 'string' || typeof item.city !== 'string' || typeof item.image !== 'string' || !item.image.startsWith('https://')) return false;
+     seen.add(item.id); return true;
+    });
+    totalPages=data.totalPages; index=data.page-1;
+    pages[index]={items};
    }
    showPage(index,focus);
   } catch {
    retry.hidden=false;
-   status.textContent=pages.length ? 'Diese Referenzseite konnte gerade nicht geladen werden. Bitte versuchen Sie es erneut.' : 'Die Referenzgalerie konnte gerade nicht geladen werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns. ';
-   if (!pages.length) { const link=document.createElement('a');link.href='/kontakt/';link.textContent='Kontakt aufnehmen';status.append(link); }
+   status.textContent=pages.some(Boolean) ? 'Diese Referenzseite konnte gerade nicht geladen werden. Bitte versuchen Sie es erneut.' : 'Die Referenzgalerie konnte gerade nicht geladen werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns. ';
+   if (!pages.some(Boolean)) { const link=document.createElement('a');link.href='/kontakt/';link.textContent='Kontakt aufnehmen';status.append(link); }
   } finally {
    loading=false; grid.setAttribute('aria-busy','false'); renderPagination();
   }

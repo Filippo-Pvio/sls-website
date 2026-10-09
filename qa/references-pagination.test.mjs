@@ -50,3 +50,17 @@ test('sparse pages are bounded and keep a cursor so remaining public entries sta
 test('legacy consumers still receive the complete feed with broker names',async()=>{
  const r=await call({},Array.from({length:29},(_,i)=>unit(i+1)));assert.equal(r.body.references.length,29);assert.equal(r.body.references[0].brokerName,'SLS');assert(!Object.hasOwn(r.body,'nextCursor'));assert(r.calls.some(x=>x.pathname.endsWith('brokers')));
 });
+
+test('numbered gallery pages count only public references and allow direct last-page access',async()=>{
+ const units=Array.from({length:104},(_,i)=>unit(i+1));units[0].images[0].is_private=true;units[1].images[0].is_floorplan=true;units[2].city='';units[3].marketing_type='RENT';units[4].status.id=3;
+ const result=await call({gallery:'1',page:'9'},units);
+ assert.equal(result.code,200);assert.equal(result.body.totalPages,9);assert.equal(result.body.page,9);
+ assert.deepEqual(result.body.references.map(x=>x.id),['102','103','104']);
+ assert(!result.calls.some(x=>x.pathname.endsWith('brokers')));
+ assert(result.calls.filter(x=>x.pathname.endsWith('units')).every(x=>x.searchParams.get('sort_by')==='unit_id.raw'));
+});
+test('numbered gallery validates page input and clamps a vanished last page',async()=>{
+ for(const page of ['0','-1','335','abc',['1']]){const result=await call({gallery:'1',page},[]);assert.equal(result.code,400);assert.equal(result.calls.length,0);}
+ const result=await call({gallery:'1',page:'8'},[unit(1)]);assert.equal(result.body.page,1);assert.equal(result.body.totalPages,1);
+ assert.deepEqual((await call({gallery:'1',page:'1'},[])).body,{references:[],page:1,totalPages:0});
+});
