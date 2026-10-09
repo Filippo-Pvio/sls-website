@@ -1,0 +1,40 @@
+/* Compact homepage strengths; scoped to avoid changing other closing sections. */
+body.home-editorial > main > section.section.home-strengths {
+  background: #345b6e !important;
+  padding-block: 72px;
+}
+.home-strengths-intro { max-width: 850px; }
+body.home-editorial > main > section.home-strengths h2 {
+  color: #fff !important;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.15;
+  margin: 0 0 18px;
+}
+body.home-editorial > main > section.home-strengths p {
+  color: #edf2f4 !important;
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0;
+}
+.home-strengths-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 36px;
+  margin-top: 38px;
+}
+.home-strength { border-top: 2px solid #ff596f; padding-top: 20px; }
+body.home-editorial > main > section.home-strengths .home-strength h3 {
+  color: #fff !important;
+  font-size: 24px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+}
+.home-strengths-action { margin-top: 34px; }
+@media (max-width: 760px) {
+  body.home-editorial > main > section.section.home-strengths { padding-block: 48px; }
+  .home-strengths-grid { grid-template-columns: 1fr; gap: 28px; margin-top: 30px; }
+  .home-strength { padding-top: 16px; }
+  .home-strengths-action { margin-top: 30px; }
+  .home-strengths-action .button { max-width: 100%; text-align: center; }
+}
