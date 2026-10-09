@@ -363,7 +363,7 @@
 }
 
 /* One headline, icon-only starts, and a header-safe playback anchor. */
-.home-sales-journey .home-process-intro h2{font-size:clamp(30px,3.7vw,48px);line-height:1.16}
+.home-sales-journey .home-process-intro h2{font-size:clamp(30px,3.7vw,48px)!important;line-height:1.16!important}
 #sls-sales-journey.in-experience{scroll-margin-top:var(--journey-anchor-offset,88px);margin-left:0;margin-right:0}
 #sls-sales-journey .choices button{position:relative}
 #sls-sales-journey .choice-play{display:grid;place-items:center;width:34px;height:34px;border:1px solid #6c97ab70;border-radius:50%;color:#47758b;margin-top:4px}
