@@ -3371,3 +3371,48 @@ html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-fi
 html body main :is(.about-final,.office-final,.profile-final,.team-final,.buy-final,.finance-final,.buyer-finish,.contact-finish) .page-actions{justify-content:center}
 html body main .knowledge-final-layout,html body main .mag-closing>.mag-wrap{display:flex;flex-direction:column;align-items:center;gap:28px}
 html body main .knowledge-final-actions,html body main .mag-closing-links{align-items:center}
+
+/* Keep homepage copy on the same content grid as the following sections. */
+body.home-editorial #main .hero-premium .hero-content{
+  width:min(calc(100% - 48px),var(--max));max-width:none;margin-inline:auto;
+}
+body.home-editorial #main .hero-premium h1{max-width:660px}
+body.home-editorial #main .hero-premium :is(.hero-media,h1,.hero-intro-mobile,.hero-actions .button){animation:none;transform:none}
+@media(max-width:640px){
+  body.home-editorial #main .hero-premium .hero-content{width:min(calc(100% - 32px),var(--max))}
+}
+
+/* Animate only photographic background layers, preserving the existing crossfades. */
+@media(prefers-reduced-motion:no-preference){
+  body #main :is(.hero-premium,.buy-intro:not(.profile-intro-portrait),.finance-intro) .hero-scene,
+  body #main .knowledge-intro-hero .knowledge-hero-scene,
+  body #main .mag-hero .mag-hero-scenes img{
+    animation:hero-ken-burns 20s linear infinite alternate;
+    animation-play-state:paused;
+    transform-origin:center;
+  }
+  body #main :is(.hero-premium,.buy-intro:not(.profile-intro-portrait),.finance-intro) .hero-scene.is-visible,
+  body #main .knowledge-intro-hero .knowledge-hero-scene.is-active,
+  body #main .mag-hero .mag-hero-scenes img.is-active{
+    animation-play-state:running;
+  }
+  body #main :is(.hero-premium,.buy-intro:not(.profile-intro-portrait),.finance-intro) .hero-scene.is-resetting{animation:none}
+  @media(max-width:640px){
+    body #main :is(.hero-premium,.buy-intro:not(.profile-intro-portrait),.finance-intro) .hero-scene,
+    body #main .knowledge-intro-hero .knowledge-hero-scene,
+    body #main .mag-hero .mag-hero-scenes img{animation-name:hero-ken-burns-mobile}
+  }
+}
+@keyframes hero-ken-burns{
+  from{transform:scale(1) translate(0,0)}
+  to{transform:scale(1.05) translate(-.5%,-.3%)}
+}
+@keyframes hero-ken-burns-mobile{
+  from{transform:scale(1) translate(0,0)}
+  to{transform:scale(1.025) translate(-.2%,0)}
+}
+@media(prefers-reduced-motion:reduce){
+  body #main :is(.hero-premium,.buy-intro:not(.profile-intro-portrait),.finance-intro) .hero-scene,
+  body #main .knowledge-intro-hero .knowledge-hero-scene,
+  body #main .mag-hero .mag-hero-scenes img{animation:none;transform:none}
+}
