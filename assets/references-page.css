@@ -10,9 +10,9 @@ body.references-page #main .section-head>p:not(.eyebrow){max-width:700px;margin:
 .references-page .reference-card .reference-tag{display:block;margin:20px 0 12px;color:#345b6e;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 body.references-page #main .reference-card h3{font:500 25px/1.22 'Playfair Display',Georgia,serif;color:#345b6e;margin:0 0 12px;overflow-wrap:break-word}
 .references-page .reference-card p{margin:0;color:#526873;font-size:15px}
-.references-page .references-load-sentinel{text-align:center;min-height:1px}
-.references-page .references-load-sentinel p{margin-top:24px}
-.references-page .references-load-sentinel [hidden]{display:none}
+.references-page .references-feedback{text-align:center;min-height:1px}
+.references-page .references-feedback p{margin-top:24px}
+.references-page .references-feedback [hidden]{display:none}
 body.references-page #main>.references-approach{background:#eaf0f3}
 .references-page .references-values{display:grid;gap:28px}
 .references-page .references-values article{display:grid;grid-template-columns:1fr 1.5fr;gap:48px;border-top:1px solid #b9ced7;padding-top:28px}
@@ -31,3 +31,12 @@ body.references-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin
 .references-page #references-retry:disabled{opacity:.55;cursor:wait}
 .references-page #references-retry:focus-visible{outline:2px solid #345b6e;outline-offset:5px}
 .references-page .reference-card{scroll-margin-top:100px}
+
+.references-page #references-title{scroll-margin-top:100px}
+.references-page .references-pagination{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;margin-top:32px}
+.references-page .references-pagination[hidden]{display:none}
+.references-page .references-pagination button{min-width:44px;min-height:44px;padding:8px 14px;border:1px solid #6c97ab;border-radius:4px;background:#fff;color:#345b6e;font:700 15px/1.4 Raleway,Arial,sans-serif;cursor:pointer}
+.references-page .references-pagination button:hover:not(:disabled){background:#eaf0f3}
+.references-page .references-pagination button[aria-current="page"]{background:#345b6e;color:#fff;border-color:#345b6e;opacity:1}
+.references-page .references-pagination button:disabled{cursor:default;opacity:.45}
+.references-page .references-pagination button:focus-visible{outline:2px solid #345b6e;outline-offset:3px}
