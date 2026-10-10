@@ -3,6 +3,7 @@ import { propertyDetailResult } from './propstack-properties.js';
 import { siaEnabled } from './sia-config.js';
 import { reserveQuota } from './lib/sia-quota.js';
 import { validateConversation } from './lib/sia-conversation.js';
+import { explicitCompanyQuestion } from './lib/sia-company-intent.js';
 const endpoint = 'https://frag-sls.vercel.app/api/ask';
 const send = (res, status, data) => {
   res.statusCode = status;
@@ -43,7 +44,7 @@ export default async function handler(req, res) {
 
   let context = null;
   const requestedContext = body?.pageContext;
-  if (requestedContext?.type === 'property') {
+  if (requestedContext?.type === 'property' && !explicitCompanyQuestion(question)) {
     const propertyId = String(requestedContext.propertyId || '');
     if (!/^\d+$/.test(propertyId)) return send(res, 400, { error: 'Ungültiger Objektkontext.' });
     const result = await propertyDetailResult(propertyId);
@@ -85,6 +86,9 @@ export default async function handler(req, res) {
       instruction: 'Beantworte objektspezifische Fragen ausschließlich anhand dieser aktuell veröffentlichten SLS-Objektdaten. Erfinde keine fehlenden Angaben. Wenn eine Information hier nicht enthalten ist, sage klar, dass sie im veröffentlichten Inserat nicht angegeben ist, und verweise bei Bedarf auf den Ansprechpartner.',
       property: safeProperty
     };
+  } else if (requestedContext?.type === 'property') {
+    if (!/^\d+$/.test(String(requestedContext.propertyId || ''))) return send(res, 400, { error: 'Ungültiger Objektkontext.' });
+    context = { type: 'page', path: '/', title: 'SLS Immobilienpartner', heading: 'Unternehmensfrage zu SLS' };
   } else if (requestedContext?.type === 'page') {
     context = {
       type: 'page',
