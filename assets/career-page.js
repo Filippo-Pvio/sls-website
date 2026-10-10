@@ -46,7 +46,7 @@
       const response=await secureFormFetch('/api/career-application',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(payload),signal:AbortSignal.timeout(45000)});
       const result=await response.json();
       if(response.ok && result.accepted===true){sent=true;show(`Vielen Dank. Der Versand Ihrer Bewerbung an bewerbung@sls.de wurde angenommen. Ihre Referenz: ${result.reference}`);form.reset();fields.forEach(updateFile);submit.textContent='Bewerbung übermittelt';}
-      else {uncertain=response.status>=500||response.status===409;show(`${result.error||'Ihre Bewerbung konnte nicht übertragen werden.'}${result.reference?` Referenz: ${result.reference}`:''}`,true);}
+      else {uncertain=response.status>=500||response.status===409;show(`${typeof result.error==='string'?result.error:'Ihre Bewerbung konnte nicht übertragen werden. Bitte versuchen Sie es später erneut.'}${result.reference?` Referenz: ${result.reference}`:''}`,true);}
     } catch(error){uncertain=attempted;show(attempted?'Der Versand konnte nicht eindeutig bestätigt werden. Bitte fragen Sie bei bewerbung@sls.de nach, bevor Sie erneut absenden.':error.message,true);}
     finally {busy=false;submit.disabled=sent||uncertain||!ready;if(!sent)submit.textContent=uncertain?'Bitte Versandstatus klären':'Bewerbung absenden';status.focus();}
   });
