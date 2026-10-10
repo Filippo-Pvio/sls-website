@@ -79,4 +79,7 @@ test('both deployment projects regenerate the snapshot on every build',async()=>
  const backend=JSON.parse(await readFile(resolve(root,'services/frag-sls/vercel.json'),'utf8'));
  assert.equal(website.buildCommand,'node scripts/build-magazine.mjs && node scripts/build-sia-company.mjs && node scripts/build-public-site.mjs');
  assert.equal(backend.buildCommand,'node ../../scripts/build-sia-company.mjs');
+ const ignore=await readFile(resolve(root,'services/frag-sls/.vercelignore'),'utf8');
+ assert.ok(ignore.includes('!scripts/build-sia-company.mjs'));
+ assert.ok(!ignore.split('\n').includes('scripts/'));
 });
