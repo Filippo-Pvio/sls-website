@@ -4,7 +4,8 @@ test/
 server.js
 README.md
 DIAGNOSE.md
-scripts/
+scripts/*
+!scripts/build-sia-company.mjs
 FREIGABE.md
 
 eval/

@@ -260,3 +260,12 @@ test('website company sources offer safe local profile/reference links and the a
  unsafe.get('textarea').value='Eine Frage';await [...unsafe.get('form').listeners.get('submit')][0]({preventDefault(){}});
  assert.equal(unsafe.get('.source-list').children[0].children.length,1);
 });
+
+test('updated Google profile links are accepted only on the supported Google hosts',async()=>{
+ const f=await fixture(true,true,[{number:1,title:'SLS',sourceType:'website',url:'/',references:['https://share.google/NewGoogleProfile123']}]);
+ f.get('textarea').value='Google Bewertungen';await [...f.get('form').listeners.get('submit')][0]({preventDefault(){}});
+ assert.equal(f.get('.source-list').children[0].children.at(-1).href,'https://share.google/NewGoogleProfile123');
+ const unsafe=await fixture(true,true,[{number:1,title:'SLS',sourceType:'website',url:'/',references:['https://share.google.evil.example/profile','https://www.google.com@evil.example/maps/']}]);
+ unsafe.get('textarea').value='Google Bewertungen';await [...unsafe.get('form').listeners.get('submit')][0]({preventDefault(){}});
+ assert.equal(unsafe.get('.source-list').children[0].children.length,2);
+});
