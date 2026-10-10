@@ -13,7 +13,7 @@ body.profile-page #main > section.profile-media { background: #fff; }
   display: block;
   position: relative;
   margin: 0;
-  padding: 16px 0;
+  padding: 0;
   gap: 0;
   flex: none;
   overflow: clip;
@@ -21,7 +21,7 @@ body.profile-page #main > section.profile-media { background: #fff; }
   touch-action: pan-y;
   isolation: isolate;
 }
-[data-profile-video-gallery] .profile-video-track > .profile-video-card {
+[data-profile-video-gallery] .profile-video-stack > .profile-video-card {
   position: relative;
   width: min(100%, 720px);
   max-width: 100%;
@@ -31,27 +31,27 @@ body.profile-page #main > section.profile-media { background: #fff; }
   box-shadow: 0 12px 34px rgba(32, 60, 73, .1);
 }
 [data-profile-video-gallery].only-reels .profile-video-card { width: min(100%, 360px); }
-[data-profile-video-gallery].has-multiple-videos .profile-video-track > .profile-video-card {
+[data-profile-video-gallery].has-multiple-videos .profile-video-stack > .profile-video-card {
   position: absolute;
   top: var(--video-top, 16px);
   left: 50%;
   margin: 0;
   width: min(360px, calc(100% - 80px));
-  transform: translateX(-50%) translateX(calc(var(--video-offset) * clamp(105px, 27vw, 300px))) scale(.82);
+  transform: translateX(-50%) translateX(calc((var(--video-offset) - var(--carousel-drag, 0)) * clamp(105px, 27vw, 300px))) scale(.82);
   transform-origin: center;
   opacity: .58;
   filter: saturate(.65);
   z-index: 1;
   transition: transform .45s ease, opacity .45s ease, filter .45s ease;
 }
-[data-profile-video-gallery].has-multiple-videos .profile-video-track > .profile-video-card.is-active {
-  transform: translateX(-50%) scale(1);
+[data-profile-video-gallery].has-multiple-videos .profile-video-stack > .profile-video-card.is-active {
+  transform: translateX(-50%) translateX(calc(-1 * var(--carousel-drag, 0) * clamp(105px, 27vw, 300px))) scale(1);
   opacity: 1;
   filter: none;
   z-index: 3;
   box-shadow: 0 16px 44px rgba(32, 60, 73, .17);
 }
-[data-profile-video-gallery].has-multiple-videos .profile-video-track > .profile-video-card.is-active[data-video-provider="youtube"] { width: min(640px, calc(100% - 80px)); }
+[data-profile-video-gallery].has-multiple-videos .profile-video-stack > .profile-video-card.is-active[data-video-provider="youtube"] { width: min(640px, calc(100% - 80px)); }
 [data-profile-video-gallery] .profile-video-card.is-distant { visibility: hidden; pointer-events: none; }
 [data-profile-video-gallery] .profile-video-player { flex: none; }
 [data-profile-video-gallery] .profile-video-player-reel { aspect-ratio: auto; height: 660px; background: #e9eff0; }
@@ -76,8 +76,8 @@ body.profile-page #main > section.profile-media { background: #fff; }
   .profile-interview-layout { grid-template-columns: minmax(0, 1fr); gap: 28px; }
 }
 @media (max-width: 600px) {
-  [data-profile-video-gallery].has-multiple-videos .profile-video-track > .profile-video-card { width: calc(100% - 64px); }
-  [data-profile-video-gallery].has-multiple-videos .profile-video-track > .profile-video-card.is-active[data-video-provider="youtube"] { width: calc(100% - 64px); }
+  [data-profile-video-gallery].has-multiple-videos .profile-video-stack > .profile-video-card { width: calc(100% - 64px); }
+  [data-profile-video-gallery].has-multiple-videos .profile-video-stack > .profile-video-card.is-active[data-video-provider="youtube"] { width: calc(100% - 64px); }
   [data-profile-video-gallery] .profile-media-copy { padding: 20px; }
   [data-profile-video-gallery] .profile-media-copy h3 { font-size: 24px; }
   [data-profile-video-gallery].has-multiple-videos .profile-media-copy { min-height: 260px; }
@@ -86,5 +86,25 @@ body.profile-page #main > section.profile-media { background: #fff; }
   .profile-carousel-hint { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  [data-profile-video-gallery].has-multiple-videos .profile-video-track > .profile-video-card { transition: none; }
+  [data-profile-video-gallery].has-multiple-videos .profile-video-stack > .profile-video-card { transition: none; }
 }
+
+/* Native touch scrolling also receives gestures that start inside external players. */
+[data-profile-video-gallery] .profile-video-stack { position: relative; padding: 16px 0; overflow: clip; }
+[data-profile-video-gallery].has-multiple-videos .profile-video-stack { height: 100%; padding: 0; }
+.profile-carousel-scroll-space { display: none; height: 0; pointer-events: none; }
+[data-profile-video-gallery].has-native-swipe .profile-carousel-scroll-space { display: flex; }
+[data-profile-video-gallery].has-native-swipe .profile-video-track {
+  overflow-x: auto;
+  overflow-y: hidden;
+  touch-action: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  scroll-behavior: auto;
+  scroll-snap-type: x mandatory;
+}
+[data-profile-video-gallery].has-native-swipe .profile-video-track::-webkit-scrollbar { display: none; }
+[data-profile-video-gallery].has-native-swipe .profile-video-stack { position: absolute; top: 0; left: var(--stack-left, 0px); width: 100%; }
+[data-profile-video-gallery].has-native-swipe .profile-video-stack > .profile-video-card { transition: opacity .25s ease, filter .25s ease; }
+
+.profile-carousel-scroll-space > span { flex: 1; height: 1px; scroll-snap-align: start; scroll-snap-stop: always; }
