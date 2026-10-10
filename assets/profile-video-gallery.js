@@ -3,6 +3,18 @@
     const track = gallery.querySelector('[data-video-track]');
     const cards = [...track.querySelectorAll('.profile-video-card')];
     if (!cards.length) return;
+    const stack = document.createElement('div');
+    stack.className = 'profile-video-stack';
+    cards.forEach(card => stack.append(card));
+    const scrollSpace = document.createElement('div');
+    scrollSpace.className = 'profile-carousel-scroll-space';
+    scrollSpace.setAttribute('aria-hidden', 'true');
+    scrollSpace.style.width = `${(cards.length + 2) * 100}%`;
+    for (let i = 0; i < cards.length + 2; i++) scrollSpace.append(document.createElement('span'));
+    track.append(scrollSpace, stack);
+    const swipeMedia = matchMedia('(max-width: 850px), (pointer: coarse)');
+    let nativeSwipe = cards.length > 1 && swipeMedia.matches;
+    gallery.classList.toggle('has-native-swipe', nativeSwipe);
     const players = cards.map(card => card.querySelector('.profile-video-player'));
     players.forEach((player, index) => {
       if (!player.dataset.reelId) return;
@@ -27,6 +39,7 @@
     let visible = false;
     let swipe = null;
     let ignoreClickUntil = 0;
+    let scrollEndTimer;
     gallery.classList.toggle('has-multiple-videos', cards.length > 1);
     gallery.classList.toggle('has-reels', cards.some(card => card.dataset.videoProvider === 'instagram'));
     gallery.classList.toggle('only-reels', cards.every(card => card.dataset.videoProvider === 'instagram'));
@@ -87,12 +100,20 @@
         players[index].append(frame);
       });
     };
+    const alignScroll = () => {
+      if (!nativeSwipe) return;
+      const left = (selected + 1) * track.clientWidth;
+      stack.style.setProperty('--stack-left', `${left}px`);
+      if (Math.abs(track.scrollLeft - left) > 1) track.scrollTo({ left, behavior: 'instant' });
+      stack.style.setProperty('--carousel-drag', '0');
+    };
     const sizeStage = () => {
       if (cards.length < 2) return;
       // Reserve the tallest card so choosing a different format never moves the page.
       const height = Math.ceil(Math.max(...cards.map(card => card.offsetHeight)));
       track.style.height = `${height + 32}px`;
       cards.forEach(card => card.style.setProperty('--video-top', `${16 + (height - card.offsetHeight) / 2}px`));
+      alignScroll();
     };
     function select(index) {
       const nextIndex = (index + cards.length) % cards.length;
@@ -127,9 +148,32 @@
       event.preventDefault();
       select(event.key === 'Home' ? 0 : event.key === 'End' ? cards.length - 1 : selected + (event.key === 'ArrowRight' ? 1 : -1));
     });
-    // The card captions and preview covers accept swipes; embedded players keep their controls.
+    // Native scrolling crosses iframe boundaries, unlike parent-page pointer handlers.
+    const settleScroll = () => {
+      clearTimeout(scrollEndTimer);
+      if (!nativeSwipe || !track.clientWidth) return;
+      const page = Math.round(track.scrollLeft / track.clientWidth);
+      select(page - 1);
+    };
+    track.addEventListener('scroll', () => {
+      if (!nativeSwipe) return;
+      stack.style.setProperty('--stack-left', `${track.scrollLeft}px`);
+      stack.style.setProperty('--carousel-drag', String(track.scrollLeft / track.clientWidth - (selected + 1)));
+      clearTimeout(scrollEndTimer);
+      // Fallback for browsers without scrollend. Resetting the player waits until the gesture ends.
+      if (!('onscrollend' in track)) scrollEndTimer = setTimeout(settleScroll, 180);
+    }, { passive: true });
+    track.addEventListener('scrollend', settleScroll);
+    swipeMedia.addEventListener('change', () => {
+      nativeSwipe = cards.length > 1 && swipeMedia.matches;
+      gallery.classList.toggle('has-native-swipe', nativeSwipe);
+      stack.style.setProperty('--carousel-drag', '0');
+      if (!nativeSwipe) track.scrollTo({ left: 0, behavior: 'instant' });
+      sizeStage();
+    });
+    // Desktop touch captions retain the existing fallback when native swiping is not active.
     track.addEventListener('pointerdown', event => {
-      if (event.pointerType !== 'touch' || event.target.closest('a, iframe')) return;
+      if (nativeSwipe || event.pointerType !== 'touch' || event.target.closest('a, iframe')) return;
       swipe = { x: event.clientX, y: event.clientY, id: event.pointerId };
     });
     track.addEventListener('pointerup', event => {
@@ -161,6 +205,7 @@
     observer.observe(track);
     const resize = new ResizeObserver(sizeStage);
     cards.forEach(card => resize.observe(card));
+    resize.observe(track);
     select(0);
   });
 })();

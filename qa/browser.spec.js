@@ -86,6 +86,51 @@ test('profile video galleries support mobile swiping while keeping vertical scro
   await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(previousY+100);
 });
 
+test('profile video galleries swipe directly over an embedded player without blocking taps', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.includes('mobile'), 'Touch-only interaction');
+  await page.route('https://www.instagram.com/reel/*/embed/', route => route.fulfill({ contentType: 'text/html', body: '<style>body{margin:0;height:660px;background:#eee}button{position:absolute;top:40%;left:30%}</style><button onclick="this.textContent=\'Playing\'">Abspielen</button>' }));
+  await page.goto('/team/mischa-stratmann/');
+  const gallery=page.locator('[data-profile-video-gallery]');
+  await gallery.locator('.is-active .profile-video-player').scrollIntoViewIfNeeded();
+  await expect(gallery).toHaveClass(/has-native-swipe/);
+  await gallery.locator('.is-active').frameLocator('iframe').getByRole('button',{name:'Abspielen'}).click();
+  await expect(gallery.locator('.is-active').frameLocator('iframe').getByRole('button')).toHaveText('Playing');
+  const session=await page.context().newCDPSession(page);
+  async function swipePlayer(direction) {
+    const box=await gallery.locator('.is-active .profile-video-player').boundingBox();
+    const x=direction<0?box.x+box.width-25:box.x+25,y=Math.max(150,box.y+200);
+    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
+    for(let step=1;step<=8;step++) {
+      await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+direction*28*step,y}]});
+      await page.waitForTimeout(30);
+    }
+    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  }
+  const old=await gallery.locator('.is-active iframe').elementHandle();
+  const top=await page.evaluate(()=>scrollY);
+  await swipePlayer(-1);
+  await expect(gallery.locator('[data-video-position]')).toHaveText('2 von 3');
+  expect(await old.evaluate(el=>el.isConnected)).toBe(false);
+  expect(Math.abs(await page.evaluate(()=>scrollY)-top)).toBeLessThan(2);
+  await swipePlayer(1);
+  await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+  // Swiping backwards at the first card wraps to the last card.
+  await swipePlayer(1);
+  await expect(gallery.locator('[data-video-position]')).toHaveText('3 von 3');
+  // Returning to the first card also works with the arrow controls.
+  await gallery.locator('[data-video-next]').click();
+  await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+  await gallery.locator('.is-active .profile-video-player').scrollIntoViewIfNeeded();
+  const videoBox=await gallery.locator('.is-active .profile-video-player').boundingBox();
+  const verticalX=videoBox.x+videoBox.width/2,verticalY=Math.max(300,videoBox.y+350);
+  const pageTop=await page.evaluate(()=>scrollY);
+  await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:verticalX,y:verticalY}]});
+  for(let step=1;step<=8;step++) await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:verticalX,y:verticalY-step*30}]});
+  await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(pageTop+100);
+  await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+});
+
 test('profile video galleries load single reels and automatically adapt to future videos', async ({ page }) => {
   const errors=[];
   page.on('pageerror',e=>errors.push(e.message));
