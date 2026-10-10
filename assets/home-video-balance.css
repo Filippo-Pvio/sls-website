@@ -42,3 +42,21 @@
     margin: 16px 0 0 6px;
   }
 }
+
+/* Supporting statement stays smaller than the section heading. */
+.home-editorial .home-marketing-stage {
+  min-height: 0;
+  justify-content: flex-start;
+}
+.home-editorial .home-marketing-statement {
+  font-size: clamp(22px, 2.4vw, 32px);
+  line-height: 1.22;
+}
+.home-editorial .home-marketing-example {
+  margin-top: 20px;
+}
+@media (max-width: 850px) {
+  .home-editorial .home-marketing-statement {
+    font-size: clamp(20px, 5vw, 24px);
+  }
+}
