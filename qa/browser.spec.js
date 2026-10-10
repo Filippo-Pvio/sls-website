@@ -397,3 +397,37 @@ test('property embeds load automatically under the deployed CSP',async({page})=>
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
  expect(overflow).toBeLessThanOrEqual(1);
 });
+
+
+test('house journey displays aerial photos and plays the complete interior flight', async ({ page }) => {
+  for (const reducedMotion of ['no-preference', 'reduce']) {
+    await page.emulateMedia({ reducedMotion });
+    await page.goto('/');
+    await page.locator('#sls-sales-journey [data-property="haus"]').click();
+    await expect(page.locator('#play-status')).toHaveText('Ihre Reise läuft');
+    await page.locator('#next-scene').click();
+    await page.locator('#next-scene').click();
+    const journey = page.locator('#sls-sales-journey');
+    await expect(journey).toHaveAttribute('data-story-step', '4');
+    for (const selector of ['.photo-frame.one img', '.photo-frame.two img']) {
+      await expect.poll(() => journey.locator(selector).evaluate(img => img.complete && img.naturalWidth > 0)).toBeTruthy();
+    }
+    const video = journey.locator('#property-flight');
+    await expect.poll(() => video.evaluate(v => v.error?.message || '')).toBe('');
+    await expect.poll(() => video.evaluate(v => v.readyState), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
+    expect(await video.evaluate(v => v.duration)).toBeGreaterThan(7.9);
+    expect(await video.evaluate(v => v.videoWidth)).toBeGreaterThanOrEqual(720);
+    expect(await video.getAttribute('poster')).toMatch(/haus-photo\.webp$/);
+    await expect(journey).toHaveAttribute('data-story-step', '5', { timeout: 10000 });
+    await expect(video).toBeVisible();
+    await expect.poll(() => video.evaluate(v => v.currentTime)).toBeGreaterThan(0.75);
+    expect(await video.evaluate(v => v.paused)).toBeFalsy();
+    await journey.locator('#play-pause').click();
+    const pausedTime = await video.evaluate(v => v.currentTime);
+    await page.waitForTimeout(350);
+    expect(Math.abs(await video.evaluate(v => v.currentTime) - pausedTime)).toBeLessThan(0.25);
+    await journey.locator('#play-pause').click();
+    await expect.poll(() => video.evaluate(v => v.currentTime)).toBeGreaterThan(pausedTime + 0.5);
+    expect(await video.evaluate(v => v.error)).toBeNull();
+  }
+});
