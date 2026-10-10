@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import backend from '../integrations/frag-sls/api/ask.js';
+import backend from '../services/frag-sls/api/ask.js';
 import proxy from '../api/sia-ask.js';
 import config from '../api/sia-config.js';
 const response = () => ({ headers: {}, setHeader(k,v){this.headers[k]=v;}, end(raw){this.data=JSON.parse(raw);} });
@@ -43,4 +43,13 @@ test('public backend rejects missing or forged service authentication before any
  for(const authorization of [undefined,'Bearer wrong']){const req=request({question:'Was ist ein Grundbuch?'});if(authorization)req.headers.authorization=authorization;const res=response();await handler(req,res);assert.equal(res.statusCode,401);}
  assert.equal(calls,0);
  const req=request({question:'Was ist ein Grundbuch?'});req.headers.authorization='Bearer synthetic-service-secret';const res=response();await handler(req,res);assert.equal(res.statusCode,502);assert.equal(calls,1);
+});
+
+test('active company backend answers website questions with sources after authenticated routing',async()=>{
+ const handler=backend.createHandler({env:{SIA_SERVICE_SECRET:'synthetic',OPENAI_API_KEY:'synthetic'},fetcher:async(url,options)=>{
+  const body=JSON.parse(options.body);assert.match(body.instructions,/Mischa Stratmann/);
+  return Response.json(output(JSON.stringify({kind:'company',question:'Wo ist SLS überall vertreten?',clarification:''})));
+ }});
+ const req=request({question:'Wo ist SLS überall vertreten?'});req.headers.authorization='Bearer synthetic';
+ const res=response();await handler(req,res);assert.equal(res.statusCode,200);assert.match(res.data.answer,/Ubierweg 2/);assert.match(res.data.answer,/Marktgebiete/);assert.equal(res.data.sources[0].sourceType,'website');
 });

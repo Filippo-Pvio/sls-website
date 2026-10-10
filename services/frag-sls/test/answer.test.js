@@ -36,7 +36,7 @@ test('blank model uses default; explicit model is preserved', async()=>{
 test('missing key falls back without outbound request',async()=>{
   const result=await run(()=>{throw Error('must not call')},{env:{}});
   assert.equal(result.reason,'missing_api_key'); assert.equal(result.provider,'Wissensbasis von SLS Immobilienpartner');
-  assert.equal(result.sources.length,0);
+  assert.ok(result.sources.some(source=>source.id==='company-regions'));
 });
 test('general real estate guidance works without keyword match',async()=>{
  const data={status:'completed',output:[{type:'message',role:'assistant',content:[{type:'output_text',text:JSON.stringify({paragraphs:[{kind:'general',text:'Räumen Sie persönliche Dokumente vor dem Termin weg.',source_ids:[]}]})}]}]};
@@ -48,7 +48,7 @@ for(const [status,reason] of [[401,'authentication'],[403,'authentication'],[429
     const logs=[];
     const r=await run(async()=>({ok:false,status}),{logger:{warn:s=>logs.push(s)}});
     assert.equal(r.reason,reason); assert.equal(r.provider,'Wissensbasis von SLS Immobilienpartner');
-    assert.equal(r.sources.length,0); assert.equal(JSON.parse(logs[0]).status,status);
+    assert.ok(r.sources.some(source=>source.id==='company-regions')); assert.equal(JSON.parse(logs[0]).status,status);
     assert.ok(!JSON.stringify([r,logs]).includes(env.OPENAI_API_KEY));
   });
 }

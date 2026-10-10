@@ -34,7 +34,7 @@ const cases=[
  ['Kann ich eine persönliche Beratung erhalten?','personal-advice']
 ];
 for(const [q,id] of cases)test(q,()=>assert.ok(retrieve(q).some(s=>s.id===id),id));
-for(const q of ['Wer ist mein Ansprechpartner in Dorsten?','Welche aktuellen Angebote gibt es?','Habt ihr schon Häuser verkauft?','Wie viele Käufer habt ihr?','Wie hoch sind Steuern auf mein Erbe?','Was mache ich mit meiner Restschuld?','Was ist mein Haus wert?','Wie verkaufe ich in Schermbeck?']){
+for(const q of ['Wer ist mein Ansprechpartner in Dorsten?','Welche aktuellen Angebote gibt es?','Habt ihr schon Häuser verkauft?','Wie viele Käufer habt ihr?','Wie hoch sind Steuern auf mein Erbe?','Was mache ich mit meiner Restschuld?','Was ist mein Haus wert?']){
  test(`Grenze: ${q}`,()=>assert.ok(limitations(q).length));
 }
 test('no matching facts for unrelated question',()=>assert.deepEqual(retrieve('Was ist die Hauptstadt Japans?'),[]));

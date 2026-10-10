@@ -316,6 +316,20 @@
     button.textContent = `[${source.number ?? ''}] ${source.title || 'Quelle'}`;
     button.addEventListener('click', () => showSource(source, button));
     box.append(button);
+    if (source.sourceType === 'website') {
+      const pages = [source.url, ...(Array.isArray(source.relatedPages) ? source.relatedPages : [])];
+      for (const path of [...new Set(pages)]) {
+        if (typeof path !== 'string' || !/^\/(?:team\/(?:[a-z-]+\/)?|ueber-uns\/|kontakt\/|standorte\/|referenzen\/)?$/.test(path)) continue;
+        const link = document.createElement('a'); link.href = path;
+        link.textContent = path === '/team/' ? 'Team kennenlernen →' : path === '/referenzen/' ? 'Referenzen ansehen →' : path.startsWith('/team/') ? 'Profil ansehen →' : 'Website-Quelle ansehen →';
+        link.className = 'text-link'; box.append(link);
+      }
+      if (Array.isArray(source.references) && source.references.includes('https://share.google/qbk6kf2K0Cemc8Zeq')) {
+        const link = document.createElement('a'); link.href = 'https://share.google/qbk6kf2K0Cemc8Zeq';
+        link.target = '_blank'; link.rel = 'noopener noreferrer'; link.className = 'text-link';
+        link.textContent = 'Google-Bewertungen lesen →'; box.append(link);
+      }
+    }
     return box;
   }
   function renderAnswer(data) {

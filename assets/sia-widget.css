@@ -164,3 +164,6 @@ dialog[data-keyboard-navigation] .close:focus-visible{outline:2px solid #345B6E;
  .thinking-dots i{opacity:.7}
  .thinking-line::after{width:58%;transform:none}
 }
+
+.source .text-link{font-size:13px;line-height:1.5;padding:8px 0;color:#345B6E;text-decoration:underline;text-underline-offset:3px}
+.source .text-link:focus-visible{outline:2px solid #345B6E;outline-offset:3px}

@@ -7,5 +7,5 @@ for(const question of [
  'Wie werden Interessenten geprüft?',
  'Muss ich vor der Besichtigung etwas ausmessen?'
 ])test(`no irrelevant warning: ${question}`,()=>assert.deepEqual(limitations(question),[]));
-for(const city of ['Essen','Schermbeck','Düsseldorf','Recklinghausen','Gladbeck','Bottrop','Marl'])test(`real city retained: ${city}`,()=>assert.ok(limitations(`Wie verkaufe ich mein Haus in ${city}?`).some(s=>s.includes('Für diesen Ort'))));
+for(const city of ['Essen','Schermbeck','Düsseldorf','Recklinghausen','Gladbeck','Bottrop','Marl'])test(`real city retained: ${city}`,()=>assert.ok(!limitations(`Wie verkaufe ich mein Haus in ${city}?`).some(s=>s.includes('Für diesen Ort'))));
 test('financing-check warning remains relevant',()=>assert.ok(limitations('Wird die Finanzierung geprüft?').some(s=>s.includes('Finanzierungszusage'))));
