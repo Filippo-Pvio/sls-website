@@ -4,7 +4,7 @@ Alle Mitarbeiterprofile laden `assets/profile-video-gallery.css` und `assets/pro
 
 ## Interviews als eigener Abschnitt
 
-Nach dem blauen Bereich zur persönlichen Arbeitsweise folgt, sofern vorhanden, `.profile-interview-section` als direktes Kind von `main`. Die Hintergrundfarbe zieht sich über die volle Seitenbreite; der Inhalt bleibt in `.wrap.profile-interview-layout` bündig zu den anderen Abschnitten. Der Interviewbereich ist warmhell, der folgende Videobereich weiß und die Referenzen blau.
+Nach dem blauen Bereich zur persönlichen Arbeitsweise folgt, sofern vorhanden, `.profile-interview-section` als direktes Kind von `main`. Die Hintergrundfarbe zieht sich über die volle Seitenbreite; der Inhalt bleibt in `.wrap.profile-interview-layout` bündig zu den anderen Abschnitten. Der Interviewbereich ist warmhell, der anschließende Magazinbereich blau, der Videobereich weiß und die Referenzen blau.
 
 Links stehen Name, STILPUNKTE und die H2 „Geschäftsführer im Interview.“ mit dem Thema als eigenem `span`. Rechts folgen die bestehende inhaltliche Zusammenfassung und der Link „Interview bei STILPUNKTE lesen“. Die Zusammenfassungen sind keine wörtlichen Zitate. Filippo, Mischa und Dennis verwenden dieselbe Struktur. Als Vorlage dient `team/mischa-stratmann/index.html`. Ohne redaktionelles Interview wird kein leerer Interviewabschnitt angelegt.
 
@@ -21,3 +21,7 @@ Die Bühne reserviert die Höhe der größten Karte. Videos behalten ihr ursprü
 ## Prüfung
 
 `QA_BROWSER_CHANNEL=chrome npm run qa -- --grep 'profile video galleries'` prüft die drei durchgehenden Interviewabschnitte, Vordergrund-/Vorschaukarten auf dem Desktop, native nebeneinander liegende Slides auf Touch-Geräten, das Stoppen vorheriger Player, Pfeile/Tastatur, mobiles Wischen auf Beschriftung und direkt im externen Player, Tippen zum Abspielen, Pfeil-Umlauf am Reihenende, Kartenbewegung bereits während der Geste, zentriertes Einrasten, Wischen ohne Seitensprung, vertikales Scrollen sowie ein automatisch ergänztes zweites Mitarbeitervideo. Neue Quellen anschließend auch mit den echten Playern auf Desktop und Handy prüfen.
+
+## Magazin zwischen Interview und Videos
+
+Die drei Geschäftsführerprofile enthalten einen durchgehend blauen `profile-magazine`-Abschnitt. Er wird gemeinsam mit dem Magazin aus `content/magazin/articles.json` erzeugt. Zuordnung und Auswahl stehen in `content/magazin/README.md`. `assets/profile-magazine.css` und `.js` laden nur auf diesen drei Profilen. Ein zentrales Bild-/Textmotiv lässt sich über Pfeile, drei Punkte, Tastatur und natives Wischen wechseln; die Auswahl variiert pro Besuch nach der bestehenden Startseitenlogik. Interview und Videos bleiben eigene Abschnitte.
