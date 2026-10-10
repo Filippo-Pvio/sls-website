@@ -11,7 +11,7 @@ function element(tag,cls,text){const el=document.createElement(tag);if(cls)el.cl
 function card(a){
  const article=element('article','mag-card'),copy=element('div','mag-card-copy'),heading=element('h3'),link=element('a','',a.title),meta=element('div','mag-card-meta'),read=element('a','mag-read','Artikel lesen →');
  if(a.image){const visual=element('div','mag-card-visual'),imageLink=element('a','mag-card-image'),image=element('img');imageLink.href=a.url;imageLink.tabIndex=-1;imageLink.setAttribute('aria-hidden','true');image.src=a.image;image.alt='';image.width=600;image.height=400;image.loading='lazy';image.decoding='async';if(a.imageLarge){image.srcset=a.image+' 600w, '+a.imageLarge+' 1200w';image.sizes='(max-width: 600px) calc(100vw - 36px), (max-width: 900px) 45vw, 380px';}imageLink.append(image);visual.append(imageLink);if(a.imageNote)visual.append(element('p','mag-image-note',a.imageNote));article.append(visual);}
- link.href=a.url;heading.append(link);meta.append(element('span','',a.author),element('span','',a.minutes+' Min. Lesezeit'));
+ link.href=a.url;heading.append(link);meta.append(element('span','','Redaktion: '+a.author),element('span','',a.minutes+' Min. Lesezeit'));
  if(a.datePublished){const date=element('time','',new Intl.DateTimeFormat('de-DE').format(new Date(a.datePublished+'T12:00:00')));date.dateTime=a.datePublished;meta.append(date);}
  read.href=a.url;read.setAttribute('aria-label','Artikel lesen: '+a.title);copy.append(element('p','mag-kicker',a.categoryName),heading,element('p','',a.summary),meta,read);article.append(copy);return article;
 }

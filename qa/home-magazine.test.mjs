@@ -30,7 +30,7 @@ test('random choices always include latest, stay unique and allow every recent a
 test('publishing one article updates both magazine and home; draft and future articles stay out', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sls-home-magazine-'));
   try {
-    for (const file of ['scripts/build-magazine.mjs', 'index.html', 'sitemap.xml', 'content/magazin/articles.json', 'content/magazin/sources.json']) {
+    for (const file of ['scripts/build-magazine.mjs', 'index.html', 'sitemap.xml', 'content/magazin/articles.json', 'content/magazin/sources.json','team/filippo-livera/index.html','team/mischa-stratmann/index.html','team/dennis-sahlmen/index.html']) {
       fs.mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
       fs.copyFileSync(path.join(root, file), path.join(dir, file));
     }
@@ -50,6 +50,13 @@ test('publishing one article updates both magazine and home; draft and future ar
     assert.deepEqual(ids, expected);
     const blog = fs.readFileSync(path.join(dir, 'blog/index.html'), 'utf8');
     assert(blog.includes('QA neuer Beitrag'));
+    const profile=fs.readFileSync(path.join(dir,'team/filippo-livera/index.html'),'utf8');
+    const section=profile.match(/<!-- PROFILE-MAGAZINE:START -->[\s\S]*?<!-- PROFILE-MAGAZINE:END -->/)[0];
+    assert(section.includes('qa-neuer-beitrag'));
+    assert(!section.includes('qa-entwurf'));
+    assert(!section.includes('qa-zukunft'));
+    const expectedOwn=data.filter(a=>a.editorialAuthor==='Filippo Livera' && (!a.status||a.status==='published')&&a.datePublished<=today).sort((a,b)=>b.datePublished.localeCompare(a.datePublished)||a.id-b.id).slice(0,6).map(a=>a.slug);
+    assert.deepEqual([...section.matchAll(/data-magazine-id="([^"]+)"/g)].map(m=>m[1]),expectedOwn);
     assert(!home.includes('qa-entwurf'));
     assert(!home.includes('qa-zukunft'));
     assert(!blog.includes('/qa-entwurf/'));

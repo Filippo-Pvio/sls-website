@@ -3,6 +3,69 @@ import { mkdir, readFile } from "node:fs/promises";
 
 const routes = ["/", "/verkaufen/", "/immobilien/", "/ueber-uns/", "/kontakt/"];
 
+test('personal magazine sections select own articles, navigate and keep their session choice', async ({ page }) => {
+  const index = JSON.parse(await readFile(new URL('../assets/magazine-search.json',import.meta.url),'utf8'));
+  await page.route('https://www.instagram.com/reel/*/embed/', route=>route.fulfill({contentType:'text/html',body:'<h1>Instagram-Reel</h1>'}));
+  for (const [slug,name] of [['filippo-livera','Filippo Livera'],['mischa-stratmann','Mischa Stratmann'],['dennis-sahlmen','Dennis Sahlmen']]) {
+    await page.goto(`/team/${slug}/`);
+    const section=page.locator('[data-profile-magazine]'),track=section.locator('[data-profile-magazine-track]');
+    await section.scrollIntoViewIfNeeded();
+    await expect(section.locator('.profile-magazine-slide:not([hidden])')).toHaveCount(3);
+    await expect(section.locator('[data-magazine-position]')).toHaveText('1 von 3');
+    const selected=await section.locator('.profile-magazine-slide:not([hidden])').evaluateAll(cards=>cards.map(c=>c.dataset.magazineId));
+    const own=index.filter(a=>a.author===name).sort((a,b)=>b.datePublished.localeCompare(a.datePublished));
+    expect(selected).toContain(own[0].url.slice(1,-1));
+    expect(selected.every(id=>own.slice(0,6).some(a=>a.url===`/${id}/`))).toBeTruthy();
+    expect(await section.evaluate(el=>getComputedStyle(el).backgroundColor)).toBe('rgb(52, 91, 110)');
+    expect(await section.evaluate(el=>el.previousElementSibling.classList.contains('profile-interview-section'))).toBeTruthy();
+    expect(await section.evaluate(el=>el.nextElementSibling.classList.contains('profile-media'))).toBeTruthy();
+    const pageY=await page.evaluate(()=>scrollY);
+    await section.locator('[data-magazine-next]').click();
+    await expect(section.locator('[data-magazine-position]')).toHaveText('2 von 3');
+    await expect.poll(()=>track.evaluate(t=>Math.abs(t.scrollLeft-t.clientWidth))).toBeLessThan(2);
+    expect(Math.abs(await page.evaluate(()=>scrollY)-pageY)).toBeLessThan(2);
+    await section.locator('[data-magazine-dots] button').nth(2).click();
+    await expect(section.locator('[data-magazine-position]')).toHaveText('3 von 3');
+    await section.locator('[data-magazine-next]').click();
+    await expect(section.locator('[data-magazine-position]')).toHaveText('1 von 3');
+    await expect.poll(()=>track.evaluate(t=>t.scrollLeft)).toBeLessThan(2);
+    const first=section.locator('.profile-magazine-slide:not([hidden])').first();
+    await expect(first.locator('img')).toBeVisible();
+    expect(await first.locator('img').evaluate(img=>img.complete&&img.naturalWidth>0)).toBeTruthy();
+    const target=await first.locator('.profile-magazine-read').getAttribute('href');
+    await first.locator('.profile-magazine-read').click();
+    await expect(page.locator('.mag-byline')).toContainText(`Redaktionell betreut von ${name}`);
+    await expect(page).toHaveURL(new RegExp(target+'$'));
+    await page.goBack();
+    await expect(page.locator('.profile-magazine-slide:not([hidden])')).toHaveCount(3);
+    expect(await page.locator('.profile-magazine-slide:not([hidden])').evaluateAll(cards=>cards.map(c=>c.dataset.magazineId))).toEqual(selected);
+    expect(await page.locator('[data-profile-magazine]').evaluate(el=>el.scrollWidth-el.clientWidth)).toBeLessThanOrEqual(1);
+    expect(await page.locator('.profile-magazine-slide:not([hidden]) h3').first().evaluate(el=>getComputedStyle(el).color)).toBe('rgb(255, 255, 255)');
+  }
+});
+
+test('personal magazine sections follow mobile swipes and keep vertical scrolling', async ({ page },testInfo) => {
+  test.skip(!testInfo.project.name.includes('mobile'),'Touch-only interaction');
+  await page.route('https://www.instagram.com/reel/*/embed/', route=>route.fulfill({contentType:'text/html',body:'<h1>Instagram-Reel</h1>'}));
+  await page.goto('/team/mischa-stratmann/');
+  const section=page.locator('[data-profile-magazine]'),track=section.locator('[data-profile-magazine-track]');
+  await track.scrollIntoViewIfNeeded();
+  const session=await page.context().newCDPSession(page);
+  const box=await track.boundingBox(),x=box.x+box.width-25,y=Math.max(150,box.y+100),pageY=await page.evaluate(()=>scrollY);
+  await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
+  for(let i=1;i<=8;i++) { await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x-i*27,y}]});await page.waitForTimeout(30); }
+  await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await expect(section.locator('[data-magazine-position]')).toHaveText('2 von 3');
+  await expect.poll(()=>track.evaluate(t=>Math.abs(t.scrollLeft-t.clientWidth))).toBeLessThan(2);
+  expect(Math.abs(await page.evaluate(()=>scrollY)-pageY)).toBeLessThan(2);
+  const nextBox=await track.boundingBox(),vx=nextBox.x+nextBox.width/2,vy=Math.max(300,nextBox.y+250);
+  await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:vx,y:vy}]});
+  for(let i=1;i<=8;i++) { await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:vx,y:vy-i*30}]});await page.waitForTimeout(30); }
+  await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(pageY+100);
+  await expect(section.locator('[data-magazine-position]')).toHaveText('2 von 3');
+});
+
 test('profile video galleries place full-width interview sections above the video carousel', async ({ page }) => {
   await page.route('https://www.instagram.com/reel/*/embed/', route => route.fulfill({ contentType: 'text/html', body: '<h1>Instagram-Reel</h1>' }));
   for (const [slug,topic] of [['filippo-livera','digitale Tools'],['mischa-stratmann','Immobilienbewertung'],['dennis-sahlmen','sensiblen Lebenssituationen']]) {
