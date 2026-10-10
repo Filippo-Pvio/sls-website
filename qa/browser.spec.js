@@ -19,7 +19,7 @@ test('profile video galleries place full-width interview sections above the vide
   }
 });
 
-test('profile video galleries bring one card forward and stop its player when choosing another', async ({ page }) => {
+test('profile video galleries bring one card forward and stop its player when choosing another', async ({ page }, testInfo) => {
   await page.route('https://www.instagram.com/reel/*/embed/', route => route.fulfill({ contentType: 'text/html', body: '<h1>Instagram-Reel</h1>' }));
   await page.route('https://www.youtube-nocookie.com/embed/**', route => route.fulfill({ contentType: 'text/html', body: '<h1>YouTube-Video</h1>' }));
   await page.goto('/team/mischa-stratmann/');
@@ -50,9 +50,11 @@ test('profile video galleries bring one card forward and stop its player when ch
   await expect(gallery.locator('[data-video-position]')).toHaveText('3 von 3');
   await page.keyboard.press('Home');
   await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+  if (!testInfo.project.name.includes('desktop')) await expect.poll(()=>track.evaluate(el=>el.scrollLeft)).toBeLessThan(2);
   const active=await gallery.locator('.is-active').evaluate(el=>({transform:getComputedStyle(el).transform,z:getComputedStyle(el).zIndex}));
   const back=await gallery.locator('.is-after').evaluate(el=>({transform:getComputedStyle(el).transform,z:getComputedStyle(el).zIndex}));
-  expect(Number(active.z)).toBeGreaterThan(Number(back.z));
+  if (testInfo.project.name.includes('desktop')) expect(Number(active.z)).toBeGreaterThan(Number(back.z));
+  else expect(active.transform).toBe('none');
   expect(await gallery.evaluate(el=>el.getBoundingClientRect().right)).toBeLessThanOrEqual(await page.evaluate(()=>innerWidth));
   await gallery.locator('.is-active .profile-video-player').scrollIntoViewIfNeeded();
   await gallery.locator('.is-after').evaluate(async el => { await Promise.all(el.getAnimations().map(a=>a.finished)); });
@@ -93,16 +95,27 @@ test('profile video galleries swipe directly over an embedded player without blo
   const gallery=page.locator('[data-profile-video-gallery]');
   await gallery.locator('.is-active .profile-video-player').scrollIntoViewIfNeeded();
   await expect(gallery).toHaveClass(/has-native-swipe/);
-  await gallery.locator('.is-active').frameLocator('iframe').getByRole('button',{name:'Abspielen'}).click();
+  await expect(gallery.locator('.is-active iframe')).toHaveCSS('opacity', '1');
+  await gallery.locator('.is-active iframe').evaluate(async el=>{await Promise.all(el.getAnimations().map(a=>a.finished));});
+  await gallery.locator('.is-active').frameLocator('iframe').getByRole('button',{name:'Abspielen'}).tap();
   await expect(gallery.locator('.is-active').frameLocator('iframe').getByRole('button')).toHaveText('Playing');
   const session=await page.context().newCDPSession(page);
   async function swipePlayer(direction) {
     const box=await gallery.locator('.is-active .profile-video-player').boundingBox();
     const x=direction<0?box.x+box.width-25:box.x+25,y=Math.max(150,box.y+200);
     await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
+    const startLeft = box.x;
+    const initialScroll = await gallery.locator('[data-video-track]').evaluate(el=>el.scrollLeft);
     for(let step=1;step<=8;step++) {
       await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+direction*28*step,y}]});
       await page.waitForTimeout(30);
+      if(step===4 && (direction<0 || initialScroll>20)) {
+        // The actual iframe follows the browser scroll during the gesture, before selection.
+        const scrollDelta = await gallery.locator('[data-video-track]').evaluate(el=>el.scrollLeft) - initialScroll;
+        const currentLeft = (await gallery.locator('.is-active .profile-video-player').boundingBox()).x;
+        expect(Math.abs(scrollDelta)).toBeGreaterThan(40);
+        expect(Math.abs(currentLeft - startLeft + scrollDelta)).toBeLessThan(2);
+      }
     }
     await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   }
@@ -111,21 +124,33 @@ test('profile video galleries swipe directly over an embedded player without blo
   await swipePlayer(-1);
   await expect(gallery.locator('[data-video-position]')).toHaveText('2 von 3');
   expect(await old.evaluate(el=>el.isConnected)).toBe(false);
+  await expect.poll(()=>gallery.evaluate(g=>{
+    const card=g.querySelector('.is-active').getBoundingClientRect(),rail=g.querySelector('[data-video-track]').getBoundingClientRect();
+    return Math.abs(card.x+card.width/2-rail.x-rail.width/2);
+  })).toBeLessThan(2);
   expect(Math.abs(await page.evaluate(()=>scrollY)-top)).toBeLessThan(2);
   await swipePlayer(1);
   await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
-  // Swiping backwards at the first card wraps to the last card.
+  // The native rail ends at the first slide; arrow controls still wrap.
   await swipePlayer(1);
+  await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+  await gallery.locator('[data-video-prev]').click();
   await expect(gallery.locator('[data-video-position]')).toHaveText('3 von 3');
   // Returning to the first card also works with the arrow controls.
   await gallery.locator('[data-video-next]').click();
   await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
   await gallery.locator('.is-active .profile-video-player').scrollIntoViewIfNeeded();
+  await expect.poll(()=>gallery.locator('[data-video-track]').evaluate(el=>el.scrollLeft)).toBeLessThan(2);
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  await gallery.locator('.is-active').frameLocator('iframe').getByRole('button').waitFor();
   const videoBox=await gallery.locator('.is-active .profile-video-player').boundingBox();
   const verticalX=videoBox.x+videoBox.width/2,verticalY=Math.max(300,videoBox.y+350);
   const pageTop=await page.evaluate(()=>scrollY);
   await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:verticalX,y:verticalY}]});
-  for(let step=1;step<=8;step++) await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:verticalX,y:verticalY-step*30}]});
+  for(let step=1;step<=8;step++) {
+    await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:verticalX,y:verticalY-step*30}]});
+    await page.waitForTimeout(30);
+  }
   await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(pageTop+100);
   await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');

@@ -37,7 +37,7 @@ body.profile-page #main > section.profile-media { background: #fff; }
   left: 50%;
   margin: 0;
   width: min(360px, calc(100% - 80px));
-  transform: translateX(-50%) translateX(calc((var(--video-offset) - var(--carousel-drag, 0)) * clamp(105px, 27vw, 300px))) scale(.82);
+  transform: translateX(-50%) translateX(calc(var(--video-offset) * clamp(105px, 27vw, 300px))) scale(.82);
   transform-origin: center;
   opacity: .58;
   filter: saturate(.65);
@@ -45,7 +45,7 @@ body.profile-page #main > section.profile-media { background: #fff; }
   transition: transform .45s ease, opacity .45s ease, filter .45s ease;
 }
 [data-profile-video-gallery].has-multiple-videos .profile-video-stack > .profile-video-card.is-active {
-  transform: translateX(-50%) translateX(calc(-1 * var(--carousel-drag, 0) * clamp(105px, 27vw, 300px))) scale(1);
+  transform: translateX(-50%) scale(1);
   opacity: 1;
   filter: none;
   z-index: 3;
@@ -92,19 +92,42 @@ body.profile-page #main > section.profile-media { background: #fff; }
 /* Native touch scrolling also receives gestures that start inside external players. */
 [data-profile-video-gallery] .profile-video-stack { position: relative; padding: 16px 0; overflow: clip; }
 [data-profile-video-gallery].has-multiple-videos .profile-video-stack { height: 100%; padding: 0; }
-.profile-carousel-scroll-space { display: none; height: 0; pointer-events: none; }
-[data-profile-video-gallery].has-native-swipe .profile-carousel-scroll-space { display: flex; }
 [data-profile-video-gallery].has-native-swipe .profile-video-track {
   overflow-x: auto;
   overflow-y: hidden;
   touch-action: auto;
-  overscroll-behavior-x: contain;
   scrollbar-width: none;
-  scroll-behavior: auto;
   scroll-snap-type: x mandatory;
 }
 [data-profile-video-gallery].has-native-swipe .profile-video-track::-webkit-scrollbar { display: none; }
-[data-profile-video-gallery].has-native-swipe .profile-video-stack { position: absolute; top: 0; left: var(--stack-left, 0px); width: 100%; }
-[data-profile-video-gallery].has-native-swipe .profile-video-stack > .profile-video-card { transition: opacity .25s ease, filter .25s ease; }
-
-.profile-carousel-scroll-space > span { flex: 1; height: 1px; scroll-snap-align: start; scroll-snap-stop: always; }
+[data-profile-video-gallery].has-native-swipe .profile-video-stack {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 32px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+}
+[data-profile-video-gallery].has-native-swipe .profile-video-stack::after { content: ""; flex: 0 0 16px; height: 1px; }
+[data-profile-video-gallery].has-native-swipe.has-multiple-videos .profile-video-stack > .profile-video-card {
+  position: relative;
+  top: auto;
+  left: auto;
+  flex: 0 0 100%;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  transform: none;
+  opacity: 1;
+  filter: none;
+  visibility: visible;
+  pointer-events: auto;
+  transition: none;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+[data-profile-video-gallery].has-native-swipe .profile-video-stack > .profile-video-card.is-active[data-video-provider="youtube"] { width: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  [data-profile-video-gallery].has-native-swipe .profile-video-track { scroll-behavior: auto; }
+}
