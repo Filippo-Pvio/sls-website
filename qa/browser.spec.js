@@ -19,6 +19,9 @@ test('profile video galleries keep the selected player and stop the previous one
   const stageHeight = await gallery.locator('.profile-video-player').first().evaluate(element => element.clientHeight);
   await gallery.locator('.profile-video-choice').nth(1).click();
   await expect(gallery.locator('[data-video-position]')).toHaveText('2 von 3');
+  const alignment = await gallery.evaluate(element => ({ gallery: element.clientWidth, track: element.querySelector('[data-video-track]').clientWidth, padding: getComputedStyle(element.querySelector('[data-video-track]')).paddingRight }));
+  expect(alignment.track).toBe(alignment.gallery);
+  expect(alignment.padding).toBe('0px');
   await expect(gallery.locator('.profile-video-card:visible')).toHaveCount(1);
   await expect(gallery.locator('.profile-video-card').first()).toBeHidden();
   await expect(gallery.locator('iframe')).toHaveCount(1);
