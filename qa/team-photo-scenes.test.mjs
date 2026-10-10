@@ -21,8 +21,10 @@ test('individual profiles and magazine keep their original image behavior and fi
   const original='/assets/images/hero-scenes/consultation-1536.webp';assert.equal(resolve(pathname,pathname==='/blog/')(original),original);
  }
  const changed=execFileSync('git',['diff','--name-only','origin/main'],{encoding:'utf8'}).split('\n');
- const magazine=new Set(JSON.parse(fs.readFileSync('content/magazin/generated.json')).map(x=>x.path));
- assert.ok(!changed.some(p=>p.startsWith('team/')||p.startsWith('assets/images/magazin/')||p.startsWith('content/magazin/')||magazine.has(p)));
+ // Content and contact links may evolve independently of the scene-image mapping.
+ assert.ok(!changed.some(p=>p.startsWith('assets/images/magazin/')));
+ const pages=[...JSON.parse(fs.readFileSync('content/magazin/generated.json')).map(x=>x.path),'team/mischa-stratmann/index.html','team/nico-hryn/index.html'];
+ for(const file of pages)assert.ok(!fs.readFileSync(file,'utf8').includes('/assets/images/team-scenes/'),file);
 });
 test('central rewrite is idempotent and remains applied after city page regeneration',()=>{
  execFileSync('python3',['scripts/market-page-images.py']);

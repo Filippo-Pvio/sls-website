@@ -5,7 +5,7 @@ export async function formFetch(endpoint,options={}) {
  let entry=tokens.get(path);
  if(!entry||entry.until<Date.now()){
   const response=await fetch(path+'/?formSecurity=1',{cache:'no-store',credentials:'same-origin',signal:AbortSignal.timeout(15000)}),data=await response.json();
-  if(!response.ok||!data.securityToken)throw new Error(data.error||'Der sichere Versand ist gerade nicht verfügbar.');
+  if(!response.ok||!data.securityToken)throw new Error(typeof data.error==='string'?data.error:'Der sichere Versand ist gerade nicht verfügbar. Bitte versuchen Sie es später erneut.');
   entry={token:data.securityToken,until:Date.now()+25*60*1000};tokens.set(path,entry);
  }
  const body=JSON.parse(options.body||'{}');
