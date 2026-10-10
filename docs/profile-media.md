@@ -1,21 +1,23 @@
 # Interviews und Videos auf Mitarbeiterprofilen
 
-Alle Mitarbeiterprofile laden die gemeinsame Darstellung in `assets/profile-video-gallery.css` und die Bedienung in `assets/profile-video-gallery.js`. Ohne Videos wird keine zusätzliche Fläche angezeigt.
+Alle Mitarbeiterprofile laden `assets/profile-video-gallery.css` und `assets/profile-video-gallery.js`. Ohne Videos wird keine zusätzliche Fläche angezeigt.
 
-## Reihenfolge
+## Interviews als eigener Abschnitt
 
-Nach dem blauen Bereich zur persönlichen Arbeitsweise folgt, sofern vorhanden, die redaktionelle STILPUNKTE-Interviewbox. Sie steht als `.profile-interview-card.profile-interview-feature` direkt in der `.wrap` des Medienbereichs. Bestehende Zusammenfassungen bleiben erhalten; neue Zitate dürfen nur aus dem verlinkten Interview übernommen werden.
+Nach dem blauen Bereich zur persönlichen Arbeitsweise folgt, sofern vorhanden, `.profile-interview-section` als direktes Kind von `main`. Die Hintergrundfarbe zieht sich über die volle Seitenbreite; der Inhalt bleibt in `.wrap.profile-interview-layout` bündig zu den anderen Abschnitten. Der Interviewbereich ist warmhell, der folgende Videobereich weiß und die Referenzen blau.
 
-Darunter stehen die Überschrift und die gemeinsame Videoreihe. Als Vorlage dient `team/mischa-stratmann/index.html`. Mitarbeiter ohne Interview erhalten nur den Videobereich; keine leere Interviewbox einsetzen.
+Links stehen Name, STILPUNKTE und die H2 „Geschäftsführer im Interview.“ mit dem Thema als eigenem `span`. Rechts folgen die bestehende inhaltliche Zusammenfassung und der Link „Interview bei STILPUNKTE lesen“. Die Zusammenfassungen sind keine wörtlichen Zitate. Filippo, Mischa und Dennis verwenden dieselbe Struktur. Als Vorlage dient `team/mischa-stratmann/index.html`. Ohne redaktionelles Interview wird kein leerer Interviewabschnitt angelegt.
 
 ## Ein weiteres Video ergänzen
 
-In `[data-profile-video-gallery] > [data-video-track]` eine weitere `.profile-video-card` ergänzen. Instagram-Karten erhalten `data-video-provider="instagram"` und am Player `data-reel-id` mit der elfstelligen Reel-ID. YouTube-Karten erhalten `data-video-provider="youtube"` und den bisherigen Vorschaubild-Link mit `data-video-id`. Jede Karte benötigt eine aussagekräftige Überschrift, eine kurze Beschreibung und einen Link zur Quelle; vorhandene Podcastlinks bleiben bei ihrem Video.
+In `[data-profile-video-gallery] > [data-video-track]` eine weitere `.profile-video-card` ergänzen. Instagram-Karten erhalten `data-video-provider="instagram"` und am Player `data-reel-id` mit der elfstelligen Reel-ID. YouTube-Karten erhalten `data-video-provider="youtube"` und den bisherigen Vorschaubild-Link mit `data-video-id`. Jede Karte benötigt eine aussagekräftige H3 und einen Link zur Quelle; vorhandene Podcastlinks bleiben bei ihrem Video. Bei Filippo und Mischa stehen die Immobilien-Reels zuerst, das Gespräch folgt danach.
 
-Die gemeinsame Bedienung zählt die Karten beim Laden der Seite automatisch. Weitere Videos benötigen keine Änderungen am Skript oder mitarbeiterbezogene Zähler. Eine einzelne Karte hat keine Navigation; mehrere Karten erscheinen nebeneinander und sind horizontal scrollbar. Auf kleinen Handys ist ein Teil der nächsten Karte sichtbar. Pfeile und Tastatur bedienen dieselbe Reihe. Wenn alle Karten hineinpassen, werden die Pfeile ausgeblendet und die Gesamtzahl angezeigt.
+Der gemeinsame Code zählt die Karten beim Laden der Seite automatisch. Weitere Videos benötigen keine mitarbeiterbezogenen Skripte oder festen Zähler. Bei einem Video entfällt die Navigation. Ab zwei Videos erscheint ein Karussell: eine Karte steht im Vordergrund, ihre Nachbarn sind kleiner und versetzt dahinter. Pfeile, Tastatur und Wischen auf den eigenen Kartenbeschriftungen wechseln das vordere Video; die sichtbaren Vorschaukarten lassen sich direkt auswählen. Die Navigation läuft am Ende wieder zum Anfang. Reduzierte Bewegung wird berücksichtigt.
 
-Instagram lädt bei sichtbaren Karten direkt. YouTube lädt erst beim Abspielen. Verlässt eine Karte den sichtbaren Bereich, wird ihr Player entfernt und die Wiedergabe beendet. Wischgesten zum Durchblättern funktionieren auf den eigenen Kartenbeschriftungen; innerhalb fremder Player gelten deren eigene Steuerelemente.
+Instagram-Vorschauen laden beim sichtbaren Karussell direkt. Nur der vordere Player ist bedienbar. Die hinteren Player und ihre Links sind `inert` und werden von einem Auswahlbutton überlagert. Beim Wechsel wird der vorherige Player ersetzt, um seine Wiedergabe zu beenden. YouTube startet erst nach Klick auf das Vorschaubild. Verlässt die Galerie den sichtbaren Bereich, werden alle Player entfernt. Eine eigene Vorschau mit Titel und Play-Symbol überbrückt das erneute Laden eines Instagram-Embeds.
+
+Die Bühne reserviert die Höhe der größten Karte. Videos behalten ihr ursprüngliches Format. Die Auswahl scrollt die Seite nicht; vertikale Wischgesten bleiben dem Seitenscrollen vorbehalten. Innerhalb fremder Player gelten deren eigene Steuerelemente; zum Wechseln können jederzeit die Pfeile oder Kartenbeschriftungen verwendet werden.
 
 ## Prüfung
 
-`QA_BROWSER_CHANNEL=chrome npm run qa -- --grep 'profile video galleries'` prüft Interview-Reihenfolge, Desktop/Tablet/Handy, Navigation, horizontales Wischen, normales Seitenscrollen und das Ergänzen eines zweiten Videos ohne neues Skript. Neue Quellen anschließend auch mit den echten Playern prüfen.
+`QA_BROWSER_CHANNEL=chrome npm run qa -- --grep 'profile video galleries'` prüft die drei durchgehenden Interviewabschnitte, Vordergrund-/Vorschaukarten, das Stoppen vorheriger Player, Pfeile/Tastatur, mobiles Wischen ohne Seitensprung, vertikales Scrollen sowie ein automatisch ergänztes zweites Mitarbeitervideo. Neue Quellen anschließend auch mit den echten Playern auf Desktop und Handy prüfen.

@@ -3,83 +3,102 @@ import { mkdir, readFile } from "node:fs/promises";
 
 const routes = ["/", "/verkaufen/", "/immobilien/", "/ueber-uns/", "/kontakt/"];
 
-test('profile video galleries show interviews above a growing row and support navigation', async ({ page }, testInfo) => {
+test('profile video galleries place full-width interview sections above the video carousel', async ({ page }) => {
+  await page.route('https://www.instagram.com/reel/*/embed/', route => route.fulfill({ contentType: 'text/html', body: '<h1>Instagram-Reel</h1>' }));
+  for (const [slug,topic] of [['filippo-livera','digitale Tools'],['mischa-stratmann','Immobilienbewertung'],['dennis-sahlmen','sensiblen Lebenssituationen']]) {
+    await page.goto(`/team/${slug}/`);
+    const interview=page.locator('.profile-interview-section');
+    await expect(interview.locator('h2')).toContainText('Geschäftsführer im Interview.');
+    await expect(interview.locator('h2')).toContainText(topic);
+    await expect(interview.getByRole('link')).toHaveText('Interview bei STILPUNKTE lesen →');
+    expect(await interview.evaluate(el => el.parentElement === document.querySelector('main'))).toBeTruthy();
+    expect(await interview.evaluate(el => el.getBoundingClientRect().width)).toBe(await page.evaluate(() => document.documentElement.clientWidth));
+    expect(await interview.evaluate(el => getComputedStyle(el).borderRadius)).toBe('0px');
+    expect(await interview.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe(await page.locator('.profile-media').evaluate(el=>getComputedStyle(el).backgroundColor));
+    expect(await interview.evaluate(el => el.compareDocumentPosition(document.querySelector('.profile-media')) & Node.DOCUMENT_POSITION_FOLLOWING)).toBeTruthy();
+  }
+});
+
+test('profile video galleries bring one card forward and stop its player when choosing another', async ({ page }) => {
   await page.route('https://www.instagram.com/reel/*/embed/', route => route.fulfill({ contentType: 'text/html', body: '<h1>Instagram-Reel</h1>' }));
   await page.route('https://www.youtube-nocookie.com/embed/**', route => route.fulfill({ contentType: 'text/html', body: '<h1>YouTube-Video</h1>' }));
-  for (const slug of ['filippo-livera', 'mischa-stratmann', 'dennis-sahlmen']) {
-    await page.goto(`/team/${slug}/`);
-    const interview = page.locator('.profile-interview-feature');
-    const gallery = page.locator('[data-profile-video-gallery]');
-    expect(await interview.evaluate(el => el.compareDocumentPosition(document.querySelector('[data-profile-video-gallery]')) & Node.DOCUMENT_POSITION_FOLLOWING)).toBeTruthy();
-    expect(await interview.evaluate(el => el.parentElement === document.querySelector('[data-profile-video-gallery]').parentElement)).toBeTruthy();
-    await expect(interview).toContainText('Im Gespräch mit STILPUNKTE');
-    await expect(interview).toContainText('Interview lesen');
-    await expect(gallery).toHaveCount(1);
-  }
   await page.goto('/team/mischa-stratmann/');
-  const gallery = page.locator('[data-profile-video-gallery]');
+  const gallery=page.locator('[data-profile-video-gallery]');
   await gallery.scrollIntoViewIfNeeded();
-  await expect(gallery.locator('.profile-video-card')).toHaveCount(3);
-  await expect(gallery.locator('.profile-video-card[hidden]')).toHaveCount(0);
-  const track = gallery.locator('[data-video-track]');
-  const metrics = await track.evaluate(el => ({ width: el.clientWidth, card: el.firstElementChild.clientWidth, max: el.scrollWidth-el.clientWidth, right: el.getBoundingClientRect().right }));
-  expect(metrics.right).toBeLessThanOrEqual(await page.evaluate(() => innerWidth));
-  if (testInfo.project.name.includes('desktop')) expect(metrics.width / metrics.card).toBeGreaterThan(2);
-  if (testInfo.project.name.includes('mobile')) {
-    expect(metrics.card).toBeLessThan(metrics.width);
-    expect(metrics.card).toBeGreaterThan(metrics.width * .8);
-  }
-  if (metrics.max > 2) {
-    await gallery.locator('[data-video-next]').click();
-    await expect.poll(() => track.evaluate(el => el.scrollLeft)).toBeGreaterThan(Math.min(20, metrics.max - 1));
-    await track.focus();
-    await page.keyboard.press('End');
-    await expect(gallery.locator('[data-video-next]')).toBeDisabled();
-    await page.keyboard.press('Home');
-    await expect(gallery.locator('[data-video-prev]')).toBeDisabled();
-  }
-  await gallery.locator('[data-video-id]').first().click();
-  await expect(gallery.locator('iframe[src*="youtube-nocookie"]')).toHaveCount(1);
+  await expect(gallery.locator('.is-active')).toHaveCount(1);
+  await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+  await expect(gallery.locator('.is-active')).toHaveAttribute('data-video-provider','instagram');
+  await expect(gallery.locator('.is-before .profile-video-player')).toHaveAttribute('inert','');
+  const track=gallery.locator('[data-video-track]');
+  const height=await track.evaluate(el=>el.clientHeight);
+  const oldPlayer=await gallery.locator('.is-active iframe').elementHandle();
+  await gallery.locator('[data-video-next]').click();
+  await expect(gallery.locator('[data-video-position]')).toHaveText('2 von 3');
+  expect(await oldPlayer.evaluate(el=>el.isConnected)).toBe(false);
+  await expect(gallery.locator('.is-active iframe')).toHaveAttribute('src','https://www.instagram.com/reel/DYbYq9oM-6f/embed/');
+  await gallery.locator('[data-video-next]').click();
+  await expect(gallery.locator('[data-video-position]')).toHaveText('3 von 3');
+  await gallery.locator('.is-active [data-video-id]').click();
+  await expect(gallery.locator('.is-active iframe')).toHaveAttribute('src',/youtube-nocookie/);
+  const youtube=await gallery.locator('.is-active iframe').elementHandle();
+  await gallery.locator('[data-video-next]').click();
+  await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+  expect(await youtube.evaluate(el=>el.isConnected)).toBe(false);
+  expect(await track.evaluate(el=>el.clientHeight)).toBe(height);
+  await track.focus();
+  await page.keyboard.press('End');
+  await expect(gallery.locator('[data-video-position]')).toHaveText('3 von 3');
+  await page.keyboard.press('Home');
+  await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+  const active=await gallery.locator('.is-active').evaluate(el=>({transform:getComputedStyle(el).transform,z:getComputedStyle(el).zIndex}));
+  const back=await gallery.locator('.is-after').evaluate(el=>({transform:getComputedStyle(el).transform,z:getComputedStyle(el).zIndex}));
+  expect(Number(active.z)).toBeGreaterThan(Number(back.z));
+  expect(await gallery.evaluate(el=>el.getBoundingClientRect().right)).toBeLessThanOrEqual(await page.evaluate(()=>innerWidth));
+  await gallery.locator('.is-active .profile-video-player').scrollIntoViewIfNeeded();
+  await gallery.locator('.is-after').evaluate(async el => { await Promise.all(el.getAnimations().map(a=>a.finished)); });
+  const previewBox=await gallery.locator('.is-after').boundingBox(),trackBox=await track.boundingBox();
+  await page.mouse.click(Math.min(previewBox.x+previewBox.width-12,trackBox.x+trackBox.width-12),previewBox.y+100);
+  await expect(gallery.locator('[data-video-position]')).toHaveText('2 von 3');
   await page.locator('.profile-final').scrollIntoViewIfNeeded();
   await expect(gallery.locator('iframe')).toHaveCount(0);
 });
 
-test('profile video galleries support native mobile swiping and vertical page scrolling', async ({ page }, testInfo) => {
+test('profile video galleries support mobile swiping while keeping vertical scrolling and page position', async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.includes('mobile'), 'Touch-only interaction');
   await page.route('https://www.instagram.com/reel/*/embed/', route => route.fulfill({ contentType: 'text/html', body: '<h1>Instagram-Reel</h1>' }));
   await page.goto('/team/mischa-stratmann/');
-  const gallery = page.locator('[data-profile-video-gallery]');
-  const copy = gallery.locator('.profile-media-copy').first();
+  const gallery=page.locator('[data-profile-video-gallery]');
+  const copy=gallery.locator('.is-active .profile-media-copy');
   await copy.scrollIntoViewIfNeeded();
-  const bounds = await copy.boundingBox();
-  const session = await page.context().newCDPSession(page);
-  const y = bounds.y + bounds.height - 25, x = bounds.x + bounds.width - 35;
-  await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
-  for (let step = 1; step <= 8; step++) await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x - step * 25, y }] });
-  await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  await expect.poll(() => gallery.locator('[data-video-track]').evaluate(el => el.scrollLeft)).toBeGreaterThan(100);
-  const before = await page.evaluate(() => scrollY);
-  await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 8, y: 650 }] });
-  for (let step = 1; step <= 8; step++) await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 8, y: 650 - step * 35 }] });
-  await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(before + 100);
+  const box=await copy.boundingBox();
+  const session=await page.context().newCDPSession(page);
+  const y=box.y+box.height-30,x=box.x+box.width-25;
+  const before=await page.evaluate(()=>scrollY);
+  await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
+  for(let step=1;step<=6;step++) await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x-step*25,y}]});
+  await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await expect(gallery.locator('[data-video-position]')).toHaveText('2 von 3');
+  expect(Math.abs(await page.evaluate(()=>scrollY)-before)).toBeLessThan(2);
+  const previousY=await page.evaluate(()=>scrollY);
+  await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:8,y:650}]});
+  for(let step=1;step<=8;step++) await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:8,y:650-step*35}]});
+  await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(previousY+100);
 });
 
-test('profile video galleries load single reels and adapt automatically when another video is added', async ({ page }) => {
+test('profile video galleries load single reels and automatically adapt to future videos', async ({ page }) => {
   const errors=[];
-  page.on('pageerror', error => errors.push(error.message));
-  await page.route('https://www.instagram.com/reel/*/embed/', route => route.fulfill({ contentType: 'text/html', body: '<h1>Instagram-Reel</h1>' }));
-  for (const [slug,id] of [['sophia-peter','DeO1bzzoqUZ'],['nico-hryn','Db-cAAqsIXN'],['tanja-wawrosch','DcvKnD9IxIc']]) {
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.route('https://www.instagram.com/reel/*/embed/', route=>route.fulfill({contentType:'text/html',body:'<h1>Instagram-Reel</h1>'}));
+  for(const [slug,id] of [['sophia-peter','DeO1bzzoqUZ'],['nico-hryn','Db-cAAqsIXN'],['tanja-wawrosch','DcvKnD9IxIc']]) {
     await page.goto(`/team/${slug}/`);
     const gallery=page.locator('[data-profile-video-gallery]');
     await gallery.scrollIntoViewIfNeeded();
-    await expect(gallery.locator('iframe')).toHaveAttribute('src',`https://www.instagram.com/reel/${id}/embed/`);
+    await expect(gallery.locator('.is-active iframe')).toHaveAttribute('src',`https://www.instagram.com/reel/${id}/embed/`);
     await expect(gallery.locator('[data-video-controls]')).toBeHidden();
   }
-  // Exercise a future second video without adding another employee-specific script.
-  await page.route('**/team/sophia-peter/', async route => {
-    const response=await route.fetch();
-    const html=await response.text();
+  await page.route('**/team/sophia-peter/',async route=>{
+    const response=await route.fetch(),html=await response.text();
     const card=html.match(/<article class="profile-video-card"[^>]*data-video-provider="instagram"[\s\S]*?<\/article>/)[0];
     await route.fulfill({response,body:html.replace(card,card+card.replaceAll('DeO1bzzoqUZ','DZhMEJLs8i2'))});
   });
@@ -88,8 +107,10 @@ test('profile video galleries load single reels and adapt automatically when ano
   await gallery.scrollIntoViewIfNeeded();
   await expect(gallery).toHaveClass(/has-multiple-videos/);
   await expect(gallery.locator('[data-video-controls]')).toBeVisible();
-  await expect(gallery.locator('.profile-video-card')).toHaveCount(2);
-  for (const slug of ['uwe-braun','maximilian-werner','dennis-sahlmen']) {
+  await gallery.locator('[data-video-next]').click();
+  await expect(gallery.locator('[data-video-position]')).toHaveText('2 von 2');
+  await expect(gallery.locator('.is-active iframe')).toHaveAttribute('src','https://www.instagram.com/reel/DZhMEJLs8i2/embed/');
+  for(const slug of ['uwe-braun','maximilian-werner','dennis-sahlmen']) {
     await page.goto(`/team/${slug}/`);
     await expect(page.locator('[data-profile-video-gallery] .profile-video-card')).toHaveCount(1);
     await expect(page.locator('[data-video-controls]')).toBeHidden();
