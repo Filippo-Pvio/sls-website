@@ -4,7 +4,7 @@ const port = Number(process.env.QA_PORT || 4173);
 
 export default defineConfig({
   testDir: "./qa",
-  testMatch: "browser.spec.js",
+  testMatch: ["browser.spec.js", "sia-company.spec.js"],
   fullyParallel: false,
   reporter: [["line"], ["html", { outputFolder: "playwright-report", open: "never" }]],
   use: {

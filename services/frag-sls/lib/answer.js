@@ -1,6 +1,7 @@
 const {isFollowUp}=require('./no-follow-up');
 const {personalNextStep}=require('./personal-next-step');
 const {limitations}=require('./knowledge');
+const {companyAnswer}=require('./company-knowledge');
 const {sourceContext,publicSource}=require('./sources');
 const {fault,requestJSON}=require('./model');
 const {reviewAnswer}=require('./review');
@@ -56,6 +57,8 @@ function render(paragraphs,sources){
  return {paragraphs,answer:paragraphs.map(p=>p.text+p.source_ids.map(id=>` [${selected.get(id).number}]`).join('')).join('\n\n'),sources:[...selected.values()]};
 }
 async function answerQuestion(question,{env=process.env,fetchImpl=globalThis.fetch,timeoutMs=38000,logger=console,now=new Date()}={}){
+ const company=companyAnswer(question);
+ if(company)return company;
  const context=sourceContext(question,now),gaps=limitations(question);
  const finish=result=>({...result,answer:result.answer+'\n\n'+personalNextStep(question),personalNextStep:personalNextStep(question),version:VERSION,limitations:gaps,knowledgeStatus:'Bestätigte Unternehmensinformationen und datierte Fachgrundlagen. Keine Live-Marktdaten.'});
  const key=(env.OPENAI_API_KEY||'').trim();

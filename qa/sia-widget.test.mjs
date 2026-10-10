@@ -249,3 +249,14 @@ test('daily limit keeps unsent draft and remaining counter only appears near lim
  const blocked=await fixture(true,true,[],{code:'daily_limit'});blocked.get('textarea').value='Meine Frage';await [...blocked.get('form').listeners.get('submit')][0]({preventDefault(){}});assert.match(blocked.get('.status').textContent,/zehn Antworten/);assert.equal(blocked.get('textarea').value,'Meine Frage');
  for(const remaining of [7,3,1,0]) {const f=await fixture(true,true,[],{provider:'OpenAI',answer:'Antwort',sources:[],quota:{remaining}});f.get('textarea').value='Meine Frage';await [...f.get('form').listeners.get('submit')][0]({preventDefault(){}});if(remaining===7)assert.equal(f.get('.status').textContent,'Ihre Antwort ist da.');else if(!remaining)assert.match(f.get('.status').textContent,/Tageslimit/);else assert.match(f.get('.status').textContent,/Heute/);}
 });
+
+test('website company sources offer safe local profile/reference links and the approved Google profile',async()=>{
+ const f=await fixture(true,true,[{number:1,title:'SLS',sourceType:'website',url:'/',relatedPages:['/team/','/referenzen/','javascript:alert(1)','//evil.example/'],references:['https://share.google/qbk6kf2K0Cemc8Zeq']}]);
+ f.get('textarea').value='Wie seriös ist SLS?';await [...f.get('form').listeners.get('submit')][0]({preventDefault(){}});
+ const links=f.get('.source-list').children[0].children.slice(1);
+ assert.deepEqual(links.map(link=>link.href),['/','/team/','/referenzen/','https://share.google/qbk6kf2K0Cemc8Zeq']);
+ assert.equal(links.at(-1).rel,'noopener noreferrer');assert.equal(links.at(-1).target,'_blank');
+ const unsafe=await fixture(true,true,[{number:1,title:'Nicht freigegeben',sourceType:'website',url:'https://evil.example/',references:['javascript:alert(1)']}]);
+ unsafe.get('textarea').value='Eine Frage';await [...unsafe.get('form').listeners.get('submit')][0]({preventDefault(){}});
+ assert.equal(unsafe.get('.source-list').children[0].children.length,1);
+});
