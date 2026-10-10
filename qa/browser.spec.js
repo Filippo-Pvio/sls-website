@@ -3,6 +3,92 @@ import { mkdir, readFile } from "node:fs/promises";
 
 const routes = ["/", "/verkaufen/", "/immobilien/", "/ueber-uns/", "/kontakt/"];
 
+test('profile video galleries keep the selected player and stop the previous one', async ({ page }) => {
+  const requestedReels = [];
+  await page.route('https://www.instagram.com/reel/*/embed/', route => {
+    requestedReels.push(new URL(route.request().url()).pathname.split('/')[2]);
+    return route.fulfill({ contentType: 'text/html', body: '<h1>Instagram-Reel</h1>' });
+  });
+  await page.route('https://www.youtube-nocookie.com/embed/**', route => route.fulfill({ contentType: 'text/html', body: '<h1>YouTube-Video</h1>' }));
+  await page.goto('/team/mischa-stratmann/');
+  const gallery = page.locator('[data-profile-video-gallery]');
+  await gallery.scrollIntoViewIfNeeded();
+  await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+  await gallery.locator('[data-video-id]').first().click();
+  const oldYouTube = await gallery.locator('iframe').elementHandle();
+  const stageHeight = await gallery.locator('.profile-video-player').first().evaluate(element => element.clientHeight);
+  await gallery.locator('.profile-video-choice').nth(1).click();
+  await expect(gallery.locator('[data-video-position]')).toHaveText('2 von 3');
+  await expect(gallery.locator('.profile-video-card:visible')).toHaveCount(1);
+  await expect(gallery.locator('.profile-video-card').first()).toBeHidden();
+  await expect(gallery.locator('iframe')).toHaveCount(1);
+  await expect(gallery.locator('iframe')).toHaveAttribute('src', 'https://www.instagram.com/reel/DZhMEJLs8i2/embed/');
+  expect(await oldYouTube.evaluate(element => element.isConnected)).toBe(false);
+  expect(await gallery.locator('.profile-video-player').nth(1).evaluate(element => element.clientHeight)).toBe(stageHeight);
+  const oldReel = await gallery.locator('iframe').elementHandle();
+  await gallery.locator('[data-video-next]').click();
+  await expect(gallery.locator('[data-video-position]')).toHaveText('3 von 3');
+  await expect(gallery.locator('.profile-video-card:visible')).toHaveCount(1);
+  await expect(gallery.locator('iframe')).toHaveAttribute('src', 'https://www.instagram.com/reel/DYbYq9oM-6f/embed/');
+  expect(await oldReel.evaluate(element => element.isConnected)).toBe(false);
+  await expect(gallery.locator('[data-video-next]')).toBeDisabled();
+  await gallery.locator('[data-video-prev]').click();
+  await expect(gallery.locator('.profile-video-choice').nth(1)).toHaveAttribute('aria-pressed', 'true');
+  const track = gallery.locator('[data-video-track]');
+  await track.focus();
+  await page.keyboard.press('Home');
+  await expect(gallery.locator('[data-video-position]')).toHaveText('1 von 3');
+  await expect(gallery.locator('iframe')).toHaveCount(0);
+  await page.keyboard.press('End');
+  await expect(gallery.locator('[data-video-position]')).toHaveText('3 von 3');
+  expect(new Set(requestedReels)).toEqual(new Set(['DZhMEJLs8i2', 'DYbYq9oM-6f']));
+  await expect(gallery.locator('.profile-video-card').first()).toHaveAttribute('inert', '');
+});
+
+test('profile video galleries support a horizontal mobile swipe without intercepting vertical scrolling', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.includes('mobile'), 'Touch-only interaction');
+  await page.route('https://www.instagram.com/reel/*/embed/', route => route.fulfill({ contentType: 'text/html', body: '<h1>Instagram-Reel</h1>' }));
+  await page.goto('/team/mischa-stratmann/');
+  const gallery = page.locator('[data-profile-video-gallery]');
+  const copy = gallery.locator('.profile-video-card').first().locator('.profile-media-copy');
+  await copy.scrollIntoViewIfNeeded();
+  const bounds = await copy.boundingBox();
+  const session = await page.context().newCDPSession(page);
+  const y = bounds.y + bounds.height - 25;
+  const x = bounds.x + bounds.width - 35;
+  await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+  for (let step = 1; step <= 6; step++) await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x - step * 25, y }] });
+  await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await expect(gallery.locator('[data-video-position]')).toHaveText('2 von 3');
+  await expect(gallery.locator('.profile-video-card:visible')).toHaveCount(1);
+  expect(await gallery.locator('[data-video-track]').evaluate(element => getComputedStyle(element).touchAction)).toBe('pan-y');
+});
+
+test('profile video galleries show assigned reels automatically and hide single-video controls', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.route('https://www.instagram.com/reel/*/embed/', route => route.fulfill({ contentType: 'text/html', body: '<h1>Instagram-Reel</h1>' }));
+  for (const [slug, id] of [['sophia-peter', 'DeO1bzzoqUZ'], ['nico-hryn', 'Db-cAAqsIXN'], ['tanja-wawrosch', 'DcvKnD9IxIc']]) {
+    await page.goto(`/team/${slug}/`);
+    const gallery = page.locator('[data-profile-video-gallery]');
+    await gallery.scrollIntoViewIfNeeded();
+    await expect(gallery.locator('iframe')).toHaveAttribute('src', `https://www.instagram.com/reel/${id}/embed/`);
+    await expect(gallery.locator('[data-video-controls]')).toBeHidden();
+    await expect(gallery.locator('[data-video-choices]')).toBeHidden();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+  }
+  await page.goto('/team/filippo-livera/');
+  const gallery = page.locator('[data-profile-video-gallery]');
+  await gallery.locator('.profile-video-choice').nth(1).click();
+  await expect(gallery.locator('iframe')).toHaveAttribute('src', 'https://www.instagram.com/reel/DbTfdNHMts_/embed/');
+  for (const slug of ['uwe-braun', 'maximilian-werner']) {
+    await page.goto(`/team/${slug}/`);
+    await expect(page.locator('[data-profile-video-gallery] .profile-video-card')).toHaveCount(1);
+    await expect(page.locator('[data-video-controls]')).toBeHidden();
+  }
+  expect(errors).toEqual([]);
+});
+
 for (const [index, route] of routes.entries()) {
   test(`${route} loads without browser or layout errors`, async ({ page }, testInfo) => {
     const errors = [];

@@ -1,6 +1,7 @@
 (() => {
   // Repeat a video card with its own ID and title to add further staff videos.
   document.querySelectorAll('[data-video-id]').forEach(play => {
+    if (play.closest('[data-profile-video-gallery]')) return;
     const id = play.dataset.videoId;
     if (!/^[A-Za-z0-9_-]{11}$/.test(id || '')) return;
     play.addEventListener('click', event => {
@@ -113,6 +114,7 @@
 
 (() => {
   document.querySelectorAll('[data-video-gallery]').forEach(gallery => {
+    if (gallery.hasAttribute('data-profile-video-gallery')) return;
     const track = gallery.querySelector('[data-video-track]');
     const cards = [...track.querySelectorAll('.profile-video-card')];
     if (cards.length < 2) { track.removeAttribute('tabindex'); return; }
