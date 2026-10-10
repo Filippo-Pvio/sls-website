@@ -33,7 +33,7 @@
   function invalidateAnalysis(){cancelAnalysis();analysisKey='';document.querySelector('#buyer-analysis-result').hidden=true;}
   function analysisPause(signal){return new Promise((resolve,reject)=>{
     const abort=()=>{clearTimeout(timer);signal.removeEventListener('abort',abort);reject(signal.reason);};
-    const timer=setTimeout(()=>{signal.removeEventListener('abort',abort);resolve();},1800);
+    const timer=setTimeout(()=>{signal.removeEventListener('abort',abort);resolve();},1400);
     signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();
   });}
   async function analyse(){
@@ -41,21 +41,13 @@
     cancelAnalysis();analysisKey='';const job={controller:new AbortController(),timer:null};activeAnalysis=job;analysing=true;sync();
     // Cancellation alone is insufficient: a response may already be decoding when inputs change.
     const current=()=>activeAnalysis===job&&!job.controller.signal.aborted&&key===analysisParams().toString();
-    const requestOptions=()=>({cache:'no-store',signal:AbortSignal.any([job.controller.signal,AbortSignal.timeout(60000)])});
+    const requestOptions=()=>({cache:'no-store',signal:AbortSignal.any([job.controller.signal,AbortSignal.timeout(45000)])});
     const box=document.querySelector('#buyer-analysis'),phase=document.querySelector('#buyer-analysis-phase'),result=document.querySelector('#buyer-analysis-result'),count=document.querySelector('#buyer-analysis-count'),copy=document.querySelector('#buyer-analysis-copy'),details=document.querySelector('#buyer-analysis-details');
     box.setAttribute('aria-busy','true');box.classList.add('is-analysing');result.hidden=true;phase.textContent='Wir öffnen unsere Interessentenkartei …';document.querySelector('#buyer-analysis-inventory').hidden=true;
     const phases=['Wir prüfen, wer in Ihrer Region kaufen möchte …','Wir vergleichen die Suchwünsche mit Ihrer Immobilie …','Wir ermitteln Ihre potenziellen Kaufinteressenten …'];let i=0;
-    job.timer=setInterval(()=>{if(current())phase.textContent=phases[Math.min(i++,phases.length-1)];},1800);
+    job.timer=setInterval(()=>{if(current())phase.textContent=phases[Math.min(i++,phases.length-1)];},750);
     try{
-      try{
-        const inventoryResponse=await fetch('/api/buyer-demand?summary=1',requestOptions()),inventory=await inventoryResponse.json();
-        if(!current())return;
-        if(inventoryResponse.ok&&Number.isSafeInteger(inventory.analysedClients)&&inventory.analysedClients>=0){
-          document.querySelector('#buyer-inventory-count').textContent=inventory.analysedClients.toLocaleString('de-DE');document.querySelector('#buyer-analysis-inventory').hidden=false;phase.textContent='Ihre persönliche Auswertung wird vorbereitet …';await analysisPause(job.controller.signal);
-        }
-      }catch{if(!current())return;/* The matching request independently confirms availability. */}
-      if(!current())return;
-      const response=await fetch('/api/buyer-demand?'+params,requestOptions()),data=await response.json();
+      const [response]=await Promise.all([fetch('/api/buyer-demand?'+params,requestOptions()),analysisPause(job.controller.signal)]),data=await response.json();
       if(!current())return;
       if(!response.ok)throw new Error(data.error||'Der Nachfragecheck ist gerade nicht verfügbar.');
       if(!Number.isSafeInteger(data.count)||data.count<0)throw new Error('Der Nachfragecheck konnte nicht bestätigt werden.');

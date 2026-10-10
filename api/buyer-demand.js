@@ -8,7 +8,7 @@ async function profiles(key){
   if(snapshot&&snapshot.until>Date.now())return snapshot;if(inflight)return inflight;
   inflight=(async()=>{
     const deadline=Date.now()+48000,all=[],seen=new Set();
-    async function page(number){if(Date.now()>deadline)throw new Error('read_timeout');const r=await fetch(`https://api.propstack.de/v1/saved_queries?per=100&page=${number}`,{headers:{'X-API-KEY':key},signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error('read_http_'+r.status);const data=await r.json();const rows=Array.isArray(data)?data:data.data;if(!Array.isArray(rows))throw new Error('unexpected_list_schema');return {rows,total:Number(data.meta?.total_count)};}
+    async function page(number){if(Date.now()>deadline)throw new Error('read_timeout');const r=await fetch(`https://api.propstack.de/v1/saved_queries?per=250&page=${number}`,{headers:{'X-API-KEY':key},signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error('read_http_'+r.status);const data=await r.json();const rows=Array.isArray(data)?data:data.data;if(!Array.isArray(rows))throw new Error('unexpected_list_schema');return {rows,total:Number(data.meta?.total_count)};}
     function append(rows){for(const row of rows){if(!row.id||seen.has(String(row.id)))throw new Error('pagination_repeated');seen.add(String(row.id));all.push(row);}}
     const first=await page(1);append(first.rows);
     if(Number.isFinite(first.total)){
@@ -17,7 +17,12 @@ async function profiles(key){
       for(let start=2;start<=pages;start+=6){const group=await Promise.all(Array.from({length:Math.min(6,pages-start+1)},(_,i)=>page(start+i)));for(const p of group)append(p.rows);}
       if(all.length!==first.total)throw new Error('pagination_incomplete');
     }else{
-      for(let n=2,last=first.rows.length;last===100;n++){if(n>250)throw new Error('pagination_limit');const p=await page(n);append(p.rows);last=p.rows.length;}
+      const size=first.rows.length;let finished=size===0;
+      for(let start=2;!finished;start+=6){
+        if(start>250)throw new Error('pagination_limit');
+        const group=await Promise.all(Array.from({length:Math.min(6,251-start)},(_,i)=>page(start+i)));
+        for(const p of group){if(finished){if(p.rows.length)throw new Error('pagination_inconsistent');continue;}append(p.rows);if(all.length>25000)throw new Error('pagination_limit');finished=p.rows.length<size;}
+      }
     }
     const distribution={};for(const label of ['BUY','RENT','UNSET','OTHER']){const selected=all.filter(p=>{const type=String(p.marketing_type??'').trim();return label==='UNSET'?!type:label==='OTHER'?type&&!['BUY','RENT'].includes(type):type===label;});const clients=rows=>new Set(rows.filter(p=>Number.isSafeInteger(Number(p.client_id))&&Number(p.client_id)>0).map(p=>String(p.client_id))).size;distribution[label]={profiles:selected.length,activeProfiles:selected.filter(p=>p.active===true).length,clients:clients(selected),activeClients:clients(selected.filter(p=>p.active===true))};}const activeAll=all.filter(p=>p.active===true),unique=rows=>new Set(rows.filter(p=>Number.isSafeInteger(Number(p.client_id))&&Number(p.client_id)>0).map(p=>String(p.client_id))).size;
     console.info('SLS buyer demand distribution',JSON.stringify({profiles:all.length,clients:unique(all),activeClients:unique(activeAll),activeBuyOrUnsetClients:unique(activeAll.filter(p=>p.marketing_type==='BUY'||!String(p.marketing_type??'').trim())),distribution}));
