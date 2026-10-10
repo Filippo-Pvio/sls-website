@@ -22,6 +22,7 @@ test('profile video galleries keep the selected player and stop the previous one
   const alignment = await gallery.evaluate(element => ({ gallery: element.clientWidth, track: element.querySelector('[data-video-track]').clientWidth, padding: getComputedStyle(element.querySelector('[data-video-track]')).paddingRight }));
   expect(alignment.track).toBe(alignment.gallery);
   expect(alignment.padding).toBe('0px');
+  expect(await gallery.evaluate(element => element.getBoundingClientRect().right)).toBeLessThanOrEqual(await page.evaluate(() => innerWidth));
   await expect(gallery.locator('.profile-video-card:visible')).toHaveCount(1);
   await expect(gallery.locator('.profile-video-card').first()).toBeHidden();
   await expect(gallery.locator('iframe')).toHaveCount(1);

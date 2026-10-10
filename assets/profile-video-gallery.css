@@ -75,8 +75,9 @@
 .profile-video-choice-symbol { flex: none; font-size: 17px; }
 .profile-video-choice:focus-visible { outline: 3px solid #ff5575; outline-offset: 2px; }
 .profile-media-grid:has([data-profile-video-gallery]) { align-items: start; }
+.profile-media-grid:has([data-profile-video-gallery]) .profile-interview-card { min-width: 0; overflow-wrap: anywhere; }
 @media (max-width: 850px) {
-  .profile-media-grid:has([data-profile-video-gallery]) { grid-template-columns: 1fr; }
+  .profile-media-grid:has([data-profile-video-gallery]) { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 600px) {
   [data-profile-video-gallery] .profile-media-copy { padding: 20px; }
