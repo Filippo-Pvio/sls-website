@@ -1,5 +1,6 @@
 /* A single featured card with a compact, growing selection underneath. */
-[data-profile-video-gallery] .profile-video-track {
+[data-profile-video-gallery] .profile-video-track,
+[data-profile-video-gallery].has-multiple-videos .profile-video-track {
   display: block;
   position: relative;
   margin: 0;
