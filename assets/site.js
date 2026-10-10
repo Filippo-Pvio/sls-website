@@ -163,8 +163,13 @@ footer.innerHTML = `
 function syncFooterTone() {
   const preferred = footer.dataset.footerPreference;
   if (preferred === 'light' || preferred === 'dark') { footer.dataset.footerTone = preferred; return; }
-  const main = document.querySelector('main');
-  let surface = main && [...main.children].reverse().find(el => el.getBoundingClientRect().height > 0 && !['SCRIPT','STYLE'].includes(el.tagName));
+  // Include closing sections outside main, as on the homepage.
+  const closingSections = [...document.querySelectorAll('main > *, body > .section')];
+  let surface = closingSections.reverse().find(el =>
+    el.getBoundingClientRect().height > 0 &&
+    !['SCRIPT','STYLE'].includes(el.tagName) &&
+    (el.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING)
+  );
   let rgb;
   while (surface) {
     const parts = getComputedStyle(surface).backgroundColor.match(/[\d.]+/g)?.map(Number);
