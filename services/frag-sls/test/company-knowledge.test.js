@@ -22,17 +22,18 @@ for(const [q,id,text] of [
  assert.ok(!/\b\d[,.]\d\s*(?:sterne|von 5)/i.test(result.answer));
 });
 test('all team members and service areas come from current versioned website files',()=>{
- assert.equal(WEBSITE.filter(source=>source.id.startsWith('company-person-')).length,21);
+ assert.equal(WEBSITE.filter(source=>source.id.startsWith('company-person-')).length,WEBSITE.find(source=>source.id==='company-team').members.length);
  assert.equal(new Set(WEBSITE.map(source=>source.id)).size,WEBSITE.length);
  for(const source of WEBSITE){
   const file=path.resolve(__dirname,'../../..',source.sourcePath);
   assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'),source.sourceSha256,source.sourcePath);
+  for(const [dependency,hash] of Object.entries(source.sourceHashes??{}))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.resolve(__dirname,'../../..',dependency))).digest('hex'),hash,dependency);
   assert.ok(source.text.length>40);assert.equal(source.category,'company');assert.equal(source.sourceType,'website');
  }
 });
 test('known cities retrieve service areas, not invented offices or local market figures',()=>{
  for(const city of ['Dorsten','Düsseldorf','Schermbeck','Essen','Marl'])assert.ok(companySources(`Verkaufen Sie in ${city}?`).some(source=>source.id==='company-regions'));
- const result=companyAnswer('Welche Standorte hat SLS?');assert.match(result.answer,/Marktgebiete.*nicht/);assert.match(result.answer,/Nordrhein-Westfalen/);
+ const result=companyAnswer('Welche Standorte hat SLS?');assert.match(result.answer,/Marktgebiete.*keine/);assert.match(result.answer,/Nordrhein-Westfalen/);
 });
 test('mixed subjects retain the full verified handler and sources',()=>{
  for(const q of ['Wie seriös ist SLS und was kostet der Verkauf?','Wer ist Filippo Livera und welche Standorte hat SLS?','Seit wann gibt es SLS und was ist mein Haus wert?'])assert.equal(companyAnswer(q),null,q);

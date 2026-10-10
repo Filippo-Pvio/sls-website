@@ -117,7 +117,7 @@
       ]
     }
   },
-  "buildCommand": "node scripts/build-magazine.mjs && node scripts/build-public-site.mjs",
+  "buildCommand": "node scripts/build-magazine.mjs && node scripts/build-sia-company.mjs && node scripts/build-public-site.mjs",
   "outputDirectory": ".site-output",
   "crons": [
     {

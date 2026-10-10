@@ -15,13 +15,42 @@
     "sourcePath": "ueber-uns/index.html",
     "url": "/ueber-uns/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "ab386ae907f6c7ee3605ba345cc962ad6c986464e8adf9cf3b0bfa447236d316"
+    "sourceSha256": "ab386ae907f6c7ee3605ba345cc962ad6c986464e8adf9cf3b0bfa447236d316",
+    "sourceHashes": {
+      "ueber-uns/index.html": "ab386ae907f6c7ee3605ba345cc962ad6c986464e8adf9cf3b0bfa447236d316"
+    }
+  },
+  {
+    "id": "central-contact",
+    "title": "Zentraler Kontakt zu SLS Immobilienpartner",
+    "text": "Zentral erreichen Sie SLS Immobilienpartner unter 02369 742 80 20 oder service@sls.de.",
+    "patterns": [
+      "kontakt",
+      "erreich",
+      "telefon",
+      "anruf",
+      "e-mail",
+      "email",
+      "mailadresse"
+    ],
+    "category": "company",
+    "sourceType": "website",
+    "sourcePath": "kontakt/index.html",
+    "url": "/kontakt/",
+    "snapshotDate": "2026-10-10",
+    "releaseSha": null,
+    "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
+    "sourceSha256": "92c7310f559572b84d9a659e7630bd98f8cd3fe321c1494c17bd76c161411078",
+    "sourceHashes": {
+      "kontakt/index.html": "92c7310f559572b84d9a659e7630bd98f8cd3fe321c1494c17bd76c161411078"
+    }
   },
   {
     "id": "company-offices",
     "title": "Büros und persönlicher Kontakt",
-    "text": "Persönlich vor Ort Zwei Standorte. Ein persönlicher Kontakt. Für ein Gespräch vor Ort stimmen wir gerne einen Termin mit Ihnen ab. Unser Büro in Dorsten Persönlich für Sie im Ruhrgebiet. Ubierweg 2 46286 Dorsten Route nach Dorsten Unser Standort in Düsseldorf Persönlich für Sie im Rheinland. Königsallee 19 40213 Düsseldorf Route nach Düsseldorf Noch nicht sicher, wo Sie anfangen sollen? SIA hilft Ihnen bei ersten Fragen rund um Immobilien. Für Ihr persönliches Vorhaben sind wir direkt für Sie da. SIA fragen Zentraler Kontakt: 02369 742 80 20, service@sls.de. Die veröffentlichten Büros sind Dorsten und Düsseldorf; Marktgebiete sind keine weiteren Büroadressen.",
+    "text": "Unser Büro in Dorsten: Ubierweg 2 46286 Dorsten. Unser Standort in Düsseldorf: Königsallee 19 40213 Düsseldorf. Für ein Gespräch vor Ort stimmen wir gerne einen Termin mit Ihnen ab. Zentral erreichen Sie SLS Immobilienpartner unter 02369 742 80 20 oder service@sls.de. Marktgebiete sind keine weiteren Büroadressen.",
     "patterns": [
       "standort",
       "buro",
@@ -38,13 +67,27 @@
     "sourcePath": "kontakt/index.html",
     "url": "/kontakt/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "92c7310f559572b84d9a659e7630bd98f8cd3fe321c1494c17bd76c161411078"
+    "sourceSha256": "92c7310f559572b84d9a659e7630bd98f8cd3fe321c1494c17bd76c161411078",
+    "offices": [
+      {
+        "name": "Unser Büro in Dorsten",
+        "address": "Ubierweg 2 46286 Dorsten"
+      },
+      {
+        "name": "Unser Standort in Düsseldorf",
+        "address": "Königsallee 19 40213 Düsseldorf"
+      }
+    ],
+    "sourceHashes": {
+      "kontakt/index.html": "92c7310f559572b84d9a659e7630bd98f8cd3fe321c1494c17bd76c161411078"
+    }
   },
   {
     "id": "company-regions",
     "title": "Marktgebiete in Nordrhein-Westfalen",
-    "text": "SLS Immobilienpartner begleitet Bewertung, Verkauf und Immobiliensuche in Nordrhein-Westfalen: Ruhrgebiet, Münsterland, Rheinland und Niederrhein. Die Standortseite nennt folgende Marktgebiete: Dorsten, Bochum, Borken, Bottrop, Castrop-Rauxel, Coesfeld, Datteln, Dortmund, Essen, Gladbeck, Haltern am See, Herten, Marl, Recklinghausen, Schermbeck, Unna, Witten, Düsseldorf, Meerbusch, Mettmann, Moers, Krefeld, Ratingen, Viersen. Dies sind betreute Marktgebiete; persönlich besetzte Büros sind daraus nicht abzuleiten. Für eine konkrete Immobilie stimmt das Team den zuständigen Ansprechpartner ab.",
+    "text": "In Nordrhein-Westfalen – vom Ruhrgebiet über das Münsterland bis ins Rheinland und an den Niederrhein: SLS Immobilienpartner begleitet Sie bei Bewertung, Verkauf und der Suche nach Ihrer nächsten Immobilie. Die Standortseite nennt folgende Marktgebiete: Dorsten, Bochum, Borken, Bottrop, Castrop-Rauxel, Coesfeld, Datteln, Dortmund, Essen, Gladbeck, Haltern am See, Herten, Marl, Recklinghausen, Schermbeck, Unna, Witten, Düsseldorf, Meerbusch, Mettmann, Moers, Krefeld, Ratingen, Viersen. Dies sind betreute Marktgebiete; daraus entstehen keine zusätzlichen Büroadressen. Für eine konkrete Immobilie stimmt das Team den zuständigen Ansprechpartner ab.",
     "patterns": [
       "nordrhein",
       "\\bnrw\\b",
@@ -61,13 +104,13 @@
       "bochum",
       "borken",
       "bottrop",
-      "castrop\\-rauxel",
+      "castrop-rauxel",
       "coesfeld",
       "datteln",
       "dortmund",
       "essen",
       "gladbeck",
-      "haltern\\ am\\ see",
+      "haltern am see",
       "herten",
       "marl",
       "recklinghausen",
@@ -87,6 +130,7 @@
     "sourcePath": "standorte/index.html",
     "url": "/standorte/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
     "sourceSha256": "fadf605331695752a57ff0187312a0f51d5369b4a2231078e0abef03a45b03d9",
     "cities": [
@@ -114,7 +158,10 @@
       "Krefeld",
       "Ratingen",
       "Viersen"
-    ]
+    ],
+    "sourceHashes": {
+      "standorte/index.html": "fadf605331695752a57ff0187312a0f51d5369b4a2231078e0abef03a45b03d9"
+    }
   },
   {
     "id": "company-team",
@@ -131,15 +178,126 @@
     "sourcePath": "team/index.html",
     "url": "/team/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "ca782da258e80904e498357f281a3b716b81d3b088061e37f259175a0c5e57f0"
+    "sourceSha256": "ca782da258e80904e498357f281a3b716b81d3b088061e37f259175a0c5e57f0",
+    "members": [
+      {
+        "url": "/team/dennis-sahlmen/",
+        "name": "Dennis Sahlmen",
+        "role": "Geschäftsführer · Immobilienmakler (IHK)"
+      },
+      {
+        "url": "/team/filippo-livera/",
+        "name": "Filippo Livera",
+        "role": "Geschäftsführer · Immobilienmakler"
+      },
+      {
+        "url": "/team/mischa-stratmann/",
+        "name": "Mischa Stratmann",
+        "role": "Geschäftsführer · Immobilienkaufmann & Sachverständiger"
+      },
+      {
+        "url": "/team/andreas-busch/",
+        "name": "Andreas Busch",
+        "role": "Regionalleiter Düsseldorf"
+      },
+      {
+        "url": "/team/daniel-allamezade/",
+        "name": "Daniel Allamezade",
+        "role": "Immobilienmakler"
+      },
+      {
+        "url": "/team/uwe-braun/",
+        "name": "Uwe Braun",
+        "role": "Immobilienmakler"
+      },
+      {
+        "url": "/team/cueneyt-demirli/",
+        "name": "Cüneyt Demirli",
+        "role": "Immobilienmakler"
+      },
+      {
+        "url": "/team/jacqueline-floeter/",
+        "name": "Jacqueline Flöter",
+        "role": "Immobilienmaklerin"
+      },
+      {
+        "url": "/team/heiko-hofmann/",
+        "name": "Heiko Hofmann",
+        "role": "Immobilienmakler"
+      },
+      {
+        "url": "/team/nico-hryn/",
+        "name": "Nico Hryn",
+        "role": "Immobilienmakler"
+      },
+      {
+        "url": "/team/gina-kuennecke/",
+        "name": "Gina Künnecke",
+        "role": "Immobilienmaklerin"
+      },
+      {
+        "url": "/team/manuela-landripet/",
+        "name": "Manuela Landripet",
+        "role": "Immobilienmaklerin"
+      },
+      {
+        "url": "/team/dustin-offermann/",
+        "name": "Dustin Offermann",
+        "role": "Immobilienmakler"
+      },
+      {
+        "url": "/team/tanja-wawrosch/",
+        "name": "Tanja Wawrosch",
+        "role": "Immobilienmaklerin"
+      },
+      {
+        "url": "/team/maximilian-werner/",
+        "name": "Maximilian Werner",
+        "role": "Immobilienmakler"
+      },
+      {
+        "url": "/team/kristina-kruschinski/",
+        "name": "Kristina Kruschinski",
+        "role": "Operations & Office Managerin"
+      },
+      {
+        "url": "/team/svea-bruns/",
+        "name": "Svea Bruns",
+        "role": "Volljuristin | Legal & Controlling"
+      },
+      {
+        "url": "/team/daniela-sahlmen/",
+        "name": "Daniela Sahlmen",
+        "role": "Pressesprecherin & Public Relations"
+      },
+      {
+        "url": "/team/sophia-peter/",
+        "name": "Sophia Peter",
+        "role": "Social Media Managerin & Back Office"
+      },
+      {
+        "url": "/team/arne-wilke/",
+        "name": "Arne Wilke",
+        "role": "Head of Telesales"
+      },
+      {
+        "url": "/team/samy-el-munayer/",
+        "name": "Samy El-Munayer",
+        "role": "Telesales Manager"
+      }
+    ],
+    "sourceHashes": {
+      "team/index.html": "ca782da258e80904e498357f281a3b716b81d3b088061e37f259175a0c5e57f0"
+    }
   },
   {
     "id": "company-person-dennis-sahlmen",
     "title": "Dennis Sahlmen – Geschäftsführer · Immobilienmakler (IHK)",
     "text": "Dennis Sahlmen: Geschäftsführer · Immobilienmakler (IHK). Marktverständnis trifft gute Präsentation. Dennis Sahlmen ist Geschäftsführer und Immobilienmakler (IHK) bei SLS Immobilienpartner. Als gebürtiger Essener kennt er das Ruhrgebiet aus persönlicher und beruflicher Perspektive. Sein beruflicher Hintergrund verbindet Immobilienvermittlung mit Marketing, Webdesign und Fotografie. Damit betrachtet er einen Verkauf sowohl aus Sicht des Marktes als auch aus Sicht der Menschen, die eine Immobilie suchen. Er begleitet Eigentümer bei der Wertermittlung und beim Verkauf. Eine nachvollziehbare Einschätzung und eine passende Präsentation der Immobilie stehen dabei im Mittelpunkt.",
     "patterns": [
-      "dennis\\ sahlmen",
+      "dennis sahlmen",
       "sahlmen"
     ],
     "category": "company",
@@ -147,15 +305,19 @@
     "sourcePath": "team/dennis-sahlmen/index.html",
     "url": "/team/dennis-sahlmen/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "965b68cf61065126b2e0977a743a32bb9d0ec7f1e6aed62768b8ef90add0de2a"
+    "sourceSha256": "965b68cf61065126b2e0977a743a32bb9d0ec7f1e6aed62768b8ef90add0de2a",
+    "sourceHashes": {
+      "team/dennis-sahlmen/index.html": "965b68cf61065126b2e0977a743a32bb9d0ec7f1e6aed62768b8ef90add0de2a"
+    }
   },
   {
     "id": "company-person-filippo-livera",
     "title": "Filippo Livera – Geschäftsführer · Immobilienmakler",
     "text": "Filippo Livera: Geschäftsführer · Immobilienmakler. Marktkenntnis trifft persönliche Begleitung. Filippo Livera ist Geschäftsführer und Immobilienmakler bei SLS Immobilienpartner. Er verbindet Erfahrung in der Immobilienbranche mit Kenntnissen aus Vertrieb, Mitarbeiterführung und Finanzwesen. Als Recklinghäuser ist er eng mit dem Ruhrgebiet verbunden. Seine Arbeit richtet sich an Eigentümer in Nordrhein-Westfalen: Er begleitet ihre Verkaufsentscheidungen, ordnet den Markt ein und entwickelt mit ihnen eine passende Vorgehensweise. Dabei stehen die persönliche Situation und die Ziele der Eigentümer im Mittelpunkt – vom ersten Gespräch bis zum Abschluss des Verkaufs. „Die Einordnung, die Strategie und die persönliche Beratung bleiben weiterhin menschlich.“ Filippo Livera · aus dem STILPUNKTE-Interview",
     "patterns": [
-      "filippo\\ livera",
+      "filippo livera",
       "livera"
     ],
     "category": "company",
@@ -163,15 +325,19 @@
     "sourcePath": "team/filippo-livera/index.html",
     "url": "/team/filippo-livera/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "7f49904bab5e0dcd0a75393efb73fca3111481e89b75b974fb40acf46ae104c1"
+    "sourceSha256": "7f49904bab5e0dcd0a75393efb73fca3111481e89b75b974fb40acf46ae104c1",
+    "sourceHashes": {
+      "team/filippo-livera/index.html": "7f49904bab5e0dcd0a75393efb73fca3111481e89b75b974fb40acf46ae104c1"
+    }
   },
   {
     "id": "company-person-mischa-stratmann",
     "title": "Mischa Stratmann – Geschäftsführer · Immobilienkaufmann & Sachverständiger",
     "text": "Mischa Stratmann: Geschäftsführer · Immobilienkaufmann & Sachverständiger. Ein klarer Blick auf Immobilienwerte. Mischa Stratmann ist Geschäftsführer, ausgebildeter Immobilienkaufmann und Sachverständiger für die Bewertung bebauter und unbebauter Grundstücke bei SLS Immobilienpartner. Seine Sachverständigenqualifikation erwarb er bei der SBW GmbH in Nettetal. Der gebürtige Wittener verbindet seine Verbundenheit mit dem Ruhrgebiet mit Erfahrung in Wohn-, Gewerbe- und Investmentimmobilien. Bei der Bewertung und Vermarktung bringt er wirtschaftliche Rahmenbedingungen und die persönliche Situation der Eigentümer zusammen. So werden aus Zahlen nachvollziehbare Grundlagen für die nächste Entscheidung.",
     "patterns": [
-      "mischa\\ stratmann",
+      "mischa stratmann",
       "stratmann",
       "misha"
     ],
@@ -180,15 +346,19 @@
     "sourcePath": "team/mischa-stratmann/index.html",
     "url": "/team/mischa-stratmann/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "05079df071410225bffe36790d836b845bc5d20ba61bb04eedf1be759b79e8dd"
+    "sourceSha256": "05079df071410225bffe36790d836b845bc5d20ba61bb04eedf1be759b79e8dd",
+    "sourceHashes": {
+      "team/mischa-stratmann/index.html": "05079df071410225bffe36790d836b845bc5d20ba61bb04eedf1be759b79e8dd"
+    }
   },
   {
     "id": "company-person-andreas-busch",
     "title": "Andreas Busch – Regionalleiter Düsseldorf",
     "text": "Andreas Busch: Regionalleiter Düsseldorf. Erfahrung im Rheinland. Nähe im Gespräch. Andreas Busch ist Regionalleiter Düsseldorf bei SLS Immobilienpartner. Seit 2008 begleitet er Menschen beim Kauf und Verkauf von Immobilien. Als gelernter Kaufmann, Betriebswirt und zertifizierter Immobilienmakler und Sachverständiger für Immobilienbewertung verbindet er wirtschaftliches Wissen mit praktischer Erfahrung. Sein regionaler Schwerpunkt liegt im Großraum Düsseldorf, Neuss und Mönchengladbach. Er nimmt sich Zeit für die Ziele seiner Kunden und berücksichtigt sie bei Bewertung, Vermarktung und Verhandlung. Privat zieht es ihn in die Natur und in die USA.",
     "patterns": [
-      "andreas\\ busch",
+      "andreas busch",
       "busch"
     ],
     "category": "company",
@@ -196,15 +366,19 @@
     "sourcePath": "team/andreas-busch/index.html",
     "url": "/team/andreas-busch/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "f0a9b9d0f1fdeda223bd700645b7961caaf5f54025f4755c846dffd69498cd64"
+    "sourceSha256": "f0a9b9d0f1fdeda223bd700645b7961caaf5f54025f4755c846dffd69498cd64",
+    "sourceHashes": {
+      "team/andreas-busch/index.html": "f0a9b9d0f1fdeda223bd700645b7961caaf5f54025f4755c846dffd69498cd64"
+    }
   },
   {
     "id": "company-person-daniel-allamezade",
     "title": "Daniel Allamezade – Immobilienmakler",
     "text": "Daniel Allamezade: Immobilienmakler. Vertriebserfahrung mit Blick für Menschen. Daniel Allamezade ist Immobilienmakler bei SLS Immobilienpartner und Ansprechpartner im Raum Dortmund und im Ruhrgebiet. Er bringt mehr als 22 Jahre Erfahrung im Vertrieb mit. Der Austausch mit Eigentümern, Kaufinteressenten und Partnern gehört für ihn zum Kern seiner Arbeit. Seine Gespräche führt er klar und respektvoll. Auch bei unterschiedlichen Interessen legt er Wert auf verlässliche Absprachen und Lösungen, die für die Beteiligten nachvollziehbar sind.",
     "patterns": [
-      "daniel\\ allamezade",
+      "daniel allamezade",
       "allamezade"
     ],
     "category": "company",
@@ -212,15 +386,19 @@
     "sourcePath": "team/daniel-allamezade/index.html",
     "url": "/team/daniel-allamezade/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "af16773966cb82c18addeb96043a59d0db39ea063d823baac39ec2829f434595"
+    "sourceSha256": "af16773966cb82c18addeb96043a59d0db39ea063d823baac39ec2829f434595",
+    "sourceHashes": {
+      "team/daniel-allamezade/index.html": "af16773966cb82c18addeb96043a59d0db39ea063d823baac39ec2829f434595"
+    }
   },
   {
     "id": "company-person-uwe-braun",
     "title": "Uwe Braun – Immobilienmakler",
     "text": "Uwe Braun: Immobilienmakler. Ein Zuhause mit Herz und Verstand. Uwe Braun ist Immobilienmakler bei SLS Immobilienpartner und lebt in Düsseldorf. Als ausgebildeter Banker mit Schwerpunkt Immobilienfinanzierung bringt er finanzwirtschaftliches Wissen in seine Beratung ein. Bei einer Immobilie betrachtet er neben Zahlen und Verträgen auch die Wirkung der Räume und die Wünsche der Menschen, die dort leben möchten. Privat begeistert er sich für Dressur und Springreiten sowie die Ausbildung junger Pferde. Geduld, Struktur und Vertrauen sind ihm auch in der Zusammenarbeit mit seinen Kunden wichtig.",
     "patterns": [
-      "uwe\\ braun",
+      "uwe braun",
       "braun"
     ],
     "category": "company",
@@ -228,15 +406,19 @@
     "sourcePath": "team/uwe-braun/index.html",
     "url": "/team/uwe-braun/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "748c16132f31b65b7ce1ca5918f4a3ad804c2c6cba805a7fd736f8dbc3c1244c"
+    "sourceSha256": "748c16132f31b65b7ce1ca5918f4a3ad804c2c6cba805a7fd736f8dbc3c1244c",
+    "sourceHashes": {
+      "team/uwe-braun/index.html": "748c16132f31b65b7ce1ca5918f4a3ad804c2c6cba805a7fd736f8dbc3c1244c"
+    }
   },
   {
     "id": "company-person-cueneyt-demirli",
     "title": "Cüneyt Demirli – Immobilienmakler",
     "text": "Cüneyt Demirli: Immobilienmakler. Immobilien und Finanzierung zusammen denken. Cüneyt Demirli ist Immobilienmakler bei SLS Immobilienpartner. Sein beruflicher Weg begann in der Baufinanzierung einer großen deutschen Bank. Geboren in Düren und beruflich geprägt in Köln, führte ihn sein Weg über Essen nach Dorsten. Er bringt Erfahrung aus mehr als zehn Jahren in der Immobilienbranche mit. Bei Kauf, Verkauf und Investitionsentscheidungen verbindet er Marktkenntnis mit einem Verständnis für finanzielle Zusammenhänge. Im persönlichen Gespräch klärt er, welche Möglichkeiten zur jeweiligen Situation passen.",
     "patterns": [
-      "cüneyt\\ demirli",
+      "cüneyt demirli",
       "demirli"
     ],
     "category": "company",
@@ -244,15 +426,19 @@
     "sourcePath": "team/cueneyt-demirli/index.html",
     "url": "/team/cueneyt-demirli/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "b492cd7f3a35e2e4eeaef2b37efe81449bb900c7ca27d96dbfde3eb88d309639"
+    "sourceSha256": "b492cd7f3a35e2e4eeaef2b37efe81449bb900c7ca27d96dbfde3eb88d309639",
+    "sourceHashes": {
+      "team/cueneyt-demirli/index.html": "b492cd7f3a35e2e4eeaef2b37efe81449bb900c7ca27d96dbfde3eb88d309639"
+    }
   },
   {
     "id": "company-person-jacqueline-floeter",
     "title": "Jacqueline Flöter – Immobilienmaklerin",
     "text": "Jacqueline Flöter: Immobilienmaklerin. Erfahrung, die Klarheit schafft. Jacqueline Flöter ist Immobilienmaklerin bei SLS Immobilienpartner. Als gelernte Immobilienkauffrau bringt sie mehr als 20 Jahre Erfahrung in der Immobilienbranche mit. Sie verbindet Fachwissen mit einem pragmatischen Blick auf den Markt. Auch bei komplexen Ausgangslagen macht sie Abläufe nachvollziehbar und bespricht die nächsten Schritte offen mit ihren Kunden. Ihre Beratung ist direkt und persönlich. Außerhalb des Berufs verbringt sie Zeit mit ihrer Familie und ihren Hunden und findet Ausgleich in Sport und Reisen.",
     "patterns": [
-      "jacqueline\\ flöter",
+      "jacqueline flöter",
       "flöter"
     ],
     "category": "company",
@@ -260,15 +446,19 @@
     "sourcePath": "team/jacqueline-floeter/index.html",
     "url": "/team/jacqueline-floeter/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "72b830e6ad804a9e1db6fd947c9f0307b3966505ea15cd5acec10847b6b2b7f1"
+    "sourceSha256": "72b830e6ad804a9e1db6fd947c9f0307b3966505ea15cd5acec10847b6b2b7f1",
+    "sourceHashes": {
+      "team/jacqueline-floeter/index.html": "72b830e6ad804a9e1db6fd947c9f0307b3966505ea15cd5acec10847b6b2b7f1"
+    }
   },
   {
     "id": "company-person-heiko-hofmann",
     "title": "Heiko Hofmann – Immobilienmakler",
     "text": "Heiko Hofmann: Immobilienmakler. Bodenständig beraten. Klar begleiten. Heiko Hofmann ist Immobilienmakler bei SLS Immobilienpartner und im Dortmunder Süden verwurzelt. Seit mehr als zehn Jahren begleitet er Menschen beim Kauf und Verkauf von Immobilien. Für ihn gehören wirtschaftliche Entscheidungen und die Bedeutung eines Zuhauses zusammen. Er berücksichtigt deshalb sowohl die Marktbedingungen als auch die persönliche Situation seiner Kunden. Neben seiner Tätigkeit als Makler arbeitet er als Fußballtrainer im Herrenbereich. Struktur, Teamgeist und klare Kommunikation sind ihm in beiden Bereichen wichtig.",
     "patterns": [
-      "heiko\\ hofmann",
+      "heiko hofmann",
       "hofmann"
     ],
     "category": "company",
@@ -276,15 +466,19 @@
     "sourcePath": "team/heiko-hofmann/index.html",
     "url": "/team/heiko-hofmann/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "5f3db729561c5863d520624c8b7710e1860574cabcdb2cabfa5b4050d4cc1fe9"
+    "sourceSha256": "5f3db729561c5863d520624c8b7710e1860574cabcdb2cabfa5b4050d4cc1fe9",
+    "sourceHashes": {
+      "team/heiko-hofmann/index.html": "5f3db729561c5863d520624c8b7710e1860574cabcdb2cabfa5b4050d4cc1fe9"
+    }
   },
   {
     "id": "company-person-nico-hryn",
     "title": "Nico Hryn – Immobilienmakler",
     "text": "Nico Hryn: Immobilienmakler. Finanzwissen trifft Immobilienberatung. Nico Hryn ist Immobilienmakler für das Ruhrgebiet bei SLS Immobilienpartner. Als gelernter Bankkaufmann bringt er einen wirtschaftlichen Blick auf Immobilien mit. Seine beruflichen Stationen umfassen Vertrieb, selbstständige Tätigkeit und die Baufinanzierung. Diese Erfahrungen fließen in seine Begleitung von Kauf- und Verkaufsprozessen ein. Er legt Wert auf eine strukturierte Vorgehensweise und verständliche Gespräche über die individuellen Möglichkeiten. Sport und Lesen schaffen für ihn einen Ausgleich zum beruflichen Alltag.",
     "patterns": [
-      "nico\\ hryn",
+      "nico hryn",
       "hryn"
     ],
     "category": "company",
@@ -292,15 +486,19 @@
     "sourcePath": "team/nico-hryn/index.html",
     "url": "/team/nico-hryn/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "e997e0a039bf797dd3b185bee29328c41f830345f7c137565f845fc3de894742"
+    "sourceSha256": "e997e0a039bf797dd3b185bee29328c41f830345f7c137565f845fc3de894742",
+    "sourceHashes": {
+      "team/nico-hryn/index.html": "e997e0a039bf797dd3b185bee29328c41f830345f7c137565f845fc3de894742"
+    }
   },
   {
     "id": "company-person-gina-kuennecke",
     "title": "Gina Künnecke – Immobilienmaklerin",
     "text": "Gina Künnecke: Immobilienmaklerin. Fachwissen mit Gespür für Wohnwünsche. Gina Künnecke ist Immobilienmaklerin und ausgebildete Immobilienkauffrau bei SLS Immobilienpartner. Sie begleitet Menschen auf dem Weg zur passenden Immobilie. Dabei hört sie genau zu und bringt persönliche Vorstellungen mit den Möglichkeiten des Immobilienmarktes zusammen. Sorgfalt und ein verständlicher Austausch gehören zu ihrer Arbeitsweise. Auch außerhalb der Immobilienbranche spielen Präzision und Ausdruck eine Rolle: Sie ist im Jazzdance aktiv und arbeitet nebenberuflich als professionelle Bühnentänzerin am Theater.",
     "patterns": [
-      "gina\\ künnecke",
+      "gina künnecke",
       "künnecke"
     ],
     "category": "company",
@@ -308,15 +506,19 @@
     "sourcePath": "team/gina-kuennecke/index.html",
     "url": "/team/gina-kuennecke/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "2f97cc6a490867fab38aba0a034f7da84bfedf9284a6a7bfb9a1da9a00c25e7d"
+    "sourceSha256": "2f97cc6a490867fab38aba0a034f7da84bfedf9284a6a7bfb9a1da9a00c25e7d",
+    "sourceHashes": {
+      "team/gina-kuennecke/index.html": "2f97cc6a490867fab38aba0a034f7da84bfedf9284a6a7bfb9a1da9a00c25e7d"
+    }
   },
   {
     "id": "company-person-manuela-landripet",
     "title": "Manuela Landripet – Immobilienmaklerin",
     "text": "Manuela Landripet: Immobilienmaklerin. Internationale Erfahrung. Persönliche Nähe. Manuela Landripet ist Immobilienmaklerin bei SLS Immobilienpartner. Sie lebte 15 Jahre in Australien und arbeitete dort zehn Jahre in der Immobilienvermietung und -verwaltung. Nach ihrer Rückkehr nach Deutschland setzte sie ihre Arbeit in der Immobilienbranche als Maklerin fort. Ihre internationale Erfahrung ergänzt ihren Blick auf unterschiedliche Wohnwünsche und Lebenssituationen. Im Verkaufsprozess legt sie Wert auf einen offenen Austausch und eine verlässliche Begleitung. Familie, Reisen und Sport sind für sie wichtige Bestandteile ihres persönlichen Alltags.",
     "patterns": [
-      "manuela\\ landripet",
+      "manuela landripet",
       "landripet"
     ],
     "category": "company",
@@ -324,15 +526,19 @@
     "sourcePath": "team/manuela-landripet/index.html",
     "url": "/team/manuela-landripet/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "2db222fbad6ccad65924572afaf000f6642de2b4c2bfa07df1b92f88d61a3fcc"
+    "sourceSha256": "2db222fbad6ccad65924572afaf000f6642de2b4c2bfa07df1b92f88d61a3fcc",
+    "sourceHashes": {
+      "team/manuela-landripet/index.html": "2db222fbad6ccad65924572afaf000f6642de2b4c2bfa07df1b92f88d61a3fcc"
+    }
   },
   {
     "id": "company-person-dustin-offermann",
     "title": "Dustin Offermann – Immobilienmakler",
     "text": "Dustin Offermann: Immobilienmakler. Fachwissen verständlich machen. Dustin Offermann ist Immobilienmakler bei SLS Immobilienpartner. Er begleitet die Bewertung und den Verkauf von Wohnimmobilien vom ersten Gespräch bis zum Vertragsabschluss. Seine fachliche Grundlage bilden eine Ausbildung zum Immobilienkaufmann und ein Studium der Wirtschaftswissenschaften. Hinzu kommt mehrjährige Erfahrung in der Immobilienvermittlung. In Beratung und Verhandlung legt er Wert darauf, komplexe Zusammenhänge verständlich zu erklären und die Interessen von Verkäufer- und Käuferseite zu berücksichtigen. Basketball, Kraftsport und Angeln bieten ihm einen Ausgleich.",
     "patterns": [
-      "dustin\\ offermann",
+      "dustin offermann",
       "offermann"
     ],
     "category": "company",
@@ -340,15 +546,19 @@
     "sourcePath": "team/dustin-offermann/index.html",
     "url": "/team/dustin-offermann/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "afb76ea1ceb0e395ce20aa091fac513f5a54f4430c455ba2bc7db74902b463ba"
+    "sourceSha256": "afb76ea1ceb0e395ce20aa091fac513f5a54f4430c455ba2bc7db74902b463ba",
+    "sourceHashes": {
+      "team/dustin-offermann/index.html": "afb76ea1ceb0e395ce20aa091fac513f5a54f4430c455ba2bc7db74902b463ba"
+    }
   },
   {
     "id": "company-person-tanja-wawrosch",
     "title": "Tanja Wawrosch – Immobilienmaklerin",
     "text": "Tanja Wawrosch: Immobilienmaklerin. Regional verwurzelt. Persönlich engagiert. Tanja Wawrosch ist Immobilienmaklerin bei SLS Immobilienpartner. Ihr Schwerpunkt liegt im Ruhrgebiet, im Kreis Coesfeld und im Münsterland. Sie bringt Erfahrung aus Vertrieb und Führung mit. Von 2021 bis 2025 begleitete sie bei einem überregionalen Digitalmakler Eigentümer und Käufer durch den Verkaufsprozess. Ob Mehrfamilienhaus, Einfamilienhaus oder Eigentumswohnung: Sie verbindet die Einschätzung des Marktes mit einer zielgerichteten Vermarktung und dem persönlichen Austausch mit allen Beteiligten.",
     "patterns": [
-      "tanja\\ wawrosch",
+      "tanja wawrosch",
       "wawrosch"
     ],
     "category": "company",
@@ -356,15 +566,19 @@
     "sourcePath": "team/tanja-wawrosch/index.html",
     "url": "/team/tanja-wawrosch/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "f42b36772908cb7bac8fc68f68901056e2f2062905a8d830d69d4f83c063ef90"
+    "sourceSha256": "f42b36772908cb7bac8fc68f68901056e2f2062905a8d830d69d4f83c063ef90",
+    "sourceHashes": {
+      "team/tanja-wawrosch/index.html": "f42b36772908cb7bac8fc68f68901056e2f2062905a8d830d69d4f83c063ef90"
+    }
   },
   {
     "id": "company-person-maximilian-werner",
     "title": "Maximilian Werner – Immobilienmakler",
     "text": "Maximilian Werner: Immobilienmakler. Zuhören. Einordnen. Gemeinsam entscheiden. Maximilian Werner ist Immobilienmakler bei SLS Immobilienpartner. Im Gespräch nimmt er sich Zeit, hört zu und fragt nach, bevor er eine Vorgehensweise empfiehlt. Er begleitet seine Kunden vom ersten Austausch bis zum Notartermin und steht auch bei Fragen zur Übergabe zur Verfügung. Dabei berücksichtigt er die Erwartungen von Eigentümern und Kaufinteressenten. Privat findet er Ausgleich beim Laufen und auf dem Tennisplatz. Ruhe, Ausdauer und ein durchdachtes Vorgehen prägen auch seine Arbeit mit Immobilien.",
     "patterns": [
-      "maximilian\\ werner",
+      "maximilian werner",
       "werner"
     ],
     "category": "company",
@@ -372,15 +586,19 @@
     "sourcePath": "team/maximilian-werner/index.html",
     "url": "/team/maximilian-werner/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "e8b64628a67e4bc71f78af70b16677281ac26d6962ae02d53e5fe73b9f1fbec7"
+    "sourceSha256": "e8b64628a67e4bc71f78af70b16677281ac26d6962ae02d53e5fe73b9f1fbec7",
+    "sourceHashes": {
+      "team/maximilian-werner/index.html": "e8b64628a67e4bc71f78af70b16677281ac26d6962ae02d53e5fe73b9f1fbec7"
+    }
   },
   {
     "id": "company-person-kristina-kruschinski",
     "title": "Kristina Kruschinski – Operations & Office Managerin",
     "text": "Kristina Kruschinski: Operations & Office Managerin. Organisation, die Menschen verbindet. Kristina Kruschinski ist Operations & Office Managerin bei SLS Immobilienpartner. Sie koordiniert Abläufe und unterstützt die Kommunikation zwischen Team und Kunden. Nach vielen Jahren in der musikalischen Bildung schloss sie Anfang 2025 ihre Weiterbildung zur zertifizierten Verwalterin bei der IHK Düsseldorf ab. Ihr Hintergrund in Musik und Tanz verbindet sich mit einer strukturierten Arbeitsweise. Im Büro sorgt sie dafür, dass Informationen zusammenlaufen und organisatorische Aufgaben verlässlich bearbeitet werden.",
     "patterns": [
-      "kristina\\ kruschinski",
+      "kristina kruschinski",
       "kruschinski"
     ],
     "category": "company",
@@ -388,15 +606,19 @@
     "sourcePath": "team/kristina-kruschinski/index.html",
     "url": "/team/kristina-kruschinski/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "4951486b18a52d83926c51cd1a628e976daf9a7d84cf93bd9ea3195647779a59"
+    "sourceSha256": "4951486b18a52d83926c51cd1a628e976daf9a7d84cf93bd9ea3195647779a59",
+    "sourceHashes": {
+      "team/kristina-kruschinski/index.html": "4951486b18a52d83926c51cd1a628e976daf9a7d84cf93bd9ea3195647779a59"
+    }
   },
   {
     "id": "company-person-svea-bruns",
     "title": "Svea Bruns – Volljuristin | Legal & Controlling",
     "text": "Svea Bruns: Volljuristin | Legal & Controlling. Rechtliche Klarheit. Praktischer Blick. Svea Bruns ist Volljuristin und im Bereich Legal & Controlling bei SLS Immobilienpartner tätig. Ihr Studium der Rechtswissenschaften und ihr Referendariat absolvierte sie in Bochum. Berufserfahrung in einem mittelständischen Immobilienunternehmen ergänzt ihre juristische Ausbildung. Eine weitere Station in der IT-Branche brachte ihr Einblicke in digitale Abläufe. Sie betrachtet komplexe Sachverhalte sowohl aus rechtlicher als auch aus praktischer Perspektive. Dabei arbeitet sie strukturiert und berücksichtigt die Interessen der Beteiligten.",
     "patterns": [
-      "svea\\ bruns",
+      "svea bruns",
       "bruns"
     ],
     "category": "company",
@@ -404,15 +626,19 @@
     "sourcePath": "team/svea-bruns/index.html",
     "url": "/team/svea-bruns/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "470693a889a1f7646085bcd8b609971ef4a2373e410203dfc3b2c7708a71d213"
+    "sourceSha256": "470693a889a1f7646085bcd8b609971ef4a2373e410203dfc3b2c7708a71d213",
+    "sourceHashes": {
+      "team/svea-bruns/index.html": "470693a889a1f7646085bcd8b609971ef4a2373e410203dfc3b2c7708a71d213"
+    }
   },
   {
     "id": "company-person-daniela-sahlmen",
     "title": "Daniela Sahlmen – Pressesprecherin & Public Relations",
     "text": "Daniela Sahlmen: Pressesprecherin & Public Relations. Kommunikation mit einer klaren Haltung. Daniela Sahlmen verantwortet Pressearbeit und Public Relations bei SLS Immobilienpartner. Ihren Masterabschluss in European Culture & Economy erwarb sie an der Ruhr-Universität Bochum. Sie bringt Erfahrung in strategischer Kommunikation mit und bereitet Themen so auf, dass Arbeitsweise, Menschen und Werte des Unternehmens verständlich werden. Glaubwürdigkeit und ein konsistenter Auftritt sind ihr wichtig. Lesen, Reisen und andere kulturelle Perspektiven geben ihr zusätzliche Impulse für die Kommunikationsarbeit.",
     "patterns": [
-      "daniela\\ sahlmen",
+      "daniela sahlmen",
       "sahlmen"
     ],
     "category": "company",
@@ -420,15 +646,19 @@
     "sourcePath": "team/daniela-sahlmen/index.html",
     "url": "/team/daniela-sahlmen/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "eaec1ceab933a854a20421d2941e1950b3025bb0229839eb9e92dcb47e88141d"
+    "sourceSha256": "eaec1ceab933a854a20421d2941e1950b3025bb0229839eb9e92dcb47e88141d",
+    "sourceHashes": {
+      "team/daniela-sahlmen/index.html": "eaec1ceab933a854a20421d2941e1950b3025bb0229839eb9e92dcb47e88141d"
+    }
   },
   {
     "id": "company-person-sophia-peter",
     "title": "Sophia Peter – Social Media Managerin & Back Office",
     "text": "Sophia Peter: Social Media Managerin & Back Office. Sichtbarkeit und Organisation verbinden. Sophia Peter ist Social Media Managerin und im Back Office bei SLS Immobilienpartner tätig. Bereits während ihres Bachelorstudiums in International Business arbeitete sie als Werkstudentin im Unternehmen. Nach dem Studienabschluss setzte sie die Zusammenarbeit fort. Heute verbindet sie die Arbeit an Social-Media-Inhalten mit organisatorischen und administrativen Aufgaben im Tagesgeschäft. Sie unterstützt das Team mit ihrem betriebswirtschaftlichen Hintergrund und einer strukturierten Arbeitsweise. Sport und internationale Erfahrungen prägen auch ihre persönliche Perspektive.",
     "patterns": [
-      "sophia\\ peter",
+      "sophia peter",
       "peter"
     ],
     "category": "company",
@@ -436,15 +666,19 @@
     "sourcePath": "team/sophia-peter/index.html",
     "url": "/team/sophia-peter/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "2e22e83dddadc37c2949a6d7518f66b231b91c3ca47f10852add96e2da4a5c4e"
+    "sourceSha256": "2e22e83dddadc37c2949a6d7518f66b231b91c3ca47f10852add96e2da4a5c4e",
+    "sourceHashes": {
+      "team/sophia-peter/index.html": "2e22e83dddadc37c2949a6d7518f66b231b91c3ca47f10852add96e2da4a5c4e"
+    }
   },
   {
     "id": "company-person-arne-wilke",
     "title": "Arne Wilke – Head of Telesales",
     "text": "Arne Wilke: Head of Telesales. Gute Gespräche brauchen klare Strukturen. Arne Wilke ist Head of Telesales bei SLS Immobilienpartner. Er bringt Erfahrung in telefonischer Kundenansprache, Vertrieb und Teamführung mit. Vor seinem Weg in den Vertrieb war er Zeitsoldat bei der Bundeswehr. Später leitete er Telesales-Teams und entwickelte Gesprächs- und Arbeitsprozesse weiter. Bei SLS Immobilienpartner begleitet er die Organisation des telefonischen Erstkontakts und die Weiterentwicklung des Teams. Klare Kommunikation und nachvollziehbare Abläufe stehen dabei im Mittelpunkt.",
     "patterns": [
-      "arne\\ wilke",
+      "arne wilke",
       "wilke"
     ],
     "category": "company",
@@ -452,29 +686,37 @@
     "sourcePath": "team/arne-wilke/index.html",
     "url": "/team/arne-wilke/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "4640dec30c00015ab8eb4750a06e25194a88fc64daed5ddb16b3a38cff4c3e3f"
+    "sourceSha256": "4640dec30c00015ab8eb4750a06e25194a88fc64daed5ddb16b3a38cff4c3e3f",
+    "sourceHashes": {
+      "team/arne-wilke/index.html": "4640dec30c00015ab8eb4750a06e25194a88fc64daed5ddb16b3a38cff4c3e3f"
+    }
   },
   {
     "id": "company-person-samy-el-munayer",
     "title": "Samy El-Munayer – Telesales Manager",
     "text": "Samy El-Munayer: Telesales Manager. Der erste Kontakt zählt. Samy El-Munayer ist Telesales Manager bei SLS Immobilienpartner und häufig der erste Ansprechpartner für Immobilieneigentümer. Im Gespräch nimmt er ihre Anliegen auf und klärt die nächsten Schritte. Als gelernter Veranstaltungskaufmann bringt er mehr als 15 Jahre Erfahrung in Kundenbetreuung und Vertrieb mit. Er koordiniert Termine der Sachverständigen und unterstützt die Weiterentwicklung interner Abläufe. Reisen, Musik und Konzerte gehören zu seinen Interessen. Die Freude am Austausch mit unterschiedlichen Menschen begleitet ihn auch im beruflichen Alltag.",
     "patterns": [
-      "samy\\ el\\-munayer",
-      "el\\-munayer"
+      "samy el-munayer",
+      "el-munayer"
     ],
     "category": "company",
     "sourceType": "website",
     "sourcePath": "team/samy-el-munayer/index.html",
     "url": "/team/samy-el-munayer/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "cf703c72829fcbd2b37588ac5941ba3b69114c0786c1b57ade474d0ccf1be3bf"
+    "sourceSha256": "cf703c72829fcbd2b37588ac5941ba3b69114c0786c1b57ade474d0ccf1be3bf",
+    "sourceHashes": {
+      "team/samy-el-munayer/index.html": "cf703c72829fcbd2b37588ac5941ba3b69114c0786c1b57ade474d0ccf1be3bf"
+    }
   },
   {
     "id": "company-reputation",
     "title": "Erfahrungen, Referenzen und Qualifikationen",
-    "text": "Auf der Startseite zeigt SLS Google-Kundenbewertungen und verlinkt das Google-Profil. Aktuelle Sterne und die Anzahl der Bewertungen werden von Google geladen; dieser Wissensstand enthält keine feste aktuelle Zahl. Bewertungen sind persönliche Erfahrungsberichte, keine unabhängige Garantie für einen künftigen Verkauf. Die Teamprofile beschreiben Qualifikationen, unter anderem Dennis Sahlmen als Immobilienmakler (IHK) und Mischa Stratmann als ausgebildeten Immobilienkaufmann und Sachverständigen. Referenzimmobilien zeigen eine Auswahl erfolgreich vermittelter Immobilien. So können Interessenten Kundenstimmen, fachlichen Hintergrund und bisherige Arbeit selbst vergleichen.",
+    "text": "Auf der Startseite zeigt SLS Google-Kundenbewertungen. Aktuelle Sterne und die Anzahl der Bewertungen werden von Google geladen; dieser Wissensstand enthält keine feste aktuelle Zahl. Bewertungen sind persönliche Erfahrungsberichte, keine Garantie für einen künftigen Verkauf. Die aktuellen Teamprofile beschreiben den fachlichen Hintergrund und die Qualifikationen. Im Team genannt: Dennis Sahlmen: Geschäftsführer · Immobilienmakler (IHK); Mischa Stratmann: Geschäftsführer · Immobilienkaufmann & Sachverständiger. Auf der Referenzseite steht: Hinter jeder Immobilie stehen Menschen und ein neuer Lebensabschnitt. Entdecken Sie eine Auswahl unserer vermittelten Immobilien in Nordrhein-Westfalen.",
     "patterns": [
       "serios",
       "vertrauen",
@@ -493,6 +735,7 @@
     "sourcePath": "index.html",
     "url": "/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
     "sourceSha256": "7c59b69349539b0998bc5ec3cd185db47216f723ae28a55cfd94405aa5584d0b",
     "relatedPages": [
@@ -501,12 +744,21 @@
     ],
     "references": [
       "https://share.google/qbk6kf2K0Cemc8Zeq"
-    ]
+    ],
+    "dependencies": [
+      "team/index.html",
+      "referenzen/index.html"
+    ],
+    "sourceHashes": {
+      "index.html": "7c59b69349539b0998bc5ec3cd185db47216f723ae28a55cfd94405aa5584d0b",
+      "team/index.html": "ca782da258e80904e498357f281a3b716b81d3b088061e37f259175a0c5e57f0",
+      "referenzen/index.html": "aa8b93fc3df437b98dffc3c7cf8842f79f067918cda203b91fd53430f5a4ddea"
+    }
   },
   {
     "id": "company-history",
-    "title": "Unternehmensgeschichte: belegte Grenzen",
-    "text": "Die Über-uns-Seite nennt SLS als inhabergeführtes Unternehmen mit Dennis Sahlmen, Filippo Livera und Mischa Stratmann als Geschäftsführern. Ein ausdrückliches Gründungsjahr ist dort nicht angegeben. Berufserfahrung einzelner Mitarbeiter oder eine Partnerauszeichnung seit 2024 belegen kein Gründungsjahr von SLS. Ein konkretes Gründungsjahr kann SIA deshalb derzeit nicht verlässlich nennen.",
+    "title": "Unternehmensgeschichte",
+    "text": "Ein verlässlich belegtes Gründungsjahr kann ich derzeit nicht nennen: Die Über-uns-Seite nennt dafür kein Datum. Berufserfahrung einzelner Teammitglieder oder das Datum einer Auszeichnung ist damit nicht gleichzusetzen. Die aktuellen Unternehmensinformationen finden Sie unter Über uns.",
     "patterns": [
       "grundung",
       "gegrundet",
@@ -520,13 +772,17 @@
     "sourcePath": "ueber-uns/index.html",
     "url": "/ueber-uns/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "ab386ae907f6c7ee3605ba345cc962ad6c986464e8adf9cf3b0bfa447236d316"
+    "sourceSha256": "ab386ae907f6c7ee3605ba345cc962ad6c986464e8adf9cf3b0bfa447236d316",
+    "sourceHashes": {
+      "ueber-uns/index.html": "ab386ae907f6c7ee3605ba345cc962ad6c986464e8adf9cf3b0bfa447236d316"
+    }
   },
   {
     "id": "company-sales-total",
-    "title": "Verkaufte Immobilien: Auswahl statt Gesamtzahl",
-    "text": "Die Referenzseite zeigt erfolgreich vermittelte Immobilien als Auswahl. Eine verifizierte Gesamtzahl aller bisher von SLS verkauften Immobilien ist dort nicht angegeben. Die Zahl der angezeigten Referenzen oder ihrer Seiten darf nicht als Gesamtzahl der Verkäufe ausgegeben werden.",
+    "title": "Verkaufte Immobilien: belegte Angaben",
+    "text": "Die Referenzseite zeigt erfolgreich vermittelte Immobilien als Auswahl, keine verifizierte Gesamtzahl aller Verkäufe. Eine belastbare Gesamtzahl kann ich deshalb derzeit nicht nennen. Die Zahl angezeigter Referenzen oder ihrer Seiten darf nicht als Gesamtzahl der Verkäufe ausgegeben werden.",
     "patterns": [
       "wie viele.*(?:verkauft|vermittelt|verkaufe)",
       "anzahl.*(?:verkauf|vermittelt)",
@@ -540,7 +796,11 @@
     "sourcePath": "referenzen/index.html",
     "url": "/referenzen/",
     "snapshotDate": "2026-10-10",
+    "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "aa8b93fc3df437b98dffc3c7cf8842f79f067918cda203b91fd53430f5a4ddea"
+    "sourceSha256": "aa8b93fc3df437b98dffc3c7cf8842f79f067918cda203b91fd53430f5a4ddea",
+    "sourceHashes": {
+      "referenzen/index.html": "aa8b93fc3df437b98dffc3c7cf8842f79f067918cda203b91fd53430f5a4ddea"
+    }
   }
 ]
