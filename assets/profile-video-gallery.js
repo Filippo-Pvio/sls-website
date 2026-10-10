@@ -6,12 +6,7 @@
     const stack = document.createElement('div');
     stack.className = 'profile-video-stack';
     cards.forEach(card => stack.append(card));
-    const scrollSpace = document.createElement('div');
-    scrollSpace.className = 'profile-carousel-scroll-space';
-    scrollSpace.setAttribute('aria-hidden', 'true');
-    scrollSpace.style.width = `${(cards.length + 2) * 100}%`;
-    for (let i = 0; i < cards.length + 2; i++) scrollSpace.append(document.createElement('span'));
-    track.append(scrollSpace, stack);
+    track.append(stack);
     const swipeMedia = matchMedia('(max-width: 850px), (pointer: coarse)');
     let nativeSwipe = cards.length > 1 && swipeMedia.matches;
     gallery.classList.toggle('has-native-swipe', nativeSwipe);
@@ -40,6 +35,7 @@
     let swipe = null;
     let ignoreClickUntil = 0;
     let scrollEndTimer;
+    let scrollTarget = null;
     gallery.classList.toggle('has-multiple-videos', cards.length > 1);
     gallery.classList.toggle('has-reels', cards.some(card => card.dataset.videoProvider === 'instagram'));
     gallery.classList.toggle('only-reels', cards.every(card => card.dataset.videoProvider === 'instagram'));
@@ -100,12 +96,13 @@
         players[index].append(frame);
       });
     };
-    const alignScroll = () => {
+    const slideStep = () => cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : track.clientWidth;
+    const alignScroll = (behavior = 'instant') => {
       if (!nativeSwipe) return;
-      const left = (selected + 1) * track.clientWidth;
-      stack.style.setProperty('--stack-left', `${left}px`);
-      if (Math.abs(track.scrollLeft - left) > 1) track.scrollTo({ left, behavior: 'instant' });
-      stack.style.setProperty('--carousel-drag', '0');
+      const left = selected * slideStep();
+      scrollTarget = Math.abs(track.scrollLeft - left) > 1 ? left : null;
+      // Jumping across several slides (Home/End or wrapping) must not stop on an intermediate snap point.
+      track.scrollTo({ left, behavior: Math.abs(track.scrollLeft - left) > slideStep() + 1 ? 'instant' : behavior });
     };
     const sizeStage = () => {
       if (cards.length < 2) return;
@@ -113,9 +110,8 @@
       const height = Math.ceil(Math.max(...cards.map(card => card.offsetHeight)));
       track.style.height = `${height + 32}px`;
       cards.forEach(card => card.style.setProperty('--video-top', `${16 + (height - card.offsetHeight) / 2}px`));
-      alignScroll();
     };
-    function select(index) {
+    function select(index, { scroll = true, behavior = 'smooth' } = {}) {
       const nextIndex = (index + cards.length) % cards.length;
       if (nextIndex !== selected) {
         // Recreate the previous player to stop playback, including Instagram.
@@ -134,31 +130,36 @@
         card.setAttribute('aria-current', String(active));
         players[cardIndex].inert = !active;
         card.querySelector('.profile-media-copy').inert = !active;
-        buttons[cardIndex].hidden = active || !nearby || cards.length < 2;
+        buttons[cardIndex].hidden = active || (!nativeSwipe && !nearby) || cards.length < 2;
         if (!nearby) players[cardIndex].innerHTML = previews[cardIndex];
       });
       position.textContent = `${selected + 1} von ${cards.length}`;
       loadReels();
       sizeStage();
+      if (scroll) alignScroll(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : behavior);
     }
     previous.addEventListener('click', () => select(selected - 1));
     next.addEventListener('click', () => select(selected + 1));
     track.addEventListener('keydown', event => {
       if (event.target !== track || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
-      select(event.key === 'Home' ? 0 : event.key === 'End' ? cards.length - 1 : selected + (event.key === 'ArrowRight' ? 1 : -1));
+      select(event.key === 'Home' ? 0 : event.key === 'End' ? cards.length - 1 : selected + (event.key === 'ArrowRight' ? 1 : -1), { behavior: ['Home', 'End'].includes(event.key) ? 'instant' : 'smooth' });
     });
     // Native scrolling crosses iframe boundaries, unlike parent-page pointer handlers.
     const settleScroll = () => {
       clearTimeout(scrollEndTimer);
       if (!nativeSwipe || !track.clientWidth) return;
-      const page = Math.round(track.scrollLeft / track.clientWidth);
-      select(page - 1);
+      if (scrollTarget !== null && Math.abs(track.scrollLeft - scrollTarget) > 1) {
+        // An interrupted older scroll can finish after a newer navigation request.
+        track.scrollTo({ left: scrollTarget, behavior: 'instant' });
+        return;
+      }
+      scrollTarget = null;
+      const page = Math.round(track.scrollLeft / slideStep());
+      select(page, { scroll: false });
     };
     track.addEventListener('scroll', () => {
       if (!nativeSwipe) return;
-      stack.style.setProperty('--stack-left', `${track.scrollLeft}px`);
-      stack.style.setProperty('--carousel-drag', String(track.scrollLeft / track.clientWidth - (selected + 1)));
       clearTimeout(scrollEndTimer);
       // Fallback for browsers without scrollend. Resetting the player waits until the gesture ends.
       if (!('onscrollend' in track)) scrollEndTimer = setTimeout(settleScroll, 180);
@@ -167,9 +168,9 @@
     swipeMedia.addEventListener('change', () => {
       nativeSwipe = cards.length > 1 && swipeMedia.matches;
       gallery.classList.toggle('has-native-swipe', nativeSwipe);
-      stack.style.setProperty('--carousel-drag', '0');
       if (!nativeSwipe) track.scrollTo({ left: 0, behavior: 'instant' });
-      sizeStage();
+      select(selected, { behavior: 'instant' });
+      if (scroll) alignScroll(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : behavior);
     });
     // Desktop touch captions retain the existing fallback when native swiping is not active.
     track.addEventListener('pointerdown', event => {
@@ -203,9 +204,17 @@
       else players.forEach((player, index) => { player.innerHTML = previews[index]; });
     }, { threshold: 0 });
     observer.observe(track);
-    const resize = new ResizeObserver(sizeStage);
+    let lastWidth = track.clientWidth;
+    const resize = new ResizeObserver(() => {
+      sizeStage();
+      // Real slides move with the browser; only viewport resizing needs realignment.
+      if (track.clientWidth !== lastWidth) {
+        lastWidth = track.clientWidth;
+        alignScroll();
+      }
+    });
     cards.forEach(card => resize.observe(card));
     resize.observe(track);
-    select(0);
+    select(0, { behavior: 'instant' });
   });
 })();
