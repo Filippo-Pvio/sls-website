@@ -15,6 +15,14 @@ for(const width of [1440,390,320]){
  assert.ok(await page.locator('.hero').evaluate(el=>{const r=el.getBoundingClientRect();const top=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return el.contains(top)}));
  await page.screenshot({path:'/private/tmp/sls-consent-rejected-hero-'+width+'.png'});
  await notice.scrollIntoViewIfNeeded();await page.screenshot({path:'/private/tmp/sls-consent-rejected-reel-'+width+'.png'});
+ const reviewCards=page.locator('.review-platform-card');
+ for(const card of await reviewCards.all()){
+  const widget=card.locator('.review-widget-frame'),placeholder=card.locator('.privacy-placeholder'),button=placeholder.getByRole('button');
+  const surface=await widget.boundingBox(),box=await placeholder.boundingBox(),control=await button.boundingBox();
+  assert.ok(box.y>=surface.y-1&&box.y+box.height<=surface.y+surface.height+1);
+  assert.ok(control.y>=box.y&&control.y+control.height<=box.y+box.height);
+ }
+ await page.locator('.review-platform-grid').scrollIntoViewIfNeeded();await page.screenshot({path:'/private/tmp/sls-consent-rejected-reviews-'+width+'.png'});
  await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await page.waitForTimeout(200);assert.equal(requests.length,0);assert.ok(await page.locator('.privacy-placeholder').count());assert.deepEqual(await page.evaluate(()=>Object.keys(sessionStorage)),[]);
  await page.goto(base+'/verkaufen/');await page.locator('.sell-video-play').click();await page.locator('.sell-video-media .privacy-placeholder').waitFor({state:'visible'});assert.equal(requests.length,0);
  await page.goto(base+'/buero-dorsten/');assert.equal(await page.locator('dialog[open]').count(),0);assert.equal(requests.length,0);
