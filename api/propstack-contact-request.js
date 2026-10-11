@@ -2,6 +2,7 @@ import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {withFormSecurity} from '../lib/form-security.mjs';
 import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
+import {privacyPolicyUrl} from '../lib/website-origin.mjs';
 import {CONTACT_TOPICS, CALLBACK_TITLE, parseContactRequest, contactNoteBody} from '../lib/contact-request.mjs';
 const attempts = new Map(), pending = new Map(), uncertain = new Map();
 const normalise = v => String(v || '').normalize('NFC').trim().replace(/\s+/g,' ').toLocaleLowerCase('de-DE');
@@ -34,7 +35,7 @@ async function noteCategories(key) {
   for(const title of titles){const matches=types.filter(x=>x.name===title && ['note','for_notes'].includes(normalise(x.category)));if(matches.length===1&&validId(matches[0].id))map[title]=Number(matches[0].id);}
   return map;
 }
-async function record(key,request,id,categories) {
+async function record(key,request,id,categories,privacyUrl) {
   const titles=[CONTACT_TOPICS[request.topic].title,...(request.method==='callback'?[CALLBACK_TITLE]:[])];
   if(titles.some(title=>!categories[title]))return {status:503,error:'Das Kontaktformular ist für diese Auswahl gerade nicht verfügbar. Bitte kontaktieren Sie uns telefonisch oder per E-Mail.'};
   const contacts=rows(await propstack(`contacts?${new URLSearchParams({email:request.email,archived:'-1',with_meta:'1',per:'100'})}`,key));
@@ -57,7 +58,7 @@ async function record(key,request,id,categories) {
   for(let page=1;page<=10;page++){
     const items=rows(await propstack(`activities?${new URLSearchParams({client_id:String(contactId),item_type:'note',expand:'1',order:'desc',per:'100',page:String(page)})}`,key));activities.push(...items);if(items.length<100)break;
   }
-  const marker=`SLS-Kontaktanfrage-ID: ${id}`,body=contactNoteBody(request,id);
+  const marker=`SLS-Kontaktanfrage-ID: ${id}`,body=contactNoteBody(request,id,privacyUrl);
   for(const title of titles){
     const category=categories[title],writeKey=`${id}:${category}`;
     const exists=activities.some(x=>{const task=x.activatable || x.task || x;return Number(x.category_id ?? task.note_type_id)===category && String(task.body || x.body || '').includes(marker);});
@@ -106,7 +107,7 @@ export async function handler(req,res) {
   if(previous&&previous.fingerprint!==fingerprint)return res.status(409).json({error:'Bitte laden Sie das Formular für eine neue Anfrage erneut.'});
   for(const [k,v] of pending)if(v.until<now)pending.delete(k);
   try{
-    const promise=previous?.promise || (async()=>record(key,request,id,await noteCategories(key)))();
+    const promise=previous?.promise || (async()=>record(key,request,id,await noteCategories(key),privacyPolicyUrl(req)))();
     if(!previous)pending.set(id,{fingerprint,promise,until:now+30*60*1000});
     const result=await promise;
     if(result.status!==200)pending.delete(id);

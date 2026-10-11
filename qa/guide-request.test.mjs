@@ -6,18 +6,23 @@ import {GUIDE_CATALOG} from '../lib/guide-catalog.mjs';
 
 const NOTE='SLS_RATGEBER_VERKAUF_ANGEFORDERT';
 const host='sls-guide-test.vercel.app';
-const names=['VERCEL_ENV','NODE_ENV','PROPSTACK_API_KEY','PROPSTACK_INQUIRY_API_KEY','PROPSTACK_GUIDES_API_KEY','PROPSTACK_GUIDES_DOI_BROKER_ID','PROPSTACK_GUIDES_DOI_SNIPPET_ID','PROPSTACK_GUIDES_DOI_VERIFIED'];
+const names=['VERCEL_ENV','NODE_ENV','PROPSTACK_API_KEY','PROPSTACK_INQUIRY_API_KEY','PROPSTACK_GUIDES_API_KEY','PROPSTACK_GUIDES_DOI_BROKER_ID','PROPSTACK_GUIDES_DOI_SNIPPET_ID','PROPSTACK_GUIDES_DOI_VERIFIED','SLS_PUBLIC_DOMAIN_ACTIVE','MS_GRAPH_TENANT_ID','MS_GRAPH_CLIENT_ID','MS_GRAPH_CLIENT_SECRET','MS_GRAPH_SENDER','KV_REST_API_URL','KV_REST_API_TOKEN'];
 async function fixture(run,options={}) {
  const before=names.map(n=>process.env[n]), oldFetch=global.fetch, oldNow=Date.now;
  let now=oldNow();
  Object.assign(process.env,{VERCEL_ENV:'preview',NODE_ENV:'production',PROPSTACK_API_KEY:'legacy-fixture-only',PROPSTACK_GUIDES_API_KEY:'fixture-only'});
  delete process.env.PROPSTACK_INQUIRY_API_KEY;
  for(const name of names.slice(5)) delete process.env[name];
+ if(options.marketing) Object.assign(process.env,{MS_GRAPH_TENANT_ID:'fixture',MS_GRAPH_CLIENT_ID:'fixture',MS_GRAPH_CLIENT_SECRET:'fixture',MS_GRAPH_SENDER:'service@sls.de',KV_REST_API_URL:'https://newsletter-redis.example',KV_REST_API_TOKEN:'fixture-redis'});
+ const redis=new Map(),mails=[];
  Date.now=()=>now;
  const email=`${randomUUID()}@example.org`,writes=[],activities=[],contacts=options.newContact?[]:[{id:12,email,salutation:options.salutation===undefined?'ms':options.salutation,first_name:options.firstName ?? 'Anna',last_name:options.lastName ?? 'Muster'}];
  const calls=[];
  global.fetch=async(url,init)=>{
   const parsed=new URL(url),path=parsed.pathname.replace('/v1/','');calls.push(path);
+  if(parsed.hostname==='newsletter-redis.example'){const [op,k,v,...rest]=JSON.parse(init.body);let result;if(op==='GET')result=redis.get(k)||null;else if(op==='SET'){result=rest.includes('NX')&&redis.has(k)?null:'OK';if(result)redis.set(k,v);}else throw Error('Unexpected redis');return {ok:true,json:async()=>({result})};}
+  if(parsed.hostname==='login.microsoftonline.com')return {ok:true,json:async()=>({access_token:'fixture'})};
+  if(parsed.hostname==='graph.microsoft.com'){mails.push(JSON.parse(init.body));return {ok:true};}
   assert.equal(parsed.origin,'https://api.propstack.de');
   if(options.failPath===path) return {ok:false,status:503,text:async()=>'Service unavailable'};
   let data;
@@ -43,7 +48,7 @@ async function fixture(run,options={}) {
   }
   else if(path==='tasks'){
    const payload=JSON.parse(init.body);writes.push({path,payload});
-   if(options.timeout || (options.newsletterTimeout && payload.task.note_type_id===123)){throw new Error('timeout after possible write');}
+   if(options.timeout || (options.newsletterTimeout && payload.task.title==='SLS_NEWSLETTER_BESTAETIGUNG_AUSSTEHEND')){throw new Error('timeout after possible write');}
    if(!options.missingConfirmation)activities.push({category_id:payload.task.note_type_id ?? null,created_at:new Date(now).toISOString(),activatable:payload.task});
    data=options.missingConfirmation?{}:{id:42,activity_id:43};
   }
@@ -58,7 +63,7 @@ async function fixture(run,options={}) {
  try{
   const ready=await request('GET');now+=2000;
   const payload={salutation:'ms',guide:'VERKAUF',email,firstName:'Anna',lastName:'Muster',token:ready.body.token,website:'',privacyAcknowledged:true,privacyVersion:'2026-10-07-v1'};
-  await run({request,ready,payload,writes,activities,calls,contacts,advance:ms=>now+=ms});
+  await run({request,ready,payload,writes,activities,calls,contacts,mails,advance:ms=>now+=ms});
  }finally{global.fetch=oldFetch;Date.now=oldNow;names.forEach((n,i)=>before[i]===undefined?delete process.env[n]:process.env[n]=before[i]);}
 }
 
@@ -173,7 +178,7 @@ for(const update of [{marketingConsent:'true'},{marketingConsent:1},{marketingCo
  test(`rejects ambiguous or stale consent ${JSON.stringify(update)}`,()=>fixture(async({request,payload,writes})=>{
   assert.equal((await request('POST',{...payload,...update})).code,400);assert.equal(writes.length,0);
  },{marketing:true}));
-test('selected consent creates the categorized automation trigger; never sends directly or activates contact fields',()=>fixture(async({request,ready,payload,writes,contacts})=>{
+test('selected consent sends a dedicated confirmation without legacy automation or activating contact fields',()=>fixture(async({request,ready,payload,writes,contacts,mails})=>{
  assert.equal(ready.body.marketingAvailable,true);
  contacts[0].newsletter=false;contacts[0].accept_contact=false;const before=structuredClone(contacts);
  const res=await request('POST',optIn(payload));
@@ -182,8 +187,8 @@ test('selected consent creates the categorized automation trigger; never sends d
  assert.equal(writes.length,2);
  assert.match(writes[1].payload.task.body,/Einwilligungstext, Version 2026-10-02-v2/);
  assert.match(writes[1].payload.task.body,/Double-Opt|Bestätigung noch ausstehend/);
- assert.equal(writes[1].payload.task.note_type_id,123);
- assert.equal(writes[1].payload.task.title,'SLS_NEWSLETTER_DOI_ANGEFORDERT');
+ assert.equal(writes[1].payload.task.note_type_id,undefined);assert.equal(mails.length,1);assert.match(mails[0].message.body.content,/newsletter\/#confirm=/);
+ assert.equal(writes[1].payload.task.title,'SLS_NEWSLETTER_BESTAETIGUNG_AUSSTEHEND');
  assert.equal(writes.filter(w=>w.path==='messages').length,0);
  assert.ok(writes.every(w=>w.path!=='contacts'));
  await request('POST',optIn(payload));assert.equal(writes.length,2);
@@ -196,7 +201,7 @@ test('unchecked consent preserves existing newsletter settings and creates no DO
 test('newsletter can be requested after an earlier guide-only request without resending guide',()=>fixture(async({request,payload,writes})=>{
  await request('POST',payload);await request('POST',optIn(payload));
  assert.equal(writes.filter(w=>w.payload.task?.note_type_id===741093).length,1);
- assert.equal(writes.filter(w=>w.payload.task?.note_type_id===123).length,1);
+ assert.equal(writes.filter(w=>w.payload.task?.title==='SLS_NEWSLETTER_BESTAETIGUNG_AUSSTEHEND').length,1);
  assert.equal(writes.filter(w=>w.path==='messages').length,0);
 },{marketing:true}));
 test('name mismatch records selection for review but sends no DOI or guide and changes no contact flags',()=>fixture(async({request,payload,writes})=>{
@@ -211,17 +216,15 @@ test('uncertain trigger write preserves guide success and avoids blind repeat',(
   assert.equal(result.code,200);assert.equal(result.body.status,'recorded');assert.equal(result.body.newsletterStatus,'needs_check');
   assert.match(result.body.message,/Ratgeberanforderung ist bereits aufgenommen/);
  }
- assert.equal(writes.filter(w=>w.payload.task?.note_type_id===123).length,1);
+ assert.equal(writes.filter(w=>w.payload.task?.title==='SLS_NEWSLETTER_BESTAETIGUNG_AUSSTEHEND').length,1);
  assert.equal(writes.filter(w=>w.path==='messages').length,0);
 },{marketing:true,newsletterTimeout:true}));
 
-test('old uncategorized intention is not reported as an automation trigger',()=>fixture(async({request,payload,writes,activities})=>{
- await request('POST',optIn(payload));
- const activity=activities.find(a=>a.category_id===123);
- activity.category_id=null;delete activity.activatable.note_type_id;
- const res=await request('POST',optIn(payload));
- assert.equal(res.body.newsletterStatus,'needs_check');assert.equal(writes.length,2);
-},{marketing:true}));
+test('an incomplete evidence write never reports a confirmation mail as sent',()=>fixture(async({request,payload,writes,mails})=>{
+ const first=await request('POST',optIn(payload));
+ assert.equal(first.body.newsletterStatus,'needs_check');assert.equal(mails.length,0);
+ const count=writes.length;await request('POST',optIn(payload));assert.equal(writes.length,count);
+},{marketing:true,newsletterTimeout:true}));
 test('concurrent opt-ins create one guide and one newsletter trigger',()=>fixture(async({request,payload,writes})=>{
  const res=await Promise.all([request('POST',optIn(payload)),request('POST',optIn(payload))]);
  assert.ok(res.every(r=>r.body.newsletterStatus==='confirmation_requested'));assert.equal(writes.length,2);
@@ -239,7 +242,7 @@ test('privacy acknowledgement is recorded in the guide note without marketing pe
  const body=writes[0].payload.task.body;
  assert.match(body,/Pflicht-Checkbox aktiv bestätigt.*2026-10-07-v1/);
  assert.match(body,/Ich habe die Datenschutzerklärung zur Kenntnis genommen/);
- assert.match(body,/https:\/\/sls-website-eight.vercel.app\/datenschutz\//);
+ assert.ok(body.includes(`https://${host}/datenschutz/`));
  assert.match(body,/keine Newsletter-Einwilligung/);
  assert.equal(writes[0].payload.task.note_type_id,741093);
 }));
@@ -314,3 +317,19 @@ test('review and deduplication remain separate for each selected guide',()=>fixt
  assert.ok(writes.every(w=>w.payload.task.note_type_id===undefined));
  assert.deepEqual(writes.map(w=>w.payload.task.title),GUIDE_CATALOG.slice(0,2).map(g=>g.review));
 },{allGuides:true}));
+
+for (const hostname of ['sls.de','www.sls.de']) test(`launch opt-in allows only exact ${hostname} with matching origin and records its privacy URL`,()=>fixture(async({request,payload,writes})=>{
+ process.env.VERCEL_ENV='production';
+ process.env.SLS_PUBLIC_DOMAIN_ACTIVE='true';
+ const headers={host:hostname,origin:`https://${hostname}`};
+ assert.equal((await request('GET',{},headers)).code,200);
+ assert.equal((await request('POST',payload,{...headers,origin:'https://foreign.example'})).code,403);
+ assert.equal(writes.length,0);
+ assert.equal((await request('POST',payload,headers)).code,200);
+ assert.ok(writes.find(w=>w.path==='tasks').payload.task.body.includes(`Datenschutzerklärung: https://${hostname}/datenschutz/`));
+ assert.equal((await request('GET',{}, {host:'unrelated.vercel.app'})).code,403);
+}));
+for (const flag of ['false','1','TRUE','']) test(`launch opt-in rejects non-exact flag ${JSON.stringify(flag)}`,()=>fixture(async({request,writes})=>{
+ process.env.VERCEL_ENV='production';process.env.SLS_PUBLIC_DOMAIN_ACTIVE=flag;
+ assert.equal((await request('GET',{}, {host:'sls.de'})).code,403);assert.equal(writes.length,0);
+}));

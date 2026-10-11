@@ -3242,6 +3242,23 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/newsletter/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        }
+      ]
     }
   ],
   "functions": {
@@ -3300,6 +3317,9 @@
     },
     "api/retired-page.js": {
       "includeFiles": "{content/marktgebiete/pages.json,content/seo/restored-cities.json,content/team/profiles.json,config/site-navigation.json}"
+    },
+    "api/newsletter.js": {
+      "maxDuration": 60
     }
   },
   "buildCommand": "node scripts/build-magazine.mjs && node scripts/build-sia-company.mjs && node scripts/build-public-site.mjs",
