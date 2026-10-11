@@ -737,7 +737,7 @@
     "snapshotDate": "2026-10-11",
     "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "ef2f6cf509a521319397ce19f0b9332b35955be03465782fd5fb7c2cb9ec094d",
+    "sourceSha256": "9b2169151e001c2026268d935295da5d5e2c714d2bcd630eca29885729b78060",
     "relatedPages": [
       "/team/",
       "/referenzen/"
@@ -750,7 +750,7 @@
       "referenzen/index.html"
     ],
     "sourceHashes": {
-      "index.html": "ef2f6cf509a521319397ce19f0b9332b35955be03465782fd5fb7c2cb9ec094d",
+      "index.html": "9b2169151e001c2026268d935295da5d5e2c714d2bcd630eca29885729b78060",
       "team/index.html": "aaad7bc7ec2db6c51c024fe00bdcf5d64495082c89a6c14cdc7d41f2839163ff",
       "referenzen/index.html": "aab2e18b372d2ab6bce483358575b8371941ef449894c6b43c2301f11a141d5e"
     }
