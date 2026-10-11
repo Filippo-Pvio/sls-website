@@ -157,7 +157,7 @@ footer.innerHTML = `
   </div>
   <div class="footer-menu-band"><div class="footer-unified-wrap">
     <div class="footer-navigation">${footerGroups}</div>
-    <div class="footer-legal"><span>&copy; ${new Date().getFullYear()} SLS Immobilienpartner GmbH</span><nav aria-label="Rechtliche Informationen"><a href="/datenschutz/">Datenschutz</a><a href="https://sls.de/impressum/">Impressum</a></nav></div>
+    <div class="footer-legal"><span>&copy; ${new Date().getFullYear()} SLS Immobilienpartner GmbH</span><nav aria-label="Rechtliche Informationen"><a href="/datenschutz/">Datenschutz</a><button type="button" data-privacy-settings>Datenschutzeinstellungen</button><a href="https://sls.de/impressum/">Impressum</a></nav></div>
   </div></div>`;
 // Resolve the real closing surface, including transparent property-page wrappers.
 function syncFooterTone() {
@@ -355,8 +355,6 @@ if (form) {
   });
 }
 
-// Embedded services load immediately; no additional activation step.
-window.slsPrepareExternalFrames=(root=document)=>root.querySelectorAll('iframe[data-external-src]:not([data-external-ready])').forEach(frame=>{
- frame.dataset.externalReady='1';frame.loading='eager';frame.hidden=false;frame.src=frame.dataset.externalSrc;
-});
+// Embedded services are released centrally after the corresponding permission.
+window.slsPrepareExternalFrames=(root=document)=>window.SLSConsent?.prepare(root);
 window.slsPrepareExternalFrames();

@@ -8,7 +8,7 @@
       if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
       const frame = document.createElement('iframe');
-      frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      window.SLSConsent?.frame(frame, `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`);
       frame.title = play.dataset.videoTitle || 'SLS Immobilienpartner · Video';
       frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
       frame.allowFullscreen = true;

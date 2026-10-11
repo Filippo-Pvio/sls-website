@@ -3,9 +3,11 @@
 window.ppInitValuation = async () => {
   const iframe = document.getElementById('pp-fisher-widget');
   if (!iframe || iframe.dataset.externalReady) return;
+  window.SLSConsent?.mount('tools', iframe, async active => {
   iframe.dataset.externalReady='1';iframe.hidden=false;iframe.loading='eager';
   try{
     if(!window.FisherWidget?.init)await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://fisher.pricehubble.com/widget.js';script.onload=resolve;script.onerror=reject;document.head.append(script);});
+  if (!active()) return;
   window.FisherWidget.init({
     apiKey: "SMPfz9cTNasXXRESOj168p59kPPKaDFN",
     iframe: '#pp-fisher-widget',
@@ -20,7 +22,9 @@ window.ppInitValuation = async () => {
     consentGranted: false,
   });
   }catch{
+    if (!active()) return;
     iframe.hidden=true;
     const status=document.createElement('p');status.setAttribute('role','status');status.textContent='Der Bewertungsrechner konnte nicht geladen werden. Bitte kontaktieren Sie SLS direkt.';iframe.before(status);
   }
+  }, () => { iframe.removeAttribute('src'); delete iframe.dataset.externalReady; });
 };

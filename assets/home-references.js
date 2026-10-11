@@ -28,11 +28,11 @@
   const orderReferences = items => {
     const selected = shuffle(items);
     let previousFirst = null;
-    try { previousFirst = sessionStorage.getItem(selectionKey); } catch {}
+    try { previousFirst = window.SLSConsent?.session.getItem(selectionKey); } catch {}
     if (selected.length > 1 && selected[0]?.id === previousFirst) {
       [selected[0], selected[1]] = [selected[1], selected[0]];
     }
-    try { sessionStorage.setItem(selectionKey, selected[0]?.id || ''); } catch {}
+    try { window.SLSConsent?.session.setItem(selectionKey, selected[0]?.id || ''); } catch {}
     return selected;
   };
 

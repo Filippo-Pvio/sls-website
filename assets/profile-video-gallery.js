@@ -70,7 +70,7 @@
     });
     const frameFor = (src, title, autoplay = false) => {
       const frame = document.createElement('iframe');
-      frame.src = src;
+      window.SLSConsent?.frame(frame, src);
       frame.title = title;
       frame.allow = `${autoplay ? 'autoplay; ' : ''}encrypted-media; picture-in-picture; fullscreen`;
       frame.allowFullscreen = true;

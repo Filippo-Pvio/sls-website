@@ -142,10 +142,10 @@
   let compactTimer = 0;
   const compactQuickbar = () => {
     quickbar?.classList.add('is-compact');
-    try { sessionStorage.setItem('sls-sia-quickbar-seen', '1'); } catch {}
+    try { window.SLSConsent?.session.setItem('sls-sia-quickbar-seen', '1'); } catch {}
   };
   try {
-    if (sessionStorage.getItem('sls-sia-quickbar-seen') === '1') quickbar?.classList.add('is-compact');
+    if (window.SLSConsent?.session.getItem('sls-sia-quickbar-seen') === '1') quickbar?.classList.add('is-compact');
     else compactTimer = window.setTimeout(compactQuickbar, 3200);
   } catch {
     compactTimer = window.setTimeout(compactQuickbar, 3200);

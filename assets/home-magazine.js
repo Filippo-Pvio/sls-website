@@ -20,7 +20,7 @@ if (typeof document !== 'undefined') {
     const signature = JSON.stringify(ids);
     let selected;
     try {
-      const saved = JSON.parse(sessionStorage.getItem('sls-home-magazine'));
+      const saved = JSON.parse(window.SLSConsent?.session.getItem('sls-home-magazine'));
       if (saved?.signature === signature && Array.isArray(saved.ids) &&
           saved.ids.length === Math.min(3, ids.length) &&
           new Set(saved.ids).size === saved.ids.length &&
@@ -30,7 +30,7 @@ if (typeof document !== 'undefined') {
     } catch { /* Storage is optional; the magazine works without it. */ }
     selected ??= chooseArticleIds(ids);
     try {
-      sessionStorage.setItem('sls-home-magazine', JSON.stringify({ signature, ids: selected }));
+      window.SLSConsent?.session.setItem('sls-home-magazine', JSON.stringify({ signature, ids: selected }));
     } catch { /* Browsers can disable storage. */ }
     cards.forEach(card => { card.hidden = !selected.includes(card.dataset.magazineId); });
     selected.forEach(id => grid.append(cards.find(card => card.dataset.magazineId === id)));

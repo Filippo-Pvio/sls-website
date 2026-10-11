@@ -8,11 +8,13 @@
     if (fallback) fallback.hidden = false;
   };
 
+  window.SLSConsent?.mount('tools', frame, active => {
   frame.hidden=false;frame.loading='eager';
   const script = document.createElement("script");
   script.src = "https://fisher.pricehubble.com/widget.js";
   script.async = true;
   script.onload = () => {
+    if (!active()) return;
     try {
       // Public widget identifier already used by SLS on sls.de; not a Propstack API credential.
       window.FisherWidget.init({
@@ -31,6 +33,7 @@
       showFallback();
     }
   };
-  script.onerror = showFallback;
+  script.onerror = () => { if (active()) showFallback(); };
   document.head.appendChild(script);
+  }, () => frame.removeAttribute('src'));
 })();

@@ -432,7 +432,7 @@
   play?.addEventListener('click', () => {
     const frame = document.createElement('iframe');
     frame.className = 'home-value-interview-frame';
-    frame.src = 'https://www.youtube-nocookie.com/embed/o0hvSO41MOI?autoplay=1&rel=0';
+    window.SLSConsent?.frame(frame, 'https://www.youtube-nocookie.com/embed/o0hvSO41MOI?autoplay=1&rel=0');
     frame.title = 'Von der Bewertung bis zum Verkauf – Mischa Stratmann im Interview mit STILPUNKTE';
     frame.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share';
     frame.allowFullscreen = true;
@@ -443,7 +443,7 @@
   roomtourPlay?.addEventListener('click', () => {
     const frame = document.createElement('iframe');
     frame.className = 'home-value-interview-frame';
-    frame.src = 'https://www.youtube-nocookie.com/embed/guoSI4VrK8E?autoplay=1&rel=0';
+    window.SLSConsent?.frame(frame, 'https://www.youtube-nocookie.com/embed/guoSI4VrK8E?autoplay=1&rel=0');
     frame.title = 'SLS Roomtour – Beispiel einer Immobilienpräsentation';
     frame.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share';
     frame.allowFullscreen = true;

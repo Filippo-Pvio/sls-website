@@ -1,3 +1,5 @@
+import {readFileSync} from 'node:fs';
+import {prepareConsentHtml} from '../lib/consent-html.mjs';
 import { createServer } from "node:http";
 import { createReadStream, existsSync, statSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
@@ -24,5 +26,5 @@ createServer((request, response) => {
   if (existsSync(filePath) && statSync(filePath).isDirectory()) filePath = join(filePath, "index.html");
   if (!existsSync(filePath)) { response.writeHead(404).end("Not found"); return; }
   response.writeHead(200, { "Content-Type": types[extname(filePath)] || "application/octet-stream", "Cache-Control": "no-store" });
-  createReadStream(filePath).pipe(response);
+  if(extname(filePath)==='.html')response.end(prepareConsentHtml(readFileSync(filePath,'utf8')));else createReadStream(filePath).pipe(response);
 }).listen(port, "127.0.0.1", () => console.log(`SLS preview: http://127.0.0.1:${port}`));
