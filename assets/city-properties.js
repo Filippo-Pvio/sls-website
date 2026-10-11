@@ -9,7 +9,7 @@ const selectReferences = (items, city) => {
   const key = `sls.city.references.${city.toLocaleLowerCase('de-DE')}`;
   let previous = [];
   try {
-    const saved = JSON.parse(sessionStorage.getItem(key) || '[]');
+    const saved = JSON.parse(window.SLSConsent?.session.getItem(key) || '[]');
     if (Array.isArray(saved)) previous = saved.map(String);
   } catch { /* Storage may be unavailable; random selection still works. */ }
   const shuffled = [...items];
@@ -19,7 +19,7 @@ const selectReferences = (items, city) => {
   }
   const selected = [...shuffled.filter(item => !previous.includes(String(item.id))),
     ...shuffled.filter(item => previous.includes(String(item.id)))].slice(0, 2);
-  try { sessionStorage.setItem(key, JSON.stringify(selected.map(item => String(item.id)))); } catch {}
+  try { window.SLSConsent?.session.setItem(key, JSON.stringify(selected.map(item => String(item.id)))); } catch {}
   return selected;
 };
 const animate = nodes => {

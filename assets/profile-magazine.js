@@ -9,13 +9,13 @@ for (const section of document.querySelectorAll('[data-profile-magazine]')) {
   const key = `sls-profile-magazine-${section.dataset.profileMagazine}`;
   let selected;
   try {
-    const saved = JSON.parse(sessionStorage.getItem(key));
+    const saved = JSON.parse(window.SLSConsent?.session.getItem(key));
     if (saved?.signature === signature && Array.isArray(saved.ids) &&
         saved.ids.length === Math.min(3, ids.length) && new Set(saved.ids).size === saved.ids.length &&
         saved.ids.every(id => ids.includes(id)) && saved.ids.includes(ids[0])) selected = saved.ids;
   } catch { /* The selection also works without browser storage. */ }
   selected ??= chooseArticleIds(ids);
-  try { sessionStorage.setItem(key, JSON.stringify({ signature, ids: selected })); } catch { /* Optional storage. */ }
+  try { window.SLSConsent?.session.setItem(key, JSON.stringify({ signature, ids: selected })); } catch { /* Optional storage. */ }
   pool.forEach(card => { card.hidden = !selected.includes(card.dataset.magazineId); });
   const cards = selected.map(id => pool.find(card => card.dataset.magazineId === id));
   cards.forEach((card, index) => {
