@@ -8,18 +8,25 @@
 .home-editorial .home-reach-platforms { max-width: 540px; }
 .home-editorial .home-reach-reel { margin: 0; min-width: 0; }
 .home-editorial .home-reach-reel-media {
+  position: relative;
   container-type: inline-size;
   overflow: hidden;
   border-radius: 6px;
   background: #fffaf4;
 }
 .home-editorial .home-reach-reel-load,
+.home-editorial .home-reach-reel-media > .privacy-placeholder,
 .home-editorial .home-reach-reel-frame {
   display: block;
   width: 100%;
   height: 660px;
   height: calc(125cqw + 210px);
   border: 0;
+}
+.home-editorial .home-reach-reel-media > .privacy-placeholder {
+  position: relative;
+  inset: auto;
+  display: flex;
 }
 .home-editorial .home-reach-reel-load {
   display: flex;

@@ -3,3 +3,6 @@
 
 @media(max-width:580px){.privacy-dialog h2{font-size:clamp(21px,6vw,27px);margin-right:0;overflow-wrap:anywhere}}
 .profile-video-player>.privacy-placeholder,.home-reach-reel-media>.privacy-placeholder,.sell-video-media>.privacy-placeholder{position:absolute;inset:0;z-index:2;border-radius:0}
+.privacy-placeholder strong,.privacy-placeholder p,
+body > main > section.section.section-dark .privacy-placeholder strong,
+body > main > section.section.section-dark .privacy-placeholder p{color:#26353c!important}
