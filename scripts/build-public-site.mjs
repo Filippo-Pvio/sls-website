@@ -16,3 +16,9 @@ console.log('Public site built without backend sources, tests or internal docume
 for(const file of await readdir(output,{recursive:true}))if(file.endsWith('.html')){const name=path.join(output,file);await writeFile(name,prepareConsentHtml(await readFile(name,'utf8')));}
 const {buildSeo}=await import('./build-seo.mjs');
 await buildSeo();
+// Vercel serves existing static files before fallback rewrites. Keep templates
+// in the function bundle, but remove their public copies so SSR wins routing.
+const routes=JSON.parse(await readFile(path.join(root,'vercel.json'),'utf8'));
+for(const route of routes.rewrites||[])if(/^\/api\/(?:catalog-page|city-page)(?:\?|$)/.test(route.destination)){
+ await rm(path.join(output,route.source,'index.html'),{force:true});
+}

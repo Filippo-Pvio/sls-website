@@ -85,6 +85,8 @@ test('all generated public HTML has one H1, complete canonical/entity data and s
   for(const match of html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g))JSON.parse(match[1]);
   assert.match(html,/https:\/\/sls.de\/#organization/,file);
  }
+ const routes=JSON.parse(await readFile(new URL('../vercel.json',import.meta.url),'utf8'));
+ for(const route of routes.rewrites.filter(r=>/^\/api\/(?:catalog-page|city-page)(?:\?|$)/.test(r.destination)))assert.ok(!pages.includes(route.source.slice(1)+'index.html'),`${route.source}: static output must not shadow SSR`);
  const staticXml=await readFile(new URL('sitemap-static.xml',output),'utf8');
  assert.match(staticXml,/team\/filippo-livera/);assert.match(staticXml,/immobilienmakler-heiden/);assert.match(staticXml,/verkaufscheck/);assert.doesNotMatch(staticXml,/immobilien-test|datenschutz/);
  const profile=await readFile(new URL('team/filippo-livera/index.html',output),'utf8');assert.match(profile,/"@type":"ProfilePage"/);assert.match(profile,/"@type":"Person"/);
