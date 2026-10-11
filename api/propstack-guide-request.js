@@ -2,7 +2,8 @@ import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {withFormSecurity} from '../lib/form-security.mjs';
 import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
-import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION, GUIDE_PRIVACY_ACK_VERSION, GUIDE_PRIVACY_ACK_TEXT, GUIDE_PRIVACY_URL} from '../lib/guide-consent.mjs';
+import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION, GUIDE_PRIVACY_ACK_VERSION, GUIDE_PRIVACY_ACK_TEXT} from '../lib/guide-consent.mjs';
+import {guideHostAllowed, privacyPolicyUrl} from '../lib/website-origin.mjs';
 import {newsletterConfig, requestNewsletter} from '../lib/guide-newsletter.mjs';
 
 import {GUIDE_CATALOG, findGuide} from '../lib/guide-catalog.mjs';
@@ -87,7 +88,7 @@ function limited(req, key) {
   return entry.count > 8;
 }
 
-async function recordRequest(key, email, firstName, lastName, salutation, categoryId, requestId, marketingConsent = false, guide) {
+async function recordRequest(key, email, firstName, lastName, salutation, categoryId, requestId, marketingConsent = false, guide, privacyUrl) {
   const query = new URLSearchParams({email, archived:'-1', with_meta:'1', per:'100'});
   const contacts = rows(await propstack(`contacts?${query}`, key));
   // A secondary/shared email must not trigger delivery to a different primary address.
@@ -169,7 +170,7 @@ async function recordRequest(key, email, firstName, lastName, salutation, catego
         ...(needsReview ? ['Auch die Newsletter-Anmeldung bleibt bis zur Klärung der Namensabweichung zurückgestellt.'] : [])
       ] : ['Freiwillige Marketing-Checkbox: nicht aktiviert. Keine neue Werbeeinwilligung; bestehende Einstellungen bleiben unverändert.']),
       `Pflicht-Checkbox aktiv bestätigt (Kenntnisnahme, Version ${GUIDE_PRIVACY_ACK_VERSION}): ${escapeHtml(GUIDE_PRIVACY_ACK_TEXT)}`,
-      `Datenschutzerklärung: ${GUIDE_PRIVACY_URL}`,
+      `Datenschutzerklärung: ${privacyUrl}`,
       'Die Kenntnisnahme bezieht sich auf die Ratgeberanforderung. Sie ist keine Newsletter-Einwilligung und erteilt keine allgemeine Kontakterlaubnis. Bestehende Kontakt- und DSGVO-Einstellungen bleiben unverändert.',
       marker
     ].join('<br>')
@@ -187,11 +188,9 @@ export async function handler(req, res) {
     return res.status(405).json({error:'Methode nicht erlaubt.'});
   }
   const host = String(req.headers?.host || '').toLowerCase();
-  // Public activation is limited to the existing hostname approved by the owner.
-  const preview = process.env.VERCEL_ENV === 'preview' && /^[a-z0-9-]+\.vercel\.app$/.test(host);
-  const approvedPublic = process.env.VERCEL_ENV === 'production' && host === 'sls-website-eight.vercel.app';
+  // sls.de remains closed until the explicit launch flag is enabled.
   const local = process.env.NODE_ENV !== 'production' && /^localhost(?::\d+)?$/.test(host);
-  if (!preview && !approvedPublic && !local) return res.status(403).json({error:'Ratgeberanforderungen sind hier noch nicht freigeschaltet.'});
+  if (!guideHostAllowed(host)) return res.status(403).json({error:'Ratgeberanforderungen sind hier noch nicht freigeschaltet.'});
   const key = scopedPropstackKey('PROPSTACK_GUIDES_API_KEY');
   if (!key) return res.status(503).json({error:'Die Ratgeberanforderung ist gerade nicht verfügbar. Bitte kontaktieren Sie uns direkt.'});
 
@@ -244,7 +243,7 @@ export async function handler(req, res) {
     const available = await noteTypes(key);
     const selected = available.find(item => item.id === guide);
     if (!selected) throw new Error('Selected guide dispatch unavailable');
-    const result = await recordRequest(key, email, firstName, lastName, salutation, selected.categoryId, requestId, marketingConsent, selected);
+    const result = await recordRequest(key, email, firstName, lastName, salutation, selected.categoryId, requestId, marketingConsent, selected, privacyPolicyUrl(req));
     let newsletterStatus = marketingConsent ? 'review_required' : 'not_requested';
     if (marketingConsent && result.outcome === 'recorded') {
       try {

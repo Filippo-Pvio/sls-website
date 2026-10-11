@@ -110,3 +110,9 @@ test('renewal after an uncertain write reconciles notes without duplicates',()=>
 test('tampered renewal token cannot create a new request identity',()=>fixture(async({request,payload,writes})=>{
  assert.equal((await request('GET',{}, {'x-sls-form-token':payload.token+'x'})).code,400);assert.equal(writes.length,0);
 }));
+
+for (const hostname of ['sls.de','www.sls.de']) test(`contact evidence uses the accepted ${hostname} rather than the working domain`,()=>fixture(async({request,payload,notes})=>{
+ assert.equal((await request('POST',payload,{host:hostname,origin:`https://${hostname}`})).code,200);
+ assert.ok(notes[0].activatable.body.includes(`Datenschutzerklärung: https://${hostname}/datenschutz/`));
+ assert.ok(!notes[0].activatable.body.includes('sls-website-eight.vercel.app/datenschutz/'));
+}));

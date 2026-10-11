@@ -6,7 +6,7 @@ import {GUIDE_CATALOG} from '../lib/guide-catalog.mjs';
 
 const NOTE='SLS_RATGEBER_VERKAUF_ANGEFORDERT';
 const host='sls-guide-test.vercel.app';
-const names=['VERCEL_ENV','NODE_ENV','PROPSTACK_API_KEY','PROPSTACK_INQUIRY_API_KEY','PROPSTACK_GUIDES_API_KEY','PROPSTACK_GUIDES_DOI_BROKER_ID','PROPSTACK_GUIDES_DOI_SNIPPET_ID','PROPSTACK_GUIDES_DOI_VERIFIED'];
+const names=['VERCEL_ENV','NODE_ENV','PROPSTACK_API_KEY','PROPSTACK_INQUIRY_API_KEY','PROPSTACK_GUIDES_API_KEY','PROPSTACK_GUIDES_DOI_BROKER_ID','PROPSTACK_GUIDES_DOI_SNIPPET_ID','PROPSTACK_GUIDES_DOI_VERIFIED','SLS_PUBLIC_DOMAIN_ACTIVE'];
 async function fixture(run,options={}) {
  const before=names.map(n=>process.env[n]), oldFetch=global.fetch, oldNow=Date.now;
  let now=oldNow();
@@ -239,7 +239,7 @@ test('privacy acknowledgement is recorded in the guide note without marketing pe
  const body=writes[0].payload.task.body;
  assert.match(body,/Pflicht-Checkbox aktiv bestätigt.*2026-10-07-v1/);
  assert.match(body,/Ich habe die Datenschutzerklärung zur Kenntnis genommen/);
- assert.match(body,/https:\/\/sls-website-eight.vercel.app\/datenschutz\//);
+ assert.ok(body.includes(`https://${host}/datenschutz/`));
  assert.match(body,/keine Newsletter-Einwilligung/);
  assert.equal(writes[0].payload.task.note_type_id,741093);
 }));
@@ -314,3 +314,19 @@ test('review and deduplication remain separate for each selected guide',()=>fixt
  assert.ok(writes.every(w=>w.payload.task.note_type_id===undefined));
  assert.deepEqual(writes.map(w=>w.payload.task.title),GUIDE_CATALOG.slice(0,2).map(g=>g.review));
 },{allGuides:true}));
+
+for (const hostname of ['sls.de','www.sls.de']) test(`launch opt-in allows only exact ${hostname} with matching origin and records its privacy URL`,()=>fixture(async({request,payload,writes})=>{
+ process.env.VERCEL_ENV='production';
+ process.env.SLS_PUBLIC_DOMAIN_ACTIVE='true';
+ const headers={host:hostname,origin:`https://${hostname}`};
+ assert.equal((await request('GET',{},headers)).code,200);
+ assert.equal((await request('POST',payload,{...headers,origin:'https://foreign.example'})).code,403);
+ assert.equal(writes.length,0);
+ assert.equal((await request('POST',payload,headers)).code,200);
+ assert.ok(writes.find(w=>w.path==='tasks').payload.task.body.includes(`Datenschutzerklärung: https://${hostname}/datenschutz/`));
+ assert.equal((await request('GET',{}, {host:'unrelated.vercel.app'})).code,403);
+}));
+for (const flag of ['false','1','TRUE','']) test(`launch opt-in rejects non-exact flag ${JSON.stringify(flag)}`,()=>fixture(async({request,writes})=>{
+ process.env.VERCEL_ENV='production';process.env.SLS_PUBLIC_DOMAIN_ACTIVE=flag;
+ assert.equal((await request('GET',{}, {host:'sls.de'})).code,403);assert.equal(writes.length,0);
+}));
