@@ -105,6 +105,19 @@ test('lost or truncated custom links prevent the mail trigger; unrelated custom 
  await assert.rejects(requestNewsletter({key:'fixture-api',contactId:12,email:f.client.email,requestId:f.requestId,propstack,origin:'https://sls-website-eight.vercel.app',store:f.store,env,config:{transport:'propstack',categoryId:NEWSLETTER_CATEGORY.id}}),e=>e.status===503);
  assert.equal(f.writes.filter(w=>w.task).length,0);assert.equal(f.client.custom_fields.existing,'retained');
 });
+test('Propstack custom-field value envelopes must contain the exact complete links',async()=>{
+ for(const truncated of [false,true]){
+  const f=fixture();
+  const propstack=async(...args)=>{
+   const client=await f.propstack(...args);
+   if(args[0]!=='contacts/12'||args[3]==='PUT'||!client.custom_fields)return client;
+   return {...client,custom_fields:Object.fromEntries(Object.entries(client.custom_fields).map(([key,value])=>[key,{value:truncated?value.slice(0,255):value,pretty_value:'display only'}]))};
+  };
+  const request=requestNewsletter({key:'fixture-api',contactId:12,email:f.client.email,requestId:f.requestId,propstack,origin:'https://sls-website-eight.vercel.app',store:f.store,env,config:{transport:'propstack',categoryId:NEWSLETTER_CATEGORY.id}});
+  if(truncated){await assert.rejects(request,e=>e.status===503);assert.equal(f.writes.filter(w=>w.task).length,0);}
+  else{assert.equal(await request,'confirmation_requested');assert.equal(f.writes.filter(w=>w.task).length,1);}
+ }
+});
 test('HTTP endpoint rejects foreign origins, malformed data, bad CSRF and closed public host without CRM writes',async()=>{
  const saved={...process.env},oldFetch=global.fetch;let crmCalls=0;
  Object.assign(process.env,{VERCEL_ENV:'production',NODE_ENV:'production',KV_REST_API_URL:'https://fixture-redis.example',KV_REST_API_TOKEN:'fixture'});delete process.env.SLS_PUBLIC_DOMAIN_ACTIVE;
