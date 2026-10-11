@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {newsletterConfig} from '../lib/guide-newsletter.mjs';
-const ready={MS_GRAPH_TENANT_ID:'fixture',MS_GRAPH_CLIENT_ID:'fixture',MS_GRAPH_CLIENT_SECRET:'fixture',KV_REST_API_URL:'https://fixture.example',KV_REST_API_TOKEN:'fixture'};
-test('dedicated newsletter requires existing mail and security configuration',async()=>{assert.deepEqual(await newsletterConfig('unused',null,ready),{dedicated:true});});
-test('missing mail or security configuration keeps only newsletter unavailable',async()=>{for(const name of Object.keys(ready)){const env={...ready};delete env[name];assert.equal(await newsletterConfig('unused',null,env),null);}});
-test('legacy Propstack category alone cannot enable the general contact-form automation',async()=>{assert.equal(await newsletterConfig('fixture',async()=>[{id:123,name:'SLS_NEWSLETTER_DOI_ANGEFORDERT',category:'for_notes'}],{}),null);});
+import {NEWSLETTER_CATEGORY} from '../lib/newsletter-doi.mjs';
+const ready={KV_REST_API_URL:'https://fixture.example',KV_REST_API_TOKEN:'fixture'};
+const types=async()=>[{id:NEWSLETTER_CATEGORY.id,name:NEWSLETTER_CATEGORY.name,category:'for_notes'}];
+test('dedicated Propstack newsletter requires security configuration and exact note category',async()=>{assert.deepEqual(await newsletterConfig('fixture',types,ready),{dedicated:true,transport:'propstack',categoryId:NEWSLETTER_CATEGORY.id});});
+test('missing security configuration keeps only newsletter unavailable',async()=>{for(const name of Object.keys(ready)){const env={...ready};delete env[name];assert.equal(await newsletterConfig('fixture',types,env),null);}});
+test('legacy category or wrong ID, name or type cannot enable a general contact-form automation',async()=>{for(const type of [{id:123,name:'SLS_NEWSLETTER_DOI_ANGEFORDERT',category:'for_notes'},{id:1,name:NEWSLETTER_CATEGORY.name,category:'for_notes'},{id:NEWSLETTER_CATEGORY.id,name:'wrong',category:'for_notes'},{id:NEWSLETTER_CATEGORY.id,name:NEWSLETTER_CATEGORY.name,category:'email'}])assert.equal(await newsletterConfig('fixture',async()=>[type],ready),null);});

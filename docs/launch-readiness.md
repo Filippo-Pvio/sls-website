@@ -14,7 +14,7 @@ Stand: 11. Oktober 2026. Ausschließlich neue Website. Alte Homepage und deren �
 
 ## Newsletter-Abnahme
 
-Test nur mit eigenem, ausdrücklich freigegebenem Service-Postfach; keine echten Kundenkontakte. Ablauf: neue Testadresse, Ratgeber mit optionaler Newsletter-Auswahl, Bestätigungsmail, Status vor und nach Bestätigung, anschließende Abmeldung. Bestätigung und Widerruf erst nach tatsächlicher Prüfung als erledigt markieren. Keine personalisierten Bestätigungslinks oder Kontakt-IDs in Git speichern.
+Versand über Propstack mit service@sls.de (Automatik 561383, Vorlage 1119664). Späterer Absender newsletter@sls.de erst nach Einrichtung und Verbindung. Test nur mit eigenem, ausdrücklich freigegebenem Service-Postfach; keine echten Kundenkontakte. Ablauf: neue Testadresse, Ratgeber mit optionaler Newsletter-Auswahl, Bestätigungsmail, Status vor und nach Bestätigung, anschließende Abmeldung. Bestätigung und Widerruf erst nach tatsächlicher Prüfung als erledigt markieren. Keine personalisierten Bestätigungslinks oder Kontakt-IDs in Git speichern.
 
 ## Datenschutz: Quellen und tatsächlicher Nachweis
 

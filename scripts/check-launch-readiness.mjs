@@ -28,7 +28,7 @@ const page = (path, privatePage=false) => check(path, (r, body) => {
   const noindex = /noindex/i.test(r.headers.get('x-robots-tag') || '') || /name="robots"[^>]*content="[^"]*noindex/i.test(body);
   if((staged || privatePage) && !noindex) findings.push('Expected noindex protection.');
   if(!staged && !privatePage && noindex) findings.push('Public page is still noindex.');
-  if(path==='/datenschutz/' && body.includes('href="https://sls.de/datenschutz/"')) findings.push('Privacy page contains old self-reference.');
+  if(path==='/datenschutz/' &&  /<a\b[^>]*href="https:\/\/sls\.de\/datenschutz\/"/i.test(body)) findings.push('Privacy page contains old self-reference.');
   if(path==='/datenschutz/' && !body.includes('Datenschutzbeauftragten')) findings.push('Data protection officer contact missing.');
   return findings;
 });
