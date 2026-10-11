@@ -47,6 +47,20 @@ for(const absolute of legacy.urls){
 const generated=[...destinations].filter(([source,destination])=>source!==destination).map(([source,destination])=>({source,destination,permanent:true}));
 const generatedSources=new Set(generated.map(r=>r.source));
 config.redirects=[...config.redirects.filter(r=>!generatedSources.has(r.source)),...generated];
+// Percent escapes are equivalent regardless of hex letter casing, while Vercel
+// matches route sources literally. Preserve crawler/browser variants as aliases.
+function percentVariants(source){
+ let variants=[source];
+ for(const match of source.matchAll(/%[0-9a-fA-F]{2}/g))for(let i=1;i<=2;i++)if(/[a-fA-F]/.test(match[0][i])){
+  const index=match.index+i;
+  variants=variants.flatMap(value=>[value.slice(0,index)+value[index].toLowerCase()+value.slice(index+1),value.slice(0,index)+value[index].toUpperCase()+value.slice(index+1)]);
+ }
+ return [...new Set(variants)];
+}
+for(const key of ['redirects','rewrites']){
+ const seen=new Set();
+ config[key]=config[key].flatMap(rule=>percentVariants(rule.source).filter(source=>{if(seen.has(source))return false;seen.add(source);return true;}).map(source=>({...rule,source})));
+}
 await writeFile(new URL('vercel.json',root),JSON.stringify(config,null,2)+'\n');
 await writeFile(new URL('content/seo/migration-status.json',root),JSON.stringify({sourceDate:legacy.retrievedAt,urls:report},null,2)+'\n');
 console.log(`Migration classified ${report.length} legacy URLs: ${JSON.stringify(Object.groupBy(report,r=>r.state),(_,value)=>Array.isArray(value)?value.length:value)}`);

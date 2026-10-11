@@ -97,6 +97,8 @@ test('every historic URL has an explicit migration decision; redirects never loo
  assert.equal(report.urls.length,636);assert.ok(report.urls.every(x=>['retained','redirect','retired'].includes(x.state)));
  const config=JSON.parse(await readFile(new URL('../vercel.json',import.meta.url),'utf8'));
  const redirects=new Map(config.redirects.map(r=>[r.source,r.destination]));
+ for(const rule of config.redirects.filter(r=>/%[0-9a-f]{2}/.test(r.source))){const upper=rule.source.replace(/%[0-9a-f]{2}/g,m=>m.toUpperCase());assert.equal(redirects.get(upper),rule.destination);}
+ for(const rule of config.rewrites.filter(r=>/%[0-9a-f]{2}/.test(r.source))){const upper=rule.source.replace(/%[0-9a-f]{2}/g,m=>m.toUpperCase());assert.ok(config.rewrites.some(r=>r.source===upper&&r.destination===rule.destination));}
  for(const [from,to] of redirects){assert.notEqual(from,to);assert.ok(!redirects.has(to),`${from} chains through ${to}`);}
  for(const item of report.urls.filter(r=>r.state==='retired'))assert.ok(config.rewrites.some(r=>r.source===item.source&&r.destination==='/api/retired-page'));
  const page=await run(retired,'/old-page/');assert.equal(page.code,410);assert.match(page.headers['x-robots-tag'],/^noindex/);
