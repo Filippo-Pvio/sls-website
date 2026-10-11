@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {handler as handler} from '../api/propstack-guide-request.js';
+import {NEWSLETTER_CATEGORY,newsletterUnlockScript} from '../lib/newsletter-doi.mjs';
 import {GUIDE_CATALOG} from '../lib/guide-catalog.mjs';
 
 const NOTE='SLS_RATGEBER_VERKAUF_ANGEFORDERT';
@@ -13,27 +14,25 @@ async function fixture(run,options={}) {
  Object.assign(process.env,{VERCEL_ENV:'preview',NODE_ENV:'production',PROPSTACK_API_KEY:'legacy-fixture-only',PROPSTACK_GUIDES_API_KEY:'fixture-only'});
  delete process.env.PROPSTACK_INQUIRY_API_KEY;
  for(const name of names.slice(5)) delete process.env[name];
- if(options.marketing) Object.assign(process.env,{MS_GRAPH_TENANT_ID:'fixture',MS_GRAPH_CLIENT_ID:'fixture',MS_GRAPH_CLIENT_SECRET:'fixture',MS_GRAPH_SENDER:'service@sls.de',KV_REST_API_URL:'https://newsletter-redis.example',KV_REST_API_TOKEN:'fixture-redis'});
+ if(options.marketing) Object.assign(process.env,{KV_REST_API_URL:'https://newsletter-redis.example',KV_REST_API_TOKEN:'fixture-redis'});
  const redis=new Map(),mails=[];
  Date.now=()=>now;
  const email=`${randomUUID()}@example.org`,writes=[],activities=[],contacts=options.newContact?[]:[{id:12,email,salutation:options.salutation===undefined?'ms':options.salutation,first_name:options.firstName ?? 'Anna',last_name:options.lastName ?? 'Muster'}];
  const calls=[];
  global.fetch=async(url,init)=>{
   const parsed=new URL(url),path=parsed.pathname.replace('/v1/','');calls.push(path);
-  if(parsed.hostname==='newsletter-redis.example'){const [op,k,v,...rest]=JSON.parse(init.body);let result;if(op==='GET')result=redis.get(k)||null;else if(op==='SET'){result=rest.includes('NX')&&redis.has(k)?null:'OK';if(result)redis.set(k,v);}else throw Error('Unexpected redis');return {ok:true,json:async()=>({result})};}
-  if(parsed.hostname==='login.microsoftonline.com')return {ok:true,json:async()=>({access_token:'fixture'})};
-  if(parsed.hostname==='graph.microsoft.com'){mails.push(JSON.parse(init.body));return {ok:true};}
+  if(parsed.hostname==='newsletter-redis.example'){const [op,k,v,...rest]=JSON.parse(init.body);let result;if(op==='GET')result=redis.get(k)||null;else if(op==='SET'){result=rest.includes('NX')&&redis.has(k)?null:'OK';if(result)redis.set(k,v);}else if(op==='EVAL'&&k===newsletterUnlockScript){const lock=rest[0],owner=rest[1];if(redis.get(lock)===owner)redis.delete(lock);result=1;}else throw Error('Unexpected redis');return {ok:true,json:async()=>({result})};}
   assert.equal(parsed.origin,'https://api.propstack.de');
   if(options.failPath===path) return {ok:false,status:503,text:async()=>'Service unavailable'};
   let data;
-  if(path==='activity_types')data={data:options.missingType?[]:[...(options.allGuides ? GUIDE_CATALOG.filter(g=>g.id!==options.omitGuide).map(g=>({id:g.categoryId,name:g.note,category:'for_notes'})) : [{id:741093,name:NOTE,category:options.wrongType?'reminder':'for_notes'}]),...(options.marketing?[{id:123,name:'SLS_NEWSLETTER_DOI_ANGEFORDERT',category:'for_notes'}]:[])]};
+  if(path==='activity_types')data={data:options.missingType?[]:[...(options.allGuides ? GUIDE_CATALOG.filter(g=>g.id!==options.omitGuide).map(g=>({id:g.categoryId,name:g.note,category:'for_notes'})) : [{id:741093,name:NOTE,category:options.wrongType?'reminder':'for_notes'}]),...(options.marketing?[{id:NEWSLETTER_CATEGORY.id,name:NEWSLETTER_CATEGORY.name,category:'for_notes'}]:[])]};
   else if(path==='contacts'&&init.method==='GET')data={data:options.conflict?[{id:12,email:'different@example.org'}]:contacts};
   else if(path==='contacts'&&init.method==='POST'){
    const payload=JSON.parse(init.body);writes.push({path,payload});contacts.push({id:12,...payload.client});data={id:12};
   }
   else if(path==='contacts/12'&&init.method==='PUT'){
    const payload=JSON.parse(init.body);writes.push({path,payload,method:init.method});
-   if(!options.ignoredUpdate) Object.assign(contacts[0],payload.client);
+   if(!options.ignoredUpdate){const {partial_custom_fields,...rest}=payload.client;Object.assign(contacts[0],rest);if(partial_custom_fields)contacts[0].custom_fields={...(contacts[0].custom_fields||{}),...partial_custom_fields};}
    data=contacts[0];
   }
   else if(path==='contacts/12')data=contacts[0];
@@ -183,15 +182,15 @@ test('selected consent sends a dedicated confirmation without legacy automation 
  contacts[0].newsletter=false;contacts[0].accept_contact=false;const before=structuredClone(contacts);
  const res=await request('POST',optIn(payload));
  assert.equal(res.body.newsletterStatus,'confirmation_requested');assert.match(res.body.message,/separate Bestätigungsmail/);
- assert.deepEqual(contacts,before);
- assert.equal(writes.length,2);
- assert.match(writes[1].payload.task.body,/Einwilligungstext, Version 2026-10-02-v2/);
- assert.match(writes[1].payload.task.body,/Double-Opt|Bestätigung noch ausstehend/);
- assert.equal(writes[1].payload.task.note_type_id,undefined);assert.equal(mails.length,1);assert.match(mails[0].message.body.content,/newsletter\/#confirm=/);
- assert.equal(writes[1].payload.task.title,'SLS_NEWSLETTER_BESTAETIGUNG_AUSSTEHEND');
+ const {custom_fields,...rest}=contacts[0];assert.deepEqual(rest,before[0]);assert.ok(custom_fields.sls_newsletter_bestatigungslink.includes('/newsletter/#confirm='));
+ assert.equal(writes.length,3);
+ assert.match(writes[2].payload.task.body,/Einwilligungstext, Version 2026-10-02-v2/);
+ assert.match(writes[2].payload.task.body,/Double-Opt|Bestätigung noch ausstehend/);
+ assert.equal(writes[2].payload.task.note_type_id,NEWSLETTER_CATEGORY.id);assert.equal(mails.length,0);
+ assert.equal(writes[2].payload.task.title,'SLS_NEWSLETTER_BESTAETIGUNG_AUSSTEHEND');
  assert.equal(writes.filter(w=>w.path==='messages').length,0);
  assert.ok(writes.every(w=>w.path!=='contacts'));
- await request('POST',optIn(payload));assert.equal(writes.length,2);
+ await request('POST',optIn(payload));assert.equal(writes.length,3);
 },{marketing:true}));
 test('unchecked consent preserves existing newsletter settings and creates no DOI email',()=>fixture(async({request,payload,writes,contacts})=>{
  contacts[0].newsletter=true;contacts[0].accept_contact=true;const before=structuredClone(contacts);
@@ -227,7 +226,7 @@ test('an incomplete evidence write never reports a confirmation mail as sent',()
 },{marketing:true,newsletterTimeout:true}));
 test('concurrent opt-ins create one guide and one newsletter trigger',()=>fixture(async({request,payload,writes})=>{
  const res=await Promise.all([request('POST',optIn(payload)),request('POST',optIn(payload))]);
- assert.ok(res.every(r=>r.body.newsletterStatus==='confirmation_requested'));assert.equal(writes.length,2);
+ assert.ok(res.every(r=>r.body.newsletterStatus==='confirmation_requested'));assert.equal(writes.length,3);
 },{marketing:true}));
 
 for(const update of [{privacyAcknowledged:undefined},{privacyAcknowledged:false},{privacyAcknowledged:'true'},{privacyAcknowledged:1},{privacyVersion:undefined},{privacyVersion:'old'}])test(`rejects missing or invalid privacy acknowledgement ${JSON.stringify(update)}`,()=>fixture(async({request,payload,writes,calls})=>{
