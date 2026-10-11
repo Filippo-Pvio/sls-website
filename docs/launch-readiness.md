@@ -10,11 +10,13 @@ Stand: 11. Oktober 2026. Ausschließlich neue Website. Alte Homepage und deren �
 - Kontakt zum ausdrücklich bestellten Datenschutzbeauftragten: service@sls.de. Der Betreiber bestätigte die Weiterleitung am 11. Oktober. Öffentliche Datenschutzerklärung nennt diesen Kontakt und die offiziellen Propstack-Datenschutzhinweise.
 - CRM-Nachweise für Kontakt- und Ratgeberanfragen verweisen auf die tatsächlich verwendete, bekannte Website-Adresse. Beliebige Origin-/Forwarded-Header können diese URL nicht bestimmen.
 - Ratgeber auf sls.de und www.sls.de erst mit Produktionsvariable `SLS_PUBLIC_DOMAIN_ACTIVE=true`. Heute nicht eingerichtet. Arbeitsadresse bleibt nutzbar. Dieser Schalter steuert die Ratgeberannahme, nicht DNS oder die Indexierung sämtlicher Seiten.
-- Lokale automatisierte Prüfung: 407 Tests bestanden; zusätzlich statische Website- und Magazinprüfung bestanden. Auslieferungsprüfung nach Bereitstellung separat durchführen.
+- Lokale automatisierte Prüfung: 422 Tests bestanden; zusätzlich statische Website- und Magazinprüfung bestanden. Auslieferungsprüfung der Arbeitsadresse am 11. Oktober um 17:37 UTC: 15 von 15 ausschließlich lesenden Prüfungen bestanden, auf Commit `24947bac2eb411498524798680f7414bb6c43b19`, Deployment `dpl_H5Mdg4kXdqejet4vrbvnp5mU78pW`.
 
 ## Newsletter-Abnahme
 
 Versand über Propstack mit service@sls.de (Automatik 561383, Vorlage 1119664). Späterer Absender newsletter@sls.de erst nach Einrichtung und Verbindung. Test nur mit eigenem, ausdrücklich freigegebenem Service-Postfach; keine echten Kundenkontakte. Ablauf: neue Testadresse, Ratgeber mit optionaler Newsletter-Auswahl, Bestätigungsmail, Status vor und nach Bestätigung, anschließende Abmeldung. Bestätigung und Widerruf erst nach tatsächlicher Prüfung als erledigt markieren. Keine personalisierten Bestätigungslinks oder Kontakt-IDs in Git speichern.
+
+Tatsächlicher CRM-/Website-Test am 11. Oktober: Ratgeber- und Newsletter-Notizen angelegt; Newsletter vor Bestätigung „Keine Angabe“, nach ausdrücklicher Bestätigung „Ja“, nach ausdrücklicher Abmeldung „Nein“. Alter Bestätigungslink danach abgewiesen; Status bleibt „Nein“. Allgemeine Kontakterlaubnis, DSGVO-Status und Immobilienmailings unverändert. Für diesen Funktionstest wurden die gespeicherten privaten Testlinks aus der eigenen CRM-Historie verwendet. Die Propstack-Automatik protokolliert eine erzeugte Nachricht; deren Versandkopie und tatsächlicher Eingang im eigenen Service-Postfach waren im verfügbaren Zugang nicht sichtbar. Mailzustellung und Auflösung der Vorlagenvariablen daher noch nicht abschließend abgenommen; Betreiberprüfung angefragt. Keine Wiederholungsmail ausgelöst.
 
 ## Datenschutz: Quellen und tatsächlicher Nachweis
 
