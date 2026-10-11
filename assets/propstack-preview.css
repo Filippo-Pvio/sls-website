@@ -436,3 +436,5 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 .property-preview .pp-city-options [role=option]:hover,.property-preview .pp-city-options [aria-selected=true]{background:#ecf7f8;color:#005c68}
 .property-preview .pp-filter-notice{font-size:14px;color:#52676e}
 .property-preview .pp-search select:disabled{color:#687d83;background:#f7f9fa}
+
+.seo-pagination{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:28px auto;padding:0 20px}.seo-pagination a,.seo-pagination span{padding:10px 14px;border:1px solid #6c97ab;border-radius:4px}.seo-pagination [aria-current="page"]{background:#345b6e;color:#fff}

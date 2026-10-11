@@ -18,7 +18,7 @@ async function request(mode,options={}){
     return mode==='missing'?{ok:false,status:404}:{ok:true,json:async()=>mode==='sold'?{id:123,status:{id:8},title:'PRIVATE MUST NOT LEAK'}:row};
   };
   const res={code:200,headers:{},setHeader(key,value){this.headers[key.toLowerCase()]=value},status(code){this.code=code;return this},end(body=''){this.body=body;return this}};
-  try{await handler({method:'GET',url:'/immobilie/wohnung-123/?objekt=999',query:{slug:'wrong-999'},...options},res);return {...res,calls}}
+  try{await handler({method:'GET',url:'/immobilie/wohnung-in-essen-essen-123/?objekt=999',query:{slug:'wrong-999'},...options},res);return {...res,calls}}
   finally{global.fetch=oldFetch;if(oldKey===undefined)delete process.env.PROPSTACK_API_KEY;else process.env.PROPSTACK_API_KEY=oldKey}
 }
 test('active HTML contains property metadata and content before JavaScript, using the path ID',async()=>{

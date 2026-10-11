@@ -1,4 +1,5 @@
 import {logOperationalFailure} from '../lib/operational-log.mjs';
+import {cachedCatalog} from '../lib/property-catalog.mjs';
 const API_BASE = 'https://api.propstack.de/v1/';
 const PAGE_SIZE = 100;
 const MAX_PAGES = 40;
@@ -202,4 +203,20 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store');
     return res.status(503).json({ error: 'Referenzen vorübergehend nicht verfügbar' });
   }
+}
+
+// Reuse only the already public gallery projection. No CRM descriptions, prices or contact data.
+const getReferenceCatalog=cachedCatalog(async(key)=>{
+  const result=await propstack('property_statuses',key);
+  const statuses=Array.isArray(result.data)?result.data:Array.isArray(result)?result:[];
+  const ids=new Set(statuses.filter(s=>SOLD_NAMES.has(String(s.name||'').trim().toLocaleLowerCase('de-DE'))).map(s=>String(s.id)));
+  if(!ids.size)throw new Error('No sold status');
+  return (await soldListings(key,ids,true)).map(unit=>publicReference(unit,ids)).filter(Boolean)
+    .map(({id,title,city,zip,image})=>({id,title,city,zip,image}));
+},60000);
+export async function publicReferenceCatalogResult(){
+  const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
+  if(!key)return {status:503,items:[]};
+  try{return {status:200,items:await getReferenceCatalog(key,'sold')}}
+  catch(error){logOperationalFailure('reference_catalog_failed',error);return {status:503,items:[]}}
 }

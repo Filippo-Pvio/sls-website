@@ -28,15 +28,17 @@ body.references-page #main .buy-final .lead{color:#edf3f5;max-width:700px;margin
 @media(prefers-reduced-motion:reduce){.references-page .reference-card.is-entering{animation:none}}
 
 .references-page #references-retry{background:transparent;border:0;border-bottom:1px solid #6c97ab;border-radius:0;padding:10px 0;min-height:44px;font:700 16px/1.5 Raleway,Arial,sans-serif;cursor:pointer}
-.references-page #references-retry:disabled{opacity:.55;cursor:wait}
+.references-page #references-retry[aria-disabled="true"]{opacity:.55;cursor:wait}
 .references-page #references-retry:focus-visible{outline:2px solid #345b6e;outline-offset:5px}
 .references-page .reference-card{scroll-margin-top:100px}
 
 .references-page #references-title{scroll-margin-top:100px}
 .references-page .references-pagination{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;margin-top:32px}
 .references-page .references-pagination[hidden]{display:none}
-.references-page .references-pagination button{min-width:44px;min-height:44px;padding:8px 14px;border:1px solid #6c97ab;border-radius:4px;background:#fff;color:#345b6e;font:700 15px/1.4 Raleway,Arial,sans-serif;cursor:pointer}
-.references-page .references-pagination button:hover:not(:disabled){background:#eaf0f3}
-.references-page .references-pagination button[aria-current="page"]{background:#345b6e;color:#fff;border-color:#345b6e;opacity:1}
-.references-page .references-pagination button:disabled:not([aria-current="page"]){cursor:default;opacity:.45}
-.references-page .references-pagination button:focus-visible{outline:2px solid #345b6e;outline-offset:3px}
+.references-page .references-pagination a{min-width:44px;min-height:44px;padding:8px 14px;border:1px solid #6c97ab;border-radius:4px;background:#fff;color:#345b6e;font:700 15px/1.4 Raleway,Arial,sans-serif;cursor:pointer}
+.references-page .references-pagination a:hover:not([aria-disabled="true"]){background:#eaf0f3}
+.references-page .references-pagination a[aria-current="page"]{background:#345b6e;color:#fff;border-color:#345b6e;opacity:1}
+.references-page .references-pagination a[aria-disabled="true"]:not([aria-current="page"]){cursor:default;opacity:.45}
+.references-page .references-pagination a:focus-visible{outline:2px solid #345b6e;outline-offset:3px}
+
+.references-page .reference-card > a{display:block;color:inherit;text-decoration:none}.references-pagination a{text-decoration:none}.seo-pagination{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:28px auto;padding:0 20px}.seo-pagination a,.seo-pagination span{padding:10px 14px;border:1px solid #6c97ab;border-radius:4px}.seo-pagination [aria-current="page"]{background:#345b6e;color:#fff}

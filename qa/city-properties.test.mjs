@@ -5,12 +5,13 @@ import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import {matchesMarketCity} from '../assets/market-city-match.mjs';
 import {propertyCardHtml} from '../assets/property-card.mjs';
+import {referencePath} from '../assets/reference-seo.mjs';
 const source=readFileSync(new URL('../assets/city-properties.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 async function run(kind,rows,{fail=false,storage}={}){
  const status={textContent:'',append(){}},heading={textContent:''},grid={children:[],setAttribute(){},replaceChildren(...nodes){this.children=nodes}};
  const section={dataset:{cityProperties:'Dorsten'},querySelector:s=>s==='h2'||s==='.city-section-head > p'?heading:s==='[role="status"]'?status:s==='[data-city-active]'?(kind==='active'?grid:null):grid};
  const document={querySelectorAll:()=>[section],createElement:()=>({append(){}})};
- vm.runInNewContext(source,{matchesMarketCity,document,URL,AbortSignal,sessionStorage:storage,matchMedia:()=>({matches:true}),propertyCardHtml,fetch:async()=>({ok:!fail,json:async()=>kind==='active'?{items:rows}:{references:rows}})});
+ vm.runInNewContext(source,{referencePath,matchesMarketCity,document,URL,AbortSignal,sessionStorage:storage,matchMedia:()=>({matches:true}),propertyCardHtml,fetch:async()=>({ok:!fail,json:async()=>kind==='active'?{items:rows}:{references:rows}})});
  await new Promise(resolve=>setImmediate(resolve));
  return {status,grid};
 }

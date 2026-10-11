@@ -24,8 +24,9 @@ const area=n=>`${new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format
     }
     if(seoNumber(p.plot))property.additionalProperty.push({'@type':'PropertyValue',name:'Grundstücksfläche',value:p.plot,unitCode:'MTK'});
     const images=(p.images||[]).filter(src=>typeof src==='string'&&/^https:\/\//i.test(src));
-    const data={'@context':'https://schema.org','@type':'RealEstateListing','@id':`${canonical}#listing`,name,url:canonical,description,inLanguage:'de-DE',mainEntity:property};
+    const company={'@id':'https://sls.de/#organization'};
+    const data={'@context':'https://schema.org','@type':'RealEstateListing','@id':`${canonical}#listing`,name,url:canonical,description,inLanguage:'de-DE',mainEntity:property,publisher:company,isPartOf:{'@id':'https://sls.de/#website'}};
     if(images.length)data.image=images;
-    if(seoNumber(p.price))data.offers={'@type':'Offer',url:canonical,price:p.price,priceCurrency:'EUR',availability:'https://schema.org/InStock'};
+    if(seoNumber(p.price))data.offers={'@type':'Offer',url:canonical,price:p.price,priceCurrency:'EUR',availability:'https://schema.org/InStock',seller:company};
     return {title,description,canonical,data};
   };

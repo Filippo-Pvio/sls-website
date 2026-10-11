@@ -249,3 +249,10 @@ export async function propertyDetailResult(id){
   try{return await detailResponse(id,key,await resolvePublicStatus(key),res)}
   catch(error){logOperationalFailure('property_html_failed',error);return res.status(502).json({code:'PROPERTY_SERVICE_UNAVAILABLE'})}
 }
+
+export async function publicCatalogResult(){
+  const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
+  if(!key)return {status:503,items:[]};
+  try{return {status:200,items:await getCatalog(key,(await resolvePublicStatus(key)).id)}}
+  catch(error){logOperationalFailure('property_catalog_failed',error);return {status:503,items:[]}}
+}

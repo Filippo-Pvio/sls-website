@@ -10,6 +10,8 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
   const date=x=>{const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(x||''));return m?`${m[3]}.${m[2]}.${m[1]}`:x};
   const bootstrap=document.querySelector('#pp-server-data');
   const serverData=bootstrap?JSON.parse(bootstrap.textContent):null;
+  const catalogBootstrap=document.querySelector('#sls-catalog-data');
+  const serverCatalog=catalogBootstrap?JSON.parse(catalogBootstrap.textContent):null;
   const url=new URL(location.href), demo=!serverData&&url.searchParams.get('demo')==='1';
   const productionRoute=location.pathname.startsWith('/immobilie/')||location.pathname.startsWith('/immobilien/');
   const browsePath=productionRoute?'/immobilien/':'/immobilien-test/';
@@ -29,6 +31,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
     const seo=buildPropertySeo(p),expectedPath=objectPath(p);
     if(location.pathname.startsWith('/immobilie/')&&location.pathname!==expectedPath)history.replaceState(null,'',expectedPath+location.search);
     document.title=seo.title;setDescription(seo.description);
+    let robots=document.querySelector('meta[name="robots"]');if(!robots){robots=document.createElement('meta');robots.name='robots';document.head.append(robots)}robots.content=location.hostname==='sls.de'?'index,follow,max-image-preview:large':'noindex,follow';
     let link=document.querySelector('link[rel="canonical"]');if(!link){link=document.createElement('link');link.rel='canonical';document.head.append(link)}link.href=seo.canonical;
     let script=document.querySelector('#pp-property-jsonld');if(!script){script=document.createElement('script');script.type='application/ld+json';script.id='pp-property-jsonld';document.head.append(script)}script.textContent=JSON.stringify(seo.data);
   };
@@ -284,7 +287,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
     document.body.insertAdjacentHTML('beforeend','<dialog id="pp-filter-dialog" class="pp-search-dialog" aria-labelledby="pp-filter-title"><div class="pp-dialog-top"><h2 id="pp-filter-title">Immobilien filtern</h2><button type="button" data-close-dialog aria-label="Filter schließen">×</button></div><div id="pp-filter-slot"></div></dialog><dialog id="pp-sort-dialog" class="pp-search-dialog" aria-labelledby="pp-sort-title"><div class="pp-dialog-top"><h2 id="pp-sort-title">Sortieren</h2><button type="button" data-close-dialog aria-label="Sortierung schließen">×</button></div><label for="pp-mobile-sort-select">Reihenfolge</label><select id="pp-mobile-sort-select"></select></dialog>');
     const form=$('#pp-form'),placeholder=document.createComment('filter form');form.before(placeholder);
     restoringBrowse=history.state?.ppBrowse||null;
-    if(!restoringBrowse && url.searchParams.has('city')) form.elements.city.value=url.searchParams.get('city');
+    if(!restoringBrowse)for(const key of ['city','query','price','area','rooms'])if(url.searchParams.has(key))form.elements[key].value=url.searchParams.get(key);
     if(restoringBrowse){
       browsePage=Math.max(1,Number(restoringBrowse.batches)||1);
       viewMode=restoringBrowse.view==='map'?'map':'list';
@@ -292,9 +295,11 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
       $('#pp-sort').value=restoringBrowse.sort||'default';
       $('#pp-quick-query').value=form.elements.query.value;
     }
-    const filtersReady=setupPropertyFilters(form,{demoItems:demo?[sample]:undefined,restore:restoringBrowse?.fields});
+    if(!restoringBrowse&&url.searchParams.has('sort'))$('#pp-sort').value=url.searchParams.get('sort');
+    const urlFilters={type:url.searchParams.get('type')||'',subtype:url.searchParams.get('subtype')||''};
+    const filtersReady=setupPropertyFilters(form,{demoItems:demo?[sample]:undefined,restore:restoringBrowse?.fields||urlFilters});
     // Restored subtype selections need their options; fresh browsing can start immediately.
-    if(demo||restoringBrowse)await filtersReady;
+    if(demo||restoringBrowse||urlFilters.type||urlFilters.subtype)await filtersReady;
     history.scrollRestoration='manual';
     const saveBrowse=()=>{
       if(restoringBrowse)return;
@@ -511,7 +516,10 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
       if(!id)await setupBrowse();
       if(demo){all=[sample];total=1;hasMore=false;$('#pp-banner').textContent='Designvorschau mit einem öffentlich sichtbaren Beispielobjekt. Keine Live-Abfrage; Angaben und Verfügbarkeit bitte auf sls.de prüfen.'}
       else if(id){const response=await fetch(`/api/propstack-properties?id=${encodeURIComponent(id)}`,{cache:'no-store'});const data=await response.json();if(response.status===410&&data.code==='PROPERTY_UNAVAILABLE'){renderUnavailable();return}if(!response.ok){if(response.status===404){renderNotFound();return}throw new Error(data.error||'Daten nicht abrufbar')}all=data.items;$('#pp-banner').textContent=productionRoute?'Aktuelles Immobilienangebot von SLS Immobilienpartner.':'Getrennter Vercel-Test: Objektanfragen werden hier noch nicht versendet. Bewertungs- und Finanzierungsrechner sind live; abgeschickte Angaben können echte Anfragen auslösen.'}
-      else {committedQuery=captureQuery();currentPage=0;await loadNextPage();$('#pp-banner').textContent='Entdecken Sie unsere aktuellen Kaufimmobilien.'}
+      else {committedQuery=captureQuery();
+        if(serverCatalog?.kind==='properties'&&serverCatalog.items.length&&viewMode==='list'&&!restoringBrowse){all=serverCatalog.items;total=serverCatalog.total;currentPage=serverCatalog.page;hasMore=currentPage*9<total;renderList();}
+        else{currentPage=Math.max(0,(Number(url.searchParams.get('page'))||1)-1);await loadNextPage();}
+        $('#pp-banner').textContent='Entdecken Sie unsere aktuellen Kaufimmobilien.'}
       if(id){const p=all.find(item=>item.id===id);if(p)renderDetail(p);else {renderNotFound();return}}
       else if(demo){renderList()}
     } catch(error){if(id||location.pathname.startsWith('/immobilie/'))setInactiveSeo('Immobilie derzeit nicht abrufbar','Das Immobilienangebot kann gerade nicht geladen werden. Bitte versuchen Sie es später erneut.');$('#pp-count').textContent='Noch keine Immobilien verfügbar';$('#pp-results').innerHTML=`<div class="pp-error">${esc(error.message)}<br><a href="${esc(location.pathname+location.search)}">Erneut laden</a><br><a href="/immobilien-test/?demo=1">Design mit einem Beispielobjekt ansehen</a></div>`}
