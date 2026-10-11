@@ -4,7 +4,7 @@ import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
 import {GUIDE_MARKETING_CONSENT_TEXT, GUIDE_MARKETING_CONSENT_VERSION, GUIDE_PRIVACY_ACK_VERSION, GUIDE_PRIVACY_ACK_TEXT} from '../lib/guide-consent.mjs';
 import {guideHostAllowed, privacyPolicyUrl} from '../lib/website-origin.mjs';
-import {newsletterConfig, requestNewsletter} from '../lib/guide-newsletter.mjs';
+import {newsletterConfig, requestNewsletter} from '../lib/newsletter-doi.mjs';
 
 import {GUIDE_CATALOG, findGuide} from '../lib/guide-catalog.mjs';
 const received = 'Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.';
@@ -247,7 +247,7 @@ export async function handler(req, res) {
     let newsletterStatus = marketingConsent ? 'review_required' : 'not_requested';
     if (marketingConsent && result.outcome === 'recorded') {
       try {
-        newsletterStatus = await requestNewsletter({key, contactId:result.contactId, email, firstName, lastName, salutation, requestId, config:marketingConfig, propstack});
+        newsletterStatus = await requestNewsletter({key, contactId:result.contactId, email, firstName, lastName, salutation, requestId, config:marketingConfig, propstack, origin:privacyPolicyUrl(req).replace('/datenschutz/','')});
       } catch (error) {
         logOperationalFailure('newsletter_confirmation_uncertain',error);
         // Guide dispatch was already recorded. Do not present a total failure or encourage resending it.

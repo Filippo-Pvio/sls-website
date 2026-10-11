@@ -1,19 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {newsletterConfig, NEWSLETTER_NOTE} from '../lib/guide-newsletter.mjs';
-
-const category = {id:123,name:NEWSLETTER_NOTE,category:'for_notes'};
-test('automation resolves only a unique exact note category',async()=>{
- assert.deepEqual(await newsletterConfig('fixture',async()=>[category]),{noteTypeId:123});
- for (const entries of [[],[{...category,category:'reminder'}],[{...category,name:'Other'}],[category,{...category,id:124}],[{...category,id:'bad'}]]) {
-  assert.equal(await newsletterConfig('fixture',async()=>entries),null);
- }
-});
-test('automation lookup paginates and rejects a duplicate on a later page',async()=>{
- let calls=0;
- assert.equal(await newsletterConfig('fixture',async()=>({data:[{...category,id:++calls}],meta:{total_count:2}})),null);
- assert.equal(calls,2);
-});
-test('failed lookup never enables the newsletter',async()=>{
- await assert.rejects(newsletterConfig('fixture',async()=>{throw Error('unavailable');}),/unavailable/);
-});
+import {newsletterConfig} from '../lib/guide-newsletter.mjs';
+const ready={MS_GRAPH_TENANT_ID:'fixture',MS_GRAPH_CLIENT_ID:'fixture',MS_GRAPH_CLIENT_SECRET:'fixture',KV_REST_API_URL:'https://fixture.example',KV_REST_API_TOKEN:'fixture'};
+test('dedicated newsletter requires existing mail and security configuration',async()=>{assert.deepEqual(await newsletterConfig('unused',null,ready),{dedicated:true});});
+test('missing mail or security configuration keeps only newsletter unavailable',async()=>{for(const name of Object.keys(ready)){const env={...ready};delete env[name];assert.equal(await newsletterConfig('unused',null,env),null);}});
+test('legacy Propstack category alone cannot enable the general contact-form automation',async()=>{assert.equal(await newsletterConfig('fixture',async()=>[{id:123,name:'SLS_NEWSLETTER_DOI_ANGEFORDERT',category:'for_notes'}],{}),null);});

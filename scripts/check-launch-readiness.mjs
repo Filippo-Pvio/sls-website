@@ -34,7 +34,8 @@ const page = (path, privatePage=false) => check(path, (r, body) => {
 });
 await Promise.all([
   page('/'),page('/kontakt/'),page('/downloads/'),page('/datenschutz/',true),
-  page('/immobilien/'),page('/referenzen/'),
+  page('/immobilien/'),page('/referenzen/'),page('/newsletter/',true),
+  check('/api/newsletter/',(r,b)=>{try{return r.status===200&&typeof JSON.parse(b).securityToken==='string'?[]:['Newsletter endpoint unavailable.'];}catch{return ['Newsletter endpoint is not valid JSON.'];}}),
   check('/robots.txt',(r,b)=>r.status===200 && b.includes('https://sls.de/sitemap.xml') ? []:['Robots/sitemap declaration missing.']),
   check('/sitemap.xml',(r,b)=>r.status===200 && b.includes('<sitemapindex') ? []:['Sitemap index unavailable.']),
   check('/api/propstack-guide-request/',(r,b)=>{

@@ -1,3 +1,5 @@
+> Aktualisierung 11. Oktober 2026: Der allgemeine Propstack-Profillink hat die Abnahme nicht bestanden. Die folgende Beschreibung des Notiz-Automatikablaufs ist historisch. Aktuell gelten der eigene SLS-Ablauf und dessen Abnahme in [newsletter-doi.md](newsletter-doi.md); die alte Newsletter-Notizkategorie wird nicht mehr ausgelöst. Ratgeberversand bleibt unverändert.
+
 # Ratgeberanforderung: bestehende Arbeitswebsite
 
 ## Freigegebene Ratgeberserie (08.10.2026)
