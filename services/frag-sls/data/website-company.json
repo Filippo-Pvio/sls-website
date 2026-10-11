@@ -42,9 +42,9 @@
     "snapshotDate": "2026-10-11",
     "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "92c7310f559572b84d9a659e7630bd98f8cd3fe321c1494c17bd76c161411078",
+    "sourceSha256": "9efe615de14eb27deacd418fa63d557d2c26e214c38ad569fc0fbf6ec6595b68",
     "sourceHashes": {
-      "kontakt/index.html": "92c7310f559572b84d9a659e7630bd98f8cd3fe321c1494c17bd76c161411078"
+      "kontakt/index.html": "9efe615de14eb27deacd418fa63d557d2c26e214c38ad569fc0fbf6ec6595b68"
     }
   },
   {
@@ -69,7 +69,7 @@
     "snapshotDate": "2026-10-11",
     "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "92c7310f559572b84d9a659e7630bd98f8cd3fe321c1494c17bd76c161411078",
+    "sourceSha256": "9efe615de14eb27deacd418fa63d557d2c26e214c38ad569fc0fbf6ec6595b68",
     "offices": [
       {
         "name": "Unser Büro in Dorsten",
@@ -81,7 +81,7 @@
       }
     ],
     "sourceHashes": {
-      "kontakt/index.html": "92c7310f559572b84d9a659e7630bd98f8cd3fe321c1494c17bd76c161411078"
+      "kontakt/index.html": "9efe615de14eb27deacd418fa63d557d2c26e214c38ad569fc0fbf6ec6595b68"
     }
   },
   {
@@ -307,9 +307,9 @@
     "snapshotDate": "2026-10-11",
     "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "965b68cf61065126b2e0977a743a32bb9d0ec7f1e6aed62768b8ef90add0de2a",
+    "sourceSha256": "55b437a6213a35fe33bf4ee1f37957ed1b210a05ed2e9875b8e21c76565515ab",
     "sourceHashes": {
-      "team/dennis-sahlmen/index.html": "965b68cf61065126b2e0977a743a32bb9d0ec7f1e6aed62768b8ef90add0de2a"
+      "team/dennis-sahlmen/index.html": "55b437a6213a35fe33bf4ee1f37957ed1b210a05ed2e9875b8e21c76565515ab"
     }
   },
   {
@@ -327,9 +327,9 @@
     "snapshotDate": "2026-10-11",
     "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "7f49904bab5e0dcd0a75393efb73fca3111481e89b75b974fb40acf46ae104c1",
+    "sourceSha256": "e2f7afd5a0b158b8ca67c26404762aa97f898abcd2b3bc31ef2469df20e3e794",
     "sourceHashes": {
-      "team/filippo-livera/index.html": "7f49904bab5e0dcd0a75393efb73fca3111481e89b75b974fb40acf46ae104c1"
+      "team/filippo-livera/index.html": "e2f7afd5a0b158b8ca67c26404762aa97f898abcd2b3bc31ef2469df20e3e794"
     }
   },
   {
@@ -348,9 +348,9 @@
     "snapshotDate": "2026-10-11",
     "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "05079df071410225bffe36790d836b845bc5d20ba61bb04eedf1be759b79e8dd",
+    "sourceSha256": "750e3ba6967cb72825250c6440408dfc5b79a24a856a0296934543daa1a55f3c",
     "sourceHashes": {
-      "team/mischa-stratmann/index.html": "05079df071410225bffe36790d836b845bc5d20ba61bb04eedf1be759b79e8dd"
+      "team/mischa-stratmann/index.html": "750e3ba6967cb72825250c6440408dfc5b79a24a856a0296934543daa1a55f3c"
     }
   },
   {
@@ -752,7 +752,7 @@
     "sourceHashes": {
       "index.html": "ef2f6cf509a521319397ce19f0b9332b35955be03465782fd5fb7c2cb9ec094d",
       "team/index.html": "aaad7bc7ec2db6c51c024fe00bdcf5d64495082c89a6c14cdc7d41f2839163ff",
-      "referenzen/index.html": "c4239340c2fe3e5309752b891a4a62fcf98d8d0488a4b12ba43cd7f861f82be2"
+      "referenzen/index.html": "aab2e18b372d2ab6bce483358575b8371941ef449894c6b43c2301f11a141d5e"
     }
   },
   {
@@ -798,9 +798,9 @@
     "snapshotDate": "2026-10-11",
     "releaseSha": null,
     "reviewStatus": "Inhalte der bestehenden Arbeitswebsite; keine unabhängige Bewertung",
-    "sourceSha256": "c4239340c2fe3e5309752b891a4a62fcf98d8d0488a4b12ba43cd7f861f82be2",
+    "sourceSha256": "aab2e18b372d2ab6bce483358575b8371941ef449894c6b43c2301f11a141d5e",
     "sourceHashes": {
-      "referenzen/index.html": "c4239340c2fe3e5309752b891a4a62fcf98d8d0488a4b12ba43cd7f861f82be2"
+      "referenzen/index.html": "aab2e18b372d2ab6bce483358575b8371941ef449894c6b43c2301f11a141d5e"
     }
   }
 ]

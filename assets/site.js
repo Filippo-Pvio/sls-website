@@ -120,7 +120,7 @@ document.querySelector("[data-site-header]").innerHTML = `
       <div class="fullscreen-nav-top">
         <button class="offcanvas-close" type="button" data-nav-close aria-label="Menü schließen">${icon("close")}</button>
       </div>
-      <p class="offcanvas-intro">Womit können wir helfen?</p>
+      <p class="offcanvas-intro">Was können wir für Sie tun?</p>
       <div class="fullscreen-nav-grid">${overlaySections}</div>
       <div class="fullscreen-nav-bottom">
         <a class="offcanvas-contact-cta" href="/kontakt/">Kontakt aufnehmen</a>
