@@ -1,0 +1,114 @@
+[
+  {
+    "city": "Heiden",
+    "url": "/immobilienmakler-heiden/",
+    "regions": [
+      "muensterland"
+    ],
+    "localIntro": "Heiden liegt im westlichen Münsterland im Kreis Borken. Bei einem Verkauf verbinden wir die Lage Ihrer Immobilie mit den Eigenschaften von Haus und Grundstück.",
+    "sections": [
+      {
+        "heading": "Grundstück und Gebäude zusammen betrachten",
+        "text": "Bei einem Haus in Heiden beschreiben wir die Nutzungsmöglichkeiten des Grundstücks und dokumentierte Modernisierungen. Welche Angaben für Ihre Immobilie wichtig sind, klären wir im persönlichen Gespräch."
+      }
+    ],
+    "migrationSource": "https://sls.de/immobilienmakler-heiden/",
+    "sourceChecked": "2026-10-11"
+  },
+  {
+    "city": "Oer-Erkenschwick",
+    "url": "/immobilienmakler-oer-erkenschwick/",
+    "regions": [
+      "ruhrgebiet"
+    ],
+    "localIntro": "Oer-Erkenschwick liegt im Kreis Recklinghausen am Südrand der Haard. Für Ihre Immobilie betrachten wir die konkrete Straße und das direkte Umfeld.",
+    "sections": [
+      {
+        "heading": "Waldnähe konkret einordnen",
+        "text": "Eine Beschreibung wie „nah an der Haard“ ersetzt keine genaue Lagebeschreibung. Wir besprechen die tatsächlichen Wege, die Anbindung und den Zustand Ihrer Immobilie."
+      }
+    ],
+    "migrationSource": "https://sls.de/immobilienmakler-oer-erkenschwick/",
+    "sourceChecked": "2026-10-11"
+  },
+  {
+    "city": "Raesfeld",
+    "url": "/immobilienmakler-raesfeld/",
+    "regions": [
+      "muensterland"
+    ],
+    "localIntro": "Raesfeld liegt im Münsterland im Kreis Borken. Bei einem Haus oder einer Wohnung berücksichtigen wir den Ortsteil und die konkrete Umgebung.",
+    "sections": [
+      {
+        "heading": "Haus, Garten und Alltag zeigen",
+        "text": "Bei der Präsentation Ihrer Immobilie beziehen wir Außenflächen, Grundriss und dokumentierte Modernisierungen ein. Die genaue Lage und die Eigenschaften Ihres Objekts bestimmen die weitere Einordnung."
+      }
+    ],
+    "migrationSource": "https://sls.de/immobilienmakler-raesfeld/",
+    "sourceChecked": "2026-10-11"
+  },
+  {
+    "city": "Reken",
+    "url": "/immobilienmakler-reken/",
+    "regions": [
+      "muensterland"
+    ],
+    "localIntro": "Reken liegt im westlichen Münsterland im Kreis Borken. Die Gemeinde umfasst mehrere Ortsteile; die konkrete Adresse ist deshalb ein wichtiger Ausgangspunkt für die Bewertung.",
+    "sections": [
+      {
+        "heading": "Den Ortsteil und das einzelne Objekt betrachten",
+        "text": "Bei einem Verkauf in Reken besprechen wir Baujahr, Gebäudezustand, Grundstück und vorhandene Modernisierungen. So entsteht eine Beschreibung Ihrer Immobilie, die über den Namen der Gemeinde hinausgeht."
+      }
+    ],
+    "migrationSource": "https://sls.de/immobilienmakler-reken/",
+    "sourceChecked": "2026-10-11"
+  },
+  {
+    "city": "Remscheid",
+    "url": "/immobilienmakler-remscheid/",
+    "regions": [
+      "rheinland"
+    ],
+    "localIntro": "Remscheid liegt im Bergischen Land und gehört mit Solingen und Wuppertal zum Bergischen Städtedreieck. Bei einem Verkauf berücksichtigen wir die genaue Lage Ihrer Immobilie.",
+    "sections": [
+      {
+        "heading": "Lage und Grundstück nachvollziehbar beschreiben",
+        "text": "In Remscheid können Gelände und Grundstückszugang für die Präsentation eines Hauses relevant sein. Wir betrachten diese Merkmale am konkreten Objekt und ergänzen sie um Zustand und dokumentierte Modernisierungen."
+      }
+    ],
+    "migrationSource": "https://sls.de/immobilienmakler-remscheid/",
+    "sourceChecked": "2026-10-11"
+  },
+  {
+    "city": "Waltrop",
+    "url": "/immobilienmakler-waltrop/",
+    "regions": [
+      "ruhrgebiet"
+    ],
+    "localIntro": "Waltrop liegt im Kreis Recklinghausen im nördlichen Ruhrgebiet. Die Lage zwischen Ruhrgebiet und Münsterland bildet den örtlichen Rahmen Ihrer Immobilie.",
+    "sections": [
+      {
+        "heading": "Wege und Umfeld konkret zeigen",
+        "text": "Bei Ihrer Immobilie in Waltrop beschreiben wir die tatsächlichen Wege und das direkte Umfeld. Für die Bewertung betrachten wir daneben Grundstück, Gebäudezustand und vorhandene Unterlagen."
+      }
+    ],
+    "migrationSource": "https://sls.de/immobilienmakler-waltrop/",
+    "sourceChecked": "2026-10-11"
+  },
+  {
+    "city": "Wegberg",
+    "url": "/immobilienmakler-wegberg/",
+    "regions": [
+      "rheinland"
+    ],
+    "localIntro": "Wegberg liegt im Kreis Heinsberg im Westen Nordrhein-Westfalens. Die Stadt umfasst zahlreiche kleinere Ortsteile; die genaue Lage gehört deshalb zur Einordnung Ihrer Immobilie.",
+    "sections": [
+      {
+        "heading": "Ortsteil, Anbindung und Gebäude verbinden",
+        "text": "Bei einem Haus in Wegberg besprechen wir Grundstück, Erreichbarkeit und bekannte Modernisierungen. Die Vermarktung richtet sich nach den Eigenschaften Ihrer Immobilie und Ihren Verkaufszielen."
+      }
+    ],
+    "migrationSource": "https://sls.de/immobilienmakler-wegberg/",
+    "sourceChecked": "2026-10-11"
+  }
+]

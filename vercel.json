@@ -3,8 +3,14 @@
   "trailingSlash": true,
   "redirects": [
     {
-      "source": "/service/",
-      "destination": "/verkaufen/",
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.sls.de"
+        }
+      ],
+      "destination": "https://sls.de/:path*",
       "permanent": true
     },
     {
@@ -16,12 +22,3157 @@
       "source": "/service/index.html",
       "destination": "/verkaufen/",
       "permanent": true
+    },
+    {
+      "source": "/service/",
+      "destination": "/verkaufen/",
+      "permanent": true
+    },
+    {
+      "source": "/unsere-werte/",
+      "destination": "/werte/",
+      "permanent": true
+    },
+    {
+      "source": "/wohntraum-finder/",
+      "destination": "/suchprofil/",
+      "permanent": true
+    },
+    {
+      "source": "/wissensportal/",
+      "destination": "/faq/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienwissen/",
+      "destination": "/faq/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie-bewerten-lassen/",
+      "destination": "/immobilienbewertung/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienwert-sofortcheck/",
+      "destination": "/immobilienbewertung/",
+      "permanent": true
+    },
+    {
+      "source": "/auswahl-immobilienbewertung/",
+      "destination": "/immobilienbewertung/",
+      "permanent": true
+    },
+    {
+      "source": "/standorte-2/",
+      "destination": "/standorte/",
+      "permanent": true
+    },
+    {
+      "source": "/mitarbeiter/",
+      "destination": "/team/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/",
+      "destination": "/immobilien/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-duesseldorf/",
+      "destination": "/immobilienmakler-dusseldorf/",
+      "permanent": true
+    },
+    {
+      "source": "/telefonische-beratung/",
+      "destination": "/kontakt/",
+      "permanent": true
+    },
+    {
+      "source": "/objektaufnahme/",
+      "destination": "/kontakt/",
+      "permanent": true
+    },
+    {
+      "source": "/feedback/",
+      "destination": "/kontakt/",
+      "permanent": true
+    },
+    {
+      "source": "/category/blog/",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/category/uncategorized/",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/category/presse/",
+      "destination": "/presse/",
+      "permanent": true
+    },
+    {
+      "source": "/category/ratgeber/",
+      "destination": "/downloads/",
+      "permanent": true
+    },
+    {
+      "source": "/privater-immobilienverkauf/",
+      "destination": "/immobilienverkauf-checkliste-fehler-vermeiden/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienverkauf-leicht-gemacht/",
+      "destination": "/verkaufen/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie-geerbt/",
+      "destination": "/erbimmobilie-verkaufen-2026/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie-in-der-scheidung/",
+      "destination": "/scheidung-und-immobilie-was-eigentuemer-2026-wissen-muessen/",
+      "permanent": true
+    },
+    {
+      "source": "/moderne-immobilienvermarktung-mit-persoenlichem-touch/",
+      "destination": "/verkaufen/",
+      "permanent": true
+    },
+    {
+      "source": "/sls-immobilienpartner-startet-soziales-engagement-in-dorsten/",
+      "destination": "/presse/",
+      "permanent": true
+    },
+    {
+      "source": "/dennis-sahlmen/",
+      "destination": "/team/dennis-sahlmen/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/dennis-sahlmen/",
+      "destination": "/team/dennis-sahlmen/",
+      "permanent": true
+    },
+    {
+      "source": "/mischa-stratmann/",
+      "destination": "/team/mischa-stratmann/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/mischa-stratmann/",
+      "destination": "/team/mischa-stratmann/",
+      "permanent": true
+    },
+    {
+      "source": "/andreas-busch/",
+      "destination": "/team/andreas-busch/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/andreas-busch/",
+      "destination": "/team/andreas-busch/",
+      "permanent": true
+    },
+    {
+      "source": "/cueneyt-demirli/",
+      "destination": "/team/cueneyt-demirli/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/cueneyt-demirli/",
+      "destination": "/team/cueneyt-demirli/",
+      "permanent": true
+    },
+    {
+      "source": "/tanja-wawrosch/",
+      "destination": "/team/tanja-wawrosch/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/tanja-wawrosch/",
+      "destination": "/team/tanja-wawrosch/",
+      "permanent": true
+    },
+    {
+      "source": "/daniel-allamezade/",
+      "destination": "/team/daniel-allamezade/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/daniel-allamezade/",
+      "destination": "/team/daniel-allamezade/",
+      "permanent": true
+    },
+    {
+      "source": "/nico-hryn/",
+      "destination": "/team/nico-hryn/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/nico-hryn/",
+      "destination": "/team/nico-hryn/",
+      "permanent": true
+    },
+    {
+      "source": "/maximilian-werner/",
+      "destination": "/team/maximilian-werner/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/maximilian-werner/",
+      "destination": "/team/maximilian-werner/",
+      "permanent": true
+    },
+    {
+      "source": "/dustin-offermann/",
+      "destination": "/team/dustin-offermann/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/dustin-offermann/",
+      "destination": "/team/dustin-offermann/",
+      "permanent": true
+    },
+    {
+      "source": "/heiko-hofmann/",
+      "destination": "/team/heiko-hofmann/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/heiko-hofmann/",
+      "destination": "/team/heiko-hofmann/",
+      "permanent": true
+    },
+    {
+      "source": "/manuela-landripet/",
+      "destination": "/team/manuela-landripet/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/manuela-landripet/",
+      "destination": "/team/manuela-landripet/",
+      "permanent": true
+    },
+    {
+      "source": "/gina-kuennecke/",
+      "destination": "/team/gina-kuennecke/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/gina-kuennecke/",
+      "destination": "/team/gina-kuennecke/",
+      "permanent": true
+    },
+    {
+      "source": "/jacqueline-floeter/",
+      "destination": "/team/jacqueline-floeter/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/jacqueline-floeter/",
+      "destination": "/team/jacqueline-floeter/",
+      "permanent": true
+    },
+    {
+      "source": "/uwe-braun/",
+      "destination": "/team/uwe-braun/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/uwe-braun/",
+      "destination": "/team/uwe-braun/",
+      "permanent": true
+    },
+    {
+      "source": "/kristina-kruschinski/",
+      "destination": "/team/kristina-kruschinski/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/kristina-kruschinski/",
+      "destination": "/team/kristina-kruschinski/",
+      "permanent": true
+    },
+    {
+      "source": "/svea-bruns/",
+      "destination": "/team/svea-bruns/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/svea-bruns/",
+      "destination": "/team/svea-bruns/",
+      "permanent": true
+    },
+    {
+      "source": "/daniela-sahlmen/",
+      "destination": "/team/daniela-sahlmen/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/daniela-sahlmen/",
+      "destination": "/team/daniela-sahlmen/",
+      "permanent": true
+    },
+    {
+      "source": "/sophia-peter/",
+      "destination": "/team/sophia-peter/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/sophia-peter/",
+      "destination": "/team/sophia-peter/",
+      "permanent": true
+    },
+    {
+      "source": "/arne-wilke/",
+      "destination": "/team/arne-wilke/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/arne-wilke/",
+      "destination": "/team/arne-wilke/",
+      "permanent": true
+    },
+    {
+      "source": "/samy-el-munayer/",
+      "destination": "/team/samy-el-munayer/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/samy-el-munayer/",
+      "destination": "/team/samy-el-munayer/",
+      "permanent": true
+    },
+    {
+      "source": "/filippo-livera/",
+      "destination": "/team/filippo-livera/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_agent/filippo-livera/",
+      "destination": "/team/filippo-livera/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/1-zimmer-eg-wohnung-vermietet-eigener-eingang-stellplatz/",
+      "destination": "/referenz/1-zimmer-eg-wohnung-vermietet-eigener-eingang-stellplatz-lunen-4891640/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/2-996-m%c2%b2-fuer-ihr-naechstes-wohnbauprojekt-entwicklungsgrundstueck-in-niederkruechten-overhetfeld/",
+      "destination": "/immobilie/2-996-m-fur-ihr-nachstes-wohnbauprojekt-entwicklungsgrundstuck-in-niederkruchten-overhetfeld-niederkrucht-5146767/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/2-996-m%c2%B2-fuer-ihr-naechstes-wohnbauprojekt-entwicklungsgrundstueck-in-niederkruechten-overhetfeld/",
+      "destination": "/immobilie/2-996-m-fur-ihr-nachstes-wohnbauprojekt-entwicklungsgrundstuck-in-niederkruchten-overhetfeld-niederkrucht-5146767/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/2-996-m%C2%b2-fuer-ihr-naechstes-wohnbauprojekt-entwicklungsgrundstueck-in-niederkruechten-overhetfeld/",
+      "destination": "/immobilie/2-996-m-fur-ihr-nachstes-wohnbauprojekt-entwicklungsgrundstuck-in-niederkruchten-overhetfeld-niederkrucht-5146767/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/2-996-m%C2%B2-fuer-ihr-naechstes-wohnbauprojekt-entwicklungsgrundstueck-in-niederkruechten-overhetfeld/",
+      "destination": "/immobilie/2-996-m-fur-ihr-nachstes-wohnbauprojekt-entwicklungsgrundstuck-in-niederkruchten-overhetfeld-niederkrucht-5146767/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/2-zimmer-etagenwohnung-mit-historischem-altbaucharme-und-zeitgemaesser-ausstattung/",
+      "destination": "/immobilie/2-zimmer-etagenwohnung-mit-historischem-altbaucharme-und-zeitgemasser-ausstattung-dortmund-sls-2060-4113771/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/2-zimmer-wohnung-mit-balkon-in-gepflegter-wohnanlage/",
+      "destination": "/referenz/2-zimmer-wohnung-mit-balkon-in-gepflegter-wohnanlage-bochum-3628784/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/3-zimmer-eigentumswohnung-mit-balkon-und-gruenblick-auf-erbpachtgrundstueck-in-herne/",
+      "destination": "/referenz/3-zimmer-eigentumswohnung-mit-balkon-und-grunblick-auf-erbpachtgrundstuck-in-herne-herne-5249961/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/35-zimmer-wohnung-mit-zwei-balkonen-und-aufzug-viel-potenzial-zur-individuellen-gestaltung/",
+      "destination": "/referenz/3-5-zimmer-wohnung-mit-zwei-balkonen-und-aufzug-viel-potenzial-zur-individuellen-gestaltung-recklinghause-4773076/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/39-700-e-jahresnettomiete-ab-01-07-2026-wohn-und-gewerbeobjekt-mit-weiterem-entwicklungspotenzial/",
+      "destination": "/referenz/39-700-jahresnettomiete-ab-01-07-2026-wohn-und-gewerbeobjekt-mit-weiterem-entwicklungspotenzial-witten-2792672/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/4097540/",
+      "destination": "/referenz/gepflegtes-reihenhaus-mit-potenzial-in-ruhiger-lage-von-recklinghausen-recklinghausen-4097540/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/altbau-trifft-moderne-perfekt-geschnittene-2-zimmer-wohnung-mit-balkon/",
+      "destination": "/immobilie/altbau-trifft-moderne-perfekt-geschnittene-2-zimmer-wohnung-mit-balkon-dortmund-sls-5095-5048743/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/altbaucharme-in-duesseldorf-pempelfort-modernisierte-2-zimmer-wohnung-mit-laufenden-mieteinnahmen/",
+      "destination": "/immobilie/altbaucharme-in-dusseldorf-pempelfort-modernisierte-2-zimmer-wohnung-mit-laufenden-mieteinnahmen-dusseldo-5538615/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ankommen-aufatmen-bleiben-modernisiertes-familiendomizil-auf-aussergewoehnlichem-grundstueck/",
+      "destination": "/referenz/ankommen-aufatmen-bleiben-modernisiertes-familiendomizil-auf-aussergewohnlichem-grundstuck-schwalmtal-4585183/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ankommen-und-wohlfuehlen-moderne-doppelhaushaelfte-mit-effizienter-technik-und-grosszuegiger-terrasse/",
+      "destination": "/referenz/ankommen-und-wohlfuhlen-moderne-doppelhaushalfte-mit-effizienter-technik-und-grosszugiger-terrasse-dorste-4599746/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/architektonisches-neubau-unikat-in-feldrandlage-kfw-40-einfamilienhaus-mit-einliegerwohnung/",
+      "destination": "/immobilie/architektonisches-neubau-unikat-in-feldrandlage-kfw-40-einfamilienhaus-mit-einliegerwohnung-schermbeck-sl-4918771/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/architektur-trifft-lebensqualitaet-hochwertige-villa-mit-einliegerwohnung-und-wohnkeller/",
+      "destination": "/immobilie/hochwertige-villa-aus-2017-mit-einliegerwohnung-wellnessbereich-und-grosszugigem-wohnkonzept-frondenberg--4917295/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktive-dachgeschosswohnung-modernisiert-vermietet-und-mit-garage-in-guter-lage/",
+      "destination": "/referenz/attraktive-dachgeschosswohnung-modernisiert-vermietet-und-mit-garage-in-guter-lage-castrop-rauxel-2633860/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktive-eigentumswohnung-in-gladbeck-gepflegt-vermietet-und-mit-stabilem-ertragspotenzial/",
+      "destination": "/referenz/attraktive-eigentumswohnung-in-gladbeck-gepflegt-vermietet-und-mit-stabilem-ertragspotenzial-gladbeck-4131755/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktive-kapitalanlage-im-westviertel-97-m%c2%b2-balkon-und-tiefgaragenstellplatz/",
+      "destination": "/immobilie/attraktive-kapitalanlage-im-westviertel-97-m-balkon-und-tiefgaragenstellplatz-recklinghausen-sls-7410-5519787/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktive-kapitalanlage-im-westviertel-97-m%c2%B2-balkon-und-tiefgaragenstellplatz/",
+      "destination": "/immobilie/attraktive-kapitalanlage-im-westviertel-97-m-balkon-und-tiefgaragenstellplatz-recklinghausen-sls-7410-5519787/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktive-kapitalanlage-im-westviertel-97-m%C2%b2-balkon-und-tiefgaragenstellplatz/",
+      "destination": "/immobilie/attraktive-kapitalanlage-im-westviertel-97-m-balkon-und-tiefgaragenstellplatz-recklinghausen-sls-7410-5519787/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktive-kapitalanlage-im-westviertel-97-m%C2%B2-balkon-und-tiefgaragenstellplatz/",
+      "destination": "/immobilie/attraktive-kapitalanlage-im-westviertel-97-m-balkon-und-tiefgaragenstellplatz-recklinghausen-sls-7410-5519787/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktive-wohnung-mit-durchdachtem-grundriss-und-entwicklungspotenzial/",
+      "destination": "/referenz/viel-platz-zum-leben-4-zimmer-wohnung-mit-garage-im-ruhigen-dreifamilienhaus-bochum-4734094/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktiver-wohn-und-geschaeftskomplex-mit-stabilen-ertraegen-und-weiteren-entwicklungspotenzialen/",
+      "destination": "/referenz/attraktiver-wohn-und-geschaftskomplex-mit-stabilen-ertragen-und-weiteren-entwicklungspotenzialen-castrop--2480289/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktives-1-zimmer-apartment-mit-balkon-und-tiefgaragenstellplatz-in-kliniknaehe/",
+      "destination": "/referenz/attraktives-1-zimmer-apartment-mit-balkon-und-tiefgaragenstellplatz-in-kliniknahe-wuppertal-5370734/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktives-baugrundstueck-mit-individueller-planungsmoeglichkeit/",
+      "destination": "/referenz/attraktives-baugrundstuck-mit-individueller-planungsmoglichkeit-erkelenz-3638689/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktives-wohnkonzept-im-riegefeld-3-zimmer-balkon-und-optionalen-tiefgaragenstellplaetzen/",
+      "destination": "/referenz/attraktives-wohnkonzept-im-riegefeld-3-zimmer-balkon-und-optionalen-tiefgaragenstellplatzen-marl-3998630/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktives-zweifamilienhaus-in-haltern-am-see-perfekt-fuer-mehrgenerationenwohnen/",
+      "destination": "/referenz/attraktives-zweifamilienhaus-in-haltern-am-see-perfekt-fur-mehrgenerationenwohnen-haltern-am-see-2488297/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktives-zweifamilienhaus-in-ruhiger-lage-vermietet-entwicklungsfaehig-und-vielseitig-nutzbar/",
+      "destination": "/referenz/attraktives-zweifamilienhaus-in-ruhiger-lage-vermietet-entwicklungsfahig-und-vielseitig-nutzbar-dorsten-4732895/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/aussergewoehnlich-grosses-grundstueck-fuer-doppelhaushaelfte-mit-positiver-bauvoranfrage/",
+      "destination": "/immobilie/aussergewohnlich-grosses-grundstuck-fur-doppelhaushalfte-mit-positiver-bauvoranfrage-ennepetal-sls-7596-5564261/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/barrierearme-erdgeschosswohnung-mit-zwei-terrassen-eigenem-garten-und-viel-privatsphaere/",
+      "destination": "/referenz/barrierearme-erdgeschosswohnung-mit-zwei-terrassen-eigenem-garten-und-viel-privatsphare-dorsten-4110421/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/barrierefrei-wohnen-ueber-den-daechern-der-stadt-3-zimmer-wohnung-mit-balkon/",
+      "destination": "/immobilie/barrierefrei-wohnen-uber-den-dachern-der-stadt-3-zimmer-wohnung-mit-balkon-bergkamen-sls-6480-5372394/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bauen-in-gewachsener-umgebung-1-099-m%c2%b2-grundstueck-mit-genehmigter-planung/",
+      "destination": "/immobilie/bauen-in-gewachsener-umgebung-1-099-m-grundstuck-mit-genehmigter-planung-ennepetal-sls-7568-5550552/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bauen-in-gewachsener-umgebung-1-099-m%c2%B2-grundstueck-mit-genehmigter-planung/",
+      "destination": "/immobilie/bauen-in-gewachsener-umgebung-1-099-m-grundstuck-mit-genehmigter-planung-ennepetal-sls-7568-5550552/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bauen-in-gewachsener-umgebung-1-099-m%C2%b2-grundstueck-mit-genehmigter-planung/",
+      "destination": "/immobilie/bauen-in-gewachsener-umgebung-1-099-m-grundstuck-mit-genehmigter-planung-ennepetal-sls-7568-5550552/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bauen-in-gewachsener-umgebung-1-099-m%C2%B2-grundstueck-mit-genehmigter-planung/",
+      "destination": "/immobilie/bauen-in-gewachsener-umgebung-1-099-m-grundstuck-mit-genehmigter-planung-ennepetal-sls-7568-5550552/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/baugrund-fuer-produktion-lager-verwaltung-b-plan-nr-784-und-19-km-zur-a43-bochum-riemke/",
+      "destination": "/referenz/baugrund-fur-produktion-lager-verwaltung-b-plan-nr-784-und-1-9-km-zur-a43-bochum-riemke-bochum-3148414/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/baugrundstueck-fuer-eine-doppelhaushaelfte-in-naturnaher-lage-mit-grossem-flexibel-nutzbarem-garten/",
+      "destination": "/immobilie/baugrundstuck-fur-eine-doppelhaushalfte-in-naturnaher-lage-mit-grossem-flexibel-nutzbarem-garten-dorsten--4514604/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/baugrundstueck-in-naturnaher-lage-ihr-wohntraum-im-gruenen-von-kierspe/",
+      "destination": "/immobilie/baugrundstuck-in-naturnaher-lage-ihr-wohntraum-im-grunen-von-kierspe-kierspe-sls-7273-5502961/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bauluecke-mit-potenzial-627-m%c2%b2-grundstueck-in-begehrter-lage-von-brueggen-bracht/",
+      "destination": "/immobilie/baulucke-mit-potenzial-627-m-grundstuck-in-begehrter-lage-von-bruggen-bracht-bruggen-bracht-sls-5693-5207696/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bauluecke-mit-potenzial-627-m%c2%B2-grundstueck-in-begehrter-lage-von-brueggen-bracht/",
+      "destination": "/immobilie/baulucke-mit-potenzial-627-m-grundstuck-in-begehrter-lage-von-bruggen-bracht-bruggen-bracht-sls-5693-5207696/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bauluecke-mit-potenzial-627-m%C2%b2-grundstueck-in-begehrter-lage-von-brueggen-bracht/",
+      "destination": "/immobilie/baulucke-mit-potenzial-627-m-grundstuck-in-begehrter-lage-von-bruggen-bracht-bruggen-bracht-sls-5693-5207696/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bauluecke-mit-potenzial-627-m%C2%B2-grundstueck-in-begehrter-lage-von-brueggen-bracht/",
+      "destination": "/immobilie/baulucke-mit-potenzial-627-m-grundstuck-in-begehrter-lage-von-bruggen-bracht-bruggen-bracht-sls-5693-5207696/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bezauberndes-einfamilienhaus-mit-einliegerwohnung-im-landhausstil-mit-weitlaeufigem-grundstueck/",
+      "destination": "/referenz/bezauberndes-einfamilienhaus-mit-einliegerwohnung-im-landhausstil-mit-weitlaufigem-grundstuck-dortmund-2317017/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bezugsfreie-2-zimmer-wohnung-mit-balkon-und-angenehmem-wohngefuehl/",
+      "destination": "/immobilie/bezugsfreie-2-zimmer-wohnung-mit-balkon-und-angenehmem-wohngefuhl-wuppertal-sls-8332-5711814/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bezugsfreie-eigentumswohnung-am-rosengarten-terrasse-balkon-tiefgarage/",
+      "destination": "/immobilie/bezugsfreie-eigentumswohnung-am-rosengarten-terrasse-balkon-tiefgarage-recklinghausen-sls-9473-5883294/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/bungalow-mit-grossem-potenzial-in-bester-lage-ihr-zuhause-mit-charme-und-gestaltungsspielraum/",
+      "destination": "/referenz/bungalow-mit-grossem-potenzial-in-bester-lage-ihr-zuhause-mit-charme-und-gestaltungsspielraum-marl-4411016/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charakterstarke-altbauwohnung-mit-modernisiertem-bad-und-grosszuegigem-raumgefuehl/",
+      "destination": "/referenz/charakterstarke-altbauwohnung-mit-modernisiertem-bad-und-grosszugigem-raumgefuhl-bochum-3157871/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmante-3-zimmer-eigentumswohnung-mit-balkon-und-garage-gepflegtes-wohnen-in-toenisvorst/",
+      "destination": "/referenz/charmante-3-zimmer-eigentumswohnung-mit-balkon-und-garage-gepflegtes-wohnen-in-tonisvorst-tonisvorst-4791977/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmante-3-zimmer-wohnung-mit-balkon-und-stellplatz-in-ruhiger-lage-von-knittkuhl/",
+      "destination": "/referenz/charmante-3-zimmer-wohnung-mit-balkon-und-stellplatz-in-ruhiger-lage-von-knittkuhl-dusseldorf-4912986/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmante-dachgeschosswohnung-mit-modernisierungsspielraum-in-bahnhofsnaher-wohnlage/",
+      "destination": "/referenz/charmante-dachgeschosswohnung-mit-modernisierungsspielraum-in-bahnhofsnaher-wohnlage-emmerich-am-rhein-4353701/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmante-doppelhaushaelfte-mit-garten-und-potenzial-zur-individuellen-modernisierung/",
+      "destination": "/immobilie/charmante-doppelhaushalfte-mit-garten-und-potenzial-zur-individuellen-modernisierung-bonen-sls-7413-5523253/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmante-erdgeschosswohnung-mit-stellplatz-und-modernem-wohnkomfort/",
+      "destination": "/referenz/charmante-erdgeschosswohnung-mit-stellplatz-und-modernem-wohnkomfort-haltern-am-see-4732910/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmantes-einfamilienhaus-mit-zwei-wohneinheiten-grosszuegig-vielseitig-und-in-bester-lage/",
+      "destination": "/referenz/charmantes-einfamilienhaus-mit-zwei-wohneinheiten-grosszugig-vielseitig-und-in-bester-lage-soest-4427047/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmantes-fachwerkhaus-mit-parkaehnlichem-garten-stilvoll-modernisiert-und-voller-charakter/",
+      "destination": "/referenz/charmantes-fachwerkhaus-mit-parkahnlichem-garten-stilvoll-modernisiert-und-voller-charakter-wuppertal-5149590/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmantes-haus-in-hervorragender-lage-mit-gartenidylle-und-zwei-vermieteten-einheiten-im-dg/",
+      "destination": "/referenz/charmantes-haus-in-hervorragender-lage-mit-gartenidylle-und-zwei-vermieteten-einheiten-im-dg-witten-3006300/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmantes-reihenendhaus-in-marl-brassert-gestalten-sie-ihr-neues-zuhause/",
+      "destination": "/referenz/charmantes-reihenendhaus-in-marl-brassert-gestalten-sie-ihr-neues-zuhause-marl-2314336/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmantes-reihenendhaus-in-split-level-bauweise-mit-grossem-garten-fuer-die-ganze-familie/",
+      "destination": "/referenz/charmantes-reihenendhaus-in-split-level-bauweise-mit-grossem-garten-fur-die-ganze-familie-bochum-2361551/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmantes-reihenendhaus-mit-traumgarten-und-zwei-sonnenterrassen-in-sackgasse/",
+      "destination": "/referenz/charmantes-reihenendhaus-mit-traumgarten-und-zwei-sonnenterrassen-in-sackgasse-marl-3147379/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmantes-reihenmittelhaus-mit-garten-kamin-und-sauna-ihr-neues-zuhause-mit-gestaltungspotenzial/",
+      "destination": "/referenz/charmantes-reihenmittelhaus-mit-garten-kamin-und-sauna-ihr-neues-zuhause-mit-gestaltungspotenzial-recklin-2563143/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmantes-stadthaus-in-ruhiger-lage-von-moenchengladbach-rheydt/",
+      "destination": "/immobilie/charmantes-stadthaus-in-ruhiger-lage-von-monchengladbach-rheydt-monchengladbach-sls-2476-4410802/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/clever-investieren-helle-1-zimmer-wohnung-mit-balkon-und-entwicklungspotenzial/",
+      "destination": "/referenz/clever-investieren-helle-1-zimmer-wohnung-mit-balkon-und-entwicklungspotenzial-kaarst-5302408/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/dachgeschosswohnung-mit-balkon-und-aussenstellplatz/",
+      "destination": "/referenz/dachgeschosswohnung-mit-balkon-und-aussenstellplatz-datteln-2800945/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/dachgeschosswohnung-mit-grosszuegigem-balkon-und-viel-gestaltungspotenzial/",
+      "destination": "/immobilie/dachgeschosswohnung-mit-grosszugigem-balkon-und-viel-gestaltungspotenzial-essen-sls-7417-5523800/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/denkmalgeschuetzte-doppelhaushaelfte-mit-grossem-garten-und-sanierungspotenzial-in-duisburg-beeckerwerth/",
+      "destination": "/referenz/denkmalgeschutzte-doppelhaushalfte-mit-grossem-garten-und-sanierungspotenzial-in-duisburg-duisburg-4317820/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/doppelhaushaelfte-ideal-als-mehrgenerationenhaus-mit-balkon-und-garten-in-begehrter-wohnlage/",
+      "destination": "/immobilie/doppelhaushalfte-ideal-als-mehrgenerationenhaus-mit-balkon-und-garten-in-begehrter-wohnlage-essen-sls-260-4438112/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/doppelhaushaelfte-mit-liebevoll-gestaltetem-garten-und-aussergewoehnlichem-raumgefuehl/",
+      "destination": "/referenz/doppelhaushalfte-mit-liebevoll-gestaltetem-garten-und-aussergewohnlichem-raumgefuhl-datteln-3669652/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/doppelhaushaelfte-mit-zwei-vermieteten-wohnungen-und-grossem-grundstueck/",
+      "destination": "/referenz/doppelhaushalfte-mit-zwei-vermieteten-wohnungen-und-grossem-grundstuck-bochum-5496706/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/doppeltes-potenzial-zwei-eigentumswohnungen-mit-stellplaetzen-und-ausbaureserve/",
+      "destination": "/immobilie/doppeltes-potenzial-zwei-eigentumswohnungen-mit-stellplatzen-und-ausbaureserve-recklinghausen-sls-5531-5156011/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/dreifamilienhaus-mit-flexiblen-nutzungsmoeglichkeiten-und-ruhigem-wohnumfeld-in-bochum-harpen/",
+      "destination": "/referenz/dreifamilienhaus-mit-flexiblen-nutzungsmoglichkeiten-und-ruhigem-wohnumfeld-in-bochum-harpen-bochum-4344800/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/dreifamilienhaus-mit-leerstand-mietsteigerungspotenzial-in-begehrter-lage/",
+      "destination": "/referenz/zweifamilienhaus-in-dortmund-laufende-mieteinnahmen-und-freie-erdgeschosswohnung-mit-potenzial-dortmund-4715032/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/eigentumswohnung-mit-3-zimmern-und-vielseitigen-nutzungsmoeglichkeiten/",
+      "destination": "/immobilie/eigentumswohnung-mit-3-zimmern-und-vielseitigen-nutzungsmoglichkeiten-marl-sls-469-2776946/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ein-bis-zweifamilienhaus-in-wulfen-platz-fuer-familien-generationen-und-vielseitige-wohnideen/",
+      "destination": "/referenz/ein-bis-zweifamilienhaus-in-wulfen-platz-fur-familien-generationen-und-vielseitige-wohnideen-dorsten-2636018/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ein-haus-fuer-macher-verwirklichen-sie-hier-ihr-ganz-persoenliches-zuhause/",
+      "destination": "/referenz/ein-haus-fur-macher-verwirklichen-sie-hier-ihr-ganz-personliches-zuhause-viersen-3737307/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ein-haus-mit-zukunft-reihenmittelhaus-zur-freien-neugestaltung-in-herten/",
+      "destination": "/referenz/ein-haus-mit-zukunft-reihenmittelhaus-zur-freien-neugestaltung-in-herten-herten-4850981/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ein-haus-viele-moeglichkeiten-gestalten-sie-ihr-neues-zuhause/",
+      "destination": "/referenz/ein-haus-viele-moglichkeiten-gestalten-sie-ihr-neues-zuhause-erkelenz-3118460/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ein-haus-zwei-wohnungen-unzaehlige-moeglichkeiten-modernisiertes-zweifamilienhaus-in-meerbusch/",
+      "destination": "/immobilie/eigenheim-mit-mieteinnahme-modernisiertes-zweifamilienhaus-mit-garten-und-doppelgarage-meerbusch-sls-6610-5394053/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ein-zuhause-fuers-leben-in-bochum-reihenendhaus-mit-garten-und-entwicklungspotenzial/",
+      "destination": "/immobilie/ein-zuhause-furs-leben-in-bochum-reihenendhaus-mit-garten-und-entwicklungspotenzial-bochum-sls-8895-5786403/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/einfamilienhaus-mit-grossem-gartenparadies-wohnen-mit-vision-in-grevenbroich/",
+      "destination": "/referenz/einfamilienhaus-auf-grossem-grundstuck-mit-viel-potential-grevenbroich-3621225/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/einfamilienhaus-mit-grossem-grundstueck-und-vielseitigen-nutzungsmoeglichkeiten-in-hagen/",
+      "destination": "/referenz/einfamilienhaus-mit-grossem-grundstuck-und-vielseitigen-nutzungsmoglichkeiten-in-hagen-hagen-4869275/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/einziehen-aufatmen-geniessen-energieeffizienter-bungalow-mit-privatem-pool/",
+      "destination": "/immobilie/einziehen-aufatmen-geniessen-energieeffizienter-bungalow-mit-privatem-pool-niederkruchten-sls-6779-5429426/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/einziehen-und-aufatmen-grosszuegige-wohnung-mit-flair-am-city-see-in-marl/",
+      "destination": "/referenz/einziehen-und-aufatmen-grosszugige-wohnung-mit-flair-am-city-see-in-marl-marl-3625576/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/einziehen-wohlfuehlen-ankommen-in-bester-lage-von-dorsten-oestrich/",
+      "destination": "/referenz/einziehen-wohlfuhlen-ankommen-in-bester-lage-von-dorsten-ostrich-dorsten-3126978/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/einzigartige-gartenwohnung-leben-wie-im-eigenen-haus/",
+      "destination": "/referenz/einzigartige-gartenwohnung-leben-wie-im-eigenen-haus-neuss-4631901/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/einzigartiges-einfamilienhaus-mit-kamin-und-separatem-buerotrakt-ideal-fuer-wohnen-und-arbeiten/",
+      "destination": "/referenz/einzigartiges-einfamilienhaus-mit-kamin-und-separatem-burotrakt-ideal-fur-wohnen-und-arbeiten-dorsten-2724795/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/eleganz-trifft-komfort-ihr-neues-zuhause-in-essen-bredeney/",
+      "destination": "/referenz/eleganz-trifft-komfort-ihr-neues-zuhause-in-essen-bredeney-essen-3680338/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/elfringhauser-schweiz-einfamilienhaus-in-idyllischer-alleinlage-auf-grosszuegigem-grundstueck/",
+      "destination": "/referenz/elfringhauser-schweiz-einfamilienhaus-in-idyllischer-alleinlage-auf-grosszugigem-grundstuck-hattingen-4871180/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/energetisch-und-kernsaniertes-haus-modern-hell-grosszuegig-in-heiligenhaus/",
+      "destination": "/immobilie/energetisch-und-kernsaniertes-haus-modern-hell-grosszugig-in-heiligenhaus-heiligenhaus-sls-7380-5517237/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/erdgeschosswohnung-mit-loggia-garage-und-fairer-erbpacht-bis-2061/",
+      "destination": "/referenz/provisionsfreie-erdgeschosswohnung-mit-loggia-garage-und-langfristiger-erbpacht-bis-2061-waltrop-3859505/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/exklusive-35-zimmer-eigentumswohnung-am-rosengarten-mit-sonnigem-balkon/",
+      "destination": "/immobilie/exklusive-3-5-zimmer-eigentumswohnung-am-rosengarten-mit-sonnigem-balkon-recklinghausen-sls-7411-5519808/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/exklusive-terrassenwohnung-in-bestlage-von-essen-bredeney-mit-garten-und-blick-ins-gruene/",
+      "destination": "/immobilie/exklusive-terrassenwohnung-in-bestlage-von-essen-bredeney-mit-garten-und-blick-ins-grune-essen-sls-5229-5077850/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/exklusive-terrassenwohnung-mit-privatem-garten/",
+      "destination": "/immobilie/exklusive-terrassenwohnung-mit-privatem-garten-als-attraktive-kapitalanlage-recklinghausen-sls-7800-5587959/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/exklusives-penthouse-am-rosengarten-154-m%c2%b2-zwei-terrassen-attraktive-mieteinnahmen/",
+      "destination": "/immobilie/exklusives-penthouse-am-rosengarten-154-m-zwei-terrassen-und-bezugsfrei-ab-01-01-2027-recklinghausen-sls--3957609/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/exklusives-penthouse-am-rosengarten-154-m%c2%B2-zwei-terrassen-attraktive-mieteinnahmen/",
+      "destination": "/immobilie/exklusives-penthouse-am-rosengarten-154-m-zwei-terrassen-und-bezugsfrei-ab-01-01-2027-recklinghausen-sls--3957609/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/exklusives-penthouse-am-rosengarten-154-m%C2%b2-zwei-terrassen-attraktive-mieteinnahmen/",
+      "destination": "/immobilie/exklusives-penthouse-am-rosengarten-154-m-zwei-terrassen-und-bezugsfrei-ab-01-01-2027-recklinghausen-sls--3957609/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/exklusives-penthouse-am-rosengarten-154-m%C2%B2-zwei-terrassen-attraktive-mieteinnahmen/",
+      "destination": "/immobilie/exklusives-penthouse-am-rosengarten-154-m-zwei-terrassen-und-bezugsfrei-ab-01-01-2027-recklinghausen-sls--3957609/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/exklusives-wohnen-in-oberkassel-designwohnung-mit-privatterrasse-tiefgarage/",
+      "destination": "/referenz/exklusives-wohnen-in-oberkassel-designwohnung-mit-privatterrasse-tiefgarage-dusseldorf-3714125/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/exklusives-wohnportfolio-mit-30-einheiten-kapitalanlage-mit-sofortigem-mietsteigerungspotenzial/",
+      "destination": "/referenz/exklusives-wohnportfolio-mit-30-einheiten-kapitalanlage-mit-sofortigem-mietsteigerungspotenzial-oer-erken-2711210/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienfreundliche-doppelhaushaelfte-mit-garten-kamin-und-viel-potenzial/",
+      "destination": "/referenz/familienfreundliche-doppelhaushalfte-mit-garten-kamin-und-viel-potenzial-erkrath-4345901/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienfreundliche-doppelhaushaelfte-mit-viel-potenzial-in-dortmund-schueren/",
+      "destination": "/referenz/familienfreundliche-doppelhaushalfte-mit-viel-potenzial-in-dortmund-schuren-dortmund-4774092/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienfreundliches-reihenendhaus-mit-charme-und-raumgefuehl-split-level-trifft-bungalowstil/",
+      "destination": "/referenz/familienfreundliches-reihenendhaus-mit-charme-und-raumgefuhl-split-level-trifft-bungalowstil-dorsten-4090197/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienfreundliches-reihenhaus-mit-garten-in-ruhiger-spielstrasse-viel-platz-zum-wohlfuehlen/",
+      "destination": "/immobilie/familienfreundliches-reihenhaus-mit-garten-in-ruhiger-spielstrasse-viel-platz-zum-wohlfuhlen-lunen-sls-97-5922646/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienfreundliches-zuhause-mit-vielseitigen-nutzungsmoeglichkeiten/",
+      "destination": "/immobilie/familienfreundliches-zuhause-mit-vielseitigen-nutzungsmoglichkeiten-kamen-sls-7406-5520439/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienfreundliches-zweifamilienhaus-mit-grossem-garten-und-viel-potenzial/",
+      "destination": "/immobilie/familienfreundliches-zweifamilienhaus-mit-grossem-garten-und-viel-potenzial-recklinghausen-sls-402-2729450/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienglueck-oder-kapitalanlage-grosszuegiges-zweifamilienhaus-mit-charme-in-marl/",
+      "destination": "/referenz/familiengluck-oder-kapitalanlage-grosszugiges-zweifamilienhaus-mit-charme-in-marl-marl-3080199/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienhaus-mit-garten-garage-und-zusaetzlichem-raum-fuer-individuelle-nutzung/",
+      "destination": "/referenz/familienhaus-mit-garten-garage-und-zusatzlichem-raum-fur-individuelle-nutzung-selm-4818001/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienidyll-in-bottrop-reihenendhaus-in-sackgasse-grossem-garten-sauna-kamin-und-wohnkomfort/",
+      "destination": "/referenz/ruhige-sackgassenlage-in-bottrop-reihenendhaus-mit-grosszugigem-garten-sauna-und-kamin-bottrop-4503071/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienidylle-in-brueggen-helles-reihenendhaus-mit-garten-terrasse-und-viel-raum-zur-entfaltung/",
+      "destination": "/referenz/die-perfekte-chance-helle-familienimmobilie-im-herzen-von-bruggen-bruggen-5141778/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familienidylle-in-dortmund-mengede-freistehendes-einfamilienhaus-mit-traumgarten-und-top-anbindung/",
+      "destination": "/referenz/familienidylle-in-dortmund-mengede-freistehendes-einfamilienhaus-mit-traumgarten-und-top-anbindung-dortmu-2855928/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/familientaugliches-reihenmittelhaus-mit-garten-terrasse-garage-in-gefragter-lage-von-breitscheid/",
+      "destination": "/immobilie/familientaugliches-reihenmittelhaus-mit-garten-terrasse-garage-in-gefragter-lage-von-breitscheid-ratingen-5730182/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/freigezogene-25-zimmer-wohnung-mit-toller-aufteilung-balkon-und-optionaler-einbaukueche/",
+      "destination": "/referenz/freigezogene-2-5-zimmer-wohnung-mit-toller-aufteilung-balkon-und-optionaler-einbaukuche-dorsten-2426795/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/freigezogenes-mehrfamilienhaus-ensemble-mit-entwicklungspotenzial-und-flexiblen-moeglichkeiten/",
+      "destination": "/referenz/freigezogenes-mehrfamilienhaus-ensemble-mit-entwicklungspotenzial-und-flexiblen-moglichkeiten-bochum-2560004/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/freistehendes-einfamilienhaus-auf-baugrundstueck-erweiterungs-oder-neubaupotenzial/",
+      "destination": "/immobilie/freistehendes-einfamilienhaus-auf-baugrundstuck-erweiterungs-oder-neubaupotenzial-moers-sls-3867-4769244/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/freistehendes-einfamilienhaus-auf-neubau-niveau-in-meerbusch-mit-optionalem-baugrundstueck/",
+      "destination": "/immobilie/kernsaniertes-einfamilienhaus-mit-140-qm-wohn-und-nutzflache-in-meerbusch-mit-optionalem-baugrundstuck-me-5486088/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/freistehendes-einfamilienhaus-in-feldrandlage/",
+      "destination": "/immobilie/freistehendes-einfamilienhaus-in-feldrandlage-lichtdurchflutetes-wohnen-mit-garten-doppelgarage-bruggen-s-5609395/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/freistehendes-einfamilienhaus-mit-beeindruckendem-gartenbereich/",
+      "destination": "/referenz/freistehendes-einfamilienhaus-mit-beeindruckendem-gartenbereich-dorsten-5363489/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/fuer-den-gehobenen-geschmack-luxusanwesen-mit-einliegerwohnung-erweiterungsmoeglichkeiten/",
+      "destination": "/referenz/fur-den-gehobenen-geschmack-luxusanwesen-mit-einliegerwohnung-erweiterungsmoglichkeiten-juchen-holz-3630703/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ganz-oben-ganz-fuer-sich-5%e2%80%91zimmer%e2%80%91wohnung-mit-balkon-ueber-die-gesamte-breite-und-weitblick/",
+      "destination": "/referenz/ganz-oben-ganz-fur-sich-5-zimmer-wohnung-mit-balkon-uber-die-gesamte-breite-und-weitblick-dortmund-3618767/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ganz-oben-ganz-fuer-sich-5%e2%80%91zimmer%E2%80%91wohnung-mit-balkon-ueber-die-gesamte-breite-und-weitblick/",
+      "destination": "/referenz/ganz-oben-ganz-fur-sich-5-zimmer-wohnung-mit-balkon-uber-die-gesamte-breite-und-weitblick-dortmund-3618767/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ganz-oben-ganz-fuer-sich-5%E2%80%91zimmer%e2%80%91wohnung-mit-balkon-ueber-die-gesamte-breite-und-weitblick/",
+      "destination": "/referenz/ganz-oben-ganz-fur-sich-5-zimmer-wohnung-mit-balkon-uber-die-gesamte-breite-und-weitblick-dortmund-3618767/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ganz-oben-ganz-fuer-sich-5%E2%80%91zimmer%E2%80%91wohnung-mit-balkon-ueber-die-gesamte-breite-und-weitblick/",
+      "destination": "/referenz/ganz-oben-ganz-fur-sich-5-zimmer-wohnung-mit-balkon-uber-die-gesamte-breite-und-weitblick-dortmund-3618767/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/geborgen-leben-in-juechen-stilvolle-dhh-garten-studio-wellness/",
+      "destination": "/referenz/geborgen-leben-in-juchen-stilvolle-dhh-garten-studio-wellness-juchen-3725857/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gelegenheit-sanierungsbeduerftiges-haus-mit-potential-in-grevenbroich-neuenhausen/",
+      "destination": "/immobilie/gelegenheit-sanierungsbedurftiges-haus-mit-potential-in-grevenbroich-neuenhausen-grevenbroich-sls-6798-5433922/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gelegenheit-sanierungsobjekt-auf-schoenem-grundstueck-in-gewachsener-ortslage/",
+      "destination": "/immobilie/gelegenheit-sanierungsobjekt-auf-schonem-grundstuck-in-gewachsener-ortslage-dusseldorf-sls-7196-5487742/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gemuetliche-2-zimmerwohnung-in-hochparterre-duisburg-rheinhausen/",
+      "destination": "/referenz/gemutliche-2-zimmerwohnung-in-hochparterre-duisburg-rheinhausen-duisburg-4452108/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegte-3-zimmer-erdgeschosswohnung-mit-balkon-und-stellplatz/",
+      "destination": "/immobilie/gepflegte-3-zimmer-erdgeschosswohnung-mit-balkon-und-stellplatz-marl-sls-7375-5516614/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegte-4-zimmer-eigentumswohnung-mit-balkon-garage-und-stellplatz-in-recklinghausen/",
+      "destination": "/referenz/gepflegte-4-zimmer-eigentumswohnung-mit-balkon-garage-und-stellplatz-in-recklinghausen-recklinghausen-4793586/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegte-dachgeschosswohnung-mit-garage/",
+      "destination": "/referenz/gepflegte-dachgeschosswohnung-mit-garage-lunen-5279203/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegte-doppelhaushaelfte-mit-kamin-sonnigem-garten-und-garage-ideal-fuer-familien/",
+      "destination": "/referenz/gepflegte-doppelhaushalfte-mit-kamin-sonnigem-garten-und-garage-ideal-fur-familien-dorsten-2360909/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegte-erdgeschosswohnung-mit-balkon-in-marl/",
+      "destination": "/referenz/gepflegte-erdgeschosswohnung-mit-balkon-in-marl-marl-2566410/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegte-hochparterre-wohnung-mit-balkon-und-stellplatz-in-marl-sickingmuehle/",
+      "destination": "/referenz/gepflegte-hochparterre-wohnung-mit-balkon-und-stellplatz-in-marl-sickingmuhle-marl-2451239/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegtes-appartment-mit-mietgarantie-bis-ende-2027/",
+      "destination": "/referenz/gepflegtes-appartment-mit-mietgarantie-bis-ende-2027-bochum-3921484/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegtes-einfamilienhaus-mit-grossem-garten-viel-platz-und-potenzial-zur-individuellen-gestaltung/",
+      "destination": "/referenz/gepflegtes-einfamilienhaus-mit-grossem-garten-viel-platz-und-potenzial-zur-individuellen-gestaltung-dortm-3037502/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegtes-und-vollvermietetes-wohn-und-geschaeftshaus-in-zentraler-lage-der-wittener-innenstadt/",
+      "destination": "/referenz/gepflegtes-und-vollvermietetes-wohn-und-geschaftshaus-in-zentraler-lage-der-wittener-innenstadt-witten-2352221/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegtes-zweifamilienhaus-mit-grossem-garten-und-dachterrasse-in-ruhiger-lage-von-bergkamen/",
+      "destination": "/immobilie/gepflegtes-zweifamilienhaus-mit-grossem-garten-und-dachterrasse-in-ruhiger-lage-von-bergkamen-bergkamen-s-4818864/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/geraeumige-4-zimmer-eigentumswohnung-in-ruhiger-lage-von-waltrop/",
+      "destination": "/referenz/geraumige-4-zimmer-eigentumswohnung-in-ruhiger-lage-von-waltrop-waltrop-4923364/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/geraeumige-wohnung-fuer-eigennutzer-oder-investoren-mit-attraktiver-rendite/",
+      "destination": "/referenz/geraumige-wohnung-fur-eigennutzer-oder-investoren-mit-attraktiver-rendite-gelsenkirchen-4014521/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/geschmackvolle-doppelhaushaelfte-mit-ca-170-m%c2%b2-gesamtflaeche-und-idyllischem-garten-in-top-lage/",
+      "destination": "/referenz/geschmackvolle-doppelhaushalfte-mit-ca-170-m-gesamtflache-und-idyllischem-garten-in-top-lage-witten-2380407/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/geschmackvolle-doppelhaushaelfte-mit-ca-170-m%c2%B2-gesamtflaeche-und-idyllischem-garten-in-top-lage/",
+      "destination": "/referenz/geschmackvolle-doppelhaushalfte-mit-ca-170-m-gesamtflache-und-idyllischem-garten-in-top-lage-witten-2380407/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/geschmackvolle-doppelhaushaelfte-mit-ca-170-m%C2%b2-gesamtflaeche-und-idyllischem-garten-in-top-lage/",
+      "destination": "/referenz/geschmackvolle-doppelhaushalfte-mit-ca-170-m-gesamtflache-und-idyllischem-garten-in-top-lage-witten-2380407/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/geschmackvolle-doppelhaushaelfte-mit-ca-170-m%C2%B2-gesamtflaeche-und-idyllischem-garten-in-top-lage/",
+      "destination": "/referenz/geschmackvolle-doppelhaushalfte-mit-ca-170-m-gesamtflache-und-idyllischem-garten-in-top-lage-witten-2380407/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gestalten-sie-ihr-neues-zuhause-in-toplage-doppelhaushaelfte-mit-garten-und-potenzial-in-dortmund/",
+      "destination": "/referenz/gestalten-sie-ihr-neues-zuhause-in-toplage-doppelhaushalfte-mit-garten-und-potenzial-in-dortmund-dortmund-3622893/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gewerbeensemble-mit-langfristig-vermietetem-buerohauptgebaeude-und-entwicklungsperspektive/",
+      "destination": "/immobilie/gewerbeensemble-mit-langfristig-vermietetem-burohauptgebaude-und-entwicklungsperspektive-krefeld-sls-6982-5452229/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosse-maisonette-wohnung-mit-dachstudio-zwei-balkonen/",
+      "destination": "/referenz/grosse-maisonette-wohnung-mit-dachstudio-zwei-balkonen-juchen-3123568/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosses-baugrundstueck-fuer-ein-repraesentatives-einfamilienhaus-in-ruhiger-lage-von-dorsten-deuten/",
+      "destination": "/immobilie/grosses-baugrundstuck-fur-ein-reprasentatives-einfamilienhaus-in-ruhiger-lage-von-dorsten-deuten-dorsten--4514603/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegig-geschnitten-mit-loggia-dachgeschosswohnung-in-begehrter-lage/",
+      "destination": "/immobilie/grosszugig-geschnitten-mit-loggia-dachgeschosswohnung-in-begehrter-lage-dortmund-sls-9635-5912802/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegig-hell-und-bezugsfrei-ihr-neues-zuhause-in-bochum/",
+      "destination": "/referenz/grosszugig-hell-und-bezugsfrei-ihr-neues-zuhause-in-bochum-bochum-4860438/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-91-m%c2%b2-wohnung-mit-zwei-balkonen-guter-aufteilung-stellplatz-und-sicherem-mietverhaeltnis/",
+      "destination": "/immobilie/gut-aufgeteilt-lichtdurchflutet-und-komfortabel-mit-zwei-balkonen-raesfeld-sls-3184-4602621/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-91-m%c2%B2-wohnung-mit-zwei-balkonen-guter-aufteilung-stellplatz-und-sicherem-mietverhaeltnis/",
+      "destination": "/immobilie/gut-aufgeteilt-lichtdurchflutet-und-komfortabel-mit-zwei-balkonen-raesfeld-sls-3184-4602621/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-91-m%C2%b2-wohnung-mit-zwei-balkonen-guter-aufteilung-stellplatz-und-sicherem-mietverhaeltnis/",
+      "destination": "/immobilie/gut-aufgeteilt-lichtdurchflutet-und-komfortabel-mit-zwei-balkonen-raesfeld-sls-3184-4602621/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-91-m%C2%B2-wohnung-mit-zwei-balkonen-guter-aufteilung-stellplatz-und-sicherem-mietverhaeltnis/",
+      "destination": "/immobilie/gut-aufgeteilt-lichtdurchflutet-und-komfortabel-mit-zwei-balkonen-raesfeld-sls-3184-4602621/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-maisonette-in-gepflegter-wohnanlage-zwei-terrassen-inklusive/",
+      "destination": "/immobilie/grosszugige-maisonette-in-gepflegter-wohnanlage-zwei-terrassen-inklusive-dorsten-sls-6820-5438014/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-maisonette-mit-eigenem-garten-smart-home-und-flexiblem-wohnkonzept-auf-zwei-ebenen/",
+      "destination": "/immobilie/grosszugige-maisonette-mit-eigenem-garten-smart-home-und-flexiblem-wohnkonzept-auf-zwei-ebenen-haltern-am-5812358/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-maisonette-mit-eingebetteter-loggia-grossezuegigem-wohn-essbereich-und-zwei-baedern/",
+      "destination": "/immobilie/grosszugige-maisonette-mit-eingebetteter-loggia-grossezugigem-wohn-essbereich-und-zwei-badern-raesfeld-sl-4603204/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-maisonette-mit-loggia-studio-und-stellplatz-ideal-fuer-paare-oder-kleine-familien/",
+      "destination": "/referenz/grosszugige-maisonette-mit-loggia-studio-und-stellplatz-ideal-fur-paare-oder-kleine-familien-raesfeld-3162640/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-maisonettewohnung-mit-zwei-baedern-und-aussergewoehnlichem-balkon/",
+      "destination": "/referenz/grosszugige-maisonettewohnung-mit-zwei-badern-und-aussergewohnlichem-balkon-oer-erkenschwick-4587350/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiger-bungalow-am-feldrand-mit-ueber-200-m%c2%b2-wohnflaeche-kamin-garten-und-wertiger-ausstattung/",
+      "destination": "/referenz/grosszugiger-bungalow-am-feldrand-mit-uber-200-m-wohnflache-kamin-garten-und-wertiger-ausstattung-dorsten-3016674/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiger-bungalow-am-feldrand-mit-ueber-200-m%c2%B2-wohnflaeche-kamin-garten-und-wertiger-ausstattung/",
+      "destination": "/referenz/grosszugiger-bungalow-am-feldrand-mit-uber-200-m-wohnflache-kamin-garten-und-wertiger-ausstattung-dorsten-3016674/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiger-bungalow-am-feldrand-mit-ueber-200-m%C2%b2-wohnflaeche-kamin-garten-und-wertiger-ausstattung/",
+      "destination": "/referenz/grosszugiger-bungalow-am-feldrand-mit-uber-200-m-wohnflache-kamin-garten-und-wertiger-ausstattung-dorsten-3016674/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiger-bungalow-am-feldrand-mit-ueber-200-m%C2%B2-wohnflaeche-kamin-garten-und-wertiger-ausstattung/",
+      "destination": "/referenz/grosszugiger-bungalow-am-feldrand-mit-uber-200-m-wohnflache-kamin-garten-und-wertiger-ausstattung-dorsten-3016674/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiger-bungalow-in-kaarster-toplage-viel-raum-zwei-wohnbereiche-und-garten-fuer-die-familie/",
+      "destination": "/immobilie/grosszugiger-bungalow-in-kaarster-toplage-viel-raum-zwei-wohnbereiche-und-garten-fur-die-familie-kaarst-s-3666884/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiger-bungalow-mit-einliegerwohnung-und-garten-ihr-perfektes-zuhause/",
+      "destination": "/referenz/grosszugiger-bungalow-mit-einliegerwohnung-und-garten-ihr-perfektes-zuhause-bochum-2517266/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiger-bungalow-mit-traumhaftem-garten-und-lichtdurchflutetem-wohnbereich/",
+      "destination": "/immobilie/grosszugiger-bungalow-mit-traumhaftem-garten-und-lichtdurchflutetem-wohnbereich-dorsten-sls-2520-4415899/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-einfamilienhaus-mit-7-zimmern-ausbaureserve-und-zwei-garagen/",
+      "destination": "/referenz/grosszugiges-einfamilienhaus-mit-7-zimmern-ausbaureserve-und-zwei-garagen-recklinghausen-4412208/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-familienanwesen-in-gefragter-lage-wohnen-und-einnahmen-kombinieren/",
+      "destination": "/immobilie/grosszugiges-familienanwesen-in-gefragter-lage-wohnen-und-einnahmen-kombinieren-gladbeck-sls-4960-5018316/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-wohnen-auf-188-m%c2%b2-in-sasserath-bauhaus-charakter-trifft-privatsphaere/",
+      "destination": "/referenz/grosszugiges-wohnen-auf-188-m-in-sasserath-monchengladbach-5360672/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-wohnen-auf-188-m%c2%B2-in-sasserath-bauhaus-charakter-trifft-privatsphaere/",
+      "destination": "/referenz/grosszugiges-wohnen-auf-188-m-in-sasserath-monchengladbach-5360672/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-wohnen-auf-188-m%C2%b2-in-sasserath-bauhaus-charakter-trifft-privatsphaere/",
+      "destination": "/referenz/grosszugiges-wohnen-auf-188-m-in-sasserath-monchengladbach-5360672/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-wohnen-auf-188-m%C2%B2-in-sasserath-bauhaus-charakter-trifft-privatsphaere/",
+      "destination": "/referenz/grosszugiges-wohnen-auf-188-m-in-sasserath-monchengladbach-5360672/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-wohnen-mit-garten-wintergarten-sauna-und-viel-raum-fuer-die-familie/",
+      "destination": "/immobilie/grosszugiges-wohnen-mit-garten-wintergarten-sauna-und-viel-raum-fur-die-familie-dortmund-sls-2874-4519111/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-wohnen-mit-traumhaftem-garten-und-einliegerwohnung-in-dortmund-kirchhoerde/",
+      "destination": "/immobilie/grosszugiges-wohnen-mit-traumhaftem-garten-und-einliegerwohnung-in-dortmund-kirchhorde-dortmund-sls-5199-5059778/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-wohngefuehl-im-herzen-von-willich-ihr-komfortables-1-og-zuhause-mit-balkon/",
+      "destination": "/referenz/grosszugiges-wohngefuhl-im-herzen-von-willich-ihr-komfortables-1-og-zuhause-mit-balkon-willich-4500532/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegiges-zweifamilienhaus-mit-garten-in-duisburg-neumuehl/",
+      "destination": "/referenz/grosszugiges-zweifamilienhaus-mit-garten-in-duisburg-neumuhl-duisburg-4409096/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grundsolide-3-zimmer-eigentumswohnung-mit-grossem-balkon-fuer-eigennutzer-oder-kapitalanleger/",
+      "destination": "/referenz/grundsolide-3-zimmer-eigentumswohnung-mit-grossem-balkon-fur-eigennutzer-oder-kapitalanleger-hagen-5577935/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/gut-geschnittene-etagenwohnung-mit-aufzug-und-fernwaerme/",
+      "destination": "/referenz/gut-geschnittene-etagenwohnung-mit-aufzug-und-fernwarme-gladbeck-4131644/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/helle-1-zimmer-weg-mit-dachterrasse-in-mg-perfekt-fuer-singles-studenten-oder-kapitalanleger/",
+      "destination": "/referenz/studenten-singles-aufgepasst-gunstig-energieeffizient-mit-dachterrasse-monchengladbach-3690879/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/helle-3-zimmer-eigentumswohnung-in-familienfreundlicher-lage-von-juechen/",
+      "destination": "/referenz/ideale-3-zimmer-wohnung-fur-starter-und-fortgeschrittene-in-ruhiger-lage-juchen-3848451/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/helle-3-zimmer-wohnung-mit-garage-sofort-bezugsfrei-in-ruhiger-lage/",
+      "destination": "/referenz/helle-3-zimmer-wohnung-mit-garage-sofort-bezugsfrei-in-ruhiger-lage-neuss-3876725/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/helle-3-zimmerwohnung-mit-balkon-im-2-og-duisburg-rheinhausen/",
+      "destination": "/referenz/helle-3-zimmerwohnung-mit-balkon-im-2-og-duisburg-rheinhausen-duisburg-4452141/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/helle-eigentumswohnung-mit-balkon-garage-und-stellplatz-in-ruhiger-und-zentraler-lage/",
+      "destination": "/referenz/helle-eigentumswohnung-mit-balkonen-garage-und-stellplatz-in-ruhiger-und-zentraler-lage-witten-2653173/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/hellegrosszuegige-und-doch-gemuetliche-dachgeschosswohnung-mit-loggia-in-ratingen/",
+      "destination": "/immobilie/helle-grosszugige-und-doch-gemutliche-dachgeschosswohnung-mit-loggia-in-ratingen-ratingen-sls-3111-4592656/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/helles-apartment-mit-grosser-sonnenloggia-in-kaarst-ost/",
+      "destination": "/referenz/helles-apartment-mit-grosser-sonnenloggia-in-kaarst-ost-kaarst-4798959/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/historische-jugendstilvilla-mit-grosszuegigem-raumangebot-in-muenster-wolbeck/",
+      "destination": "/immobilie/historische-jugendstilvilla-mit-grosszugigem-raumangebot-in-munster-wolbeck-munster-sls-3597-4727367/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/historischer-charme-trifft-luxus-maisonette-mit-ausblick-dachterrasse-neubaukomfort/",
+      "destination": "/immobilie/grosszugige-maisonette-wohnung-mit-dachterrasse-und-naturblick-in-meerbusch-meerbusch-sls-6819-5437911/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/historischer-charme-trifft-rendite-sechs-wohneinheiten-und-entwicklungspotenzial/",
+      "destination": "/immobilie/6-wohneinheiten-8-23-ist-rendite-mit-entwicklungspotenzial-mit-bis-zu-9-23-soll-rendite-recklinghausen-sl-5463221/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/historischer-sanierter-3-seitenhof-mit-reitplatz-und-5-pferdeboxen-idyllisch-in-kempen-tonisberg/",
+      "destination": "/immobilie/wohn-und-gewerbeanwesen-mit-aussergewohnlichen-nutzungsmoglichkeiten-idyllisch-in-kempen-tonisberg-kempen-4718788/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/historisches-anwesen-mit-fachwerk-bachlauf-parkaehnlichem-grundstueck-und-vielseitigen-moeglichkeiten/",
+      "destination": "/immobilie/historisches-anwesen-mit-fachwerk-bachlauf-parkahnlichem-grundstuck-und-vielseitigen-moglichkeiten-ennepe-4749582/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/historisches-fachwerkhaus-mit-eigenem-waldgrundstueck-und-aussergewoehnlicher-privatsphaere/",
+      "destination": "/referenz/historisches-fachwerkhaus-mit-eigenem-waldgrundstuck-und-aussergewohnlicher-privatsphare-witten-5269192/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/historisches-fachwerkhaus-mit-grossem-entwicklungspotenzial-in-zentraler-lage/",
+      "destination": "/immobilie/historisches-fachwerkhaus-mit-grossem-entwicklungspotenzial-in-zentraler-lage-werne-sls-6591-5392438/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/historisches-wohnensemble-mit-vielseitigen-nutzungsmoeglichkeiten/",
+      "destination": "/immobilie/historisches-wohnensemble-mit-vielseitigen-nutzungsmoglichkeiten-bochum-sls-4777-4945946/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/hoch-hinaus-stilvolle-2-zimmer-wohnung-mit-balkon-und-tg-stellplatz-in-neuss-holzheim/",
+      "destination": "/referenz/komplett-modernisierte-2-zimmerwohnung-mit-tg-wartet-auf-sie-neuss-3635151/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/hochmodern-sanierte-etagenwohnung-mit-weitblick-attraktiv-fuer-selbstnutzer-und-kapitalanleger/",
+      "destination": "/referenz/hochmodern-sanierte-etagenwohnung-mit-weitblick-attraktiv-fur-selbstnutzer-und-kapitalanleger-oberhausen-4353335/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/hochwertiges-einfamilienhaus-mit-pool-sauna-weitlaeufigem-garten-terrassenflaechen-und-doppelgarage/",
+      "destination": "/referenz/hochwertiges-einfamilienhaus-mit-pool-sauna-weitlaufigem-garten-terrassenflachen-und-doppelgarage-ruthen-4897308/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ideale-familienwohnung-mit-neuw-kueche-zentral-in-moenchengladbach/",
+      "destination": "/referenz/4-zimmer-ideale-familienwohnung-mit-neuw-kuche-zentral-in-monchengladbach-monchengladbach-3592067/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ihr-neues-zuhause-mit-charakter-einfamilienhaus-in-begehrter-wohnlage/",
+      "destination": "/immobilie/ihr-neues-zuhause-mit-charakter-einfamilienhaus-in-begehrter-wohnlage-dortmund-sls-6682-5414617/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ihr-platz-fuer-die-zukunft-baugrundstueck-in-ruhiger-sackgassenlage-von-recklinghausen/",
+      "destination": "/immobilie/ihr-platz-fur-die-zukunft-baugrundstuck-in-ruhiger-sackgassenlage-von-recklinghausen-recklinghausen-sls-2-4497047/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ihr-platz-im-gruenen-ca-900-m%c2%b2-fuer-ein-einfamilienhaus-am-ende-der-haeuserreihe/",
+      "destination": "/immobilie/ihr-platz-im-grunen-ca-900-m-fur-ein-einfamilienhaus-am-ende-der-hauserreihe-witten-sls-10365-6176058/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ihr-platz-im-gruenen-ca-900-m%c2%B2-fuer-ein-einfamilienhaus-am-ende-der-haeuserreihe/",
+      "destination": "/immobilie/ihr-platz-im-grunen-ca-900-m-fur-ein-einfamilienhaus-am-ende-der-hauserreihe-witten-sls-10365-6176058/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ihr-platz-im-gruenen-ca-900-m%C2%b2-fuer-ein-einfamilienhaus-am-ende-der-haeuserreihe/",
+      "destination": "/immobilie/ihr-platz-im-grunen-ca-900-m-fur-ein-einfamilienhaus-am-ende-der-hauserreihe-witten-sls-10365-6176058/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ihr-platz-im-gruenen-ca-900-m%C2%B2-fuer-ein-einfamilienhaus-am-ende-der-haeuserreihe/",
+      "destination": "/immobilie/ihr-platz-im-grunen-ca-900-m-fur-ein-einfamilienhaus-am-ende-der-hauserreihe-witten-sls-10365-6176058/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ihr-repraesentativer-kanzlei-oder-unternehmenssitz-im-herzen-der-burggemeinde-brueggen/",
+      "destination": "/immobilie/ihr-reprasentativer-kanzlei-oder-unternehmenssitz-im-herzen-der-burggemeinde-bruggen-bruggen-sls-10109-6138947/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/innenhof-statt-strasse-charakterstarkes-hofhaus-mit-vielseitiger-nutzung/",
+      "destination": "/referenz/fur-macher-kreative-wohnen-arbeiten-kurzzeitmiete-alles-ist-moglich-wegberg-klinkum-4814858/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/investieren-in-wohnqualitaet-maisonettewohnung-mit-dachterrasse-und-stabiler-vermietung/",
+      "destination": "/immobilie/reduiziert-investieren-in-qualitat-maisonettewohnung-mit-dachterrasse-monchengladbach-sls-6962-5450418/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/investieren-mit-perspektive-wohnung-plus-entwicklungspotential-in-wuppertal/",
+      "destination": "/referenz/investieren-mit-perspektive-wohnung-plus-entwicklungspotential-in-wuppertal-wuppertal-5125024/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/investieren-sanieren-profitieren-mehrfamilienhaus-mit-grossem-grundstueck-in-gladbeck/",
+      "destination": "/referenz/investieren-sanieren-profitieren-mehrfamilienhaus-mit-grossem-grundstuck-in-gladbeck-gladbeck-3162427/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/kapitalanlage-mit-fuenf-wohneinheiten-ausgebautem-dachgeschoss-und-langfristigen-mieteinnahmen/",
+      "destination": "/referenz/kapitalanlage-mit-funf-wohneinheiten-ausgebautem-dachgeschoss-und-langfristigen-mieteinnahmen-witten-5423257/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/kapitalanlage-mit-substanz-sicherheit-und-entwicklungschance-in-heiligenhaus/",
+      "destination": "/referenz/kapitalanlage-mit-substanz-sicherheit-und-entwicklungschance-in-heiligenhaus-heiligenhaus-4569273/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/kapitalanlage-mit-vier-wohneinheiten-laufenden-mieteinnahmen-und-weiterem-entwicklungspotenzial/",
+      "destination": "/referenz/kapitalanlage-mit-vier-wohneinheiten-laufenden-mieteinnahmen-und-weiterem-entwicklungspotenzial-witten-5423269/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/kernsaniertes-dreifamilienhaus-mit-sofortigen-mieteinnahmen-und-nachhaltigen-ertragsperspektiven/",
+      "destination": "/immobilie/kernsaniertes-dreifamilienhaus-mit-sofortigen-mieteinnahmen-und-nachhaltigen-ertragsperspektiven-dorsten--3671267/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/kleines-zuhause-mit-grossem-garten-gepflegtes-reihenendhaus-mit-perspektive/",
+      "destination": "/referenz/kleines-zuhause-mit-grossem-garten-gepflegtes-reihenendhaus-mit-perspektive-dortmund-4421959/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/komfort-mit-gartenflair-grosszuegige-erdgeschosswohnung-in-ruhiger-lage-von-herten-erbbaurecht/",
+      "destination": "/referenz/komfort-mit-gartenflair-grosszugige-erdgeschosswohnung-in-ruhiger-lage-von-herten-erbbaurecht-herten-3111436/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/kompakt-modern-sofort-bezugsbereit-und-stellplatz-vor-der-tuer/",
+      "destination": "/immobilie/kompakt-modern-sofort-bezugsbereit-und-stellplatz-vor-der-tur-lunen-sls-6975-5451236/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/kompakte-2-zimmer-wohnung-mit-entwicklungspotenzial-in-gladbeck/",
+      "destination": "/referenz/leerstehende-2-zimmer-wohnung-mit-potenzial-fur-ihre-nachste-investition-gladbeck-4791169/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/kompaktes-1-zimmer-appartment-mit-entwicklungspotenzial-in-gepflegter-wohnlage-in-oberhausen/",
+      "destination": "/referenz/kompaktes-1-zimmer-appartment-mit-entwicklungspotenzial-in-gepflegter-wohnlage-in-oberhausen-oberhausen-5495048/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/landhauscharme-und-raum-fuer-ideen-ein-stueck-geschichte-mit-platz-fuer-neue-kapitel/",
+      "destination": "/referenz/landhauscharme-und-raum-fur-ideen-ein-stuck-geschichte-mit-platz-fur-neue-kapitel-datteln-4313924/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/licht-stil-und-ein-hauch-von-nostalgie-wohnen-am-wasser-in-marl/",
+      "destination": "/referenz/licht-stil-und-ein-hauch-von-nostalgie-wohnen-am-wasser-in-marl-marl-3193456/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/lichtdurchflutete-dachgeschosswohnung-mit-balkon-und-garage-in-gepflegtem-haus/",
+      "destination": "/referenz/lichtdurchflutete-dachgeschosswohnung-mit-balkon-und-garage-in-gepflegtem-haus-castrop-rauxel-3623363/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/lichtdurchflutete-dachgeschosswohnung-mit-sonnigem-balkon-stellplatz/",
+      "destination": "/referenz/lichtdurchflutete-dachgeschosswohnung-mit-sonnigem-balkon-stellplatz-wuppertal-4889817/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/lichtdurchflutete-maisonettewohnung-mit-sonnenbalkon-stellplatz-im-herzen-von-buederich/",
+      "destination": "/immobilie/lichtdurchflutete-maisonettewohnung-mit-sonnenbalkon-stellplatz-im-herzen-von-buderich-meerbusch-sls-7130-5478764/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/lichtdurchflutete-wohnung-mit-balkon-offenem-wohnen-stellplatz-und-langfristig-gesicherter-miete/",
+      "destination": "/immobilie/lichtdurchflutete-wohnung-mit-balkon-offenem-wohnen-stellplatz-und-langfristig-gesicherter-miete-raesfeld-4600261/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/luftiger-galerie-flair-moderne-maisonette-mit-hochwertiger-einbaukueche-und-tiefgaragenstellplatz/",
+      "destination": "/referenz/helles-wohngefuhl-auf-zwei-ebenen-maisonette-mit-hochwertiger-kuche-und-tiefgaragenstellplatz-viersen-4892084/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/lukratives-investment-4-mehrfamilienhaeuser-20-wohneinheiten-34-garagen/",
+      "destination": "/referenz/lukratives-investment-4-mehrfamilienhauser-20-wohneinheiten-34-garagen-bochum-2271475/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/lukratives-investment-vollvermietetes-wohn-und-geschaeftshaus-in-einkaufsstrasse-von-luetgendortmund/",
+      "destination": "/referenz/lukratives-investment-vollvermietetes-wohn-und-geschaftshaus-in-einkaufsstrasse-von-lutgendortmund-dortmu-2457306/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/luxurioes-kernsaniertes-anwesen-mit-pool-wellnessbereich-und-nachhaltiger-energietechnik/",
+      "destination": "/referenz/luxurios-kernsaniertes-anwesen-mit-pool-wellnessbereich-und-nachhaltiger-energietechnik-krefeld-4946194/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/maisonette-mit-blick-in-den-himmel-zwei-ebenen-balkon-und-tiefgarage-in-ruhiger-wohnanlage/",
+      "destination": "/referenz/maisonette-mit-blick-in-den-himmel-zwei-ebenen-balkon-und-tiefgarage-in-ruhiger-wohnanlage-meerbusch-3682227/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/maisonette-mit-charme-modernes-wohnen-auf-zwei-ebenen/",
+      "destination": "/immobilie/maisonette-mit-charme-modernes-wohnen-auf-zwei-ebenen-rosrath-sls-7436-5526602/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/mehr-raum-als-gedacht-reiheneckhaus-mit-offenem-wohnen-wintergarten-garten-und-pool/",
+      "destination": "/referenz/mehr-raum-als-gedacht-reiheneckhaus-mit-offenem-wohnen-wintergarten-garten-und-pool-bochum-3773524/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/mehrfamiliehaus-5-wohneinheiten-in-wuppertal-langerfeld/",
+      "destination": "/immobilie/mehrfamiliehaus-5-wohneinheiten-in-wuppertal-langerfeld-wuppertal-sls-6197-5294649/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/mehrfamilienhaus-mit-7-wohneinheiten-entwicklungspotenzial-und-attraktivem-mietsteigerungsspielraum/",
+      "destination": "/referenz/mehrfamilienhaus-mit-7-wohneinheiten-entwicklungspotenzial-und-attraktivem-mietsteigerungsspielraum-gladb-5031718/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/mehrfamilienhaus-mit-grosser-erdgeschosswohnung-und-garten/",
+      "destination": "/referenz/mehrfamilienhaus-mit-grosser-erdgeschosswohnung-und-garten-recklinghausen-3601571/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/mehrfamilienhaus-mit-sieben-wohneinheiten-neun-garagen-und-zusaetzlichem-mietsteigerungspotenzial/",
+      "destination": "/referenz/mehrfamilienhaus-mit-sieben-wohneinheiten-neun-garagen-und-zusatzlichem-mietsteigerungspotenzial-witten-5423265/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modern-wohnen-langfristig-investieren-attraktive-dachgeschosswohnung-mit-drei-zimmern/",
+      "destination": "/immobilie/modern-wohnen-langfristig-investieren-attraktive-dachgeschosswohnung-mit-drei-zimmern-essen-sls-7744-5400227/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/moderne-2-zimmer-wohnung-mit-suedbalkon-garage-in-ruhiger-sackgassenlage/",
+      "destination": "/referenz/moderne-2-zimmer-wohnung-mit-sudbalkon-garage-in-ruhiger-sackgassenlage-wuppertal-5033628/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/moderne-doppelhaushaelfte-mit-smart-home-kamin-garten-hochwertig-ausgestattet/",
+      "destination": "/referenz/modernes-wohnen-mit-smart-home-kamin-garten-hochwertig-ausgestattete-doppelhaushalfte-castrop-rauxel-4786652/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/moderne-etagenwohnung-in-leverkusen-opladen/",
+      "destination": "/referenz/moderne-etagenwohnung-in-leverkusen-opladen-leverkusen-2339694/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/moderne-maisonette-mit-balkon-stellplatz-privatem-eingang-und-offenem-grundriss-in-ruhiger-lage/",
+      "destination": "/referenz/moderne-maisonette-mit-balkon-stellplatz-privatem-eingang-und-offenem-grundriss-in-ruhiger-lage-raesfeld-4591285/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernes-2-zimmer-apartment-mit-dachterrasse-und-tg-stellplatz-am-jroene-meerke/",
+      "destination": "/referenz/modernes-2-zimmer-apartment-mit-dachterrasse-und-tg-stellplatz-am-jrone-meerke-neuss-3735418/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernes-einfamilienhaus-mit-terrasse-und-garage-in-ruhiger-wohnlage/",
+      "destination": "/referenz/modernes-einfamilienhaus-mit-terrasse-und-garage-in-ruhiger-wohnlage-herten-4025215/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernes-einfamilienhaus-mit-viel-licht-und-wohnkomfort/",
+      "destination": "/immobilie/modernes-einfamilienhaus-mit-viel-licht-und-wohnkomfort-bergkamen-sls-9531-5897540/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernes-wohnen-auf-kompaktem-raum-stilvolle-erdgeschosswohnung-mit-blick-ins-gruene/",
+      "destination": "/immobilie/modernes-wohnen-auf-kompaktem-raum-stilvolle-erdgeschosswohnung-mit-blick-ins-grune-oberhausen-sls-6764-5424786/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernes-wohngefuehl-auf-zwei-ebenen-maisonette-mit-separatem-schlafbereich/",
+      "destination": "/immobilie/modernes-wohngefuhl-auf-zwei-ebenen-maisonette-mit-separatem-schlafbereich-oer-erkenschwick-sls-6489-5373808/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisiert-mit-charakter-bereit-fuer-neue-wohntraeume-auf-grosszuegigem-grundstueck/",
+      "destination": "/immobilie/modernisiert-mit-charakter-bereit-fur-neue-wohntraume-auf-grosszugigem-grundstuck-gladbeck-sls-9828-5933951/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisiert-ruhig-gelegen-sofort-wohlfuehlen-stilvolle-2-zimmer-wohnung-mit-huebscher-loggia/",
+      "destination": "/referenz/modernisiert-ruhig-gelegen-sofort-wohlfuhlen-stilvolle-2-zimmer-wohnung-mit-hubscher-loggia-monchengladba-5140600/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisierte-2-zimmer-wohnung-mit-balkon-und-aufzug-urbanes-wohnen-in-duesseldorf-friedrichstadt/",
+      "destination": "/immobilie/modernisierte-2-zimmer-wohnung-mit-balkon-und-aufzug-urbanes-wohnen-in-dusseldorf-friedrichstadt-dusseldo-6236933/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisierte-3-zimmer-wohnung-in-ruhigem-haus-mit-gartenoption-und-einbaukueche/",
+      "destination": "/referenz/modernisierte-3-zimmer-wohnung-in-ruhigem-haus-mit-gartenoption-und-einbaukuche-herne-3121103/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisierte-eigentumswohnung-mit-balkon-ideal-fuer-eigennutzer-und-kapitalanleger/",
+      "destination": "/immobilie/modernisierte-eigentumswohnung-mit-balkon-ideal-fur-eigennutzer-und-kapitalanleger-essen-sls-7215-5490231/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisierte-gut-geschnittene-eigentumswohnung-mit-loggia-und-garage/",
+      "destination": "/referenz/modernisierte-gut-geschnittene-eigentumswohnung-mit-loggia-und-garage-herne-4725751/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisierter-bungalow-in-oberhausen-alsfeld/",
+      "destination": "/immobilie/wohnen-mit-freiraum-modernisierter-bungalow-mit-vielseitig-nutzbarem-souterrain-oberhausen-sterkrade-sls--5209940/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisiertes-einfamilienhaus-mit-wintergarten-pv-anlage-wallbox-in-ruhiger-lage-von-datteln/",
+      "destination": "/referenz/modernisiertes-einfamilienhaus-mit-wintergarten-pv-anlage-wallbox-in-ruhiger-lage-von-datteln-datteln-4768953/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisiertes-reiheneckhaus-mit-grossem-eckgrundstueck-2-garagen/",
+      "destination": "/referenz/modernisiertes-reiheneckhaus-mit-grossem-eckgrundstuck-2-garagen-bergkamen-4790618/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisiertes-reihenmittelhaus-mit-garten-und-zwei-garagen-auf-staedtischem-erbpachtgrundstueck/",
+      "destination": "/referenz/modernisiertes-reihenmittelhaus-mit-garten-und-zwei-garagen-auf-stadtischem-erbpachtgrundstuck-recklingha-2511653/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/modernisiertes-zuhause-fuer-familien-bezugsfertig-und-mit-neuem-wohlfuehlcharakter-auf-zwei-ebenen/",
+      "destination": "/referenz/modernisiertes-zuhause-fur-familien-bezugsfertig-und-mit-neuem-wohlfuhlcharakter-auf-zwei-ebenen-bochum-4515522/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/nach-weg-aufgeteiltes-mehrfamilienhaus-in-duesseldorf-friedrichstadt/",
+      "destination": "/immobilie/nach-weg-aufgeteiltes-mehrfamilienhaus-in-dusseldorf-friedrichstadt-dusseldorf-sls-3062-4584479/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/naturnah-wohnen-moderne-erdgeschosswohnung-mit-kleinem-garten-zwei-terrassen-und-viel-licht/",
+      "destination": "/referenz/naturnah-wohnen-moderne-erdgeschosswohnung-mit-kleinem-garten-zwei-terrassen-und-viel-licht-dorsten-4110411/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/neuwertige-dachgeschosswohnung-in-remscheid-modern-wohnen-nachhaltig-investieren/",
+      "destination": "/immobilie/neuwertige-dachgeschosswohnung-in-remscheid-modern-wohnen-nachhaltig-investieren-remscheid-sls-3916-4776967/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/neuwertiges-reihenhaus-in-weg-anlage-mit-garten-in-korschenbroich/",
+      "destination": "/referenz/neuwertiges-reihenhaus-in-weg-anlage-mit-garten-in-korschenbroich-korschenbroich-4896804/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/platz-fuer-alle-grosszuegiges-haus-mit-garten-flexibel-als-einfamilien-oder-mehrgenerationenhaus/",
+      "destination": "/referenz/platz-fur-alle-grosszugiges-haus-mit-garten-flexibel-als-einfamilien-oder-mehrgenerationenhaus-dorsten-2624735/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/potenzial-trifft-raum-einzigartiges-grundstueck-mit-sanierungsbeduerftigem-bestand-in-recklinghausen/",
+      "destination": "/referenz/potenzial-trifft-raum-einzigartiges-grundstuck-mit-sanierungsbedurftigem-bestand-in-recklinghausen-reckli-4784949/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/provisionsfrei-historisches-wohn-und-geschaeftshaus-mit-drei-wohneinheiten-und-gastronomieflaeche/",
+      "destination": "/immobilie/provisionsfrei-historisches-wohn-und-geschaftshaus-mit-drei-wohneinheiten-und-gastronomieflache-witten-sl-4776043/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/provisionsfrei-vier-zimmer-zwei-ebenen-ein-zuhause-renovierte-maisonette-mit-dachloggia-garage/",
+      "destination": "/immobilie/provisionsfrei-vier-zimmer-zwei-ebenen-ein-zuhause-renovierte-maisonette-mit-dachloggia-garage-witten-sls-5644481/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/raum-fuer-ihr-neues-zuhause-ca-900-m%c2%b2-grundstueck-in-sackgasse-fuer-ein-freistehendes-einfamilienhaus/",
+      "destination": "/immobilie/raum-fur-ihr-neues-zuhause-ca-900-m-grundstuck-in-sackgasse-fur-ein-freistehendes-einfamilienhaus-witten--6158199/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/raum-fuer-ihr-neues-zuhause-ca-900-m%c2%B2-grundstueck-in-sackgasse-fuer-ein-freistehendes-einfamilienhaus/",
+      "destination": "/immobilie/raum-fur-ihr-neues-zuhause-ca-900-m-grundstuck-in-sackgasse-fur-ein-freistehendes-einfamilienhaus-witten--6158199/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/raum-fuer-ihr-neues-zuhause-ca-900-m%C2%b2-grundstueck-in-sackgasse-fuer-ein-freistehendes-einfamilienhaus/",
+      "destination": "/immobilie/raum-fur-ihr-neues-zuhause-ca-900-m-grundstuck-in-sackgasse-fur-ein-freistehendes-einfamilienhaus-witten--6158199/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/raum-fuer-ihr-neues-zuhause-ca-900-m%C2%B2-grundstueck-in-sackgasse-fuer-ein-freistehendes-einfamilienhaus/",
+      "destination": "/immobilie/raum-fur-ihr-neues-zuhause-ca-900-m-grundstuck-in-sackgasse-fur-ein-freistehendes-einfamilienhaus-witten--6158199/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reihenendhaus-mit-wintergarten-hochwertigem-bad-und-offenem-wohnbereich-mit-mehreren-terrassen/",
+      "destination": "/referenz/reihenendhaus-mit-wintergarten-hochwertigem-bad-und-offenem-wohnbereich-mit-mehreren-terrassen-marl-2655715/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reihenhaus-mit-wertsteigerungspotenzial-und-entwicklungsspielraum/",
+      "destination": "/immobilie/reihenhaus-mit-wertsteigerungspotenzial-und-entwicklungsspielraum-kamen-sls-4880-4962988/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reihenmittelhaus-mit-ausbaupotenzial-und-garage-in-ruhiger-wohnlage/",
+      "destination": "/referenz/reihenmittelhaus-mit-ausbaupotenzial-und-garage-in-ruhiger-wohnlage-gladbeck-3613311/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reihenmittelhaus-mit-ca-133-m%c2%b2-wohnflaeche-drei-ebenen-keller-und-ausgebautem-spitzboden/",
+      "destination": "/referenz/reihenmittelhaus-mit-ca-133-m-wohnflache-drei-ebenen-keller-und-ausgebautem-spitzboden-holzwickede-3895831/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reihenmittelhaus-mit-ca-133-m%c2%B2-wohnflaeche-drei-ebenen-keller-und-ausgebautem-spitzboden/",
+      "destination": "/referenz/reihenmittelhaus-mit-ca-133-m-wohnflache-drei-ebenen-keller-und-ausgebautem-spitzboden-holzwickede-3895831/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reihenmittelhaus-mit-ca-133-m%C2%b2-wohnflaeche-drei-ebenen-keller-und-ausgebautem-spitzboden/",
+      "destination": "/referenz/reihenmittelhaus-mit-ca-133-m-wohnflache-drei-ebenen-keller-und-ausgebautem-spitzboden-holzwickede-3895831/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reihenmittelhaus-mit-ca-133-m%C2%B2-wohnflaeche-drei-ebenen-keller-und-ausgebautem-spitzboden/",
+      "destination": "/referenz/reihenmittelhaus-mit-ca-133-m-wohnflache-drei-ebenen-keller-und-ausgebautem-spitzboden-holzwickede-3895831/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reihenmittelhaus-mit-grossem-entwicklungspotenzial-in-ruhiger-wohnlage/",
+      "destination": "/referenz/reihenmittelhaus-mit-grossem-entwicklungspotenzial-in-ruhiger-wohnlage-waltrop-4926521/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reihenmittelhaus-mit-grosszuegigem-platzangebot-ausgebautem-dachgeschoss-guenstige-erbpacht/",
+      "destination": "/referenz/reihenmittelhaus-mit-grosszugigem-platzangebot-ausgebautem-dachgeschoss-gunstige-erbpacht-dorsten-5478364/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/renditestarkes-mehrfamilienhaus-mit-16-wohnungen-7-garagen-und-laufender-neuvermietung/",
+      "destination": "/immobilie/renditestarkes-mehrfamilienhaus-mit-16-wohnungen-7-garagen-und-laufender-neuvermietung-witten-sls-5795-5222102/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/renovierte-2-zimmer-eigentumswohnung-in-beliebter-lage-von-hagen-emst/",
+      "destination": "/referenz/renovierte-2-zimmer-eigentumswohnung-in-beliebter-lage-von-hagen-emst-hagen-5239341/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/renovierungsbeduerftige-3-zimmerwohnung-mit-suedbalkon-und-garage-in-wuelfrath/",
+      "destination": "/referenz/eigentumswohnung-3-zimmer-mit-sudbalkon-garage-und-viel-stauraum-in-ruhiger-wohnlage-von-wulfrath-wulfrat-4674884/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/repraesentative-eigentumswohnung-mit-balkon-terrasse-und-tiefgarage-direkt-am-rosengarten/",
+      "destination": "/referenz/reprasentative-eigentumswohnung-mit-balkon-terrasse-und-tiefgarage-direkt-am-rosengarten-recklinghausen-3847945/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/repraesentatives-penthouse-mit-dachterrasse-einbaukueche-und-einzelgarage-direkt-am-rosengarten/",
+      "destination": "/referenz/reprasentatives-penthouse-mit-dachterrasse-einbaukuche-und-einzelgarage-direkt-am-rosengarten-recklinghau-4339665/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ruhig-gelegene-doppelhaushaelfte-mit-gepflegter-substanz-klarer-raumfolge-und-verlaesslicher-technik/",
+      "destination": "/referenz/ruhig-gelegene-doppelhaushalfte-mit-gepflegter-substanz-klarer-raumfolge-und-verlasslicher-technik-halter-4464499/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ruhig-wohnen-grosszuegig-leben-familienhaus-mit-garten-und-viel-potenzial-in-nettetal-hinsbeck/",
+      "destination": "/immobilie/familiengluck-in-hinsbeck-5-zimmer-garten-dachstudio-vollkeller-nettetal-hinsbeck-sls-3413-4666032/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ruhig-wohnen-im-gruenen-gepflegte-2-zimmer-wohnung-mit-balkon-und-stellplatz-in-wuppertal-vohwinkel/",
+      "destination": "/immobilie/ruhig-wohnen-im-grunen-gepflegte-2-zimmer-wohnung-mit-balkon-und-stellplatz-in-wuppertal-vohwinkel-wupper-5723226/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ruhige-erdgeschosswohnung-mit-rampe-gartenblick-und-grossem-balkon-in-gepflegter-wohnanlage/",
+      "destination": "/referenz/ruhige-erdgeschosswohnung-mit-rampe-gartenblick-und-grossem-balkon-in-gepflegter-wohnanlage-gladbeck-3616856/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ruhige-wohnlage-mit-starker-infrastruktur-ideal-fuer-kapitalanleger/",
+      "destination": "/referenz/ruhige-wohnlage-mit-starker-infrastruktur-ideal-fur-kapitalanleger-marl-3163735/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/rund-180-m%c2%b2-wohn-und-nutzflaeche-mit-viel-potenzial-fuer-ihre-wohnideen/",
+      "destination": "/immobilie/rund-180-m-wohn-und-nutzflache-mit-viel-potenzial-fur-ihre-wohnideen-kurten-sls-6749-5423046/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/rund-180-m%c2%B2-wohn-und-nutzflaeche-mit-viel-potenzial-fuer-ihre-wohnideen/",
+      "destination": "/immobilie/rund-180-m-wohn-und-nutzflache-mit-viel-potenzial-fur-ihre-wohnideen-kurten-sls-6749-5423046/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/rund-180-m%C2%b2-wohn-und-nutzflaeche-mit-viel-potenzial-fuer-ihre-wohnideen/",
+      "destination": "/immobilie/rund-180-m-wohn-und-nutzflache-mit-viel-potenzial-fur-ihre-wohnideen-kurten-sls-6749-5423046/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/rund-180-m%C2%B2-wohn-und-nutzflaeche-mit-viel-potenzial-fuer-ihre-wohnideen/",
+      "destination": "/immobilie/rund-180-m-wohn-und-nutzflache-mit-viel-potenzial-fur-ihre-wohnideen-kurten-sls-6749-5423046/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/sanierungsbeduerftige-doppelhaushaelfte-mit-garten-flexiblem-raumkonzept-und-potenzial-fuer-familien/",
+      "destination": "/referenz/sanierungsbedurftige-doppelhaushalfte-mit-garten-flexiblem-raumkonzept-und-potenzial-fur-familien-dortmun-2478840/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/sanierungsobjekt-mit-potential-komplett-leerstehendes-wohn-geschaeftshaus-mit-terrasse/",
+      "destination": "/immobilie/leerstand-mit-potenzial-wohn-geschaftshaus-mit-vielfaltigen-moglichkeiten-velbert-sls-6433-5367495/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/schoener-wohnen-duesseldorf-zoo-duesselthal-3-zimmer-mit-suedbalkon/",
+      "destination": "/referenz/schoner-wohnen-dusseldorf-zoo-dusselthal-3-zimmer-mit-sudbalkon-dusseldorf-5246712/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/seltene-gelegenheit-grosszuegiges-grundstueck-mit-vielseitigem-entwicklungspotenzial/",
+      "destination": "/immobilie/seltene-gelegenheit-grosszugiges-grundstuck-mit-vielseitigem-entwicklungspotenzial-solingen-sls-7883-5622933/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/seltene-gelegenheit-in-gewachsener-lage-immobilie-mit-weitlaeufigem-grundstueck/",
+      "destination": "/immobilie/seltene-gelegenheit-in-gewachsener-lage-immobilie-mit-weitlaufigem-grundstuck-ludenscheid-sls-5777-5216205/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/seltene-gelegenheit-mehrfamilienhaus-baugrundstueck-mit-viel-gruen-und-hervorragender-anbindung/",
+      "destination": "/immobilie/seltene-gelegenheit-mehrfamilienhaus-baugrundstuck-mit-viel-grun-und-hervorragender-anbindung-dorsten-sls-4514594/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/sieben-wohneinheiten-auf-ca-500-m%c2%b2-wohnflaeche-modernisiert-vermietet-ertragsstark/",
+      "destination": "/referenz/sieben-wohneinheiten-auf-ca-500-m-wohnflache-modernisiert-vermietet-ertragsstark-witten-4514038/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/sieben-wohneinheiten-auf-ca-500-m%c2%B2-wohnflaeche-modernisiert-vermietet-ertragsstark/",
+      "destination": "/referenz/sieben-wohneinheiten-auf-ca-500-m-wohnflache-modernisiert-vermietet-ertragsstark-witten-4514038/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/sieben-wohneinheiten-auf-ca-500-m%C2%b2-wohnflaeche-modernisiert-vermietet-ertragsstark/",
+      "destination": "/referenz/sieben-wohneinheiten-auf-ca-500-m-wohnflache-modernisiert-vermietet-ertragsstark-witten-4514038/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/sieben-wohneinheiten-auf-ca-500-m%C2%B2-wohnflaeche-modernisiert-vermietet-ertragsstark/",
+      "destination": "/referenz/sieben-wohneinheiten-auf-ca-500-m-wohnflache-modernisiert-vermietet-ertragsstark-witten-4514038/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/sofort-bezugsfrei-3-zimmer-wohnung-mit-stellplatz-zusaetzlichem-apartment-in-leverkusen/",
+      "destination": "/referenz/sofort-bezugsfrei-3-zimmer-wohnung-mit-stellplatz-zusatzlichem-apartment-in-leverkusen-leverkusen-5150380/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/solide-kapitalanlage-in-ruhiger-wohnlage-mit-nachhaltigem-vermietungspotenzial/",
+      "destination": "/referenz/solide-kapitalanlage-in-ruhiger-wohnlage-mit-nachhaltigem-vermietungspotenzial-marl-4096932/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/solide-kapitalanlage-moderne-maisonette-wohnung-in-der-seniorenresidenz-haus-linde/",
+      "destination": "/referenz/moderne-maisonette-wohnung-in-der-seniorenresidenz-haus-linde-monchengladbach-4022894/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/solide-kapitalanlage-vermietete-3-zimmer-wohnung-in-zentraler-lage-von-herten/",
+      "destination": "/referenz/solide-kapitalanlage-vermietete-3-zimmer-wohnung-in-zentraler-lage-von-herten-herten-4104343/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/solide-vermietete-3-zimmer-wohnung-mit-loggia-stellplatz-und-gemeinschaftsgarten/",
+      "destination": "/referenz/solide-vermietete-3-zimmer-wohnung-mit-loggia-stellplatz-und-gemeinschaftsgarten-datteln-4739609/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/stilvoll-saniertes-mehrfamilienhaus-modernisiert-und-vielseitig-nutzbar/",
+      "destination": "/referenz/stilvoll-saniertes-mehrfamilienhaus-modernisiert-und-vielseitig-nutzbar-castrop-rauxel-4421752/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/stilvolle-25-zimmer-wohnung-mit-grosser-einbaukueche-und-sonnenbalkon/",
+      "destination": "/referenz/stilvolle-2-5-zimmer-wohnung-mit-grosser-einbaukuche-und-sonnenbalkon-dormagen-4799491/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/stilvolle-doppelhaushaelfte-fuer-die-ganze-familie-mit-privatem-garten-2-terrassen-garage/",
+      "destination": "/referenz/stilvolle-doppelhaushalfte-fur-die-ganze-familie-mit-privatem-garten-2-terrassen-garage-ratingen-5675493/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/stilvolle-eigentumswohnung-mit-hochwertiger-ausstattung-tiefgarage-und-starker-ruecklage/",
+      "destination": "/immobilie/stilvolle-eigentumswohnung-mit-hochwertiger-ausstattung-tiefgarage-und-starker-rucklage-marl-sls-7204-5489188/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/stilvolle-maisonette-wohnung-mit-balkon-und-aufzug-in-ruhiger-lage-von-herdecke/",
+      "destination": "/referenz/stilvolle-maisonette-wohnung-mit-balkon-und-aufzug-in-ruhiger-lage-von-herdecke-herdecke-4861915/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/stilvolle-wohnung-im-architektonisch-anspruchsvollen-mehrfamilienhaus-mit-aufzug-und-balkon/",
+      "destination": "/referenz/stilvolle-wohnung-im-architektonisch-anspruchsvollen-mehrfamilienhaus-mit-aufzug-und-balkon-recklinghause-4715838/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/stilvoller-bungalow-mit-ausgebautem-wohnkeller-fernwaerme-und-durchdachtem-grundriss/",
+      "destination": "/referenz/stilvoller-bungalow-mit-ausgebautem-wohnkeller-fernwarme-und-durchdachtem-grundriss-herten-4486401/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/terrasse-inklusive-gut-vermietetes-apartment-mit-garage-in-renoviertem-zustand-in-witten-mitte/",
+      "destination": "/referenz/terrasse-inklusive-gut-vermietetes-apartment-mit-garage-in-renoviertem-zustand-in-witten-mitte-witten-2531599/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/tolles-penthouse-mit-grosser-dachterrasse-eigenem-schwimmbad-im-keller-und-sauna/",
+      "destination": "/immobilie/tolles-penthouse-mit-grosser-dachterrasse-eigenem-schwimmbad-im-keller-und-sauna-duisburg-sls-2646-4452167/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/top-lage-wiemelhausen-saniertes-dreifamilienhaus-mit-hochwertiger-ausstattung-und-grossem-garten/",
+      "destination": "/referenz/top-lage-wiemelhausen-saniertes-dreifamilienhaus-mit-hochwertiger-ausstattung-und-grossem-garten-bochum-2365495/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/traumhafte-doppelhaushaelfte-mit-kamin-sauna-und-aussergewoehnlichem-aussenbereich/",
+      "destination": "/referenz/traumhafte-doppelhaushalfte-mit-kamin-sauna-und-aussergewohnlichem-aussenbereich-dorsten-3923414/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/traumhafte-penthousewohnung-mit-grosszuegiger-terrasse-in-guter-lage/",
+      "destination": "/referenz/traumhafte-penthousewohnung-mit-grosszugiger-terrasse-in-guter-lage-waltrop-3880981/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/ueberraschend-viel-platz-familienhaus-mit-ausgebautem-dachgeschoss-hobbyraum-und-zwei-garagen/",
+      "destination": "/referenz/uberraschend-viel-platz-familienhaus-mit-ausgebautem-dachgeschoss-hobbyraum-und-zwei-garagen-marl-5383574/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/um-2000-kernsaniertes-wohn-und-geschaeftshaus-mit-neuer-heiztechnik-und-attraktivem-mietpotenzial/",
+      "destination": "/referenz/um-2000-kernsaniertes-wohn-und-geschaftshaus-mit-neuer-heiztechnik-und-attraktivem-mietpotenzial-wetter-r-5423246/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/umfassend-saniertes-haus-fuer-kleine-familien-mit-fussbodenheizung-und-flexibel-nutzbarem-dachgeschoss/",
+      "destination": "/referenz/umfassend-saniertes-haus-fur-kleine-familien-mit-fussbodenheizung-und-flexibel-nutzbarem-dachgeschoss-her-4651554/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/urbaner-flair-trifft-wohlfuehlcharakter-ihr-neues-zu-hause-mit-suedbalkon-in-unterbilk/",
+      "destination": "/immobilie/urbanes-lebensgefuhl-mit-sudbalkon-und-rheinturmblick-in-begehrter-unterbilker-lage-dusseldorf-sls-4826-4954810/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietet-gut-angebunden-2-zimmer-wohnung-als-stabile-kapitalanlage/",
+      "destination": "/referenz/vermietet-gut-angebunden-2-zimmer-wohnung-als-stabile-kapitalanlage-dortmund-2812430/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietet-verwaltet-werthaltig-ihr-investment-im-herzen-des-ruhrgebiets/",
+      "destination": "/immobilie/vermietet-verwaltet-werthaltig-ihr-investment-im-herzen-des-ruhrgebiets-herne-sls-2077-4131762/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-2-zimmer-eigentumswohnung-mit-balkon-solide-kapitalanlage-in-luenen/",
+      "destination": "/immobilie/vermietete-2-zimmer-eigentumswohnung-mit-balkon-solide-kapitalanlage-in-lunen-lunen-sls-5753-5212681/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-2-zimmer-wohnung-mit-aufzug-und-betreuter-infrastruktur-attraktive-kapitalanlage/",
+      "destination": "/immobilie/vermietete-2-zimmer-wohnung-mit-aufzug-und-betreuter-infrastruktur-attraktive-kapitalanlage-monchengladba-5238838/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-2-zimmer-wohnung-mit-balkon-in-gepflegtem-wohnambiente/",
+      "destination": "/immobilie/vermietete-2-zimmer-wohnung-mit-balkon-in-gepflegtem-wohnambiente-wuppertal-sls-9821-5933215/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-3-zimmer-eigentumswohnung-mit-durchdachtem-grundriss-und-loggia/",
+      "destination": "/immobilie/vermietete-3-zimmer-eigentumswohnung-mit-durchdachtem-grundriss-und-loggia-dorsten-sls-8349-5712589/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-3-zimmer-wohnung-mit-balkon-tg-stellplatz-optional-erwerbbar/",
+      "destination": "/referenz/vermietete-3-zimmer-wohnung-mit-balkon-tg-stellplatz-optional-erwerbbar-dorsten-3162634/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-35-zimmer-wohnung-mit-loggia-aufzug-und-tiefgaragenstellplatz/",
+      "destination": "/referenz/vermietete-3-5-zimmer-wohnung-mit-loggia-aufzug-und-tiefgaragenstellplatz-essen-5040915/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-dachgeschosswohnung-in-gepflegter-hausgemeinschaft-mit-langfristigem-mietverhaeltnis/",
+      "destination": "/referenz/vermietete-dachgeschosswohnung-in-gepflegter-hausgemeinschaft-mit-langfristigem-mietverhaltnis-dortmund-3736877/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-eigentumswohnung-im-1-obergeschoss-mit-balkon-aufzug-und-tiefgaragenstellplatz/",
+      "destination": "/immobilie/vermietete-eigentumswohnung-im-1-obergeschoss-mit-balkon-aufzug-und-tiefgaragenstellplatz-essen-sls-4362-4877542/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-eigentumswohnung-in-oberhausen-kompakte-kapitalanlage-mit-praktischem-grundriss/",
+      "destination": "/immobilie/vermietete-eigentumswohnung-in-oberhausen-kompakte-kapitalanlage-mit-praktischem-grundriss-oberhausen-sls-5424869/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietete-luxurioese-gartenwohnung-mit-terrasse-und-privatem-garten-in-bestlage/",
+      "destination": "/immobilie/vermietete-luxuriose-gartenwohnung-mit-terrasse-und-privatem-garten-in-bestlage-recklinghausen-sls-7731-5595085/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vermietetes-1-zimmer-apartment-mit-einbaukueche-tiefgarage-in-gruener-wohnlage-von-vohwinkel/",
+      "destination": "/immobilie/vermietetes-1-zimmer-apartment-mit-einbaukuche-tiefgarage-in-gruner-wohnlage-von-vohwinkel-wuppertal-sls--5511287/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-platz-auf-mehreren-ebenen-grosszuegiges-familienhaus-mit-garten-garage/",
+      "destination": "/immobilie/viel-platz-auf-mehreren-ebenen-grosszugiges-familienhaus-mit-garten-garage-dortmund-sls-4294-4857330/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-platz-fuer-die-familie-freistehendes-haus-mit-garten-garage-auf-erbbaurechtsgrundstueck/",
+      "destination": "/referenz/viel-platz-fur-die-familie-freistehendes-haus-mit-garten-garage-auf-erbbaurechtsgrundstuck-lembeck-2517377/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-platz-fuer-die-familie-reihenhaus-mit-garten-wintergarten-garage-erbpacht-bis-2072/",
+      "destination": "/referenz/viel-platz-fur-die-familie-reihenhaus-mit-garten-wintergarten-garage-erbpacht-bis-2072-dorsten-3951777/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-platz-fuer-die-ganze-familie-grosszuegiges-zuhause-mit-garten-und-vielseitigen-moeglichkeiten/",
+      "destination": "/immobilie/viel-platz-fur-die-ganze-familie-grosszugiges-zuhause-mit-garten-und-vielseitigen-moglichkeiten-ennepetal-5021108/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-platz-fuer-eigene-wohnideen-mehrfamilienhaus-mit-zwei-freien-und-zwei-vermieteten-wohnungen/",
+      "destination": "/immobilie/viel-platz-fur-eigene-wohnideen-mehrfamilienhaus-mit-zwei-freien-und-zwei-vermieteten-wohnungen-gladbeck--6224210/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-platz-zwei-einheiten-ein-gemeinsames-zuhause-mit-garten-und-feldblick-ins-gruene/",
+      "destination": "/referenz/viel-platz-zwei-einheiten-ein-gemeinsames-zuhause-mit-garten-und-feldblick-ins-grune-dorsten-3144454/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-raum-fuer-familie-und-beruf-grosszuegiges-mehrgenerationenhaus-auf-ca-2-800-m%c2%b2-grundstueck/",
+      "destination": "/immobilie/viel-raum-fur-familie-und-beruf-grosszugiges-mehrgenerationenhaus-auf-ca-2-800-m-grundstuck-dorsten-sls-3-4600079/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-raum-fuer-familie-und-beruf-grosszuegiges-mehrgenerationenhaus-auf-ca-2-800-m%c2%B2-grundstueck/",
+      "destination": "/immobilie/viel-raum-fur-familie-und-beruf-grosszugiges-mehrgenerationenhaus-auf-ca-2-800-m-grundstuck-dorsten-sls-3-4600079/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-raum-fuer-familie-und-beruf-grosszuegiges-mehrgenerationenhaus-auf-ca-2-800-m%C2%b2-grundstueck/",
+      "destination": "/immobilie/viel-raum-fur-familie-und-beruf-grosszugiges-mehrgenerationenhaus-auf-ca-2-800-m-grundstuck-dorsten-sls-3-4600079/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-raum-fuer-familie-und-beruf-grosszuegiges-mehrgenerationenhaus-auf-ca-2-800-m%C2%B2-grundstueck/",
+      "destination": "/immobilie/viel-raum-fur-familie-und-beruf-grosszugiges-mehrgenerationenhaus-auf-ca-2-800-m-grundstuck-dorsten-sls-3-4600079/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/viel-raum-fuer-wohnen-und-arbeiten-ihr-haus-im-herzen-von-brueggen/",
+      "destination": "/immobilie/viel-raum-fur-wohnen-und-arbeiten-ihr-haus-im-herzen-von-bruggen-bruggen-sls-8609-5757539/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vier-zimmer-auf-zwei-ebenen-mit-terrasse-gartenanteil-garage-und-rund-132-m%c2%b2-wohnflaeche/",
+      "destination": "/immobilie/vier-zimmer-auf-zwei-ebenen-mit-terrasse-gartenanteil-garage-und-rund-132-m-wohnflache-raesfeld-sls-2078-4131806/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vier-zimmer-auf-zwei-ebenen-mit-terrasse-gartenanteil-garage-und-rund-132-m%c2%B2-wohnflaeche/",
+      "destination": "/immobilie/vier-zimmer-auf-zwei-ebenen-mit-terrasse-gartenanteil-garage-und-rund-132-m-wohnflache-raesfeld-sls-2078-4131806/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vier-zimmer-auf-zwei-ebenen-mit-terrasse-gartenanteil-garage-und-rund-132-m%C2%b2-wohnflaeche/",
+      "destination": "/immobilie/vier-zimmer-auf-zwei-ebenen-mit-terrasse-gartenanteil-garage-und-rund-132-m-wohnflache-raesfeld-sls-2078-4131806/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vier-zimmer-auf-zwei-ebenen-mit-terrasse-gartenanteil-garage-und-rund-132-m%C2%B2-wohnflaeche/",
+      "destination": "/immobilie/vier-zimmer-auf-zwei-ebenen-mit-terrasse-gartenanteil-garage-und-rund-132-m-wohnflache-raesfeld-sls-2078-4131806/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/vier-zimmer-wohnung-mit-garage-grossem-balkon-und-modernisiertem-bad-in-ruhiger-siedlung/",
+      "destination": "/referenz/vier-zimmer-wohnung-mit-garage-grossem-balkon-und-modernisiertem-bad-in-ruhiger-siedlung-dorsten-3773486/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/voll-vermieteter-wohnkomplex-mit-15-einheiten-ca-1-112-m%c2%b2-wohnflaeche-und-stabiler-ertragsbasis/",
+      "destination": "/referenz/voll-vermieteter-wohnkomplex-mit-15-einheiten-ca-1-112-m-wohnflache-und-stabiler-ertragsbasis-witten-4703171/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/voll-vermieteter-wohnkomplex-mit-15-einheiten-ca-1-112-m%c2%B2-wohnflaeche-und-stabiler-ertragsbasis/",
+      "destination": "/referenz/voll-vermieteter-wohnkomplex-mit-15-einheiten-ca-1-112-m-wohnflache-und-stabiler-ertragsbasis-witten-4703171/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/voll-vermieteter-wohnkomplex-mit-15-einheiten-ca-1-112-m%C2%b2-wohnflaeche-und-stabiler-ertragsbasis/",
+      "destination": "/referenz/voll-vermieteter-wohnkomplex-mit-15-einheiten-ca-1-112-m-wohnflache-und-stabiler-ertragsbasis-witten-4703171/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/voll-vermieteter-wohnkomplex-mit-15-einheiten-ca-1-112-m%C2%B2-wohnflaeche-und-stabiler-ertragsbasis/",
+      "destination": "/referenz/voll-vermieteter-wohnkomplex-mit-15-einheiten-ca-1-112-m-wohnflache-und-stabiler-ertragsbasis-witten-4703171/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/voll-vermietetes-wohnungspaket-mit-zwei-eigentumswohnungen-attraktive-kapitalanlage/",
+      "destination": "/immobilie/voll-vermietetes-wohnungspaket-mit-zwei-eigentumswohnungen-attraktive-kapitalanlage-recklinghausen-sls-80-5644071/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wo-geschichte-zuhause-ist-historisches-anwesen-in-ascheberg/",
+      "destination": "/immobilie/wo-geschichte-zuhause-ist-historisches-anwesen-zum-wohnen-und-arbeiten-in-ascheberg-ascheberg-sls-4193-4827831/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohlfuehl-oase-mit-gartenidylle-reihenhaus-mit-solaranlage-garage-viel-platz-unterm-dach/",
+      "destination": "/referenz/wohlfuhl-oase-mit-gartenidylle-reihenhaus-mit-solaranlage-garage-viel-platz-unterm-dach-recklinghausen-3863493/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohn-geschaeftshaus-2020-kernsanierte-kapitalanlage-in-zentraler-lage-von-krefeld/",
+      "destination": "/immobilie/wohn-geschaftshaus-2020-kernsanierte-kapitalanlage-in-zentraler-lage-von-krefeld-krefeld-sls-4779-4946232/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohn-und-geschaeftshaus-mit-400-m%c2%b2-gesamtflaeche-gewerbeeinheit-drei-wohnungen-und-ausbaureserve/",
+      "destination": "/referenz/wohn-und-geschaftshaus-mit-400-m-gesamtflache-gewerbeeinheit-drei-wohnungen-und-ausbaureserve-marl-3785225/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohn-und-geschaeftshaus-mit-400-m%c2%B2-gesamtflaeche-gewerbeeinheit-drei-wohnungen-und-ausbaureserve/",
+      "destination": "/referenz/wohn-und-geschaftshaus-mit-400-m-gesamtflache-gewerbeeinheit-drei-wohnungen-und-ausbaureserve-marl-3785225/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohn-und-geschaeftshaus-mit-400-m%C2%b2-gesamtflaeche-gewerbeeinheit-drei-wohnungen-und-ausbaureserve/",
+      "destination": "/referenz/wohn-und-geschaftshaus-mit-400-m-gesamtflache-gewerbeeinheit-drei-wohnungen-und-ausbaureserve-marl-3785225/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohn-und-geschaeftshaus-mit-400-m%C2%B2-gesamtflaeche-gewerbeeinheit-drei-wohnungen-und-ausbaureserve/",
+      "destination": "/referenz/wohn-und-geschaftshaus-mit-400-m-gesamtflache-gewerbeeinheit-drei-wohnungen-und-ausbaureserve-marl-3785225/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohn-und-geschaeftshaus-mit-hervorragendem-modernisierungsstand-4-garagen-10-stellplaetze/",
+      "destination": "/referenz/wohn-und-geschaftshaus-mit-hervorragendem-modernisierungsstand-4-garagen-10-stellplatze-dortmund-2817568/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohn-und-geschaeftshaus-mit-intersport-als-ankermieter/",
+      "destination": "/referenz/wohn-und-geschaftshaus-mit-intersport-als-ankermieter-marl-5473463/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-am-ostpark-gruen-ruhig-stadtnah-charmante-wohnung-mit-zwei-balkonen-und-tiefgarage/",
+      "destination": "/referenz/wohnen-am-ostpark-grun-ruhig-stadtnah-charmante-wohnung-mit-zwei-balkonen-und-tiefgarage-dusseldorf-5058915/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-112-m%c2%b2-aussergewoehnliche-maisonette-mit-dachloggia-kamin-eigener-sauna/",
+      "destination": "/immobilie/wohnen-auf-ca-112-m-aussergewohnliche-maisonette-mit-dachloggia-kamin-eigener-sauna-marl-sls-8495-5738301/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-112-m%c2%B2-aussergewoehnliche-maisonette-mit-dachloggia-kamin-eigener-sauna/",
+      "destination": "/immobilie/wohnen-auf-ca-112-m-aussergewohnliche-maisonette-mit-dachloggia-kamin-eigener-sauna-marl-sls-8495-5738301/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-112-m%C2%b2-aussergewoehnliche-maisonette-mit-dachloggia-kamin-eigener-sauna/",
+      "destination": "/immobilie/wohnen-auf-ca-112-m-aussergewohnliche-maisonette-mit-dachloggia-kamin-eigener-sauna-marl-sls-8495-5738301/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-112-m%C2%B2-aussergewoehnliche-maisonette-mit-dachloggia-kamin-eigener-sauna/",
+      "destination": "/immobilie/wohnen-auf-ca-112-m-aussergewohnliche-maisonette-mit-dachloggia-kamin-eigener-sauna-marl-sls-8495-5738301/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-128-m%c2%b2-in-historischer-zechensiedlung-mit-garten-terrasse-und-ausgebautem-dachstudio/",
+      "destination": "/referenz/wohnen-auf-ca-128-m-in-historischer-zechensiedlung-mit-garten-terrasse-und-ausgebautem-dachstudio-dorsten-3176476/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-128-m%c2%B2-in-historischer-zechensiedlung-mit-garten-terrasse-und-ausgebautem-dachstudio/",
+      "destination": "/referenz/wohnen-auf-ca-128-m-in-historischer-zechensiedlung-mit-garten-terrasse-und-ausgebautem-dachstudio-dorsten-3176476/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-128-m%C2%b2-in-historischer-zechensiedlung-mit-garten-terrasse-und-ausgebautem-dachstudio/",
+      "destination": "/referenz/wohnen-auf-ca-128-m-in-historischer-zechensiedlung-mit-garten-terrasse-und-ausgebautem-dachstudio-dorsten-3176476/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-128-m%C2%B2-in-historischer-zechensiedlung-mit-garten-terrasse-und-ausgebautem-dachstudio/",
+      "destination": "/referenz/wohnen-auf-ca-128-m-in-historischer-zechensiedlung-mit-garten-terrasse-und-ausgebautem-dachstudio-dorsten-3176476/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-170-m%c2%b2-grosszuegige-doppelhaushaelfte-in-hanglage-mit-blick-ueber-das-ruhrtal/",
+      "destination": "/immobilie/wohnen-auf-ca-170-m-grosszugige-doppelhaushalfte-in-hanglage-mit-blick-uber-das-ruhrtal-essen-sls-9197-5821187/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-170-m%c2%B2-grosszuegige-doppelhaushaelfte-in-hanglage-mit-blick-ueber-das-ruhrtal/",
+      "destination": "/immobilie/wohnen-auf-ca-170-m-grosszugige-doppelhaushalfte-in-hanglage-mit-blick-uber-das-ruhrtal-essen-sls-9197-5821187/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-170-m%C2%b2-grosszuegige-doppelhaushaelfte-in-hanglage-mit-blick-ueber-das-ruhrtal/",
+      "destination": "/immobilie/wohnen-auf-ca-170-m-grosszugige-doppelhaushalfte-in-hanglage-mit-blick-uber-das-ruhrtal-essen-sls-9197-5821187/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-ca-170-m%C2%B2-grosszuegige-doppelhaushaelfte-in-hanglage-mit-blick-ueber-das-ruhrtal/",
+      "destination": "/immobilie/wohnen-auf-ca-170-m-grosszugige-doppelhaushalfte-in-hanglage-mit-blick-uber-das-ruhrtal-essen-sls-9197-5821187/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-einer-ebene-gepflegter-bungalow-mit-kamin-garten-und-garage/",
+      "destination": "/immobilie/wohnen-auf-einer-ebene-gepflegter-bungalow-mit-kamin-garten-und-garage-dorsten-sls-1815-3992156/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-einer-ebene-gepflegter-bungalow-mit-vollkeller-garage-und-sonnigem-garten/",
+      "destination": "/immobilie/wohnen-auf-einer-ebene-gepflegter-bungalow-mit-vollkeller-garage-und-sonnigem-garten-dorsten-sls-8509-5739216/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-einer-ebene-uneinsehbarer-garten-sauna-und-garage/",
+      "destination": "/referenz/wohnen-auf-einer-ebene-uneinsehbarer-garten-sauna-und-garage-dorsten-5258278/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-auf-hoechstem-niveau-exklusive-3-zimmer-wohnung-mit-tiefgaragenstellplatz-seeblick/",
+      "destination": "/immobilie/wohnen-auf-hochstem-niveau-exklusive-3-zimmer-wohnung-mit-tiefgaragenstellplatz-seeblick-dusseldorf-sls-7-5597282/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-entwickeln-verwirklichen-chance-in-einer-der-gefragtesten-lagen-von-haltern-am-see/",
+      "destination": "/referenz/wohnen-entwickeln-verwirklichen-chance-in-einer-der-gefragtesten-lagen-von-haltern-am-see-haltern-am-see-5154875/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-charakter-stilvolle-maisonette-mit-zwei-suedbalkonen-und-147-m%c2%b2-wohn-nutzflaeche/",
+      "destination": "/immobilie/wohnen-mit-charakter-stilvolle-maisonette-mit-zwei-sudbalkonen-und-147-m-wohn-nutzflache-dusseldorf-sls-7-5358509/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-charakter-stilvolle-maisonette-mit-zwei-suedbalkonen-und-147-m%c2%B2-wohn-nutzflaeche/",
+      "destination": "/immobilie/wohnen-mit-charakter-stilvolle-maisonette-mit-zwei-sudbalkonen-und-147-m-wohn-nutzflache-dusseldorf-sls-7-5358509/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-charakter-stilvolle-maisonette-mit-zwei-suedbalkonen-und-147-m%C2%b2-wohn-nutzflaeche/",
+      "destination": "/immobilie/wohnen-mit-charakter-stilvolle-maisonette-mit-zwei-sudbalkonen-und-147-m-wohn-nutzflache-dusseldorf-sls-7-5358509/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-charakter-stilvolle-maisonette-mit-zwei-suedbalkonen-und-147-m%C2%B2-wohn-nutzflaeche/",
+      "destination": "/immobilie/wohnen-mit-charakter-stilvolle-maisonette-mit-zwei-sudbalkonen-und-147-m-wohn-nutzflache-dusseldorf-sls-7-5358509/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-garten-und-terrasse-split-level-reihenhaus-als-alternative-zur-eigentumswohnung/",
+      "destination": "/referenz/wohnen-mit-garten-und-terrasse-split-level-reihenhaus-als-alternative-zur-eigentumswohnung-hamm-4149987/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-komfort-erdgeschosswohnung-mit-balkon-garage/",
+      "destination": "/referenz/wohnen-mit-komfort-erdgeschosswohnung-mit-balkon-garage-marl-4792124/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-perspektive-grosse-familienwohnung-und-zwei-einheiten-mit-anlagepotenzial/",
+      "destination": "/immobilie/wohnen-mit-perspektive-grosse-familienwohnung-und-zwei-einheiten-mit-anlagepotenzial-arnsberg-sls-3151-4600000/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-weitblick-helle-etagenwohnung-mit-aufzug-grossem-balkon-feldpanorama-und-stellplatz/",
+      "destination": "/referenz/wohnen-mit-weitblick-helle-etagenwohnung-mit-aufzug-grossem-balkon-feldpanorama-und-stellplatz-dorsten-4110422/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-weitblick-stilvolle-3-zimmer-wohnung-mit-grossem-balkon-am-city-see/",
+      "destination": "/referenz/wohnen-mit-weitblick-stilvolle-3-zimmer-wohnung-mit-grossem-balkon-am-city-see-marl-3695771/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-wohlfuehlfaktor-2-zimmer-wohnung-mit-balkon-und-offener-kueche/",
+      "destination": "/immobilie/wohnen-mit-wohlfuhlfaktor-2-zimmer-wohnung-mit-balkon-und-offener-kuche-dorsten-sls-320-2634194/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-und-arbeiten-auf-einem-grundstueck-vielseitige-immobilie-mit-hallenflaechen/",
+      "destination": "/immobilie/vielseitige-immobilie-mit-hallenflachen-und-entwicklungspotenzial-marl-sls-4796-4949641/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-wie-im-eigenen-haus-bezugsfreie-maisonette-mit-garten-garage-und-privatzugang-in-raesfeld/",
+      "destination": "/immobilie/wohnen-wie-im-eigenen-haus-bezugsfreie-maisonette-mit-garten-garage-und-privatzugang-in-raesfeld-raesfeld-3528391/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-wie-im-eigenen-haus-helle-maisonette-mit-eigenem-eingang-balkon-in-brueggen-bracht/",
+      "destination": "/immobilie/wohnen-wie-im-eigenen-haus-helle-maisonette-mit-eigenem-eingang-balkon-in-bruggen-bracht-bruggen-sls-4240-4848469/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnensemble-mit-perspektive-nachhaltige-kapitalanlage-in-datteln/",
+      "destination": "/referenz/wohnensemble-mit-perspektive-nachhaltige-kapitalanlage-in-datteln-datteln-4131555/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnkomfort-mit-wohlfuehlfaktor-gepflegte-doppelhaushaelfte-in-attraktiver-wohnlage/",
+      "destination": "/immobilie/wohnkomfort-mit-wohlfuhlfaktor-gepflegte-doppelhaushalfte-in-attraktiver-wohnlage-werne-sls-6893-5445650/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnqualitaet-mit-charme-modernisiertes-reihenmittelhaus-auf-grosszuegigem-grundstueck/",
+      "destination": "/immobilie/ihr-neues-zuhause-mit-potenzial-reihenmittelhaus-auf-grosszugigem-grundstuck-unna-sls-8316-5709642/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zeitlose-architektur-und-moderner-wohnkomfort/",
+      "destination": "/referenz/zeitlose-architektur-und-moderner-wohnkomfort-dortmund-4321379/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zeitloses-dreifamilienhaus-mit-gepflegter-substanz-und-geschuetztem-garten-hinter-dem-haus/",
+      "destination": "/referenz/zeitloses-dreifamilienhaus-mit-gepflegter-substanz-und-geschutztem-garten-hinter-dem-haus-gelsenkirchen-4053433/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zentrale-zwei-zimmer-wohnung-im-herzen-der-innenstadt-mit-aufzug-und-modernem-duschbad/",
+      "destination": "/referenz/zentrale-zwei-zimmer-wohnung-im-herzen-der-innenstadt-mit-aufzug-und-modernem-duschbad-witten-4652411/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zwei-doppelhaushaelften-ideal-fuer-generationenwohnen-oder-vermietung/",
+      "destination": "/referenz/zwei-doppelhaushalften-ideal-fur-generationenwohnen-oder-vermietung-dorsten-3006138/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zwei-einheiten-unter-einem-dach-charmantes-reihenhaus-mit-garten-in-dortmund-aplerbeck/",
+      "destination": "/referenz/zwei-einheiten-unter-einem-dach-charmantes-reihenhaus-mit-garten-in-dortmund-aplerbeck-dortmund-4888010/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zwei-haeuser-ein-grundstueck-perfekt-fuer-mehrgeneration-oder-wohnen-vermieten/",
+      "destination": "/immobilie/zwei-hauser-ein-grundstuck-perfekt-fur-mehrgeneration-oder-wohnen-vermieten-bergisch-gladbach-sls-6827-5438714/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zwei-kompakte-apartments-mit-aufzug-in-sprockhoevel/",
+      "destination": "/referenz/zwei-kompakte-apartments-mit-aufzug-in-sprockhovel-sprockhovel-4955948/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zwei-wohnungen-eine-aussergewoehnliche-wohnperspektive-auf-109-m%c2%b2/",
+      "destination": "/immobilie/zwei-wohnungen-eine-aussergewohnliche-wohnperspektive-auf-109-m-dortmund-sls-9433-5876592/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zwei-wohnungen-eine-aussergewoehnliche-wohnperspektive-auf-109-m%c2%B2/",
+      "destination": "/immobilie/zwei-wohnungen-eine-aussergewohnliche-wohnperspektive-auf-109-m-dortmund-sls-9433-5876592/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zwei-wohnungen-eine-aussergewoehnliche-wohnperspektive-auf-109-m%C2%b2/",
+      "destination": "/immobilie/zwei-wohnungen-eine-aussergewohnliche-wohnperspektive-auf-109-m-dortmund-sls-9433-5876592/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zwei-wohnungen-eine-aussergewoehnliche-wohnperspektive-auf-109-m%C2%B2/",
+      "destination": "/immobilie/zwei-wohnungen-eine-aussergewohnliche-wohnperspektive-auf-109-m-dortmund-sls-9433-5876592/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zweifamilienhaus-mit-freiwerdender-eg-wohnung-freier-og-wohnung-und-erbpacht-bis-2091/",
+      "destination": "/immobilie/zweifamilienhaus-mit-freiwerdender-eg-wohnung-freier-og-wohnung-und-erbpacht-bis-2091-gelsenkirchen-sls-4-4807654/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zweifamilienhaus-mit-grossem-garten-in-ruhiger-lage-von-herten/",
+      "destination": "/referenz/zweifamilienhaus-mit-grossem-garten-in-ruhiger-lage-von-herten-herten-3721160/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zweifamilienhaus-mit-tollem-garten-dachterrasse-kamin-treppenlift-ideal-fuer-mehrgenerationen/",
+      "destination": "/referenz/zweifamilienhaus-mit-tollem-garten-dachterrasse-kamin-treppenlift-ideal-fur-mehrgenerationen-haltern-am-s-2767220/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/reserviert-charmantes-reihenendhaus-in-marl-brassert-gestalten-sie-ihr-neues-zuhause/",
+      "destination": "/referenz/charmantes-reihenendhaus-in-marl-brassert-gestalten-sie-ihr-neues-zuhause-marl-2314336/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohn-und-geschaeftshaus-mit-intersport-als-ankermieter-und-entwicklungspotenzial/",
+      "destination": "/referenz/wohn-und-geschaftshaus-mit-intersport-als-ankermieter-und-entwicklungspotenzial-marl-5128616/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/arnsberg/",
+      "destination": "/immobilien/?city=Arnsberg&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/ascheberg/",
+      "destination": "/immobilien/?city=Ascheberg&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/bergisch-gladbach/",
+      "destination": "/immobilien/?city=Bergisch-Gladbach&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/bergkamen/",
+      "destination": "/immobilien/?city=Bergkamen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/bochum/",
+      "destination": "/immobilien/?city=Bochum&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/boenen/",
+      "destination": "/immobilien/?city=B%C3%B6nen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/bottrop/",
+      "destination": "/immobilien/?city=Bottrop&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/brueggen-bracht/",
+      "destination": "/immobilien/?city=Brueggen-Bracht&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/brueggen/",
+      "destination": "/immobilien/?city=Brueggen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/castrop-rauxel/",
+      "destination": "/immobilien/?city=Castrop-Rauxel&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/datteln/",
+      "destination": "/immobilien/?city=Datteln&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/dormagen/",
+      "destination": "/immobilien/?city=Dormagen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/dorsten/",
+      "destination": "/immobilien/?city=Dorsten&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/dortmund/",
+      "destination": "/immobilien/?city=Dortmund&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/duesseldorf/",
+      "destination": "/immobilien/?city=D%C3%BCsseldorf&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/duisburg/",
+      "destination": "/immobilien/?city=Duisburg&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/emmerich-am-rhein/",
+      "destination": "/immobilien/?city=Emmerich-Am-Rhein&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/ennepetal/",
+      "destination": "/immobilien/?city=Ennepetal&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/erkelenz/",
+      "destination": "/immobilien/?city=Erkelenz&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/erkrath/",
+      "destination": "/immobilien/?city=Erkrath&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/essen/",
+      "destination": "/immobilien/?city=Essen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/froendenberg-ruhr/",
+      "destination": "/immobilien/?city=Fr%C3%B6ndenberg%2FRuhr&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/gelsenkirchen/",
+      "destination": "/immobilien/?city=Gelsenkirchen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/gladbeck/",
+      "destination": "/immobilien/?city=Gladbeck&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/grefrath/",
+      "destination": "/immobilien/?city=Grefrath&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/grevenbroich/",
+      "destination": "/immobilien/?city=Grevenbroich&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/hagen/",
+      "destination": "/immobilien/?city=Hagen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/haltern-am-see/",
+      "destination": "/immobilien/?city=Haltern%20am%20See&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/hamm/",
+      "destination": "/immobilien/?city=Hamm&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/hattingen/",
+      "destination": "/immobilien/?city=Hattingen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/heiligenhaus/",
+      "destination": "/immobilien/?city=Heiligenhaus&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/herdecke/",
+      "destination": "/immobilien/?city=Herdecke&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/herne/",
+      "destination": "/immobilien/?city=Herne&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/herten/",
+      "destination": "/immobilien/?city=Herten&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/holzwickede/",
+      "destination": "/immobilien/?city=Holzwickede&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/juechen-holz/",
+      "destination": "/immobilien/?city=J%C3%BCchen-Holz&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/juechen/",
+      "destination": "/immobilien/?city=J%C3%BCchen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/kaarst/",
+      "destination": "/immobilien/?city=Kaarst&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/kamen/",
+      "destination": "/immobilien/?city=Kamen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/kempen/",
+      "destination": "/immobilien/?city=Kempen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/kierspe/",
+      "destination": "/immobilien/?city=Kierspe&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/korschenbroich/",
+      "destination": "/immobilien/?city=Korschenbroich&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/krefeld/",
+      "destination": "/immobilien/?city=Krefeld&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/kuerten/",
+      "destination": "/immobilien/?city=K%C3%BCrten&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/lembeck/",
+      "destination": "/immobilien/?city=Lembeck&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/leverkusen/",
+      "destination": "/immobilien/?city=Leverkusen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/luedenscheid/",
+      "destination": "/immobilien/?city=L%C3%BCdenscheid&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/luenen/",
+      "destination": "/immobilien/?city=L%C3%BCnen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/marl/",
+      "destination": "/immobilien/?city=Marl&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/meerbusch/",
+      "destination": "/immobilien/?city=Meerbusch&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/moenchengladbach/",
+      "destination": "/immobilien/?city=M%C3%B6nchengladbach&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/moers/",
+      "destination": "/immobilien/?city=Moers&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/nettetal-hinsbeck/",
+      "destination": "/immobilien/?city=Nettetal-Hinsbeck&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/neuss/",
+      "destination": "/immobilien/?city=Neuss&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/niederkruechten/",
+      "destination": "/immobilien/?city=Niederkruechten&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/oberhausen-sterkrade/",
+      "destination": "/immobilien/?city=Oberhausen-Sterkrade&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/oberhausen/",
+      "destination": "/immobilien/?city=Oberhausen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/oer-erkenschwick/",
+      "destination": "/immobilien/?city=Oer-Erkenschwick&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/raesfeld/",
+      "destination": "/immobilien/?city=Raesfeld&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/ratingen/",
+      "destination": "/immobilien/?city=Ratingen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/recklinghausen/",
+      "destination": "/immobilien/?city=Recklinghausen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/remscheid/",
+      "destination": "/immobilien/?city=Remscheid&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/roesrath/",
+      "destination": "/immobilien/?city=R%C3%B6srath&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/ruethen/",
+      "destination": "/immobilien/?city=R%C3%BCthen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/schermbeck/",
+      "destination": "/immobilien/?city=Schermbeck&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/schwalmtal/",
+      "destination": "/immobilien/?city=Schwalmtal&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/selm/",
+      "destination": "/immobilien/?city=Selm&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/soest/",
+      "destination": "/immobilien/?city=Soest&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/solingen/",
+      "destination": "/immobilien/?city=Solingen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/sprockhoevel/",
+      "destination": "/immobilien/?city=Sprockh%C3%B6vel&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/toenisvorst/",
+      "destination": "/immobilien/?city=T%C3%B6nisvorst&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/unna/",
+      "destination": "/immobilien/?city=Unna&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/velbert/",
+      "destination": "/immobilien/?city=Velbert&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/viersen/",
+      "destination": "/immobilien/?city=Viersen&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/waltrop/",
+      "destination": "/immobilien/?city=Waltrop&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/wegberg-klinkum/",
+      "destination": "/immobilien/?city=Wegberg-Klinkum&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/werne/",
+      "destination": "/immobilien/?city=Werne&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/wetter-ruhr/",
+      "destination": "/immobilien/?city=Wetter-Ruhr&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/willich/",
+      "destination": "/immobilien/?city=Willich&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/witten/",
+      "destination": "/immobilien/?city=Witten&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/wuelfrath/",
+      "destination": "/immobilien/?city=W%C3%BClfrath&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie_location/wuppertal/",
+      "destination": "/immobilien/?city=Wuppertal&marketCity=1",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/aplerbeck/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/brackel/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/eving/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/hoerde/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/hombruch/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/huckarde/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/innenstadt-nord/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/innenstadt-ost/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/innenstadt-west/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/luetgendortmund/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/mengede/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilienmakler-dortmund/scharnhorst/",
+      "destination": "/immobilienmakler-dortmund/",
+      "permanent": true
     }
   ],
   "rewrites": [
     {
+      "source": "/danke-termin/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/danke/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/barrierefreie-3-zimmer-wohnung-mit-grossem-balkon-und-gruenem-blick-in-solingen-wald/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/charmantes-fachwerkhaus-mit-historischem-charakter-und-vielseitigen-nutzungsmoeglichkeiten/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/doppelhaushaelfte-mit-garage-sonnigem-garten-und-ausbaureserve-im-dachgeschoss/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/ertragsstarke-kapitalanlage-aus-2016-11-einheiten-ca-954-m%c2%b2-mietpotenzial-bis-121-807-eur-p-a/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/ertragsstarke-kapitalanlage-aus-2016-11-einheiten-ca-954-m%c2%B2-mietpotenzial-bis-121-807-eur-p-a/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/ertragsstarke-kapitalanlage-aus-2016-11-einheiten-ca-954-m%C2%b2-mietpotenzial-bis-121-807-eur-p-a/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/ertragsstarke-kapitalanlage-aus-2016-11-einheiten-ca-954-m%C2%B2-mietpotenzial-bis-121-807-eur-p-a/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/exzellente-kapitalanlage-am-rosengarten-moderne-bauqualitaet-in-bester-lage-von-recklinghausen/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/grosszuegiges-einfamilienhaus-mit-weitlaeufigem-grundstueck-und-viel-potenzial-in-grefrath/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/ihr-neues-zuhause-gepflegt-modernisiert-und-sofort-nutzbar/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/kapitalanlage-in-hauptbahnhofnaehe-leerstehende-1-zimmer-wohnung-mit-potenzial/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/kapitalanlage-oder-eigennutz-attraktive-2-zimmer-wohnung-mit-garten-tg-stellplatz/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/kernsanierte-anlage-mit-teilungserklaerung-in-krefeld-uerdingen-5-einheiten-ca-496-m%c2%b2-starke-renditeperspektive/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/kernsanierte-anlage-mit-teilungserklaerung-in-krefeld-uerdingen-5-einheiten-ca-496-m%c2%B2-starke-renditeperspektive/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/kernsanierte-anlage-mit-teilungserklaerung-in-krefeld-uerdingen-5-einheiten-ca-496-m%C2%b2-starke-renditeperspektive/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/kernsanierte-anlage-mit-teilungserklaerung-in-krefeld-uerdingen-5-einheiten-ca-496-m%C2%B2-starke-renditeperspektive/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/modernisierte-2-zimmer-eigentumswohnung-in-ruettenscheid/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/modernisierter-bungalow-mit-photovoltaik-sauna-und-sonnigem-garten/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/modernisiertes-mehrfamilienhaus-mit-eigennutzung-und-mieteinnahmen-auf-erbbaugrund/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/modernisiertes-reihenhaus-mit-garten-ueberdachter-terrasse-garage-und-vielseitigem-platzangebot/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/provisionsfrei-ins-moderne-familienglueck-stilvoll-sanierte-doppelhaushaelfte-mit-garten/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/renovierungsprojekt-gemuetliche-2-zimmer-dachgeschosswohnung-in-willich-schiefbahn/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/seltene-gelegenheit-grosszuegiges-anwesen-mit-parkgarten-pool-und-drei-wohneinheiten/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/sofort-bezugsfertiges-einfamilienhaus-mit-grossem-garten-und-blick-ueber-felder-und-wiesen/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/stilvolles-reihenmittelhaus-in-ruhiger-wohnlage-im-dortmunder-sueden-erbpachtgrundstueck/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/wohn-und-geschaeftshaus-mit-neun-wohnungen-zwei-gewerbeeinheiten-und-attraktivem-mietpotenzial/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/wohnkomfort-mit-potenzial-balkon-aufzug-stellplatz-inklusive/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/zwei-wohneinheiten-und-ein-grosszuegiges-grundstueck-vielseitige-immobilie-mit-entwicklungspotenzial/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie_location/374/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie_location/445/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie_location/590/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie_location/689/",
+      "destination": "/api/retired-page"
+    },
+    {
       "source": "/immobilie/:slug/",
       "destination": "/api/property-page?slug=:slug"
+    },
+    {
+      "source": "/immobilien/",
+      "destination": "/api/catalog-page"
+    },
+    {
+      "source": "/referenzen/",
+      "destination": "/api/catalog-page?kind=references"
+    },
+    {
+      "source": "/referenz/:slug/",
+      "destination": "/api/reference-page?slug=:slug"
+    },
+    {
+      "source": "/sitemap-immobilien.xml",
+      "destination": "/api/catalog-sitemap"
+    },
+    {
+      "source": "/sitemap-referenzen.xml",
+      "destination": "/api/catalog-sitemap?kind=references"
+    },
+    {
+      "source": "/immobilienmakler-dorsten/",
+      "destination": "/api/city-page?city=immobilienmakler-dorsten"
+    },
+    {
+      "source": "/immobilienmakler-bochum/",
+      "destination": "/api/city-page?city=immobilienmakler-bochum"
+    },
+    {
+      "source": "/immobilienmakler-borken/",
+      "destination": "/api/city-page?city=immobilienmakler-borken"
+    },
+    {
+      "source": "/immobilienmakler-bottrop/",
+      "destination": "/api/city-page?city=immobilienmakler-bottrop"
+    },
+    {
+      "source": "/immobilienmakler-castrop-rauxel/",
+      "destination": "/api/city-page?city=immobilienmakler-castrop-rauxel"
+    },
+    {
+      "source": "/immobilienmakler-coesfeld/",
+      "destination": "/api/city-page?city=immobilienmakler-coesfeld"
+    },
+    {
+      "source": "/immobilienmakler-datteln/",
+      "destination": "/api/city-page?city=immobilienmakler-datteln"
+    },
+    {
+      "source": "/immobilienmakler-dortmund/",
+      "destination": "/api/city-page?city=immobilienmakler-dortmund"
+    },
+    {
+      "source": "/immobilienmakler-essen/",
+      "destination": "/api/city-page?city=immobilienmakler-essen"
+    },
+    {
+      "source": "/immobilienmakler-gladbeck/",
+      "destination": "/api/city-page?city=immobilienmakler-gladbeck"
+    },
+    {
+      "source": "/immobilienmakler-haltern-am-see/",
+      "destination": "/api/city-page?city=immobilienmakler-haltern-am-see"
+    },
+    {
+      "source": "/immobilienmakler-herten/",
+      "destination": "/api/city-page?city=immobilienmakler-herten"
+    },
+    {
+      "source": "/immobilienmakler-marl/",
+      "destination": "/api/city-page?city=immobilienmakler-marl"
+    },
+    {
+      "source": "/immobilienmakler-recklinghausen/",
+      "destination": "/api/city-page?city=immobilienmakler-recklinghausen"
+    },
+    {
+      "source": "/immobilienmakler-schermbeck/",
+      "destination": "/api/city-page?city=immobilienmakler-schermbeck"
+    },
+    {
+      "source": "/immobilienmakler-unna/",
+      "destination": "/api/city-page?city=immobilienmakler-unna"
+    },
+    {
+      "source": "/immobilienmakler-witten/",
+      "destination": "/api/city-page?city=immobilienmakler-witten"
+    },
+    {
+      "source": "/immobilienmakler-dusseldorf/",
+      "destination": "/api/city-page?city=immobilienmakler-dusseldorf"
+    },
+    {
+      "source": "/immobilienmakler-meerbusch/",
+      "destination": "/api/city-page?city=immobilienmakler-meerbusch"
+    },
+    {
+      "source": "/immobilienmakler-mettmann/",
+      "destination": "/api/city-page?city=immobilienmakler-mettmann"
+    },
+    {
+      "source": "/immobilienmakler-moers/",
+      "destination": "/api/city-page?city=immobilienmakler-moers"
+    },
+    {
+      "source": "/immobilienmakler-krefeld/",
+      "destination": "/api/city-page?city=immobilienmakler-krefeld"
+    },
+    {
+      "source": "/immobilienmakler-ratingen/",
+      "destination": "/api/city-page?city=immobilienmakler-ratingen"
+    },
+    {
+      "source": "/immobilienmakler-viersen/",
+      "destination": "/api/city-page?city=immobilienmakler-viersen"
+    },
+    {
+      "source": "/immobilienmakler-heiden/",
+      "destination": "/api/city-page?city=immobilienmakler-heiden"
+    },
+    {
+      "source": "/immobilienmakler-oer-erkenschwick/",
+      "destination": "/api/city-page?city=immobilienmakler-oer-erkenschwick"
+    },
+    {
+      "source": "/immobilienmakler-raesfeld/",
+      "destination": "/api/city-page?city=immobilienmakler-raesfeld"
+    },
+    {
+      "source": "/immobilienmakler-reken/",
+      "destination": "/api/city-page?city=immobilienmakler-reken"
+    },
+    {
+      "source": "/immobilienmakler-remscheid/",
+      "destination": "/api/city-page?city=immobilienmakler-remscheid"
+    },
+    {
+      "source": "/immobilienmakler-waltrop/",
+      "destination": "/api/city-page?city=immobilienmakler-waltrop"
+    },
+    {
+      "source": "/immobilienmakler-wegberg/",
+      "destination": "/api/city-page?city=immobilienmakler-wegberg"
     }
   ],
   "headers": [
@@ -60,7 +3211,22 @@
       ]
     },
     {
-      "source": "/immobilien/:path*",
+      "source": "/(.*)",
+      "missing": [
+        {
+          "type": "host",
+          "value": "sls.de"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/api/:path*",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -69,7 +3235,7 @@
       ]
     },
     {
-      "source": "/immobilie/:path*",
+      "source": "/immobilien/preview.html",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -83,7 +3249,7 @@
       "maxDuration": 60
     },
     "api/property-page.js": {
-      "includeFiles": "immobilien/index.html",
+      "includeFiles": "{immobilien/index.html,referenzen/index.html,content/seo/restored-cities.json,content/team/profiles.json,content/marktgebiete/pages.json,config/site-navigation.json}",
       "maxDuration": 60
     },
     "api/propstack-guide-request.js": {
@@ -115,6 +3281,25 @@
       "regions": [
         "fra1"
       ]
+    },
+    "api/catalog-page.js": {
+      "maxDuration": 60,
+      "includeFiles": "{immobilien/index.html,referenzen/index.html,content/seo/restored-cities.json,content/team/profiles.json,content/marktgebiete/pages.json,config/site-navigation.json}"
+    },
+    "api/reference-page.js": {
+      "maxDuration": 60,
+      "includeFiles": "{immobilien/index.html,referenzen/index.html,content/seo/restored-cities.json,content/team/profiles.json,content/marktgebiete/pages.json,config/site-navigation.json}"
+    },
+    "api/catalog-sitemap.js": {
+      "maxDuration": 60,
+      "includeFiles": "{immobilien/index.html,referenzen/index.html,content/seo/restored-cities.json,content/team/profiles.json,content/marktgebiete/pages.json,config/site-navigation.json}"
+    },
+    "api/city-page.js": {
+      "maxDuration": 60,
+      "includeFiles": "{immobilienmakler-*/index.html,content/marktgebiete/*.json,content/seo/restored-cities.json,content/team/profiles.json,config/site-navigation.json}"
+    },
+    "api/retired-page.js": {
+      "includeFiles": "{content/marktgebiete/pages.json,content/seo/restored-cities.json,content/team/profiles.json,config/site-navigation.json}"
     }
   },
   "buildCommand": "node scripts/build-magazine.mjs && node scripts/build-sia-company.mjs && node scripts/build-public-site.mjs",
@@ -124,5 +3309,6 @@
       "path": "/api/security-monitor/",
       "schedule": "0 * * * *"
     }
-  ]
+  ],
+  "$schema": "https://openapi.vercel.sh/vercel.json"
 }

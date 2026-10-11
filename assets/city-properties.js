@@ -1,5 +1,6 @@
 import {matchesMarketCity} from './market-city-match.mjs';
 import {propertyCardHtml} from './property-card.mjs';
+import {referencePath} from './reference-seo.mjs';
 
 const validCity = matchesMarketCity;
 const unique = items => [...new Map(items.map(item => [String(item.id), item])).values()];
@@ -39,7 +40,7 @@ const referenceCard = item => {
   const tag = document.createElement('span'); tag.className = 'city-reference-tag'; tag.textContent = 'Verkauft';
   const heading = document.createElement('h3'); heading.textContent = item.title;
   const location = document.createElement('p'); location.textContent = item.city;
-  article.append(image,tag,heading,location); return article;
+  const link=document.createElement('a');link.href=referencePath(item);link.append(image,tag,heading,location);article.append(link);return article;
 };
 
 async function load(section, kind) {

@@ -1,3 +1,4 @@
+import {referencePath} from './reference-seo.mjs';
 (async () => {
  const grid = document.getElementById('references-grid');
  const status = document.getElementById('references-status');
@@ -19,7 +20,7 @@
   const tag = document.createElement('span'); tag.className = 'reference-tag'; tag.textContent = 'Erfolgreich vermittelt';
   const heading = document.createElement('h3'); heading.textContent = item.title;
   const location = document.createElement('p'); location.textContent = item.city;
-  article.append(image,tag,heading,location); return article;
+  const link=document.createElement('a');link.href=referencePath(item);link.append(image,tag,heading,location);article.append(link); return article;
  };
  const pages = [];
  let current = 0, loading = false, retryPage = 0, totalPages = 0;
@@ -30,12 +31,12 @@
   pagination.setAttribute('aria-label',`Referenzseiten, insgesamt ${totalPages} Seiten`);
   if (pagination.hidden) return;
   const button = (label, index, disabled = false, active = false) => {
-   const control = document.createElement('button');
-   control.type = 'button'; control.textContent = label;
-   control.disabled = loading || disabled;
+   const control = document.createElement('a');
+   control.textContent = label;if(!disabled)control.href=index===0?'/referenzen/':'/referenzen/?page='+(index+1);
+   if(loading||disabled)control.setAttribute('aria-disabled','true');
    if (active) control.setAttribute('aria-current','page');
    if (/^\d+$/.test(label)) control.setAttribute('aria-label',`Seite ${label}`);
-   control.addEventListener('click',()=>loadPage(index,true));
+   control.addEventListener('click',event=>{event.preventDefault();if(!loading&&!disabled)loadPage(index,true);});
    pagination.append(control);
   };
   button('Zurück',current-1,current===0);
@@ -53,6 +54,12 @@
   const batch = pages[index].items.map(card);
   observer?.disconnect(); grid.replaceChildren(...batch); batch.forEach(item=>observer?.observe(item));
   current=index;
+  history.replaceState(null,'',index?'/referenzen/?page='+(index+1):'/referenzen/');
+  const canonical=document.querySelector('link[rel="canonical"]');if(canonical)canonical.href='https://sls.de'+location.pathname+location.search;
+  document.title=`Verkaufte Immobilien und Referenzen${index?` – Seite ${index+1}`:''} | SLS Immobilienpartner`;
+  const ogUrl=document.querySelector('meta[property="og:url"]');if(ogUrl)ogUrl.content=canonical?.href||'';
+  const schema=document.querySelector('#sls-seo-jsonld');
+  if(schema){const data=JSON.parse(schema.textContent),collection=data['@graph']?.find(node=>node['@type']==='CollectionPage');if(collection){collection.url=canonical.href;collection['@id']=canonical.href+'#webpage';collection.name=document.title;collection.mainEntity.itemListElement=pages[index].items.map((item,i)=>({'@type':'ListItem',position:index*12+i+1,name:item.title,url:'https://sls.de'+referencePath(item)}));schema.textContent=JSON.stringify(data);}}
   status.textContent = batch.length ? '' : 'Derzeit sind keine Referenzimmobilien verfügbar.';
   status.hidden = !status.textContent;
   if (focus) {
@@ -92,5 +99,8 @@
   }
  };
  retry.addEventListener('click',()=>loadPage(retryPage,true));
- await loadPage(0);
+ const bootstrap=document.querySelector('#sls-catalog-data');
+ const server=bootstrap?JSON.parse(bootstrap.textContent):null;
+ if(server?.kind==='references'){totalPages=Math.ceil(server.total/12);pages[server.page-1]={items:server.items};showPage(server.page-1,false);renderPagination();}
+ else await loadPage(Math.max(0,(Number(new URL(location.href).searchParams.get('page'))||1)-1));
 })();

@@ -26,6 +26,7 @@ const navGroups = [
     ["Immobilienwissen", "/faq/", "Fragen und Antworten"],
     ["Ratgeber", "/downloads/", "Orientierung für Ihre Entscheidung"],
     ["Magazin", "/blog/", "Aktuelles, Einblicke und Trends"],
+    ["Videos & Gespräche", "/videos/", "Einblicke in die Immobilienarbeit"],
     ["Netzwerk", "/netzwerk/", "Fachbetriebe und Experten"]
   ]},
   { label: "Standorte", href: "/standorte/", kicker: "In NRW zuhause", items: [
@@ -157,7 +158,7 @@ footer.innerHTML = `
   </div>
   <div class="footer-menu-band"><div class="footer-unified-wrap">
     <div class="footer-navigation">${footerGroups}</div>
-    <div class="footer-legal"><span>&copy; ${new Date().getFullYear()} SLS Immobilienpartner GmbH</span><nav aria-label="Rechtliche Informationen"><a href="/datenschutz/">Datenschutz</a><button type="button" data-privacy-settings>Datenschutzeinstellungen</button><a href="https://sls.de/impressum/">Impressum</a></nav></div>
+    <div class="footer-legal"><span>&copy; ${new Date().getFullYear()} SLS Immobilienpartner GmbH</span><nav aria-label="Rechtliche Informationen"><a href="/datenschutz/">Datenschutz</a><button type="button" data-privacy-settings>Datenschutzeinstellungen</button><a href="/impressum/">Impressum</a></nav></div>
   </div></div>`;
 // Resolve the real closing surface, including transparent property-page wrappers.
 function syncFooterTone() {

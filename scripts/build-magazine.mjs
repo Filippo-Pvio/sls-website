@@ -108,8 +108,6 @@ for(const [name,author] of Object.entries(authors)){
  write(file,html);
 }
 
-let sitemap=read('sitemap.xml');const existing=new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]));
-const added=generated.filter(p=>!existing.has(origin+p.url)).map(p=>`  <url><loc>${origin+p.url}</loc><lastmod>2026-10-02</lastmod></url>`).join('\n');
-if(added)sitemap=sitemap.replace('</urlset>',added+'\n</urlset>');write('sitemap.xml',sitemap);
+// Sitemap is rebuilt from all public routes by build-public-site.mjs.
 write('content/magazin/generated.json',JSON.stringify(generated,null,2)+'\n');
 console.log(`Generated ${generated.length} pages, ${articles.length} articles; all original article URLs retained.`);

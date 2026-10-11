@@ -55,7 +55,7 @@ test('repeated updates retain one canonical/schema; inactive state clears both a
   const seo=loadSeo();
   seo.setSeo(property);seo.setSeo(property);
   assert.equal(seo.nodes.size,4);
-  assert.equal(seo.nodes.get('meta[name="robots"]').content,'noindex,nofollow');
+  assert.equal(seo.nodes.get('meta[name="robots"]').content,'noindex,follow');
   seo.setInactiveSeo('Immobilie nicht mehr verfügbar','Dieses Angebot ist nicht mehr verfügbar.');
   assert.equal(seo.nodes.has('link[rel="canonical"]'),false);
   assert.equal(seo.nodes.has('#pp-property-jsonld'),false);

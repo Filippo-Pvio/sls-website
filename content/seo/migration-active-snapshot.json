@@ -1,0 +1,830 @@
+[
+  {
+    "id": "5450418",
+    "title": "Reduiziert: Investieren in Qualität - Maisonettewohnung mit Dachterrasse",
+    "city": "Mönchengladbach",
+    "reference": "SLS 6962"
+  },
+  {
+    "id": "5452229",
+    "title": "Gewerbeensemble mit langfristig vermietetem Bürohauptgebäude und Entwicklungsperspektive",
+    "city": "Krefeld",
+    "reference": "SLS 6982"
+  },
+  {
+    "id": "5429426",
+    "title": "Einziehen, aufatmen, genießen: Energieeffizienter Bungalow mit privatem Pool",
+    "city": "Niederkrüchten",
+    "reference": "SLS 6779"
+  },
+  {
+    "id": "5212681",
+    "title": "Vermietete 2-Zimmer-Eigentumswohnung mit Balkon – solide Kapitalanlage in Lünen",
+    "city": "Lünen",
+    "reference": "SLS 5753"
+  },
+  {
+    "id": "3992156",
+    "title": "Wohnen auf einer Ebene: gepflegter Bungalow mit Kamin, Garten und Garage",
+    "city": "Dorsten",
+    "reference": "SLS 1815"
+  },
+  {
+    "id": "5423046",
+    "title": "Rund 180 m² Wohn- und Nutzfläche mit viel Potenzial für Ihre Wohnideen",
+    "city": "Kürten",
+    "reference": "SLS 6749"
+  },
+  {
+    "id": "5821187",
+    "title": "Wohnen auf ca. 170 m² - Großzügige Doppelhaushälfte in Hanglage mit Blick über das Ruhrtal",
+    "city": "Essen",
+    "reference": "SLS 9197"
+  },
+  {
+    "id": "6236933",
+    "title": "Modernisierte 2-Zimmer-Wohnung mit Balkon und Aufzug – urbanes Wohnen in Düsseldorf-Friedrichstadt",
+    "city": "Düsseldorf",
+    "reference": "SLS 10672"
+  },
+  {
+    "id": "6179519",
+    "title": "Überraschend viel Platz: Familienhaus mit ausgebautem Dachgeschoss, Hobbyraum und zwei Garagen",
+    "city": "Dorsten",
+    "reference": "SLS 10384"
+  },
+  {
+    "id": "3528391",
+    "title": "Wohnen wie im eigenen Haus – bezugsfreie Maisonette mit Garten, Garage und Privatzugang in Raesfeld",
+    "city": "Raesfeld",
+    "reference": "SLS 989"
+  },
+  {
+    "id": "5526602",
+    "title": "Maisonette mit Charme - modernes Wohnen auf zwei Ebenen",
+    "city": "Rösrath",
+    "reference": "SLS 7436"
+  },
+  {
+    "id": "5723226",
+    "title": "Ruhig wohnen im Grünen – gepflegte 2-Zimmer-Wohnung mit Balkon und Stellplatz in Wuppertal-Vohwinkel",
+    "city": "Wuppertal",
+    "reference": "SLS 8415"
+  },
+  {
+    "id": "6158199",
+    "title": "Raum für Ihr neues Zuhause: ca. 900 m² Grundstück in Sackgasse für ein freistehendes Einfamilienhaus",
+    "city": "Witten",
+    "reference": "SLS 10257"
+  },
+  {
+    "id": "5146767",
+    "title": "2.996 m² für Ihr nächstes Wohnbauprojekt – Entwicklungsgrundstück in Niederkrüchten-Overhetfeld",
+    "city": "Niederkrüchten",
+    "reference": "SLS 5455"
+  },
+  {
+    "id": "5883294",
+    "title": "Bezugsfreie Eigentumswohnung am Rosengarten – Terrasse, Balkon & Tiefgarage",
+    "city": "Recklinghausen",
+    "reference": "SLS 9473"
+  },
+  {
+    "id": "5922646",
+    "title": "Familienfreundliches Reihenhaus mit Garten in ruhiger Spielstraße – viel Platz zum Wohlfühlen",
+    "city": "Lünen",
+    "reference": "SLS 9726"
+  },
+  {
+    "id": "5812358",
+    "title": "Großzügige Maisonette mit eigenem Garten, Smart Home und flexiblem Wohnkonzept auf zwei Ebenen",
+    "city": "Haltern am See",
+    "reference": "SLS 9133"
+  },
+  {
+    "id": "5538615",
+    "title": "Altbaucharme in Düsseldorf-Pempelfort: Modernisierte 2-Zimmer-Wohnung mit laufenden Mieteinnahmen",
+    "city": "Düsseldorf",
+    "reference": "SLS 7505"
+  },
+  {
+    "id": "4818864",
+    "title": "Gepflegtes Zweifamilienhaus mit großem Garten und Dachterrasse in ruhiger Lage von Bergkamen",
+    "city": "Bergkamen",
+    "reference": "SLS 4150"
+  },
+  {
+    "id": "5511287",
+    "title": "Vermietetes 1-Zimmer-Apartment mit Einbauküche & Tiefgarage in grüner Wohnlage von Vohwinkel",
+    "city": "Wuppertal",
+    "reference": "SLS 7343"
+  },
+  {
+    "id": "5207696",
+    "title": "Baulücke mit Potenzial – 627 m² Grundstück in begehrter Lage von Brüggen-Bracht",
+    "city": "Brüggen-Bracht",
+    "reference": "SLS 5693"
+  },
+  {
+    "id": "5595075",
+    "title": "Vermietete Eleganz am Rosengarten – großzügige 3-Zimmer-Wohnung mit Balkon & Tiefgarage",
+    "city": "Recklinghausen",
+    "reference": "SLS 7730"
+  },
+  {
+    "id": "5216205",
+    "title": "Seltene Gelegenheit in gewachsener Lage: Immobilie mit weitläufigem Grundstück",
+    "city": "Lüdenscheid",
+    "reference": "SLS 5777"
+  },
+  {
+    "id": "5644481",
+    "title": "Provisionsfrei: Vier Zimmer, zwei Ebenen, ein Zuhause: Renovierte Maisonette mit Dachloggia & Garage",
+    "city": "Witten",
+    "reference": "SLS 8019"
+  },
+  {
+    "id": "4519111",
+    "title": "Großzügiges Wohnen mit Garten, Wintergarten, Sauna und viel Raum für die Familie",
+    "city": "Dortmund",
+    "reference": "SLS 2874"
+  },
+  {
+    "id": "4497047",
+    "title": "Ihr Platz für die Zukunft – Baugrundstück in ruhiger Sackgassenlage von Recklinghausen",
+    "city": "Recklinghausen",
+    "reference": "SLS 2779"
+  },
+  {
+    "id": "5523800",
+    "title": "Dachgeschosswohnung mit großzügigem Balkon und viel Gestaltungspotenzial",
+    "city": "Essen",
+    "reference": "SLS 7417"
+  },
+  {
+    "id": "3666884",
+    "title": "Großzügiger Bungalow in Kaarster Toplage – viel Raum, zwei Wohnbereiche und Garten für die Familie",
+    "city": "Kaarst",
+    "reference": "SLS 1198"
+  },
+  {
+    "id": "5933951",
+    "title": "Modernisiert mit Charakter – bereit für neue Wohnträume auf großzügigem Grundstück",
+    "city": "Gladbeck",
+    "reference": "SLS 9828"
+  },
+  {
+    "id": "5077850",
+    "title": "Exklusive Terrassenwohnung in Bestlage von Essen-Bredeney mit Garten und Blick ins Grüne",
+    "city": "Essen",
+    "reference": "SLS 5229"
+  },
+  {
+    "id": "5912802",
+    "title": "Großzügig geschnitten mit Loggia – Dachgeschosswohnung in begehrter Lage",
+    "city": "Dortmund",
+    "reference": "SLS 9635"
+  },
+  {
+    "id": "4131806",
+    "title": "Vier Zimmer auf zwei Ebenen mit Terrasse, Gartenanteil, Garage und rund 132 m² Wohnfläche",
+    "city": "Raesfeld",
+    "reference": "SLS 2078"
+  },
+  {
+    "id": "5478764",
+    "title": "Lichtdurchflutete Maisonettewohnung mit Sonnenbalkon & Stellplatz im Herzen von Büderich",
+    "city": "Meerbusch",
+    "reference": "SLS 7130"
+  },
+  {
+    "id": "4600261",
+    "title": "Lichtdurchflutete Wohnung mit Balkon, offenem Wohnen, Stellplatz und langfristig gesicherter Miete",
+    "city": "Raesfeld",
+    "reference": "SLS 3155"
+  },
+  {
+    "id": "4602621",
+    "title": "Gut aufgeteilt, lichtdurchflutet und komfortabel mit zwei Balkonen",
+    "city": "Raesfeld",
+    "reference": "SLS 3184"
+  },
+  {
+    "id": "4603204",
+    "title": "Großzügige Maisonette mit eingebetteter Loggia, großezügigem Wohn Essbereich und zwei Bädern",
+    "city": "Raesfeld",
+    "reference": "SLS 3191"
+  },
+  {
+    "id": "5414617",
+    "title": "Ihr neues Zuhause mit Charakter – Einfamilienhaus in begehrter Wohnlage",
+    "city": "Dortmund",
+    "reference": "SLS 6682"
+  },
+  {
+    "id": "5433922",
+    "title": "Gelegenheit!! Sanierungsbedürftiges Haus mit Potential in Grevenbroich-Neuenhausen",
+    "city": "Grevenbroich",
+    "reference": "SLS 6798"
+  },
+  {
+    "id": "4945946",
+    "title": "Historisches Wohnensemble mit vielseitigen Nutzungsmöglichkeiten",
+    "city": "Bochum",
+    "reference": "SLS 4777"
+  },
+  {
+    "id": "5897540",
+    "title": "Modernes Einfamilienhaus mit viel Licht und Wohnkomfort",
+    "city": "Bergkamen",
+    "reference": "SLS 9531"
+  },
+  {
+    "id": "5730182",
+    "title": "Familientaugliches Reihenmittelhaus mit Garten, Terrasse & Garage in gefragter Lage von Breitscheid",
+    "city": "Ratingen",
+    "reference": "SLS 8455"
+  },
+  {
+    "id": "5876592",
+    "title": "Zwei Wohnungen - eine außergewöhnliche Wohnperspektive auf 109 m²",
+    "city": "Dortmund",
+    "reference": "SLS 9433"
+  },
+  {
+    "id": "5437911",
+    "title": "Großzügige Maisonette-Wohnung mit Dachterrasse und Naturblick  in Meerbusch",
+    "city": "Meerbusch",
+    "reference": "SLS 6819"
+  },
+  {
+    "id": "5486088",
+    "title": "Kernsaniertes Einfamilienhaus mit 140 qm Wohn und Nutzfläche in Meerbusch – mit optionalem Baugrundstück",
+    "city": "Meerbusch",
+    "reference": "SLS 7183"
+  },
+  {
+    "id": "4452167",
+    "title": "Tolles Penthouse mit großer Dachterrasse, eigenem Schwimmbad im Keller und Sauna",
+    "city": "Duisburg",
+    "reference": "SLS 2646"
+  },
+  {
+    "id": "5424869",
+    "title": "Vermietete Eigentumswohnung in Oberhausen – kompakte Kapitalanlage mit praktischem Grundriss",
+    "city": "Oberhausen",
+    "reference": "SLS 6765"
+  },
+  {
+    "id": "5622501",
+    "title": "Gepflegte Erdgeschosswohnung mit großzügigem Wohnbereich und Terrasse",
+    "city": "Oberhausen",
+    "reference": "SLS 7878"
+  },
+  {
+    "id": "5451236",
+    "title": "Kompakt, modern, sofort bezugsbereit und Stellplatz vor der Tür",
+    "city": "Lünen",
+    "reference": "SLS 6975"
+  },
+  {
+    "id": "5438714",
+    "title": "Zwei Häuser - ein Grundstück: Perfekt für Mehrgeneration oder Wohnen & Vermieten",
+    "city": "Bergisch Gladbach",
+    "reference": "SLS 6827"
+  },
+  {
+    "id": "4769244",
+    "title": "Freistehendes Einfamilienhaus auf Baugrundstück – Erweiterungs- oder Neubaupotenzial",
+    "city": "Moers",
+    "reference": "SLS 3867"
+  },
+  {
+    "id": "5933215",
+    "title": "Vermietete 2-Zimmer-Wohnung mit Balkon in gepflegtem Wohnambiente",
+    "city": "Wuppertal",
+    "reference": "SLS 9821"
+  },
+  {
+    "id": "5739216",
+    "title": "Wohnen auf einer Ebene: Gepflegter Bungalow mit Vollkeller, Garage und sonnigem Garten",
+    "city": "Dorsten",
+    "reference": "SLS 8509"
+  },
+  {
+    "id": "5711814",
+    "title": "Bezugsfreie 2-Zimmer-Wohnung mit Balkon und angenehmem Wohngefühl",
+    "city": "Wuppertal",
+    "reference": "SLS 8332"
+  },
+  {
+    "id": "6224210",
+    "title": "Viel Platz für eigene Wohnideen – Mehrfamilienhaus mit zwei freien und zwei vermieteten Wohnungen",
+    "city": "Gladbeck",
+    "reference": "SLS 10570"
+  },
+  {
+    "id": "5438014",
+    "title": "Großzügige Maisonette in gepflegter Wohnanlage – zwei Terrassen inklusive",
+    "city": "Dorsten",
+    "reference": "SLS 6820"
+  },
+  {
+    "id": "5595085",
+    "title": "Vermietete Luxuriöse Gartenwohnung mit Terrasse und privatem Garten in Bestlage",
+    "city": "Recklinghausen",
+    "reference": "SLS 7731"
+  },
+  {
+    "id": "4584479",
+    "title": "Nach WEG aufgeteiltes Mehrfamilienhaus in Düsseldorf Friedrichstadt",
+    "city": "Düsseldorf",
+    "reference": "SLS 3062"
+  },
+  {
+    "id": "2776946",
+    "title": "Eigentumswohnung mit 3 Zimmern und vielseitigen Nutzungsmöglichkeiten",
+    "city": "Marl",
+    "reference": "SLS 469"
+  },
+  {
+    "id": "5755620",
+    "title": "Viel Platz für eigene Wohnideen – Mehrfamilienhaus mit zwei freien und zwei vermieteten Wohnungen",
+    "city": "Gladbeck",
+    "reference": "SLS 8595"
+  },
+  {
+    "id": "5048743",
+    "title": "Altbau trifft Moderne: Perfekt geschnittene 2-Zimmer-Wohnung mit Balkon",
+    "city": "Dortmund",
+    "reference": "SLS 5095"
+  },
+  {
+    "id": "5294649",
+    "title": "Mehrfamiliehaus 5 Wohneinheiten in Wuppertal-Langerfeld",
+    "city": "Wuppertal",
+    "reference": "SLS 6197"
+  },
+  {
+    "id": "5358509",
+    "title": "Wohnen mit Charakter: Stilvolle Maisonette mit zwei Südbalkonen und 147 m² Wohn-& Nutzfläche",
+    "city": "Düsseldorf",
+    "reference": "SLS 7000"
+  },
+  {
+    "id": "5604487",
+    "title": "Großzügiger Reihenbungalow mit Garten, Garage und modernisiertem Wohnkomfort",
+    "city": "Bielefeld",
+    "reference": "SLS 7763"
+  },
+  {
+    "id": "5489188",
+    "title": "Stilvolle Eigentumswohnung mit hochwertiger Ausstattung, Tiefgarage und starker Rücklage",
+    "city": "Marl",
+    "reference": "SLS 7204"
+  },
+  {
+    "id": "4857330",
+    "title": "Viel Platz auf mehreren Ebenen - großzügiges Familienhaus mit Garten & Garage",
+    "city": "Dortmund",
+    "reference": "SLS 4294"
+  },
+  {
+    "id": "3671267",
+    "title": "Kernsaniertes Dreifamilienhaus mit sofortigen Mieteinnahmen und nachhaltigen Ertragsperspektiven",
+    "city": "Dorsten",
+    "reference": "SLS 1216"
+  },
+  {
+    "id": "4946232",
+    "title": "Wohn & Geschäftshaus – 2020 kernsanierte Kapitalanlage in zentraler Lage von Krefeld",
+    "city": "Krefeld",
+    "reference": "SLS 4779"
+  },
+  {
+    "id": "4438112",
+    "title": "Doppelhaushälfte – ideal als Mehrgenerationenhaus – mit Balkon und Garten in begehrter Wohnlage",
+    "city": "Essen",
+    "reference": "SLS 2602"
+  },
+  {
+    "id": "5609395",
+    "title": "Freistehendes Einfamilienhaus in Feldrandlage – Lichtdurchflutetes Wohnen mit Garten & Doppelgarage",
+    "city": "Brüggen",
+    "reference": "SLS 7808"
+  },
+  {
+    "id": "4352004",
+    "title": "Helle Dachgeschosswohnung mit Loggia und viel zusätzlicher wohnlicher Nutzfläche im Dachgeschoss",
+    "city": "Düsseldorf",
+    "reference": "SLS 2362"
+  },
+  {
+    "id": "4718788",
+    "title": "Wohn- und Gewerbeanwesen mit außergewöhnlichen Nutzungsmöglichkeiten idyllisch in Kempen/Tonisberg",
+    "city": "Kempen",
+    "reference": "SLS 3575"
+  },
+  {
+    "id": "5517237",
+    "title": "Energetisch und kernsaniertes Haus, modern, hell, großzügig in Heiligenhaus!",
+    "city": "Heiligenhaus",
+    "reference": "SLS 7380"
+  },
+  {
+    "id": "4954810",
+    "title": "Urbanes Lebensgefühl mit Südbalkon und Rheinturmblick in begehrter Unterbilker Lage",
+    "city": "Düsseldorf",
+    "reference": "SLS 4826"
+  },
+  {
+    "id": "6176058",
+    "title": "Ihr Platz im Grünen: ca. 900 m² für ein Einfamilienhaus am Ende der Häuserreihe",
+    "city": "Witten",
+    "reference": "SLS 10365"
+  },
+  {
+    "id": "3957609",
+    "title": "Exklusives Penthouse am Rosengarten – 154 m², zwei Terrassen und bezugsfrei ab 01.01.2027",
+    "city": "Recklinghausen",
+    "reference": "SLS 1783"
+  },
+  {
+    "id": "5587959",
+    "title": "Exklusive Terrassenwohnung mit privatem Garten als attraktive Kapitalanlage",
+    "city": "Recklinghausen",
+    "reference": "SLS 7800"
+  },
+  {
+    "id": "5519808",
+    "title": "Exklusive 3,5-Zimmer-Eigentumswohnung am Rosengarten mit sonnigem Balkon",
+    "city": "Recklinghausen",
+    "reference": "SLS 7411"
+  },
+  {
+    "id": "5519787",
+    "title": "Attraktive Kapitalanlage im Westviertel – 97 m², Balkon und Tiefgaragenstellplatz",
+    "city": "Recklinghausen",
+    "reference": "SLS 7410"
+  },
+  {
+    "id": "4917295",
+    "title": "Hochwertige Villa aus 2017 mit Einliegerwohnung, Wellnessbereich und großzügigem Wohnkonzept",
+    "city": "Fröndenberg/Ruhr",
+    "reference": "SLS 4571"
+  },
+  {
+    "id": "5709642",
+    "title": "Ihr neues Zuhause mit Potenzial: Reihenmittelhaus auf großzügigem Grundstück",
+    "city": "Unna",
+    "reference": "SLS 8316"
+  },
+  {
+    "id": "5644071",
+    "title": "Voll vermietetes Wohnungspaket mit zwei Eigentumswohnungen – attraktive Kapitalanlage",
+    "city": "Recklinghausen",
+    "reference": "SLS 8011"
+  },
+  {
+    "id": "5490231",
+    "title": "Modernisierte Eigentumswohnung mit Balkon – ideal für Eigennutzer und Kapitalanleger",
+    "city": "Essen",
+    "reference": "SLS 7215"
+  },
+  {
+    "id": "4949641",
+    "title": "Vielseitige Immobilie mit Hallenflächen und Entwicklungspotenzial",
+    "city": "Marl",
+    "reference": "SLS 4796"
+  },
+  {
+    "id": "5622933",
+    "title": "Seltene Gelegenheit: Großzügiges Grundstück mit vielseitigem Entwicklungspotenzial",
+    "city": "Solingen",
+    "reference": "SLS 7883"
+  },
+  {
+    "id": "5373808",
+    "title": "Modernes Wohngefühl auf zwei Ebenen – Maisonette mit separatem Schlafbereich",
+    "city": "Oer-Erkenschwick",
+    "reference": "SLS 6489"
+  },
+  {
+    "id": "4131762",
+    "title": "Vermietet, verwaltet, werthaltig – Ihr Investment im Herzen des Ruhrgebiets",
+    "city": "Herne",
+    "reference": "SLS 2077"
+  },
+  {
+    "id": "5392438",
+    "title": "Historisches Fachwerkhaus mit großem Entwicklungspotenzial in zentraler Lage",
+    "city": "Werne",
+    "reference": "SLS 6591"
+  },
+  {
+    "id": "5238838",
+    "title": "Vermietete 2-Zimmer-Wohnung mit Aufzug und betreuter Infrastruktur – attraktive Kapitalanlage",
+    "city": "Mönchengladbach",
+    "reference": "SLS 5867"
+  },
+  {
+    "id": "5424786",
+    "title": "Modernes Wohnen auf kompaktem Raum – stilvolle Erdgeschosswohnung mit Blick ins Grüne",
+    "city": "Oberhausen",
+    "reference": "SLS 6764"
+  },
+  {
+    "id": "5394053",
+    "title": "Eigenheim mit Mieteinnahme – Modernisiertes Zweifamilienhaus mit Garten und Doppelgarage",
+    "city": "Meerbusch",
+    "reference": "SLS 6610"
+  },
+  {
+    "id": "2634194",
+    "title": "Wohnen mit Wohlfühlfaktor – 2-Zimmer-Wohnung mit Balkon und offener Küche",
+    "city": "Dorsten",
+    "reference": "SLS 320"
+  },
+  {
+    "id": "5487742",
+    "title": "Gelegenheit! Sanierungsobjekt auf schönem Grundstück in gewachsener Ortslage",
+    "city": "Düsseldorf",
+    "reference": "SLS 7196"
+  },
+  {
+    "id": "4666032",
+    "title": "Familienglück in Hinsbeck – 5 Zimmer, Garten, Dachstudio & Vollkeller",
+    "city": "Nettetal-Hinsbeck",
+    "reference": "SLS 3413"
+  },
+  {
+    "id": "5209940",
+    "title": "Wohnen mit Freiraum – modernisierter Bungalow mit vielseitig nutzbarem Souterrain",
+    "city": "Oberhausen-Sterkrade",
+    "reference": "SLS 5730"
+  },
+  {
+    "id": "4410802",
+    "title": "Charmantes Stadthaus in ruhiger Lage von Mönchengladbach-Rheydt",
+    "city": "Mönchengladbach",
+    "reference": "SLS 2476"
+  },
+  {
+    "id": "5059778",
+    "title": "Großzügiges Wohnen mit traumhaftem Garten und Einliegerwohnung in Dortmund-Kirchhörde",
+    "city": "Dortmund",
+    "reference": "SLS 5199"
+  },
+  {
+    "id": "6138947",
+    "title": "Ihr repräsentativer Kanzlei- oder Unternehmenssitz im Herzen der Burggemeinde Brüggen",
+    "city": "Brüggen",
+    "reference": "SLS 10109"
+  },
+  {
+    "id": "4776043",
+    "title": "Provisionsfrei – Historisches Wohn- und Geschäftshaus mit drei Wohneinheiten und Gastronomiefläche",
+    "city": "Witten",
+    "reference": "SLS 3915"
+  },
+  {
+    "id": "5520439",
+    "title": "Familienfreundliches Zuhause mit vielseitigen Nutzungsmöglichkeiten",
+    "city": "Kamen",
+    "reference": "SLS 7406"
+  },
+  {
+    "id": "5502961",
+    "title": "Baugrundstück in naturnaher Lage – Ihr Wohntraum im Grünen von Kierspe",
+    "city": "Kierspe",
+    "reference": "SLS 7273"
+  },
+  {
+    "id": "4113771",
+    "title": "2-Zimmer-Etagenwohnung mit historischem Altbaucharme und zeitgemäßer Ausstattung",
+    "city": "Dortmund",
+    "reference": "SLS 2060"
+  },
+  {
+    "id": "5757539",
+    "title": "Viel Raum für Wohnen und Arbeiten – Ihr Haus im Herzen von Brüggen",
+    "city": "Brüggen",
+    "reference": "SLS 8609"
+  },
+  {
+    "id": "4514594",
+    "title": "Seltene Gelegenheit – Mehrfamilienhaus-Baugrundstück mit viel Grün und hervorragender Anbindung",
+    "city": "Dorsten",
+    "reference": "SLS 2843"
+  },
+  {
+    "id": "5516614",
+    "title": "Gepflegte 3-Zimmer-Erdgeschosswohnung mit Balkon und Stellplatz",
+    "city": "Marl",
+    "reference": "SLS 7375"
+  },
+  {
+    "id": "5712589",
+    "title": "Vermietete 3-Zimmer-Eigentumswohnung mit durchdachtem Grundriss und Loggia",
+    "city": "Dorsten",
+    "reference": "SLS 8349"
+  },
+  {
+    "id": "5523253",
+    "title": "Charmante Doppelhaushälfte mit Garten und Potenzial zur individuellen Modernisierung",
+    "city": "Bönen",
+    "reference": "SLS 7413"
+  },
+  {
+    "id": "4962988",
+    "title": "Reihenhaus mit Wertsteigerungspotenzial und Entwicklungsspielraum",
+    "city": "Kamen",
+    "reference": "SLS 4880"
+  },
+  {
+    "id": "4600079",
+    "title": "Viel Raum für Familie und Beruf – großzügiges Mehrgenerationenhaus auf ca. 2.800 m² Grundstück",
+    "city": "Dorsten",
+    "reference": "SLS 3152"
+  },
+  {
+    "id": "5445650",
+    "title": "Wohnkomfort mit Wohlfühlfaktor – Gepflegte Doppelhaushälfte in attraktiver Wohnlage",
+    "city": "Werne",
+    "reference": "SLS 6893"
+  },
+  {
+    "id": "4807654",
+    "title": "Zweifamilienhaus mit freiwerdender EG-Wohnung, freier OG-Wohnung und Erbpacht bis 2091",
+    "city": "Gelsenkirchen",
+    "reference": "SLS 4111"
+  },
+  {
+    "id": "5738301",
+    "title": "Wohnen auf ca. 112 m² – außergewöhnliche Maisonette mit Dachloggia, Kamin & eigener Sauna",
+    "city": "Marl",
+    "reference": "SLS 8495"
+  },
+  {
+    "id": "4827831",
+    "title": "Wo Geschichte zuhause ist – historisches Anwesen zum Wohnen und Arbeiten in Ascheberg",
+    "city": "Ascheberg",
+    "reference": "SLS 4193"
+  },
+  {
+    "id": "4514604",
+    "title": "Baugrundstück für eine Doppelhaushälfte in naturnaher Lage – mit großem, flexibel nutzbarem Garten",
+    "city": "Dorsten",
+    "reference": "SLS 2845"
+  },
+  {
+    "id": "5367495",
+    "title": "Leerstand mit Potenzial – Wohn & Geschäftshaus mit vielfältigen Möglichkeiten",
+    "city": "Velbert",
+    "reference": "SLS 6433"
+  },
+  {
+    "id": "4600000",
+    "title": "Wohnen mit Perspektive – große Familienwohnung und zwei Einheiten mit Anlagepotenzial",
+    "city": "Arnsberg",
+    "reference": "SLS 3151"
+  },
+  {
+    "id": "4415899",
+    "title": "Großzügiger Bungalow mit traumhaftem Garten und lichtdurchflutetem Wohnbereich",
+    "city": "Dorsten",
+    "reference": "SLS 2520"
+  },
+  {
+    "id": "5917859",
+    "title": "Wo Geschichte zuhause ist – historisches Anwesen zum Wohnen und Arbeiten in Ascheberg",
+    "city": "Ascheberg",
+    "reference": "SLS 9698"
+  },
+  {
+    "id": "5917864",
+    "title": "Wo Geschichte auf Unternehmertum trifft – außergewöhnliches Wohn- und Gewerbeanwesen in Ascheberg",
+    "city": "Ascheberg",
+    "reference": "SLS 9699"
+  },
+  {
+    "id": "4776967",
+    "title": "Neuwertige Dachgeschosswohnung in Remscheid – modern wohnen, nachhaltig investieren",
+    "city": "Remscheid",
+    "reference": "SLS 3916"
+  },
+  {
+    "id": "5156011",
+    "title": "Doppeltes Potenzial: Zwei Eigentumswohnungen mit Stellplätzen und Ausbaureserve",
+    "city": "Recklinghausen",
+    "reference": "SLS 5531"
+  },
+  {
+    "id": "5372394",
+    "title": "Barrierefrei wohnen über den Dächern der Stadt – 3-Zimmer-Wohnung mit Balkon",
+    "city": "Bergkamen",
+    "reference": "SLS 6480"
+  },
+  {
+    "id": "4918771",
+    "title": "Architektonisches Neubau-Unikat in Feldrandlage – KfW-40-Einfamilienhaus mit Einliegerwohnung",
+    "city": "Schermbeck",
+    "reference": "SLS 4583"
+  },
+  {
+    "id": "5786403",
+    "title": "Ein Zuhause fürs Leben in Bochum – Reihenendhaus mit Garten und Entwicklungspotenzial",
+    "city": "Bochum",
+    "reference": "SLS 8895"
+  },
+  {
+    "id": "5222102",
+    "title": "Renditestarkes Mehrfamilienhaus mit 16 Wohnungen, 7 Garagen und laufender Neuvermietung",
+    "city": "Witten",
+    "reference": "SLS 5795"
+  },
+  {
+    "id": "4877542",
+    "title": "Vermietete Eigentumswohnung im 1. Obergeschoss mit Balkon, Aufzug und Tiefgaragenstellplatz",
+    "city": "Essen",
+    "reference": "SLS 4362"
+  },
+  {
+    "id": "5597282",
+    "title": "Wohnen auf höchstem Niveau - Exklusive 3-Zimmer-Wohnung mit Tiefgaragenstellplatz & Seeblick",
+    "city": "Düsseldorf",
+    "reference": "SLS 7738"
+  },
+  {
+    "id": "5463221",
+    "title": "6 Wohneinheiten - 8,23 % Ist-Rendite mit Entwicklungspotenzial mit bis zu 9,23 % Soll-Rendite",
+    "city": "Recklinghausen",
+    "reference": "SLS 7017"
+  },
+  {
+    "id": "4514603",
+    "title": "Großes Baugrundstück für ein repräsentatives Einfamilienhaus in ruhiger Lage von Dorsten-Deuten",
+    "city": "Dorsten",
+    "reference": "SLS 2844"
+  },
+  {
+    "id": "4592656",
+    "title": "Helle, großzügige und doch gemütliche Dachgeschosswohnung mit Loggia in Ratingen",
+    "city": "Ratingen",
+    "reference": "SLS 3111"
+  },
+  {
+    "id": "4749582",
+    "title": "Historisches Anwesen mit Fachwerk, Bachlauf, parkähnlichem Grundstück und vielseitigen Möglichkeiten",
+    "city": "Ennepetal",
+    "reference": "SLS 3802"
+  },
+  {
+    "id": "4727367",
+    "title": "Historische Jugendstilvilla mit großzügigem Raumangebot in Münster-Wolbeck",
+    "city": "Münster",
+    "reference": "SLS 3597"
+  },
+  {
+    "id": "2729450",
+    "title": "Familienfreundliches Zweifamilienhaus mit großem Garten und viel Potenzial",
+    "city": "Recklinghausen",
+    "reference": "SLS 402"
+  },
+  {
+    "id": "4848469",
+    "title": "Wohnen wie im eigenen Haus: helle Maisonette mit eigenem Eingang & Balkon in Brüggen-Bracht",
+    "city": "Brüggen",
+    "reference": "SLS 4240"
+  },
+  {
+    "id": "5018316",
+    "title": "Großzügiges Familienanwesen in gefragter Lage – wohnen und Einnahmen kombinieren",
+    "city": "Gladbeck",
+    "reference": "SLS 4960"
+  },
+  {
+    "id": "5021108",
+    "title": "Viel Platz für die ganze Familie – großzügiges Zuhause mit Garten und vielseitigen Möglichkeiten",
+    "city": "Ennepetal",
+    "reference": "SLS 4964"
+  },
+  {
+    "id": "5550552",
+    "title": "Bauen in gewachsener Umgebung: 1.099 m² Grundstück mit genehmigter Planung",
+    "city": "Ennepetal",
+    "reference": "SLS 7568"
+  },
+  {
+    "id": "5564261",
+    "title": "Außergewöhnlich großes Grundstück für Doppelhaushälfte mit positiver Bauvoranfrage",
+    "city": "Ennepetal",
+    "reference": "SLS 7596"
+  },
+  {
+    "id": "5400227",
+    "title": "Modern wohnen, langfristig investieren – attraktive Dachgeschosswohnung mit drei Zimmern",
+    "city": "Essen",
+    "reference": "SLS 7744"
+  }
+]
