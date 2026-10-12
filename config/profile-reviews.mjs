@@ -67,8 +67,8 @@ const verifiedAssignments = {
       "Herr Hryn",
       "Herrn Hryn"
     ],
-    "approvedReviewUri": null,
-    "approvedReviewId": null
+    "approvedReviewUri": "https://maps.app.goo.gl/xvXq5x48yXtoq4NBA",
+    "approvedReviewId": "Ci9DQUlRQUNvZENodHljRjlvT2tzd1JuUkZTVVJVYTFjMlNrRjFTMlkxWXpFM1FXYxAB"
   },
   "maximilian-werner": {
     "name": "Maximilian Werner",
