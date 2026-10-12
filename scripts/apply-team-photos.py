@@ -8,7 +8,7 @@ def apply_photos():
     changed=[]
     for p in ROOT.rglob('*.html'):
         relative=p.relative_to(ROOT)
-        if relative.parts[0] in ('team','qa-artifacts','node_modules','.git') or str(relative) in excluded:continue
+        if relative.parts[0] in ('team','qa-artifacts','node_modules','.git','output') or str(relative) in excluded:continue
         old=p.read_text();new=old
         for base,photo in mapping.items():
             for width in (900,1536):
@@ -47,5 +47,8 @@ window.slsSceneImage = (url) => {
             s=s.replace('const path = (scene) =>','const legacyPath = (scene) =>')
             s=s.replace('  let active = current;','  const path = (scene) => window.slsSceneImage(legacyPath(scene));\n  let active = current;')
             p.write_text(s)
+    # Restore page-specific headers after any legacy photo rewrite.
+    import runpy
+    runpy.run_path(str(ROOT/'scripts/apply-header-images.py'))['apply_headers']()
     return changed
 if __name__=='__main__':print('Updated general pages:',len(apply_photos()))

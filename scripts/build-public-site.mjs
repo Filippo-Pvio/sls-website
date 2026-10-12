@@ -4,7 +4,7 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'..'),output=path.join(root,'.site-output');
 await import('./build-restored-cities.mjs');
 await import('./build-videos.mjs');
-const excluded=new Set(['api','lib','config','docs','qa','scripts','services','integrations','node_modules','content','qa-artifacts','test-results','playwright-report']);
+const excluded=new Set(['output','api','lib','config','docs','qa','scripts','services','integrations','node_modules','content','qa-artifacts','test-results','playwright-report']);
 await rm(output,{recursive:true,force:true});await mkdir(output,{recursive:true});
 for(const entry of await readdir(root,{withFileTypes:true})){
  if(entry.name.startsWith('.')||excluded.has(entry.name))continue;

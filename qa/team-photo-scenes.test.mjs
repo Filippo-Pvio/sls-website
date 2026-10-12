@@ -30,5 +30,5 @@ test('central rewrite is idempotent and remains applied after city page regenera
  execFileSync('python3',['scripts/market-page-images.py']);
  const before=execFileSync('git',['diff'],{encoding:'utf8'});execFileSync('python3',['scripts/apply-team-photos.py']);
  assert.equal(execFileSync('git',['diff'],{encoding:'utf8'}),before);
- for(const slug of ['immobilienmakler-mettmann','immobilienmakler-gladbeck','immobilienmakler-moers'])assert.match(fs.readFileSync(slug+'/index.html','utf8'),/assets\/images\/team-scenes\//);
+ for(const slug of ['immobilienmakler-mettmann','immobilienmakler-gladbeck','immobilienmakler-moers'])assert.match(fs.readFileSync(slug+'/index.html','utf8'),/assets\/images\/header-unique\//);
 });
