@@ -43,7 +43,7 @@
     gallery.setAttribute('aria-roledescription', 'Karussell');
     controls.hidden = cards.length < 2;
     if (cards.length < 2) track.removeAttribute('tabindex');
-    else {
+    else if (!gallery.hasAttribute('data-video-hide-hint')) {
       const hint = document.createElement('p');
       hint.className = 'profile-carousel-hint';
       hint.textContent = 'Weitere Einblicke entdecken · Wischen oder Pfeile nutzen';

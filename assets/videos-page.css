@@ -23,3 +23,17 @@ body.videos-page #main > .videos-final { background: #fff; color: #345b6e; text-
   .videos-page .videos-interview-layout,.videos-page .videos-tours-heading { grid-template-columns: minmax(0,1fr); gap: 28px; }
   .videos-page .videos-interview.is-reversed .videos-interview-copy { order: 0; }
 }
+
+.videos-page .videos-final h2 { margin-inline: auto; }
+.videos-page .videos-carousel-header { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: end; gap: 36px; margin-bottom: 24px; }
+.videos-page .videos-carousel-header .videos-tours-heading { display: block; margin: 0; }
+.videos-page .videos-carousel-header .videos-tours-heading h2 { margin-bottom: 20px; }
+.videos-page .videos-carousel-header .videos-tours-heading p { max-width: 680px; }
+.videos-page .videos-carousel-header .videos-tours-heading .videos-carousel-instruction { font-size: 13px; color: #d7e6ed; margin-top: 14px; }
+.videos-page .videos-carousel-header .profile-video-controls { padding-top: 0; }
+.videos-page .videos-hero .hero-scene { object-position: 50% 28%; }
+@media(max-width:850px) {
+  .videos-page .videos-carousel-header { grid-template-columns: minmax(0,1fr); gap: 20px; }
+  .videos-page .videos-carousel-header .profile-video-controls { justify-content: flex-start; }
+  .videos-page .videos-hero .hero-scene { object-position: 68% 30%; }
+}
