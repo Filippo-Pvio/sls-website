@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import handler from '../api/propstack-sold-references.js';
-const unit=id=>({id,title:`Immobilie ${id}`,city:'Dorsten',marketing_type:'BUY',status:{id:2},broker:{id:9,name:'SLS'},images:[{is_private:false,medium_url:'https://example.org/public.webp'}]});
+const unit=id=>({id,title:`Immobilie ${id}`,city:'Dorsten',marketing_type:'BUY',status:{id:2},broker:{id:9,name:'SLS'},custom_fields:{einkaufsmakler:{value:null},verkaufsmakler:{value:null}},images:[{is_private:false,medium_url:'https://example.org/public.webp'}]});
 const call=async (query,units,options={})=>{
  const originalFetch=globalThis.fetch,originalKey=process.env.PROPSTACK_API_KEY,calls=[];
  process.env.PROPSTACK_API_KEY='test-key';

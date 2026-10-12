@@ -1,5 +1,5 @@
 import googleReviews from './google-reviews.js';
-import {businessReviewsConfigured, loadBusinessReviews} from '../lib/google-profile-reviews.mjs';
+import {businessReviewsConfigured, getBusinessReviews} from '../lib/google-profile-reviews.mjs';
 import { profileReviewAssignments, matchesProfile, selectProfileReview } from '../config/profile-reviews.mjs';
 
 export default async function handler(req, res) {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   let businessConnection = businessReviewsConfigured() ? 'unavailable' : 'not_configured';
   if (businessReviewsConfigured()) {
     try {
-      const business = await loadBusinessReviews(data.googleMapsUri);
+      const business = await getBusinessReviews(data.googleMapsUri);
       reviews = business.reviews;
       data.rating = business.rating; data.userRatingCount = business.count;
       source = 'google_business_profile'; businessConnection = 'connected';
@@ -35,6 +35,6 @@ export default async function handler(req, res) {
     personalReview:personal,
     // Places supplies a limited selection, not the entire review history.
     source, businessConnection,
-    personalStatus:personal ? 'assigned' : reviews.some(review => matchesProfile(review, profile)) ? 'approval_required' : source === 'google_places' ? 'limited_selection' : 'no_matching_review'
+    personalStatus:personal ? 'assigned' : reviews.some(review => matchesProfile(review, profile)) ? 'ambiguous_match' : source === 'google_places' ? 'limited_selection' : 'no_matching_review'
   });
 }

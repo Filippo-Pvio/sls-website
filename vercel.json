@@ -3276,7 +3276,8 @@
       "maxDuration": 60
     },
     "api/profile-reviews.js": {
-      "maxDuration": 60
+      "maxDuration": 60,
+      "includeFiles": "content/team/profiles.json"
     },
     "api/career-application.js": {
       "maxDuration": 60,
@@ -3320,6 +3321,10 @@
     },
     "api/newsletter.js": {
       "maxDuration": 60
+    },
+    "api/propstack-sold-references.js": {
+      "maxDuration": 60,
+      "includeFiles": "content/team/profiles.json"
     }
   },
   "buildCommand": "node scripts/build-magazine.mjs && node scripts/build-sia-company.mjs && node scripts/build-public-site.mjs",
