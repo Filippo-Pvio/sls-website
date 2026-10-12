@@ -3419,3 +3419,7 @@ body.home-editorial #main .hero-premium :is(.hero-media,h1,.hero-intro-mobile,.h
   body #main .knowledge-intro-hero .knowledge-hero-scene,
   body #main .mag-hero .mag-hero-scenes img{animation:none;transform:none}
 }
+
+/* Page-specific team motifs keep the person visible in narrow header crops. */
+.hero-scene[src*="/header-unique/"]{object-position:50% 40%!important}
+@media(max-width:850px){.hero-scene[src*="/header-unique/"]{object-position:68% 45%!important}}

@@ -5,10 +5,15 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (!current || !incoming) return;
 
-  const scenes = ['beratung', 'kontakt', 'besichtigung'];
+  const customScenes = (hero.dataset.heroScenes || '').split(',').filter(Boolean);
+  const mobileWidths = (hero.dataset.heroWidths || '').split(',');
+  const desktopWidths = (hero.dataset.heroDesktopWidths || '').split(',');
+  const scenes = customScenes.length ? customScenes : ['beratung', 'kontakt', 'besichtigung'];
   const dwell = 10000;
   const fade = 3200;
-  const legacyPath = (scene) => `/assets/images/references-hero/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
+  const legacyPath = (scene) => customScenes.length
+    ? `/assets/images/${scene}-${window.innerWidth <= 900 ? (mobileWidths[scenes.indexOf(scene)] || 900) : (desktopWidths[scenes.indexOf(scene)] || 1536)}.webp`
+    : `/assets/images/references-hero/${scene}-${window.innerWidth <= 900 ? 900 : 1536}.webp`;
   const path = (scene) => window.slsSceneImage(legacyPath(scene));
   let active = current;
   let standby = incoming;
