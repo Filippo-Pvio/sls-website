@@ -1,5 +1,6 @@
+import {readFileSync} from 'node:fs';
 // Pin only a verified, unambiguously assigned personal Google review.
-export const profileReviewAssignments = {
+const verifiedAssignments = {
   "dennis-sahlmen": {
     "name": "Dennis Sahlmen",
     "aliases": [
@@ -203,6 +204,21 @@ export const profileReviewAssignments = {
     "approvedReviewId": null
   }
 };
+// Published team data is the source of truth; existing pilot is not in profiles.json.
+export function buildProfileAssignments(team, verified = verifiedAssignments) {
+  const people = [...team];
+  if (verified['filippo-livera'] && !people.some(p => p.slug === 'filippo-livera'))
+    people.push({slug:'filippo-livera', name:verified['filippo-livera'].name});
+  return Object.fromEntries(people.map(person => [person.slug, {
+    ...verified[person.slug], name:person.name,
+    aliases:[person.name, ...(person.reviewAliases || verified[person.slug]?.aliases || [])],
+    automaticAliases:[person.name, ...(person.reviewAliases || [])],
+    approvedReviewUri:verified[person.slug]?.approvedReviewUri || null,
+    approvedReviewId:verified[person.slug]?.approvedReviewId || null
+  }]));
+}
+const team = JSON.parse(readFileSync(new URL('../content/team/profiles.json', import.meta.url), 'utf8'));
+export const profileReviewAssignments = buildProfileAssignments(team);
 export function matchesProfile(review, profile) {
   const text = String(review.text || '').normalize('NFKC').toLocaleLowerCase('de-DE');
   return profile.aliases.some(alias => {
@@ -210,7 +226,15 @@ export function matchesProfile(review, profile) {
     return new RegExp(`(^|[^\\p{L}])${needle}([^\\p{L}]|$)`, 'u').test(text);
   });
 }
-export function selectProfileReview(reviews, profile) {
-  if (!profile.approvedReviewUri && !profile.approvedReviewId) return null;
-  return reviews.find(review => ((profile.approvedReviewId && review.id === profile.approvedReviewId) || (profile.approvedReviewUri && review.googleMapsUri === profile.approvedReviewUri)) && matchesProfile(review, profile)) || null;
+export function selectProfileReview(reviews, profile, registry = profileReviewAssignments) {
+  const pinned = reviews.find(review => ((profile.approvedReviewId && review.id === profile.approvedReviewId) || (profile.approvedReviewUri && review.googleMapsUri === profile.approvedReviewUri)) && matchesProfile(review, profile));
+  if (pinned) return pinned;
+  // Never guess from the reviewer name, a first name, or a shared surname.
+  const candidates = reviews.filter(review => {
+    const matches = Object.values(registry).filter(person => matchesProfile(review, {
+      aliases:person.automaticAliases || [person.name]
+    }));
+    return matches.length === 1 && matches[0].name === profile.name;
+  });
+  return candidates.sort((a,b) => (Date.parse(b.publishTime) || 0) - (Date.parse(a.publishTime) || 0) || String(a.id || a.googleMapsUri).localeCompare(String(b.id || b.googleMapsUri)))[0] || null;
 }

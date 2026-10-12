@@ -19,3 +19,17 @@ stabil; dadurch springt das Karussell nicht bei jedem Seitenaufruf.
 Falls SLS den Verkaufstatus anders benannt hat, muss der Statusname
 gezielt geprüft werden. Die separate Vorschau unter `/immobilien-test/`
 bleibt unabhängig.
+
+## Teamprofile: Einkauf und Verkauf
+
+Teamprofile zeigen bis zu drei verkaufte öffentliche Immobilien. Explizite
+`custom_fields.verkaufsmakler` und `custom_fields.einkaufsmakler` werden anhand
+der Propstack-Nutzer-IDs auf die veröffentlichte Teamliste zugeordnet.
+Ohne expliziten Verkaufsmakler gilt der bisherige Betreuer als Rückfallzuordnung.
+Verkaufsbeteiligungen haben Vorrang, Einkaufsbeteiligungen ergänzen freie Plätze.
+Ein Objekt erscheint pro Profil nur einmal. Einkaufsreferenzen tragen den Hinweis
+„Verkauft · Einkauf begleitet“. Fehlende Felder werden serverseitig aus Objektdetails
+nachgeladen. Der öffentliche Feed gibt nur Profilkennung und Rolle aus, keine
+rohen Custom-Felder, internen Notizen oder Kundendaten.
+Neue Teamprofile brauchen keine gesonderte Freigabeliste im JavaScript;
+der Referenzbereich wird bei vorhandenen Treffern automatisch angelegt.

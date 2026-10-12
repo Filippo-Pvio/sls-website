@@ -1,3 +1,4 @@
+import {referenceParticipants,hasReferenceRoles} from '../lib/profile-reference-roles.mjs';
 import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {cachedCatalog} from '../lib/property-catalog.mjs';
 const API_BASE = 'https://api.propstack.de/v1/';
@@ -174,8 +175,9 @@ export default async function handler(req, res) {
     const publicListings = [];
     for (let i = 0; i < listings.length; i += 8) {
       const batch = await Promise.all(listings.slice(i, i + 8).map(async unit => {
+        if (!publicReference(unit,soldStatusIds)) return null;
         let source = unit;
-        if (!unit.broker_id && !unit.broker?.id && !unit.broker?.name) {
+        if (!hasReferenceRoles(unit) || (!unit.broker_id && !unit.broker?.id && !unit.broker?.name)) {
           try {
             const detail = await propstack('units/' + encodeURIComponent(unit.id) + '?new=1', key);
             if (String(detail?.id) === String(unit.id)) source = { ...unit, ...detail, status: unit.status, images: detail.images?.length ? detail.images : unit.images };
@@ -191,6 +193,7 @@ export default async function handler(req, res) {
           ref.brokerId = brokerId || String(broker.id || '') || null;
           ref.brokerName = String(broker.name || '').trim().slice(0, 100) || null;
         }
+        ref.participants = referenceParticipants(source, brokersById);
         return ref;
       }));
       publicListings.push(...batch.filter(Boolean));

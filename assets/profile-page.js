@@ -22,28 +22,20 @@
 
 
 (() => {
-  const allowedProfiles = new Set([
-    'Andreas Busch',
-    'Cüneyt Demirli',
-    'Daniel Allamezade',
-    'Dennis Sahlmen',
-    'Dustin Offermann',
-    'Filippo Livera',
-    'Gina Künnecke',
-    'Heiko Hofmann',
-    'Jacqueline Flöter',
-    'Manuela Landripet',
-    'Maximilian Werner',
-    'Mischa Stratmann',
-    'Nico Hryn',
-    'Tanja Wawrosch',
-    'Uwe Braun'
-  ]);
-
-  const section = document.querySelector('.profile-success');
-  const grid = section?.querySelector('.profile-success-grid');
+  let section = document.querySelector('.profile-success');
   const profileName = document.querySelector('.profile-hero-copy h1')?.textContent?.trim();
-  if (!section || !grid || !profileName || !allowedProfiles.has(profileName)) return;
+  const profileSlug = document.querySelector('[data-profile-reviews]')?.dataset.profileReviews || location.pathname.split('/').filter(Boolean)[1];
+  if (!profileName || !profileSlug) return;
+  if (!section) {
+    section = document.createElement('section');
+    section.className = 'section profile-success profile-tone-light';
+    section.hidden = true;
+    section.innerHTML = '<div class="wrap"><div class="profile-section-head"><h2>Erfolgreich vermittelt.</h2><p></p></div><div class="profile-success-grid"></div><div class="profile-success-footer"><a class="text-link" href="/referenzen/">Weitere Referenzen ansehen</a></div></div>';
+    document.querySelector('.profile-final')?.before(section);
+  }
+  const grid = section.querySelector('.profile-success-grid');
+  if (!grid) return;
+  section.querySelector('.profile-section-head p').textContent = `Eine Auswahl von Immobilien, an deren erfolgreicher Vermittlung ${profileName} mitgewirkt hat.`;
 
   const normalize = value => String(value || '')
     .normalize('NFD')
@@ -67,7 +59,8 @@
     image.height = 600;
     image.loading = 'lazy';
     const badge = document.createElement('span');
-    badge.textContent = 'Verkauft';
+    const roles = ref.participants?.filter(p => p.profile === profileSlug).map(p => p.role) || [];
+    badge.textContent = roles.includes('sale') ? 'Verkauft' : roles.includes('acquisition') ? 'Verkauft · Einkauf begleitet' : 'Verkauft';
     imageWrap.append(image, badge);
 
     const copy = document.createElement('div');
@@ -88,19 +81,22 @@
       if (!response.ok) return;
       const data = await response.json();
       const refs = (Array.isArray(data.references) ? data.references : [])
-        .filter(ref => normalize(ref.brokerName) === profileKey)
+        .filter(ref => Array.isArray(ref.participants) ? ref.participants.some(p => p.profile === profileSlug) : normalize(ref.brokerName) === profileKey)
+        .sort((a,b) => Number(b.participants?.some(p => p.profile === profileSlug && p.role === 'sale')) - Number(a.participants?.some(p => p.profile === profileSlug && p.role === 'sale')))
+        .filter((ref,index,all) => all.findIndex(other => other.id === ref.id) === index)
         .slice(0, 3);
       if (!refs.length) return;
 
       const fragment = document.createDocumentFragment();
       refs.forEach(ref => fragment.append(createCard(ref)));
       grid.replaceChildren(fragment);
+      section.hidden = false;
     } catch {
       // Keep the verified static references if Propstack is temporarily unavailable.
     }
   }
 
-  if ('IntersectionObserver' in window) {
+  if ('IntersectionObserver' in window && !section.hidden) {
     const observer = new IntersectionObserver(entries => {
       if (!entries.some(entry => entry.isIntersecting)) return;
       observer.disconnect();

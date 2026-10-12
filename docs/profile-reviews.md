@@ -81,3 +81,19 @@ Nach Änderungen an reviews.json: python scripts/build-team-profiles.py ausführ
 Filippos separat gepflegtes Referenzprofil wird dabei nicht überschrieben.
 Autorenname und Mitarbeitername werden getrennt behandelt: Gina K. als Autorin
 einer Offermann-Bewertung ist kein Bezug zur Mitarbeiterin Gina Künnecke.
+
+## Automatische Teamzuordnung (12.10.2026)
+
+Die veröffentlichte Teamliste `content/team/profiles.json` erzeugt die Zuordnungen
+auch für neue Mitarbeiter. Filippos bisher separates Pilotprofil bleibt ergänzt.
+Verifizierte feste Bewertungen haben Vorrang. Ohne feste Bewertung wird die
+neueste Bewertung gewählt, die genau eine Person mit vollständigem Namen nennt.
+Autorenname, reine Vornamen und gemeinsam geführte Nachnamen reichen nicht.
+Optionale `reviewAliases` in den Teamdaten müssen ebenfalls eindeutig sein;
+Bewertungen mit Nennungen mehrerer Mitarbeiter werden nicht automatisch zugeordnet.
+Es gibt keinen Sterneschwellenfilter. Die Zuordnung läuft beim Seitenbesuch;
+der vollständige Google-Abruf wird serverseitig fünf Minuten zwischengespeichert.
+
+Der Vollabruf ist erst nach Google-Freigabe des Cloud-Projekts und der Einrichtung
+aller vier GOOGLE_BUSINESS-Variablen aktiv. Places bleibt eine begrenzte Rückfallquelle.
+Am 12.10.2026 fehlen diese Variablen; der volle Abruf ist noch nicht aktiviert.

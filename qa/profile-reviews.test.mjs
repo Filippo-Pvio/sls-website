@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {matchesProfile, selectProfileReview, profileReviewAssignments} from '../config/profile-reviews.mjs';
+import {matchesProfile, selectProfileReview, profileReviewAssignments, buildProfileAssignments} from '../config/profile-reviews.mjs';
 import {loadBusinessReviews} from '../lib/google-profile-reviews.mjs';
 const profile = profileReviewAssignments['filippo-livera'];
 test('personal assignment requires approval and an exact name boundary', () => {
@@ -32,10 +32,22 @@ test('a customer author is not the employee and shared surnames remain distinct'
   assert.equal(matchesProfile({text:'Danke Frau Sahlmen'},profileReviewAssignments['dennis-sahlmen']),false);
   assert.equal(matchesProfile({text:'Danke Herrn Sahlmen'},profileReviewAssignments['daniela-sahlmen']),false);
 });
-test('all profiles are addressable and only pinned personal reviews are selected', () => {
+test('all profiles automatically select explicit personal mentions', () => {
   assert.equal(Object.keys(profileReviewAssignments).length,21);
   for (const person of Object.values(profileReviewAssignments)) {
     assert.equal(matchesProfile({text:person.name},person),true);
-    assert.equal(selectProfileReview([{text:person.name, googleMapsUri:'https://www.google.com/other'}],person),null);
+    const review={text:person.name, googleMapsUri:'https://www.google.com/other'};
+    assert.equal(selectProfileReview([review],person),review);
   }
+});
+
+test('new staff need no separate review configuration; first names and shared surnames are not guessed', () => {
+  const registry = buildProfileAssignments([{slug:'new-person',name:'Neue Kollegin'},{slug:'other-person',name:'Andere Kollegin'}], {});
+  const p = registry['new-person'];
+  const latest = {id:'2',text:'Danke Neue Kollegin',publishTime:'2026-10-12'};
+  assert.equal(selectProfileReview([{id:'1',text:'Neue Kollegin',publishTime:'2026-10-01'},latest],p,registry),latest);
+  assert.equal(selectProfileReview([{text:'Danke Kollegin'}],p,registry),null);
+  assert.equal(selectProfileReview([{text:'Neue Kollegin und Andere Kollegin'}],p,registry),null);
+  assert.equal(selectProfileReview([{author:'Neue Kollegin',text:'Alles prima'}],p,registry),null);
+  assert.equal(selectProfileReview([{text:'Herr Sahlmen'}],profileReviewAssignments['dennis-sahlmen']),null);
 });
