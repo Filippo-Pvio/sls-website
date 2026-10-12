@@ -170,7 +170,6 @@
       gallery.classList.toggle('has-native-swipe', nativeSwipe);
       if (!nativeSwipe) track.scrollTo({ left: 0, behavior: 'instant' });
       select(selected, { behavior: 'instant' });
-      if (scroll) alignScroll(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : behavior);
     });
     // Desktop touch captions retain the existing fallback when native swiping is not active.
     track.addEventListener('pointerdown', event => {
