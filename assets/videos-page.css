@@ -1,0 +1,25 @@
+body.videos-page #main > .videos-interview { background: var(--paper); color: #345b6e; }
+body.videos-page #main > .videos-interview.is-blue,
+body.videos-page #main > .videos-tours { background: #345b6e; color: #fff; }
+.videos-page .videos-interview-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: center; }
+.videos-page .videos-interview.is-reversed .videos-interview-copy { order: 2; }
+.videos-page .videos-interview h2 { margin: 12px 0 24px; font-size: clamp(30px, 3.2vw, 46px); }
+.videos-page .videos-interview p { line-height: 1.7; }
+.videos-page .videos-duration { font-size: 13px; margin: 20px 0; }
+.videos-page .videos-interview .profile-video-player { border-radius: 12px; overflow: hidden; }
+.videos-page .videos-player-note { font-size: 13px; margin: 14px 0 0; color: #5b707a; }
+.videos-page .is-blue h2,.videos-page .is-blue p,.videos-page .is-blue a,
+body.videos-page #main .is-blue h2,body.videos-page #main .videos-tours h2,.videos-page .videos-tours > .wrap > p { color: #fff; }
+.videos-page .videos-tours .profile-carousel-hint,.videos-page .videos-tours .profile-video-controls span { color: #d7e6ed; }
+.videos-page .videos-tours .profile-video-controls button { color: #fff; border-color: #d7e6ed; }
+.videos-page .videos-tours .profile-media-copy a { color: #345b6e; }
+.videos-page .videos-tours-heading { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 28px; align-items: start; }
+.videos-page .videos-tours-heading h2 { margin: 0; }
+.videos-page .videos-tours-heading p { margin: 0; color: #edf3f5; line-height: 1.7; }
+body.videos-page #main > .videos-final { background: #fff; color: #345b6e; text-align: center; }
+.videos-page .videos-final p { max-width: 620px; margin: 0 auto 28px; }
+.videos-page .videos-final .page-actions { justify-content: center; }
+@media(max-width:850px) {
+  .videos-page .videos-interview-layout,.videos-page .videos-tours-heading { grid-template-columns: minmax(0,1fr); gap: 28px; }
+  .videos-page .videos-interview.is-reversed .videos-interview-copy { order: 0; }
+}
