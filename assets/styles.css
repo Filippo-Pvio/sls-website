@@ -1936,7 +1936,7 @@ a.google-review-card .google-review-more{
 @media(max-width:640px){
   .home-editorial .hero-premium{
     display:block;
-    min-height:max(800px,100svh);
+    min-height:0;
     background:#3b535e;
   }
   .home-editorial .hero-premium .hero-media{
@@ -1959,7 +1959,8 @@ a.google-review-card .google-review-more{
     width:calc(100% - 32px);
     max-width:560px;
     margin-inline:auto;
-    padding:142px 0 clamp(230px,68vw,350px);
+    /* Reserve the team image height plus a compact gap below the button. */
+    padding:142px 0 calc(100vw * 1022 / 1536 + 24px);
   }
   .home-editorial .hero-premium h1{
     max-width:100%;
