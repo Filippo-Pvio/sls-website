@@ -3,7 +3,6 @@
 .reference-detail-page .ref-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(26,48,58,.88),rgba(26,48,58,.64) 60%,rgba(26,48,58,.32))}
 .reference-detail-page .ref-hero-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-2;animation:ref-ken-burns 22s ease-in-out infinite alternate}
 @keyframes ref-ken-burns{from{transform:scale(1)}to{transform:scale(1.12) translate(-1%,.6%)}}
-.reference-detail-page .ref-hero nav{font-size:13px;margin-bottom:30px}.reference-detail-page .ref-hero nav a{text-decoration:underline;text-underline-offset:4px}
 .reference-detail-page .ref-kicker{font-size:12px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;margin:0 0 18px}
 .reference-detail-page .ref-hero h1{max-width:1000px;font:500 clamp(38px,4.1vw,60px)/1.12 "Playfair Display",Georgia,serif;letter-spacing:-.025em;margin:0 0 24px;color:#fff;overflow-wrap:anywhere}
 .reference-detail-page .ref-hero-note{max-width:640px;margin:0;font-size:18px;color:#edf3f4}.reference-detail-page .section{padding:72px 0}
@@ -21,5 +20,15 @@
 .reference-detail-page .ref-review{border-top:1px solid #d1dde1;margin-top:30px;padding-top:24px}.reference-detail-page .ref-review[hidden]{display:none}.reference-detail-page .ref-review h3{font-size:19px;margin:0 0 10px}.reference-detail-page .ref-review-context{font-size:13px;color:#617982}.reference-detail-page .ref-stars{font-size:24px;letter-spacing:2px}.reference-detail-page .ref-review blockquote{margin:16px 0;font-size:18px;line-height:1.7}.reference-detail-page [data-ref-author]{font-size:13px}.reference-detail-page .text-link{color:#345b6e}
 .reference-detail-page .ref-final{background:#345b6e;color:#fff;text-align:center}.reference-detail-page .ref-final h2{color:#fff;max-width:780px;margin:0 auto 24px}.reference-detail-page .ref-final .lead{max-width:670px;margin:0 auto 30px;color:#edf3f4}.reference-detail-page .ref-final-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:32px}.reference-detail-page .ref-final-links .text-link{color:#fff}.reference-detail-page .ref-error{padding-top:150px}
 .ref-lightbox{padding:52px 20px 20px;border:0;border-radius:14px;background:#fff9f3;max-width:95vw;max-height:94vh}.ref-lightbox::backdrop{background:rgba(8,23,30,.85)}.ref-lightbox img{max-height:78vh;max-width:90vw;width:auto;object-fit:contain}.ref-lightbox button{position:absolute;right:12px;top:8px;width:40px;height:40px;border:0;background:none;font-size:30px;cursor:pointer;color:#345b6e}
-@media(max-width:700px){.reference-detail-page .ref-hero{min-height:450px;padding:125px 0 56px}.reference-detail-page .ref-hero h1{font-size:clamp(28px,7.5vw,40px);max-width:100%;line-height:1.15}.reference-detail-page .ref-hero nav{margin-bottom:24px}.reference-detail-page .ref-hero-note{font-size:16px}.reference-detail-page .section{padding:48px 0}.reference-detail-page .ref-gallery{aspect-ratio:4/3;border-radius:14px}.reference-detail-page .ref-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.reference-detail-page .ref-description-grid{grid-template-columns:1fr;gap:4px}.reference-detail-page .ref-person-grid{grid-template-columns:1fr;gap:40px}.reference-detail-page .ref-person-head{gap:18px}.reference-detail-page .ref-person-head img{width:80px;height:80px}.reference-detail-page .ref-person-head h3{font-size:24px}.reference-detail-page .ref-final .button{width:100%;max-width:380px}.reference-detail-page .ref-frame .privacy-placeholder{padding:20px;font-size:14px}}
-@media(prefers-reduced-motion:reduce){.reference-detail-page .ref-hero-image{animation:none}.reference-detail-page .ref-gallery{scroll-behavior:auto}}
+@media(max-width:700px){.reference-detail-page .ref-hero{min-height:450px;padding:125px 0 56px}.reference-detail-page .ref-hero h1{font-size:clamp(28px,7.5vw,40px);max-width:100%;line-height:1.15}@media(prefers-reduced-motion:reduce){.reference-detail-page .ref-hero-image{animation:none}.reference-detail-page .ref-gallery{scroll-behavior:auto}}
+
+/* Resolve section colors from the sections actually present, independent of global nth-child rules. */
+html body.reference-detail-page>main>section.ref-surface-light{background:#fff9f3!important;color:#345b6e}
+html body.reference-detail-page>main>section.ref-surface-dark{background:#345b6e!important;color:#fff}
+html body.reference-detail-page>main>section.ref-surface-light :is(h2,h3,p,dt,dd,blockquote,.text-link){color:#345b6e}
+html body.reference-detail-page>main>section.ref-surface-dark :is(h2,h3,p,dt,dd,blockquote,.text-link){color:#fff}
+html body.reference-detail-page>main>section.ref-surface-dark :is(.ref-role,.ref-review-context,.ref-historical-note){color:#d3e6ed}
+.reference-detail-page .ref-surface-dark .ref-review{border-color:#7694a3}
+.reference-detail-page .ref-surface-dark .ref-facts{border-color:#7694a3}
+html body.reference-detail-page>main>section .ref-plan :is(h3,.text-link){color:#345b6e}
+html body.reference-detail-page>main>section .ref-frame .privacy-placeholder :is(h2,h3,p){color:#345b6e}
