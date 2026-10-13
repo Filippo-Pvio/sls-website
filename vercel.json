@@ -3306,7 +3306,7 @@
     },
     "api/reference-page.js": {
       "maxDuration": 60,
-      "includeFiles": "{immobilien/index.html,referenzen/index.html,content/seo/restored-cities.json,content/team/profiles.json,content/marktgebiete/pages.json,config/site-navigation.json}"
+      "includeFiles": "{immobilien/index.html,referenzen/index.html,content/seo/restored-cities.json,content/team/profiles.json,content/team/reviews.json,content/marktgebiete/pages.json,config/site-navigation.json}"
     },
     "api/catalog-sitemap.js": {
       "maxDuration": 60,
