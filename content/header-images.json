@@ -109,14 +109,16 @@
   ],
   "/immobilienmakler-borken/": [
     {
-      "scene": "header-unique/011-immobilienmakler-borken-1-jacqueline-floeter",
+      "scene": "header-unique/011-immobilienmakler-borken-1-jacqueline-floeter-v2",
       "person": "Jacqueline Flöter",
       "id": 11,
-      "source_sha256": "e12da1d325d02b31de54bd1959795b7445337a49926fa40cfdf08044f7b04279",
+      "source_sha256": "9442074f10ac1479d9ae5cc88456ade404538af3f66e4994fb5c382720cad1fe",
       "generated": true,
       "width": 1536,
       "height": 864,
-      "mobile_width": 900
+      "mobile_width": 900,
+      "identity_reference": "/assets/images/team/jacqueline-floeter-portrait-v2.jpg",
+      "edited_on": "2026-10-13"
     },
     {
       "scene": "header-unique/012-immobilienmakler-borken-2-uwe-braun",
@@ -275,14 +277,16 @@
       "mobile_width": 900
     },
     {
-      "scene": "header-unique/026-immobilienmakler-dorsten-2-jacqueline-floeter",
+      "scene": "header-unique/026-immobilienmakler-dorsten-2-jacqueline-floeter-v2",
       "person": "Jacqueline Flöter",
       "id": 26,
-      "source_sha256": "746386048e82348be599af93160256b13bb72c20a4ad96ef903fefcfff45d263",
+      "source_sha256": "4d85c9a8c3cb1ac7d3d2b2b8ebc99cca4fb9a546a031bfbfcef8971229c63758",
       "generated": true,
       "width": 1536,
       "height": 864,
-      "mobile_width": 900
+      "mobile_width": 900,
+      "identity_reference": "/assets/images/team/jacqueline-floeter-portrait-v2.jpg",
+      "edited_on": "2026-10-13"
     },
     {
       "scene": "header-unique/027-immobilienmakler-dorsten-3-uwe-braun",
@@ -441,14 +445,16 @@
       "mobile_width": 900
     },
     {
-      "scene": "header-unique/041-immobilienmakler-haltern-am-see-3-jacqueline-floeter",
+      "scene": "header-unique/041-immobilienmakler-haltern-am-see-3-jacqueline-floeter-v2",
       "person": "Jacqueline Flöter",
       "id": 41,
-      "source_sha256": "35f642e134425a04299463e321bd5f0a12361a9755e97c92b1b06c64319eaa36",
+      "source_sha256": "565d162d88ead98417418c2fa62bf823a0b850feee2dbafa0c61f544b20cc36d",
       "generated": true,
       "width": 1536,
       "height": 864,
-      "mobile_width": 900
+      "mobile_width": 900,
+      "identity_reference": "/assets/images/team/jacqueline-floeter-portrait-v2.jpg",
+      "edited_on": "2026-10-13"
     }
   ],
   "/immobilienmakler-herten/": [
@@ -601,14 +607,16 @@
       "mobile_width": 900
     },
     {
-      "scene": "header-unique/056-immobilienmakler-mettmann-3-jacqueline-floeter",
+      "scene": "header-unique/056-immobilienmakler-mettmann-3-jacqueline-floeter-v2",
       "person": "Jacqueline Flöter",
       "id": 56,
-      "source_sha256": "344a8b6029681542091c77b0b628082066a634b2d6f38995eca75f4c7898f0e6",
+      "source_sha256": "33d24aa769d928faac7bb2c2824a751365958504769f7874f561436138c3fce9",
       "generated": true,
       "width": 1536,
       "height": 864,
-      "mobile_width": 900
+      "mobile_width": 900,
+      "identity_reference": "/assets/images/team/jacqueline-floeter-portrait-v2.jpg",
+      "edited_on": "2026-10-13"
     }
   ],
   "/immobilienmakler-moers/": [
@@ -761,14 +769,16 @@
       "mobile_width": 900
     },
     {
-      "scene": "header-unique/071-immobilienmakler-unna-3-jacqueline-floeter",
+      "scene": "header-unique/071-immobilienmakler-unna-3-jacqueline-floeter-v2",
       "person": "Jacqueline Flöter",
       "id": 71,
-      "source_sha256": "cc99af8748310927b903125749db7f9efd7a24e2f2a87b7be111a223049294b7",
+      "source_sha256": "502e3da8a50bb283dbe6a74679064dd2783e832c220ffb3fce850c8a4cee4d03",
       "generated": true,
       "width": 1536,
       "height": 864,
-      "mobile_width": 900
+      "mobile_width": 900,
+      "identity_reference": "/assets/images/team/jacqueline-floeter-portrait-v2.jpg",
+      "edited_on": "2026-10-13"
     }
   ],
   "/immobilienmakler-viersen/": [
