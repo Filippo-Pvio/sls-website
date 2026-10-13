@@ -9,3 +9,6 @@ body > main > section.section.section-dark .privacy-placeholder p{color:#26353c!
 /* Blocked rating widgets need space for text and controls, not the badge's fixed height. */
 .home-editorial .review-platforms-section .review-widget-frame:has(> .privacy-placeholder){height:auto;min-height:240px;display:flex;align-items:stretch}
 .review-widget-frame > .privacy-placeholder{width:100%;height:auto;min-height:240px}
+
+/* Initial focus announces the dialog heading without highlighting a decision. */
+.privacy-dialog #privacy-title:focus{outline:none}
