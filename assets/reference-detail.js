@@ -1,0 +1,16 @@
+(() => {
+ const gallery=document.querySelector('[data-ref-gallery]');
+ if(gallery){const slides=[...gallery.children],thumbs=[...document.querySelectorAll('[data-ref-thumb]')],prev=document.querySelector('[data-ref-prev]'),next=document.querySelector('[data-ref-next]'),position=document.querySelector('[data-ref-position]');
+ const index=()=>Math.max(0,Math.min(slides.length-1,Math.round(gallery.scrollLeft/gallery.clientWidth)));
+ const sync=()=>{const n=index();if(prev)prev.disabled=n===0;if(next)next.disabled=n===slides.length-1;if(position)position.textContent=`${n+1} / ${slides.length}`;thumbs.forEach((t,i)=>t.setAttribute('aria-pressed',String(i===n)))};
+ const move=n=>gallery.scrollTo({left:Math.max(0,Math.min(slides.length-1,n))*gallery.clientWidth,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+ prev?.addEventListener('click',()=>move(index()-1));next?.addEventListener('click',()=>move(index()+1));thumbs.forEach(t=>t.addEventListener('click',()=>move(Number(t.dataset.refThumb))));gallery.addEventListener('scroll',sync,{passive:true});gallery.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();move(index()+(event.key==='ArrowLeft'?-1:1))}});window.addEventListener('resize',sync);sync();
+ const dialog=document.querySelector('.ref-lightbox');let opener;
+ document.querySelectorAll('[data-ref-image]').forEach(button=>button.addEventListener('click',()=>{if(!dialog?.showModal)return;opener=button;dialog.querySelector('img').src=button.dataset.refImage;dialog.showModal()}));dialog?.querySelector('[data-ref-close]').addEventListener('click',()=>dialog.close());dialog?.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});dialog?.addEventListener('close',()=>opener?.focus({preventScroll:true}));
+ }
+ const googleUrl=raw=>{try{const u=new URL(raw);return u.protocol==='https:'&&(u.hostname==='google.com'||u.hostname.endsWith('.google.com')||u.hostname==='share.google'||u.hostname==='maps.app.goo.gl')?u.href:''}catch{return ''}};
+ document.querySelectorAll('[data-ref-review]').forEach(section=>{
+ const load=async()=>{try{const response=await fetch('/api/profile-reviews/?profile='+encodeURIComponent(section.dataset.refReview));if(!response.ok)return;const data=await response.json(),r=data.personalReview,url=googleUrl(r?.googleMapsUri);if(!r?.text||!url)return;const words=r.text.trim().split(/\s+/);section.querySelector('[data-ref-quote]').textContent=`„${words.slice(0,25).join(' ')}${words.length>25?' …':''}“`;section.querySelector('[data-ref-author]').textContent=r.author;const stars=section.querySelector('[data-ref-stars]');const rating=Math.min(5,Math.max(0,Math.round(r.rating)));stars.textContent='★'.repeat(rating);stars.setAttribute('aria-label',`${rating} von 5 Sternen`);section.querySelector('[data-ref-original]').href=url;section.hidden=false}catch{/* Preserve the verified team-page excerpt. */}};
+ if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();load()}},{rootMargin:'300px'});observer.observe(section.parentElement)}else load();
+ });
+})();

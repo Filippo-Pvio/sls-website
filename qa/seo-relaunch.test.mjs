@@ -28,7 +28,7 @@ async function run(handler,url,{host='sls.de',method='GET',offline=false}={}){
    const page=Number(u.searchParams.get('page')||1),per=Number(u.searchParams.get('per')||100);
    return {ok:true,json:async()=>({data:rows.slice((page-1)*per,page*per),meta:{total_count:rows.length}})};
   }
-  if(/\/units\/\d+$/.test(u.pathname))return {ok:true,json:async()=>row(Number(u.pathname.split('/').pop()))};
+  if(/\/units\/\d+$/.test(u.pathname))return {ok:true,json:async()=>row(Number(u.pathname.split('/').pop()),url.startsWith('/referenz/')?8:7)};
   throw Error('Unexpected upstream route');
  };
  const res={headers:{},status(value){this.code=value;return this},setHeader(key,value){this.headers[key.toLowerCase()]=value},end(body=''){this.body=body;return this}};
