@@ -55,3 +55,9 @@ body.guides-page #main .guide-marketing-availability{font-size:13px;line-height:
 body.guides-page #main .guide-privacy-ack{font-size:14px;line-height:1.55;color:#345b6e;margin:0 0 16px}
 .guide-privacy-ack span{min-width:0}
 .guide-privacy-ack input{accent-color:#345b6e}
+
+/* PDF covers are previews only; documents remain in the email request flow. */
+.guide-cover{display:flex;align-items:center;justify-content:center;min-height:280px;margin:0 0 26px;padding:22px;background:#f1f5f6}
+body.guides-page #main .guide-cover img{display:block;width:170px;max-width:100%;height:auto;aspect-ratio:210/297;object-fit:contain;box-shadow:0 9px 22px rgba(29,57,70,.14)}
+body.guides-page #main .guide-edition{font-size:13px;line-height:1.5;color:#345b6e;font-weight:600;margin:0 0 14px}
+@media(max-width:540px){.guide-cover{min-height:260px;padding:18px}}
