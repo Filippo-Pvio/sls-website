@@ -24,6 +24,7 @@
       inject('https://connect.facebook.net/en_US/fbevents.js');
       f('init',metaId);f('track','PageView');
     }
+    if (!analyticsStarted && !marketingStarted) return;
     while(queue.length) {
       const e=queue.shift();
       if(permitted('analytics') && analyticsStarted) window.gtag('event',e.event,{event_category:'lead',...e.parameters});
