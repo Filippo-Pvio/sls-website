@@ -102,6 +102,7 @@
    salutation.value = '';
    firstName.value = '';
    lastName.value = '';
+   window.dispatchEvent(new CustomEvent('sls:conversion',{detail:{event:'guide_request_success',guide:String(payload.guide||'').slice(0,40)}}));
    privacyAcknowledged.checked = false;
    marketingConsent.checked = false;
    button.textContent = 'Anforderung aufgenommen';
