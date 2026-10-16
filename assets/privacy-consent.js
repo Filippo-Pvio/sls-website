@@ -112,5 +112,6 @@
   };
   window.addEventListener('pageshow',event=>{if(!event.persisted)return;try{const stored=JSON.parse(localStorage.getItem(KEY));if(!valid(stored)||JSON.stringify(stored)!==JSON.stringify(choice))location.reload();}catch{location.reload();}});
   window.addEventListener('storage',event=>{if(event.key===KEY)location.reload();});
-  document.addEventListener('DOMContentLoaded',ready,{once:true});
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',ready,{once:true});
+  else ready();
 })();
