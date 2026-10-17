@@ -4,30 +4,30 @@ import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const code=await readFile(new URL('../assets/guides-page.js',import.meta.url),'utf8');
 async function fixture(result={ok:true,message:'Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.'},ready=true,marketingReady=true,availableGuides=['VERKAUF']){
- const callbacks={},requests=[],timers=[];
+ const callbacks={},requests=[],timers=[],events=[];
  const marketingAvailability={textContent:''};
  const status={textContent:'',classList:{toggle(){}},focus(){}};
  const reviewActions={hidden:true},correctButton={disabled:false,addEventListener:(event,fn)=>callbacks.correct=fn};
  const button={disabled:true,textContent:''},fields={disabled:true};
  const select={value:'VERKAUF',disabled:false,options:['VERKAUF','BEWERTUNG','ERBSCHAFT','WOHNEN_IM_ALTER','TRENNUNG','UNTERLAGEN'].map(value=>({value,disabled:value!=='VERKAUF'}))};
  const form={elements:{salutation:{value:'ms'},firstName:{value:'Anna',focus(){}},lastName:{value:'Muster'},email:{value:'service@example.org',focus(){}},website:{value:''},privacyAcknowledged:{checked:true,dataset:{privacyVersion:'2026-10-07-v1'},focus(){}},marketingConsent:{checked:false,dataset:{consentVersion:'2026-10-02-v2'}}},querySelector:s=>s==='fieldset'?fields:button,addEventListener:(event,fn)=>callbacks[event]=fn,reportValidity:()=>true,setAttribute(){},removeAttribute(){}};
- runInNewContext(code.replace(/const secureFormFetch=.*?;\n/, "").replaceAll("secureFormFetch(","fetch("),{document:{getElementById:id=>({'guide-form':form,'guide-select':select,'guide-availability':status,'guide-review-actions':reviewActions,'guide-correct':correctButton,'guide-marketing-availability':marketingAvailability})[id],querySelectorAll:()=>[]},window:{setTimeout:fn=>timers.push(fn)},fetch:async(url,init={})=>{
+ runInNewContext(code.replace(/const secureFormFetch=.*?;\n/, "").replaceAll("secureFormFetch(","fetch("),{document:{getElementById:id=>({'guide-form':form,'guide-select':select,'guide-availability':status,'guide-review-actions':reviewActions,'guide-correct':correctButton,'guide-marketing-availability':marketingAvailability})[id],querySelectorAll:()=>[]},CustomEvent:class {constructor(type,options){this.type=type;this.detail=options.detail}},window:{setTimeout:fn=>timers.push(fn),dispatchEvent:event=>events.push(event)},fetch:async(url,init={})=>{
   requests.push({url,...init});return {ok:init.method==='POST'?result.ok:ready,json:async()=>init.method==='POST'?result:ready?{availableGuides,token:'signed-token',marketingAvailable:marketingReady,consentVersion:'2026-10-02-v2'}:{error:'Nicht verfügbar'}};
  }});
  await new Promise(resolve=>setImmediate(resolve));timers.splice(0).forEach(fn=>fn());
- return {fields,button,select,form,status,requests,reviewActions,correctButton,correct:async()=>{callbacks.correct();await new Promise(resolve=>setImmediate(resolve));timers.splice(0).forEach(fn=>fn());},submit:()=>callbacks.submit({preventDefault(){}})};
+ return {fields,button,select,form,status,requests,events,reviewActions,correctButton,correct:async()=>{callbacks.correct();await new Promise(resolve=>setImmediate(resolve));timers.splice(0).forEach(fn=>fn());},submit:()=>callbacks.submit({preventDefault(){}})};
 }
 test('form submits names with guide/email/token/trap, locks double-clicks, clears personal data after confirmed note',async()=>{
  const f=await fixture();assert.equal(f.fields.disabled,false);
  await Promise.all([f.submit(),f.submit()]);
- assert.equal(f.requests.filter(r=>r.method==='POST').length,1);
+ assert.equal(f.requests.filter(r=>r.method==='POST').length,1);assert.equal(f.events.length,1);assert.equal(f.events[0].detail.event,'guide_request_success');assert.deepEqual(Object.keys(f.events[0].detail),['event']);
  assert.deepEqual(JSON.parse(f.requests[1].body),{salutation:'ms',guide:'VERKAUF',email:'service@example.org',firstName:'Anna',lastName:'Muster',token:'signed-token',website:'',privacyAcknowledged:true,privacyVersion:'2026-10-07-v1',marketingConsent:false,consentVersion:'2026-10-02-v2'});
  assert.equal(f.fields.disabled,true);assert.equal(f.form.elements.email.value,'');assert.equal(f.form.elements.firstName.value,'');assert.equal(f.form.elements.lastName.value,'');
  assert.match(f.status.textContent,/in Kürze/);await f.submit();assert.equal(f.requests.length,2);
 });
 test('failed note write retains email and displays error rather than success',async()=>{
  const f=await fixture({ok:false,error:'Nicht bestätigt'});await f.submit();
- assert.equal(f.form.elements.email.value,'service@example.org');assert.equal(f.form.elements.firstName.value,'Anna');assert.equal(f.form.elements.lastName.value,'Muster');assert.equal(f.fields.disabled,false);assert.equal(f.status.textContent,'Nicht bestätigt');
+ assert.equal(f.events.length,0);assert.equal(f.form.elements.email.value,'service@example.org');assert.equal(f.form.elements.firstName.value,'Anna');assert.equal(f.form.elements.lastName.value,'Muster');assert.equal(f.fields.disabled,false);assert.equal(f.status.textContent,'Nicht bestätigt');
 });
 test('unavailable backend keeps form disabled and prevents submission',async()=>{
  const f=await fixture(undefined,false);assert.equal(f.fields.disabled,true);await f.submit();assert.equal(f.requests.length,1);assert.equal(f.status.textContent,'Nicht verfügbar');
@@ -36,7 +36,7 @@ test('unavailable backend keeps form disabled and prevents submission',async()=>
 test('review retains entries and offers correction without claiming dispatch',async()=>{
  const result={ok:true,status:'review_required',message:'Ihre Anforderung wurde gespeichert. Bitte prüfen Sie Ihre Angaben.'};
  const f=await fixture(result);await f.submit();
- assert.equal(f.reviewActions.hidden,false);assert.equal(f.fields.disabled,true);
+ assert.equal(f.events.length,0);assert.equal(f.reviewActions.hidden,false);assert.equal(f.fields.disabled,true);
  assert.equal(f.form.elements.firstName.value,'Anna');assert.equal(f.form.elements.email.value,'service@example.org');
  assert.match(f.button.textContent,/Prüfung/);await f.submit();assert.equal(f.requests.length,2);
  await f.correct();assert.equal(f.fields.disabled,false);assert.equal(f.select.disabled,false);

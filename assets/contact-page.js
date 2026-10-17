@@ -56,7 +56,7 @@
     try{
       const {response,result}=await sendRequest(body);
       if(!response.ok||!result.ok)throw new Error(result.error||'Ihre Nachricht konnte gerade nicht übermittelt werden.');
-      window.dispatchEvent(new CustomEvent('sls:conversion',{detail:{event:'contact_request_success',topic:String(body.topic||'contact').slice(0,60),method:String(body.method||'').slice(0,30)}}));
+      window.dispatchEvent(new CustomEvent('sls:conversion',{detail:{event:'contact_request_success'}}));
       completed=true;form.querySelectorAll('input,textarea,select').forEach(field=>field.disabled=true);
       showStatus(body.method==='callback'?'Vielen Dank! Ihre Anfrage und Ihr Rückrufwunsch sind eingegangen. Unser Team berücksichtigt Ihren bevorzugten Zeitraum bei der Planung.':'Vielen Dank! Ihre Nachricht ist eingegangen. Unser Team meldet sich bei Ihnen per E-Mail.','success');status.focus();submit.textContent='Nachricht eingegangen';
     }catch(error){showStatus(error.message||'Ihre Nachricht konnte gerade nicht übermittelt werden. Bitte kontaktieren Sie uns direkt.','error');status.focus();submit.textContent='Nachricht senden';}

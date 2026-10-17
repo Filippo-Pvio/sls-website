@@ -359,12 +359,3 @@ if (form) {
 // Embedded services are released centrally after the corresponding permission.
 window.slsPrepareExternalFrames=(root=document)=>window.SLSConsent?.prepare(root);
 window.slsPrepareExternalFrames();
-
-// Consent and measurement bootstrap. Loads no third-party tracking without consent.
-(() => {
-  const startTracking=()=>{if(document.querySelector('script[data-sls-tracking]'))return;const script=document.createElement('script');script.src='/assets/sls-tracking.js';script.dataset.slsTracking='';document.head.append(script);};
-  if(window.SLSConsent){startTracking();return;}
-  const existing=document.querySelector('script[src*="privacy-consent.js"]');
-  if(existing){existing.addEventListener('load',startTracking,{once:true});return;}
-  const consent=document.createElement('script');consent.src='/assets/privacy-consent.js';consent.addEventListener('load',startTracking,{once:true});document.head.append(consent);
-})();

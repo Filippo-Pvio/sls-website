@@ -1064,6 +1064,7 @@ import {getSalesCheckProgress, getSalesCheckSection} from './verkaufscheck-progr
         if(!input){const label=document.createElement('label');label.textContent='Bestätigungscode aus Ihrer E-Mail';input=document.createElement('input');input.name='verificationCode';input.inputMode='numeric';input.autocomplete='one-time-code';input.pattern='[0-9]{6}';input.maxLength=6;input.required=true;label.append(input);submit.before(label);}
         status.textContent=result.message;submit.textContent='E-Mail bestätigen und Auswertung erhalten';input.focus();return;
       }
+      if(result.ok === true) window.dispatchEvent(new CustomEvent('sls:conversion',{detail:{event:'sales_report_success'}}));
       delete form.dataset.verificationRef;form.querySelector('[name=verificationCode]')?.closest('label').remove();
       form.reset();
       status.textContent='Vielen Dank. Der Versand Ihrer persönlichen Verkaufsanalyse wurde angenommen. Bitte prüfen Sie Ihr E-Mail-Postfach.';
