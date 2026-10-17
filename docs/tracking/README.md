@@ -18,6 +18,8 @@ Status: im Entwicklungsbranch und in der Vercel-Vorschau umgesetzt; **keine Frei
 | PR | https://github.com/Filippo-Pvio/sls-website/pull/244 |
 | Branch | feat/consent-tracking-phase1-20261016 |
 
+Der Zugriff von f.livera@sls.de wurde in der Analytics-Konto-Zugriffsverwaltung als Administrator bestätigt; es wurden keine Berechtigungen geändert.
+
 Die alte Property 453121213 / G-CT9QN2WGXG wurde lediglich beim Öffnen von Analytics angezeigt und nicht verändert. Die alte Website, ihre Tags, Google Ads und Meta wurden nicht bearbeitet. Es wurde keine Ads-Verknüpfung angelegt; die neue Property zeigt null abgeschlossene Ads-Verknüpfungen.
 
 Der neue GTM-Container ist bereitgestellt, seine beiden Trigger sind jedoch auf den exakten Preview-Host beschränkt. Zusätzlich startet der Website-Code den Container ausschließlich auf diesem Host. Weder sls.de noch www.sls.de, localhost, andere Vercel-Previews oder die unveränderliche Deployment-URL können damit die neuen Tags starten. Diese Sperre muss bei einer später freigegebenen Veröffentlichung ausdrücklich angepasst und erneut geprüft werden.
