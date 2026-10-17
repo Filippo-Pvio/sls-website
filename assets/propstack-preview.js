@@ -433,6 +433,7 @@ import {objectPath,buildPropertySeo} from './property-seo.mjs';
         const response=await secureFormFetch('/api/propstack-test-inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...fields,propertyId:p.id,privacy:fields.privacy==='on',ownerInterest:fields.ownerInterest==='on',testMode:p.inquiryTestMode===true})});
         const result=await response.json();
         if(response.status===409&&result.code==='CONTACT_IDENTITY_CONFLICT'){status.textContent=result.error;button.disabled=false;return}if(!response.ok)throw new Error(result.error||'Die Anfrage konnte nicht gesendet werden.');
+        if(result.ok === true && result.portalInquiryTriggered === true && !p.inquiryTestMode) window.dispatchEvent(new CustomEvent('sls:conversion',{detail:{event:'property_inquiry_success'}}));
         form.reset();status.textContent='Vielen Dank für Ihre Anfrage. Das Exposé wurde Ihnen per E-Mail zugesandt.';
       } catch(error) {status.textContent=error.message;button.disabled=false}
     });

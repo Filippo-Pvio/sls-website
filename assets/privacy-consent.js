@@ -1,10 +1,11 @@
 (() => {
   'use strict';
-  const VERSION = '2026-10-11.1', KEY = 'sls-privacy-choice-v1', LIFETIME = 180 * 86400000;
+  const VERSION = '2026-10-17.google.1', KEY = 'sls-privacy-choice-v1', LIFETIME = 180 * 86400000;
   const categories = {
     media: ['Videos und externe Medien', 'Instagram und YouTube, virtuelle Rundgänge sowie Bewertungsanzeigen von ImmoScout24 und Immowelt. Anbieter erhalten Verbindungsdaten und können Cookies oder ähnliche Techniken einsetzen. Verarbeitung außerhalb der EU ist möglich.'],
     maps: ['Karten', 'Google Maps und OpenStreetMap zeigen Standorte und ungefähre Objektlagen. Dabei erhalten die Anbieter Ihre IP-Adresse und weitere Verbindungsdaten; Google kann zusätzliche Speicher- und Trackingtechniken verwenden.'],
     tools: ['Bewertungs- und Finanzierungsrechner', 'PriceHubble und Justhome stellen Rechner bereit. Verbindungsdaten und Ihre dort eingegebenen Angaben werden von diesen Anbietern verarbeitet; zusätzliche Speichertechniken und Verarbeitung außerhalb der EU sind möglich.'],
+    analytics: ['Statistik', 'Pseudonyme Nutzungsstatistiken und bestätigte Formularabschlüsse mit Google Analytics 4 über Google Tag Manager. Google erhält Verbindungs- und Nutzungsdaten und setzt Statistik-Cookies. Verarbeitung außerhalb der EU ist möglich. Freiwillig und jederzeit widerrufbar.'],
     comfort: ['Optionale Darstellung speichern', 'Wir speichern die Auswahl wechselnder Magazinartikel und Referenzen sowie den eingeklappten SIA-Hinweis für diesen Browserbesuch. Ohne Zustimmung funktioniert die Website ebenfalls; die Auswahl kann sich beim Seitenwechsel ändern.']
   };
   let choice = null, dialog, previousFocus;
@@ -110,5 +111,6 @@
   };
   window.addEventListener('pageshow',event=>{if(!event.persisted)return;try{const stored=JSON.parse(localStorage.getItem(KEY));if(!valid(stored)||JSON.stringify(stored)!==JSON.stringify(choice))location.reload();}catch{location.reload();}});
   window.addEventListener('storage',event=>{if(event.key===KEY)location.reload();});
-  document.addEventListener('DOMContentLoaded',ready,{once:true});
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',ready,{once:true});
+  else ready();
 })();
