@@ -1,7 +1,7 @@
 .privacy-copy h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.15;hyphens:auto}
 .privacy-copy{max-width:960px;overflow-wrap:anywhere}
 .privacy-copy section{scroll-margin-top:120px}
-html body main .privacy-copy h2{margin-top:2.6rem;font-size:clamp(1.35rem,2.3vw,1.9rem)!important;line-height:1.3!important}
+html body main#main .privacy-copy h2{margin-top:2.6rem;font-size:clamp(1.35rem,2.3vw,1.9rem)!important;line-height:1.3!important}
 .privacy-copy h3{margin-top:1.6rem;font-size:1.15rem;line-height:1.4}
 .privacy-copy p,.privacy-copy li{line-height:1.8}
 .privacy-copy li{margin-bottom:.65rem}
@@ -10,7 +10,7 @@ html body main .privacy-copy h2{margin-top:2.6rem;font-size:clamp(1.35rem,2.3vw,
 .privacy-copy button[data-privacy-settings]{font:inherit;color:inherit;background:transparent;border:0;text-decoration:underline;cursor:pointer;padding:0}
 .privacy-draft{padding:1.25rem;border-left:4px solid #345b6e;background:#eff4f5;line-height:1.7;margin:1.75rem 0}
 .privacy-toc{padding:1.25rem 1.5rem;background:#f5f7f8;border-radius:12px}
-.privacy-toc h2{margin-top:0}
+html body main#main .privacy-toc h2{margin-top:0}
 .privacy-toc ol{columns:2;column-gap:2.5rem;padding-left:1.3rem}
 .privacy-toc li{break-inside:avoid}
 .privacy-table{overflow-x:auto;margin:1.5rem 0}
