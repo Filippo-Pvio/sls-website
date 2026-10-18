@@ -1,4 +1,4 @@
-# SLS Relaunch: Google-Tracking – Stand 17.10.2026
+# SLS Relaunch: Google-Tracking – Stand 18.10.2026
 
 Status: im Entwicklungsbranch und in der Vercel-Vorschau umgesetzt; **keine Freigabe für Merge oder Produktivbetrieb**. Die vollständige Aufgabe ist wegen der unten beschriebenen externen Rechner und noch ausstehender rechtlicher Prüfung nicht abgeschlossen.
 
@@ -64,13 +64,39 @@ Diese Ereignisse bilden bestätigte Website-/Backend-Vorgänge ab. Sie belegen w
 - Vercel-Deployment dpl_FU1szbHKYDPDpgEKrx4Uw2swBhBZ, Quellcommit 1c2b3abebeaed69c2c6464c1186e5c181d51e13c, Status READY, target null (Preview). Beide Vercel-GitHub-Checks erfolgreich. Der Branch-Alias ist die freigegebene Tracking-Testadresse.
 - Vorhandene Vercel-Feedback-Einbindung wird durch die bestehende CSP blockiert. Dies ist unabhängig von der Google-Messung; dafür wurden keine Sicherheitsfreigaben ergänzt.
 
+## Zusätzlicher Browser-Abnahmetest vom 18.10.2026
+
+Die sechs vorhandenen Formularskripte wurden unverändert in isolierten Seiten unter `/tracking-qa/` im Vercel-Preview ausgeführt. Die Testseiten entstehen ausschließlich für diesen Preview-Branch, nicht für Produktion oder andere Branches, stehen nicht in der Sitemap und tragen `noindex,nofollow`. Vor allen anderen Skripten ersetzt eine Testbrücke sämtliche API-Antworten. Unbekannte API-Endpunkte, fremde Schreibzugriffe und falsche Hosts werden gesperrt. Dadurch entstanden keine realen CRM-Einträge, E-Mails oder Bewertungsaufträge. Es wurden ausschließlich synthetische Testangaben verwendet. Die Verkaufsanalyse-Seite stellt das originale Versandformular bereit und nutzt dessen unveränderten delegierten Handler; der vollständige Fragen-Wizard war nicht Gegenstand dieser Prüfung.
+
+| Browserfall | Lokaler Abschluss | GTM/GA4 |
+|---|---|---|
+| Kontakt bestätigt, Statistik abgelehnt | contact_request_success | kein weitergeleitetes Ereignis |
+| Kontakt bestätigt, Statistik erlaubt | contact_request_success | einmal in GA4 |
+| Kontakt vom Server abgelehnt | keiner | keiner |
+| Ratgeber bestätigt | guide_request_success | einmal in GA4 |
+| Ratgeber review_required | keiner | keiner |
+| Objektanfrage bestätigt | property_inquiry_success | einmal in GA4 |
+| Suchprofil bestätigt | search_profile_success | einmal in GA4 |
+| Suchprofil bereits vorhanden | keiner | keiner |
+| Verkaufsanalyse: nur Code angefordert | keiner | keiner |
+| Verkaufsanalyse: falscher Code | keiner | keiner |
+| Verkaufsanalyse: richtiger Code und Erfolg | sales_report_success | einmal in GA4 |
+| Käuferfinder: Nachfrageergebnis allein | keiner | keiner |
+| Käuferfinder: abschließende Anfrage bestätigt | buyerfinder_request_success | einmal in GA4 |
+
+Die reale DebugView der neuen Property zeigte alle sechs Abschlussnamen mit jeweils **1** Ereignis, insgesamt **6** Schlüsselereignisse. Damit ist der Weg originales Formularskript → simulierte bestätigte Backendantwort → Einwilligungsbrücke → echter GTM-Container → neue GA4-Property für alle sechs Ereignisse nachgewiesen. Dies ersetzt keine Prüfung tatsächlicher Backend-Transaktionen oder E-Mail-Zustellungen.
+
+Zusätzliche automatisierte Prüfung: 12 Tests bestanden (5 zur sicheren Isolation/Szenario-Auswahl/Preview-Beschränkung sowie bestehende Google- und Browser-Syntaxprüfungen). Öffentlicher Website-Build erfolgreich. Getestetes Vercel-Deployment: `dpl_BjbfdMUaJoe2vaJcbwvvVEeu3Cd7`, Quellcommit `15691387f450f46fd102810d048a037a5c202213`, READY, ausschließlich Preview. Lokaler Screenshot-Beleg: `output/sls-google-tracking-2026-10-18/ga4-six-conversions.png` (nicht im Repository veröffentlicht).
+
+Testseiten für erneute Abnahme bitte direkt über ihre vollständige URL öffnen, z. B. `https://sls-website-git-feat-consent-tracking-phas-a6ca65-info-91172609.vercel.app/tracking-qa/contact/`. Weitere Pfade: `buyer/`, `guide/`, `search/`, `property/?objekt=17`, `report/`. Die Szenario-Auswahl verwendet `?qa=success`, `?qa=error`, `?qa=review` oder `?qa=duplicate`. Diese Seiten sind ausschließlich eine Testumgebung.
+
 ## Offene externe Rechner
 
 **PriceHubble:** Die offizielle Dokumentation beschreibt eine native Analytics-Anbindung über gaTrackingId und consentGranted. Im aktuell öffentlich ausgelieferten V1-Code wird der bestätigte Abschluss intern als GA-Ereignis „sent“ mit event_category VALUATION_REQUEST erzeugt. Die dokumentierte Analytics-Freigabe aktiviert außerdem eine vom Anbieter fest eingebaute weitere Analytics-Konfiguration. Die geprüfte übergeordnete Widget-Schnittstelle liefert an die SLS-Seite nur Start-/Scroll-Nachrichten, keinen bestätigten Abschluss. Deshalb bleiben consentGranted:false und die fehlende gaTrackingId in beiden SLS-Einbindungen erhalten. Ein iframe-Aufruf, Höhenänderung, Feldklick oder Start zählt nicht als erfolgreicher Bewertungsabschluss.
 
 Benötigt wird eine vom Anbieter unterstützte Nachricht oder ein Callback ausschließlich nach bestätigter Übermittlung. Er muss sich auf das konkrete iframe sowie eine exakte Anbieter-Origin prüfen lassen und ohne Kontakt-/Objektdaten auskommen. Alternativ ist eine vom Anbieter bestätigte isolierte Abschlussmessung ohne zusätzlich aktivierte Tracker zu prüfen. Eine Änderung des vorhandenen gemeinsamen Anbieter-Kontos oder der alten Website ist nicht Teil dieser Arbeit.
 
-**Justhome:** In den vorhandenen Budget-/Finanzierungs-Einbindungen ist nur die origin- und source-geprüfte resize-Nachricht belegt. Ein bestätigtes Abschlussereignis ist nicht dokumentiert beziehungsweise nachgewiesen. Ohne einen solchen Vertrag wird keine Rechner-Conversion erzeugt. Die gleichen Anforderungen an Origin, iframe-Quelle, bestätigten Abschluss und Datensparsamkeit gelten hier.
+**Justhome:** Auch die am 18.10.2026 öffentlich ausgelieferte Datei `https://calculator.justhome.com/index.js` wurde geprüft: Die an die übergeordnete Seite gesendete Nachricht enthält `type:resize` und die Höhe, keinen bestätigten Formularabschluss. In den vorhandenen Budget-/Finanzierungs-Einbindungen ist nur die origin- und source-geprüfte resize-Nachricht belegt. Ein bestätigtes Abschlussereignis ist nicht dokumentiert beziehungsweise nachgewiesen. Ohne einen solchen Vertrag wird keine Rechner-Conversion erzeugt. Die gleichen Anforderungen an Origin, iframe-Quelle, bestätigten Abschluss und Datensparsamkeit gelten hier.
 
 Es wurden keine Provider-Konten verändert und keine Nachrichten an Anbieter verschickt.
 
@@ -78,7 +104,7 @@ Es wurden keine Provider-Konten verändert und keine Nachrichten an Anbieter ver
 
 1. SLS prüft den konkreten Statistik-Text und den neuen Abschnitt in /datenschutz/ rechtlich, einschließlich Auftragsverarbeitung, Datenübermittlungsgrundlagen und Cookie-/Aufbewahrungsangaben. Die Vorschau ist ein prüfbarer Entwurf, keine bestätigte Rechtsfreigabe.
 2. Unterstützte Abschluss-Schnittstellen für PriceHubble und Justhome klären und anschließend gezielt integrieren/testen.
-3. Kontrollierte reale Testvorgänge oder eine geeignete isolierte Testumgebung für die sechs Formulare verwenden; DebugView muss die erwarteten einmaligen Abschlüsse und das Ausbleiben bei Fehler/Prüffall zeigen. Keine echten Kundendaten für Tests nutzen.
+3. Die isolierten Browser-Tests aller sechs Formulare sind bestanden, einschließlich realem GA4-Eingang. Für die fachliche Backend-Abnahme bleiben kontrollierte echte Testtransaktionen nötig: Annahme im CRM, Versand und Zustellung getrennt prüfen. Keine echten Kundendaten verwenden; vorhandene Produktivsysteme nicht unkontrolliert mit Testanfragen belasten.
 4. Erst nach ausdrücklicher Veröffentlichungsentscheidung: Domain-Freigaben in Code und GTM anpassen, Debug-Modus entfernen, alte/neue Tags am geplanten Domainwechsel auf Doppelungen prüfen und erneut testen. Bis dahin bleiben PR und Deployment ausschließlich im Entwicklungs-/Preview-Betrieb.
 
 ## Primärquellen
