@@ -104,7 +104,8 @@
     document.addEventListener('click',event=>{if(event.target.closest('[data-privacy-settings]'))open();});
     prepare();
     new MutationObserver(changes=>{for(const change of changes)for(const node of change.addedNodes)if(node.nodeType===1){if(node.matches('iframe[data-consent-src],iframe[data-external-src]'))prepare(node.parentElement);else prepare(node);}}).observe(document.body,{childList:true,subtree:true});
-    if (!choice) open();
+    // Keep legal information directly readable without granting optional permissions.
+    if (!choice && !/^\/(?:datenschutz|impressum|karriere\/datenschutz)\/?$/.test(location.pathname)) open();
   }
   window.SLSConsent = {allowed, mount, frame, prepare, open, version:VERSION,
     session: {getItem(key){if(!allowed('comfort'))return null;try{return sessionStorage.getItem(key)}catch{return null}},setItem(key,value){if(allowed('comfort'))try{sessionStorage.setItem(key,value)}catch{}},removeItem(key){try{sessionStorage.removeItem(key)}catch{}}}

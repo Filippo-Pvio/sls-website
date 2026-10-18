@@ -1,6 +1,6 @@
 # SLS Relaunch: Google-Tracking – Stand 18.10.2026
 
-Status: im Entwicklungsbranch und in der Vercel-Vorschau umgesetzt; **keine Freigabe für Merge oder Produktivbetrieb**. Die vollständige Aufgabe ist wegen der unten beschriebenen externen Rechner und noch ausstehender rechtlicher Prüfung nicht abgeschlossen.
+Status: im Entwicklungsbranch und in der Vercel-Vorschau umgesetzt; **keine Freigabe für Merge oder Produktivbetrieb**. Die rechtliche Freigabe bleibt ausstehend. SLS hat am 18.10.2026 bestätigt, dass die CRM-/Versandwege bereits getestet sind; diese Tests werden nicht wiederholt. Die Fremdanbieter-Funktionalität wird auf Nutzerwunsch ebenfalls nicht erneut geprüft. Eigene GA4-Abschlüsse der Fremdrechner werden weiterhin nicht behauptet.
 
 ## Neue Ressourcen und Abgrenzung
 
@@ -115,3 +115,6 @@ Es wurden keine Provider-Konten verändert und keine Nachrichten an Anbieter ver
 - [PriceHubble: Widget-Einbindung und Einwilligung](https://support.pricehubble.com/hc/en-gb/articles/38271599570833-Embedding-the-Lead-Generator-Widget-on-your-website)
 - [PriceHubble: Analytics-Ereignisse und bestätigter Abschluss](https://support.pricehubble.com/hc/en-gb/articles/38302505014673-Analytics-Tracking-for-the-Lead-Generator-Widget)
 - [PriceHubble: V1-Konfiguration](https://docs.pricehubble.com/integrations/lead_generator/lead_generator/)
+
+
+Datenschutz-Überarbeitung vom 18.10.2026: vollständige Arbeitsfassung in /datenschutz/ und ergänzender Bewerbungsdatenschutz; Quellen, frühere Nutzerfestlegungen und konkrete rechtliche Restpunkte in `docs/privacy-consent.md`. Die in diesem Bericht beschriebenen isolierten Tracking-Tests bleiben gültig. Der Nutzer hat reale CRM-Ankunft bestätigt; weitere Wiederholung ist nicht Teil des nächsten Schritts.
