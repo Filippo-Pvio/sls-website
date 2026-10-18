@@ -1,7 +1,7 @@
 [
   {
     "name": "Dennis Sahlmen",
-    "portrait": "https://sls.de/wp-content/uploads/2025/06/Dennis-Sahlmen-768x768.jpg",
+    "portrait": "/assets/imported/Dennis-Sahlmen-768x768.jpg",
     "role": "Geschäftsführer · Immobilienmakler (IHK)",
     "slug": "dennis-sahlmen",
     "phone": "+491738511284",
@@ -33,7 +33,7 @@
   },
   {
     "name": "Mischa Stratmann",
-    "portrait": "https://sls.de/wp-content/uploads/2025/06/Mischa-Stratmann-768x768.jpg",
+    "portrait": "/assets/imported/Mischa-Stratmann-768x768.jpg",
     "role": "Geschäftsführer · Immobilienkaufmann & Sachverständiger",
     "slug": "mischa-stratmann",
     "phone": "+491738511266",
@@ -70,7 +70,7 @@
   },
   {
     "name": "Andreas Busch",
-    "portrait": "https://sls.de/wp-content/uploads/2025/05/Andreas-Busch-768x768.jpg",
+    "portrait": "/assets/imported/Andreas-Busch-768x768.jpg",
     "role": "Regionalleiter Düsseldorf",
     "slug": "andreas-busch",
     "phone": "+4917689925930",
@@ -102,7 +102,7 @@
   },
   {
     "name": "Cüneyt Demirli",
-    "portrait": "https://sls.de/wp-content/uploads/2025/06/Cueneyt-Demirli-768x768.jpg",
+    "portrait": "/assets/imported/Cueneyt-Demirli-768x768.jpg",
     "role": "Immobilienmakler",
     "slug": "cueneyt-demirli",
     "phone": "+4915209930734",
@@ -134,7 +134,7 @@
   },
   {
     "name": "Tanja Wawrosch",
-    "portrait": "https://sls.de/wp-content/uploads/2025/06/Tanja-Wawrosch-768x768.jpg",
+    "portrait": "/assets/imported/Tanja-Wawrosch-768x768.jpg",
     "role": "Immobilienmaklerin",
     "slug": "tanja-wawrosch",
     "phone": "+491626312645",
@@ -166,7 +166,7 @@
   },
   {
     "name": "Daniel Allamezade",
-    "portrait": "https://sls.de/wp-content/uploads/2025/10/Daniel-Allamezade-768x768.jpg",
+    "portrait": "/assets/imported/Daniel-Allamezade-768x768.jpg",
     "role": "Immobilienmakler",
     "slug": "daniel-allamezade",
     "phone": "+491731590056",
@@ -198,7 +198,7 @@
   },
   {
     "name": "Nico Hryn",
-    "portrait": "https://sls.de/wp-content/uploads/2026/02/Nico-Hryn-768x768.jpg",
+    "portrait": "/assets/imported/Nico-Hryn-768x768.jpg",
     "role": "Immobilienmakler",
     "slug": "nico-hryn",
     "phone": "+491732140638",
@@ -229,7 +229,7 @@
   },
   {
     "name": "Maximilian Werner",
-    "portrait": "https://sls.de/wp-content/uploads/2026/02/Maximilian-Werner-768x768.jpg",
+    "portrait": "/assets/imported/Maximilian-Werner-768x768.jpg",
     "role": "Immobilienmakler",
     "slug": "maximilian-werner",
     "phone": "+4915259201902",
@@ -261,7 +261,7 @@
   },
   {
     "name": "Dustin Offermann",
-    "portrait": "https://sls.de/wp-content/uploads/2026/02/Dustin-Offermann-768x767.jpg",
+    "portrait": "/assets/imported/Dustin-Offermann-768x767.jpg",
     "role": "Immobilienmakler",
     "slug": "dustin-offermann",
     "phone": "+4915205839594",
@@ -293,7 +293,7 @@
   },
   {
     "name": "Heiko Hofmann",
-    "portrait": "https://sls.de/wp-content/uploads/2024/01/Heiko-Hofmann-768x768.jpg",
+    "portrait": "/assets/imported/Heiko-Hofmann-768x768.jpg",
     "role": "Immobilienmakler",
     "slug": "heiko-hofmann",
     "phone": "+4915238870213",
@@ -325,7 +325,7 @@
   },
   {
     "name": "Manuela Landripet",
-    "portrait": "https://sls.de/wp-content/uploads/2026/08/Manuela-Landripet-768x768.png",
+    "portrait": "/assets/imported/Manuela-Landripet-768x768.png",
     "role": "Immobilienmaklerin",
     "slug": "manuela-landripet",
     "phone": "+4915205836079",
@@ -357,7 +357,7 @@
   },
   {
     "name": "Gina Künnecke",
-    "portrait": "https://sls.de/wp-content/uploads/2026/02/Gina-Kuennecke.jpg",
+    "portrait": "/assets/imported/Gina-Kuennecke.jpg",
     "role": "Immobilienmaklerin",
     "slug": "gina-kuennecke",
     "phone": "+4915205850774",
@@ -421,7 +421,7 @@
   },
   {
     "name": "Uwe Braun",
-    "portrait": "https://sls.de/wp-content/uploads/2024/06/Uwe-Braun-1-768x768.jpg",
+    "portrait": "/assets/imported/Uwe-Braun-1-768x768.jpg",
     "role": "Immobilienmakler",
     "slug": "uwe-braun",
     "phone": "+4915208093505",
@@ -458,7 +458,7 @@
   },
   {
     "name": "Kristina Kruschinski",
-    "portrait": "https://sls.de/wp-content/uploads/2025/02/Kristina-Kruschinski-768x768.jpg",
+    "portrait": "/assets/imported/Kristina-Kruschinski-768x768.jpg",
     "role": "Operations & Office Managerin",
     "slug": "kristina-kruschinski",
     "phone": "+4923692959587",
@@ -490,7 +490,7 @@
   },
   {
     "name": "Svea Bruns",
-    "portrait": "https://sls.de/wp-content/uploads/2026/07/Svea-Bruns-768x768.jpg",
+    "portrait": "/assets/imported/Svea-Bruns-768x768.jpg",
     "role": "Volljuristin | Legal & Controlling",
     "slug": "svea-bruns",
     "phone": "+491732608913",
@@ -522,7 +522,7 @@
   },
   {
     "name": "Daniela Sahlmen",
-    "portrait": "https://sls.de/wp-content/uploads/2026/02/Daniela-Sahlmen-768x769.jpg",
+    "portrait": "/assets/imported/Daniela-Sahlmen-768x769.jpg",
     "role": "Pressesprecherin & Public Relations",
     "slug": "daniela-sahlmen",
     "phone": "+4923697428020",
@@ -554,7 +554,7 @@
   },
   {
     "name": "Sophia Peter",
-    "portrait": "https://sls.de/wp-content/uploads/2026/02/Sophia-Peter-768x777.jpg",
+    "portrait": "/assets/imported/Sophia-Peter-768x777.jpg",
     "role": "Social Media Managerin & Back Office",
     "slug": "sophia-peter",
     "phone": "+4923697428020",
@@ -586,7 +586,7 @@
   },
   {
     "name": "Arne Wilke",
-    "portrait": "https://sls.de/wp-content/uploads/2024/09/Portrait-768x768.jpeg",
+    "portrait": "/assets/imported/Portrait-768x768.jpeg",
     "role": "Head of Telesales",
     "slug": "arne-wilke",
     "phone": "+4923692959589",
@@ -618,7 +618,7 @@
   },
   {
     "name": "Samy El-Munayer",
-    "portrait": "https://sls.de/wp-content/uploads/2026/05/Samy-El-Munayer-768x768.png",
+    "portrait": "/assets/imported/Samy-El-Munayer-768x768.png",
     "role": "Telesales Manager",
     "slug": "samy-el-munayer",
     "phone": "+4923697428020",
