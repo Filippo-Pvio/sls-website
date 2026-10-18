@@ -53,11 +53,11 @@ Arbeitsfassung in `/datenschutz/`, ergänzend `/karriere/datenschutz/`. Ausschli
 | Datenschutzkontakt | Bestellter Beauftragter und Weiterleitung service@sls.de bestätigt | Vertrauliche direkte Kommunikation organisatorisch sicherstellen; kein öffentlich erforderlicher Personenname erfinden |
 | Propstack | Öffentliche AVV und Software-Datenschutzhinweise, CRM-Datenwege | Für SLS geltende Fassung/Beitritt, Unterauftragnehmer und vertragliche Lösch-/Backupbedingungen belegen |
 | Vercel/Upstash | Vercel Pro im Projektteam; Upstash-Datenbank in Frankfurt; öffentliche Vertragsbedingungen | Rechtliche Kundenzuordnung des Vercel-Teams, internationale Supportzugriffe und konkrete Log-/Backupfristen final belegen; Details siehe Kontoprüfung unten |
-| Microsoft 365 | Nutzer bestätigt am 18.10.2026 Microsoft als E-Mail-Host; SLS-Mandant und Business-Premium-Lizenzen im Admincenter sichtbar | Aktive Microsoft-Kundenvereinbarung im SLS-Abrechnungskonto seit 04.02.2025 nachgewiesen; aktuelle Produkt-DPA zugeordnet. Tatsächliche E-Mail-Aufbewahrungsrichtlinien noch prüfen. IONOS-Anmeldung entfällt. |
-| OpenAI | API-Aufrufe, Websuche und store:false belegt | Vertragspartner, DPA, Anbieterfristen/Ausnahmen und tatsächliche Konto-Datenschutzoptionen nachweisen; DSGVO-Rechtsgrundlage und Risikobewertung der freiwilligen Auskunft freigeben |
-| Google | Neue GA4/GTM-Ressourcen und Datenminimierung geprüft | Geltende Analytics/GTM-Verträge, konkrete Transferkette/aktuelle DPF-Zertifizierung oder SCC samt Ergänzungen dokumentieren |
+| Microsoft 365 | Nutzer bestätigt am 18.10.2026 Microsoft als E-Mail-Host; SLS-Mandant und Business-Premium-Lizenzen im Admincenter sichtbar | Aktive Microsoft-Kundenvereinbarung im SLS-Abrechnungskonto seit 04.02.2025 nachgewiesen; aktuelle Produkt-DPA zugeordnet. Purview und Exchange für Verkaufscheck/Bewerbungen geprüft: Default MRM Policy, Archive deaktiviert, keine pauschale automatische Löschung nachgewiesen; Einzelheiten im Prüfprotokoll unten. IONOS-Anmeldung entfällt. |
+| OpenAI | API-Aufrufe und store:false belegt; nach Nutzerkorrektur Personal-Konto geprüft: Sharing deaktiviert, Global/Standard retention; Rechnungsadresse und USt-ID entsprechen SLS | Vollständige juristische Kundenzuordnung/DPA und Zuordnung des eingesetzten API-Schlüssels ohne Offenlegung abschließen; Rechtsgrundlage und Risikobewertung freigeben |
+| Google | Neue GA4/GTM-Ressourcen, Datenminimierung und akzeptierte Verarbeitungsbedingungen geprüft; Analytics akzeptiert am 06.08.2024 | Zusatzansicht zeigt keinen Firmennamen/keine DPA-Kontakte. Diese gemeinsamen Kontoangaben nicht ungefragt ändern. Konkrete Transferkette und aktuelle Übermittlungsgrundlage final zuordnen. |
 | PriceHubble/Justhome | Einbettungen und offizielle Anbieterhinweise | Konkreten SLS-Vertragspartner, Auftragsverarbeitung/eigene Verantwortung, Datenempfänger und Fristen des eingebetteten Produkts rechtlich zuordnen. Keine erneuten echten Anfragen nötig. |
-| Ogulo / 360°-Touren | Nutzer bestätigt Ogulo am 18.10.2026; Anbieteridentität und Datenschutzlinks ergänzt | Für SLS geltende AVV, aktivierte Tourfunktionen und dienstbezogene Fristen belegen. Keine Änderung am Anbieter-Konto. |
+| Ogulo / 360°-Touren | Anbieter bestätigt; Mail vom 16.06.2025 verweist ausdrücklich auf bestehende AVV mit dem Empfänger | Geltende Vertragsfassung/Anlagen noch beschaffen; nicht allein wegen fehlender PDF neu abschließen. Tourfunktionen/Fristen final zuordnen. Keine Änderung am Anbieter-Konto. |
 | Externe Medien/Karten/Badges | Anbieter und Einwilligungssteuerung | Konkrete Speichertechniken/Fristen und Drittlandgarantien der tatsächlich geladenen Produkte final prüfen; Anbieter-Erklärung für dessen ganze Website nicht ungeprüft übernehmen |
 | Löschung/Bewerbungen | Vorhandenes freigegebenes Prüfkonzept; Bewerbungsseite nennt sechs Monate | Betrieblichen Vollzug/Kopien/Backups und Bewerbungsfrist fachlich bestätigen; keine neue automatisierte Löschung eingerichtet |
 
@@ -116,3 +116,57 @@ Es wurden ausschließlich bestehende Einstellungen und Vertragsansichten gelesen
 | OpenAI / SIA | Nutzer benennt Workspace SLS Immobilienpartner; sichtbare API-Organisation heißt Personal. | Keine Gleichsetzung beider Konten. Passende API-Organisation und deren Vertrags-/Datenoptionen müssen noch zugeordnet werden. Keine Schlüssel ausgelesen. |
 
 Microsoft ist damit als aktueller Mailanbieter und SLS-Vertragskonto belegt. Die historische IONOS-Zuordnung wird für den Relaunch nicht weiterverwendet. Betriebsinterne Löschprüftermine bleiben von technisch eingerichteten Aufbewahrungsrichtlinien getrennt.
+
+
+### Vertiefte Prüfung: E-Mail-Aufbewahrung und Vertragsnachweise – 18.10.2026
+
+Die nachfolgenden Ergebnisse stammen aus den angemeldeten Konten. Es wurden keine Richtlinien erstellt, bearbeitet oder gelöscht, keine Postfachinhalte in Exchange geöffnet und keine Anbieter angeschrieben. Die Vertragsmail-Suche in Propstack war auf einschlägige Begriffe begrenzt; kein gesamter Mailbestand wurde exportiert.
+
+#### Microsoft Purview und Exchange
+
+- Purview → Datenlebenszyklusverwaltung → Richtlinien → Aufbewahrungsrichtlinien: Liste vollständig geladen, **0 Elemente / keine Daten verfügbar** im zugänglichen Berechtigungsumfang. Dies allein beweist weder Abwesenheit jeder anderen Aufbewahrungsregel noch eine generelle Löschfrist.
+- Exchange (Legacy) → MRM-Aufbewahrungsrichtlinien: **Default MRM Policy** vorhanden. Die Detailansicht nennt persönliche Lösch-/Archivierungsoptionen, Junk Email, Default 2 year move to archive, Never Delete und Recoverable Items 14 days move to archive.
+- MRM-Aufbewahrungstags: Standard-Archivtag mit **730 Tagen** sichtbar. Persönliche Löschtags mit 7/30/180/365/1825 Tagen sind auswählbare Tags, keine pauschal für jedes Postfach und jede Nachricht aktivierte Löschregel. Junk-Email-Tag: **30 Tage / Löschen**.
+- Ein Tag Deleted Items mit 30 Tagen ist im Tagkatalog sichtbar, wurde in der Detailansicht der Default MRM Policy aber nicht aufgeführt. Seine bloße Existenz wird deshalb **nicht** als angewandte 30-Tage-Regel für diese Postfächer dokumentiert. Ebenso ist ein im Richtliniendetail genannter Archivtag kein Nachweis der tatsächlich wirksamen Wiederherstellungsfrist.
+
+| Geprüftes Relaunch-Postfach | Zugeordnete Aufbewahrungsrichtlinie | Archivstatus | Belastbare Aussage |
+| --- | --- | --- | --- |
+| verkaufscheck@sls.de | Default MRM Policy | Deaktiviert / None | Keine pauschale automatische Löschung normaler Ein-/Ausgangsmails nach 90 Tagen, sechs Monaten oder zwei Jahren nachgewiesen. Der Zweijahrestag ist eine Archivierungsaktion. |
+| bewerbung@sls.de | Default MRM Policy | Deaktiviert / None | Eine automatische Sechsmonatslöschung von Bewerbungen ist mit dieser Konfiguration nicht nachgewiesen. Das betriebliche Löschverfahren muss die beschriebene Frist umsetzen. |
+
+Grenzen: Persönliche Ordner-/Nachrichtentags, tatsächliche Wiederherstellungsdauer endgültig gelöschter Elemente, etwaige Holds, weitere Mailkopien und Drittanbieter-Backups wurden damit nicht abschließend belegt. Andere Mitarbeiterpostfächer wurden nicht auf Inhalte oder individuelle Aufbewahrung geprüft. Ein manuelles Löschverfahren kann bestehen; fehlende Automatisierung beweist nicht, dass SLS überhaupt nicht löscht.
+
+Folge für die Erklärung: Keine technischen Löschgarantien ergänzen. Die bereits dokumentierten organisatorischen Prüftermine bleiben Prüftermine. Vor Endfreigabe festhalten, wer Bewerbungen und Verkaufscheck-Mailkopien wann prüft/löscht und wie notwendige Ausnahmen, Kopien und Wiederherstellungen behandelt werden. Microsoft-Konfiguration nicht im Zuge dieser Prüfung verändern.
+
+Referenzen für die Einordnung, nicht als Ersatz der Kontoprüfung: https://learn.microsoft.com/de-de/purview/create-retention-policies und https://learn.microsoft.com/de-de/exchange/security-and-compliance/messaging-records-management/retention-tags-and-policies .
+
+#### Google-Vertragsstatus
+
+In Analytics-Konto 324255696, mit neuer Relaunch-Property 559391964 ausgewählt, zeigt Kontodetails: **Datenverarbeitungsbedingungen am 06.08.2024 akzeptiert**. Die Ansicht verlinkt ausdrücklich die Datenverarbeitungsbedingungen unter https://business.safety.google/adsprocessorterms/ für den Analytics-Dienst. Die Bezeichnung Werbeprodukte wird nicht mit einer Änderung an Google Ads verwechselt.
+
+Die verlinkte Zusatzverwaltung zeigt keinen eingetragenen Firmennamen und eine leere DPA-Kontakttabelle; außerdem keine Verknüpfung mit einer Marketing-Platform-Organisation. Letzteres allein ist kein Nachweis eines fehlenden Vertrags. Die Annahme der Bedingungen ist belegt; die sichtbaren Unternehmens-/Kontaktangaben sind zu vervollständigen beziehungsweise zu klären. Diese Ansicht betrifft das gemeinsame bestehende Konto, nicht nur die Relaunch-Property. Aufgrund der Vorgabe, den Altbestand unangetastet zu lassen, wurden keine Angaben verändert und kein Speichern ausgelöst. Für eine Ergänzung ist eine ausdrücklich begrenzte Freigabe für die gemeinsamen Vertragskontaktdaten erforderlich. Die separat freigegebene GTM-Vertragsannahme für den Relaunch bleibt dokumentiert.
+
+#### Ogulo und Propstack: Suche nach vorhandenen Nachweisen
+
+Die Suche im zugänglichen Propstack-Postfach nach Auftragsverarbeitung ergab zwölf Treffer. Relevant: **Ihr Ogulo Support, 16.06.2025, Information zu unserer neuen Datenschutzbeauftragten**. Die Nachricht ordnet den Wechsel des Ogulo-Datenschutzkontakts zum 01.06.2025 einer fortbestehenden AVV mit dem Empfänger zu und bezeichnet die Mitteilung als Teil der Zusammenarbeit nach Art. 28 DSGVO. Das ist ein konkreter Anbieterhinweis auf eine bestehende Vertragsbeziehung, aber noch keine vollständige Kopie ihrer Fassung und Anlagen.
+
+Daher kein vorsorglicher Neuabschluss über Adobe Sign. Die bisher offene Signaturseite wurde ohne Dateneingabe oder Zustimmung geschlossen. Im Mailbestand ist nun ein Ansatzpunkt für Vertragsarchiv/Bestellhistorie beziehungsweise eine spätere gezielte Bitte um Vertragskopie vorhanden; keine solche Nachricht wurde versendet. Die separate Suche Propstack AVV ergab **0 Treffer** im zugänglichen Mailbestand. Das beweist keinen fehlenden Vertrag; die Propstack-Vertragsfassung bleibt offen.
+
+#### Verbleibende Zugänge
+
+Für Justhome ist eine Partner-Anmeldung erforderlich. Für OpenAI/SIA wurde zunächst eine andere Anmeldung angefragt. Der Nutzer korrigiert anschließend, dass offenbar doch das Personal-Konto genutzt wird. Dieses vorhandene Konto wurde daraufhin geprüft; siehe Nachtrag unten. Ein anderer OpenAI-Login ist derzeit nicht erforderlich. Keine Passwörter oder API-Schlüssel angefordert. Vercel/Upstash und PriceHubble behalten den oben dokumentierten Nachweisstand; keine zusätzlich belegte Vertragsfassung behaupten.
+
+
+#### Nutzerkorrektur und OpenAI-Kontoprüfung im selben Vorgang
+
+Der Nutzer teilt mit, dass scheinbar doch das Personal-Konto verwendet wird. Das ist die aktuelle Arbeitshypothese; die frühere Angabe zum Workspace SLS Immobilienpartner gilt damit nicht mehr als bestätigte API-Zuordnung.
+
+Read-only im vorhandenen API-Konto festgestellt:
+
+- Organisation heißt Personal; vorhandenes Default project mit **Global / None (Standard retention)**. Der Name Personal allein bezeichnet hier keine nachgewiesene Nutzung von ChatGPT-Verbraucherbedingungen und beweist auch keinen ungeeigneten API-Tarif.
+- Data controls → Sharing: Modellfeedback-Freigabe, Freigabe von Evaluations-/Fine-Tuning-Daten und Freigabe von API-Ein-/Ausgaben jeweils **Disabled**.
+- Data controls → Data retention: API call logging **Enabled per call**. Die Oberfläche weist für Responses ausdrücklich auf store=false zur Abschaltung dieser Protokollierung hin. Die vorhandenen SIA-Integrationen setzen store:false. Das ist keine Zero-Data-Retention-Zusage; Missbrauchs-/Sicherheitsprotokolle und dienstbezogene Ausnahmen gesondert berücksichtigen. Primärquelle: https://developers.openai.com/api/docs/guides/your-data .
+- Billing → Preferences: Company name lautet **Filippo**. Geschäftsadresse und Business tax ID stimmen mit dem veröffentlichten SLS-Impressum überein. Das ist ein konkretes Indiz für die geschäftliche Zuordnung; eine vollständig und eindeutig auf SLS Immobilienpartner GmbH lautende Kundenzuordnung ist durch den angezeigten Firmennamen allein noch nicht belegt.
+- Keine Zahlungsdaten oder Schlüssel geöffnet, keine Rechnungs-/Datenschutzeinstellung gespeichert, kein zusätzlicher API-Aufruf erzeugt. Der hinterlegte API-Schlüssel wurde nicht ausgelesen oder abgeglichen. Deshalb ist die technische Zuordnung des tatsächlich eingesetzten Deployment-Schlüssels zum sichtbaren Projekt noch nicht unabhängig bestätigt.
+
+Folge: Kein Kontoumzug allein wegen des Organisationsnamens. Vor Endfreigabe die vollständige SLS-Vertrags-/Kundenzuordnung und die geltende OpenAI-DPA festhalten. Die bisherigen Aussagen im öffentlichen Entwurf zu verbleibenden Anbieterprotokollen und fehlender ausschließlicher EU-Verarbeitung bleiben zutreffende Grenzen; keine ausschließliche EU-Verarbeitung oder Nullspeicherung aus Global/Standard retention ableiten.
