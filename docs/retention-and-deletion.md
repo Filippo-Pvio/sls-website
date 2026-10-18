@@ -1,6 +1,6 @@
 # SLS: Aufbewahrung, Prüfung und Löschung
 
-Stand: 7. Oktober 2026. Verantwortlicher für die Entscheidungen: Filippo Livera, gemäß seiner Zuständigkeitsbestätigung. Der endgültige Onlinegang bleibt zurückgestellt.
+Stand: 18. Oktober 2026. Verantwortlicher für die Entscheidungen: Filippo Livera, gemäß seiner Zuständigkeitsbestätigung. Der endgültige Onlinegang bleibt zurückgestellt.
 
 ## Freigegebene Browserfrist
 
@@ -29,7 +29,7 @@ Für laufende Kunden-/Vertragsakten gibt es in diesem Konzept keine pauschale au
 2. Im Versandpostfach ausschließlich identifizierte Verkaufscheck-/Bestätigungsmails sichten. Absender, Zeit, Nachricht und Anhang abgleichen; Betreff allein ist keine Löschfreigabe. Die Website-App erhält dafür keine neuen Mail.Read-/Löschrechte.
 3. Pro Vorgang prüfen: laufende Beziehung, anderer Verarbeitungszweck, gesetzliche Archivpflicht, offener Anspruch/Streit, Einwilligungsnachweis oder Löschanfrage. Bei unklarer Einordnung keine automatische Löschung; konkreten Klärungsgrund und zeitnahen Prüftermin festhalten.
 4. Nur den tatsächlich entfallenen Bestand entfernen. Bei mehreren Zwecken relevante Unterlagen gesondert geschützt aufbewahren und den operativen Zugriff auf entbehrliche Daten beenden. Andere Kontaktaktivitäten, Verträge oder Suchprofile nicht mitlöschen.
-5. Löschung in aktiven Systemen und weiteren SLS-Kopien kontrollieren: CRM, Microsoft, gegebenenfalls IONOS/Propstack-Mail, lokale Downloads und Weiterleitungen. Anbieterfristen für Papierkorb/Backups festhalten. Endgültiges Leeren nur mit konkreter Freigabe des betroffenen Bestands.
+5. Löschung in aktiven Systemen und weiteren SLS-Kopien kontrollieren: CRM, Microsoft und gegebenenfalls Propstack-Mailkopien, lokale Downloads und Weiterleitungen. Anbieterfristen für Papierkorb/Backups festhalten. Endgültiges Leeren nur mit konkreter Freigabe des betroffenen Bestands.
 6. Einen knappen Nachweis in einer zugriffsbeschränkten SLS-Ablage festhalten: Datenkategorie, Zweckende, angewendete Regel, Ausnahmegrund, Entscheidung, Datum, Verantwortlicher und betroffene Systeme. Keine Namen, Mailadressen, Kontakt-IDs oder PDF-Inhalte in Git, Website-Dateien oder öffentlichen Logs ablegen.
 
 Der Ablauf ist hier dokumentiert, kein bereits laufender geplanter Löschjob. Zur automatischen CRM-/Mail-Löschung fehlen noch bestätigte Regeln sowie verlässliche Abschluss-/Ausnahmekennzeichen. Ein Altersfilter allein wird nicht als Löschentscheidung eingesetzt.
@@ -45,3 +45,26 @@ Der Ablauf ist hier dokumentiert, kein bereits laufender geplanter Löschjob. Zu
 Die Speicherung muss sich am erforderlichen Zweck orientieren; Löschung und gesetzliche Aufbewahrung sind zusammen zu beurteilen. [DSGVO, insbesondere Art. 5 und 17](https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A32016R0679).
 
 Empfangene und abgesandte Handelsbriefe können sechs Jahre aufzubewahren sein, grundsätzlich ab Schluss des maßgeblichen Kalenderjahres. Andere Kategorien haben andere Fristen. Daraus folgt keine pauschale Sechsjahresfrist für jeden Websitekontakt und keine pauschale 90-Tage-Löschung für jede PDF-Mail. [§ 257 HGB](https://www.gesetze-im-internet.de/hgb/__257.html), [§ 147 AO](https://www.gesetze-im-internet.de/ao_1977/__147.html). Die Einordnung der SLS-Unterlagen und weitere einschlägige Pflichten sind mit dem tatsächlichen Geschäftsprozess abzugleichen.
+
+
+## Bewerbungen und spätere Stellenangebote – Entwurf für den Relaunch
+
+Nach Nutzerauftrag vom 18.10.2026 wird keine unbegrenzte Speicherung erfolgloser Bewerbungen vorgesehen. Es gibt keine allgemeine Vorschrift, wonach jede Bewerbung ohne Ausnahme exakt sechs Monate aufzubewahren ist. Nach Zweckende ist zu löschen; erforderliche Rechtsverteidigung und konkrete gesetzliche Nachweispflichten sind gesondert zu beurteilen. Sechs Monate ab Zugang einer Absage beziehungsweise Rücknahme sind die regelmäßige betriebliche Höchstfrist im Entwurf, keine gesetzliche Mindestfrist. Abweichende längere Speicherung begründen, zugriffsbeschränken und terminieren. Quellen: Art. 5/17 DSGVO; § 26 BDSG; LfD Niedersachsen FAQ, Stand Juli 2026 (Link unten). Die Aufsicht weist auch auf mögliche Nachweisanforderungen im Zusammenhang mit Entgelttransparenz hin; diese nicht durch einen pauschalen Löschlauf übergehen.
+
+Zuständig ist die Geschäftsführung, intern Filippo Livera gemäß bestehender Zuständigkeit. Bei Absage/Rücknahme Verfahrensende, regelmäßiges Löschdatum, konkreten Ausnahmegrund und nächste Prüfung in einer geschützten internen Liste erfassen. Monatlich fällige Fälle prüfen und die Entscheidung rechtzeitig vor der Frist umsetzen. Unterlagen im Microsoft-Postfach einschließlich Anhängen und SLS-Arbeitskopien berücksichtigen. Eine reine Verschiebung in Papierkorb oder Archiv ist keine abschließende Löschung. Keine vorhandenen Bewerbungsdaten im Rahmen dieses Website-Auftrags löschen.
+
+Für spätere Stellen wird ein getrennter manueller Einwilligungsablauf vorbereitet:
+
+1. Erst nach Abschluss des konkreten Verfahrens separat anbieten. Die Bewerbung oder Kenntnisnahme der Datenschutzhinweise ist keine Zustimmung. Keine vorangekreuzte Auswahl und kein Nachteil bei Ablehnung.
+2. Nur notwendige berufliche Profildaten, Kontakt und Stellenwünsche aufnehmen; unnötige Anlagen und besondere Daten aussparen. Zweck: passende Stellen bei SLS und Kontaktaufnahme hierzu. Zugriff nur durch zuständige Geschäftsführung.
+3. Vor Aufnahme eine aktive, dokumentierte Zustimmung einholen. **Zwölf Monate ab Zustimmung** sind eine betriebliche Befristung, keine gesetzliche Vorgabe. Tatsächliches Ablaufdatum in der Einwilligungsanfrage angeben. Vor erneuter Verwendung Aktualität/fortbestehenden Wunsch prüfen.
+4. Widerruf über bewerbung@sls.de oder jede andere eindeutige Mitteilung umsetzen. Nach Ablauf ohne neue aktive Zustimmung Pooldaten löschen; keine automatische Verlängerung durch Schweigen oder eine gesendete Nachricht. Erforderliche Einwilligungs-/Rechtsnachweise davon getrennt und beschränkt behandeln.
+5. Datum, Textversion, Umfang und Zustimmung in geschützter SLS-Ablage dokumentieren. Keine Bewerberdaten in Git speichern. Dieser Ablauf ist vorbereitet, keine bereits eingeführte automatische Pool-Software.
+
+### Textvorlage für eine separate Anfrage nach Verfahrensabschluss
+
+Gern würden wir Sie bei passenden späteren Stellen der SLS Immobilienpartner GmbH berücksichtigen. Wenn Sie dies wünschen, speichern wir Ihren Namen, Ihre Kontaktdaten, Ihre Tätigkeitswünsche und das mit Ihnen abgestimmte berufliche Kurzprofil für zwölf Monate ab Ihrer Zustimmung und kontaktieren Sie bei passenden Stellen. Vor Versand sind die konkreten Daten und das tatsächliche Ablaufdatum einzusetzen. Die Teilnahme ist freiwillig; Ihre Entscheidung hat keine Nachteile für das abgeschlossene Bewerbungsverfahren. Sie können die Einwilligung jederzeit für die Zukunft unter bewerbung@sls.de widerrufen. Ohne erneute aktive Zustimmung löschen wir die Pooldaten nach Fristablauf. Weitere Hinweise: Datenschutzseite für Bewerbungen auf der neuen SLS-Website. Bitte bestätigen Sie ausdrücklich, wenn Sie mit dieser befristeten Speicherung und Kontaktaufnahme einverstanden sind.
+
+Die Vorlage nicht automatisiert senden. Erst die Datenkategorien konkretisieren und die gültige URL der freigegebenen Bewerber-Datenschutzseite einsetzen; keine Produktionsfreigabe durch diesen Entwurf.
+
+Quellen: https://www.lfd.niedersachsen.de/faq/faq-aufbewahrungs-und-loschfristen-von-bewerbungsunterlagen-204360.html ; https://www.gesetze-im-internet.de/bdsg_2018/__26.html ; https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679 .
