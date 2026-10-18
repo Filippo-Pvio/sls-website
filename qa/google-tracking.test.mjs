@@ -38,8 +38,8 @@ test('revocation blocks events immediately and removes only analytics cookies',(
  const h=harness(preview,true);h.consent(false);h.emit('sls:conversion',{event:'contact_request_success'});
  assert.equal(events(h).length,2);assert.ok(h.cookies.some(x=>x.startsWith('_ga=')));assert.ok(h.cookies.some(x=>x.startsWith('_ga_TEST=')));assert.ok(h.cookies.every(x=>!x.includes('necessary')));
 });
-test('legacy and unrelated previews cannot load the new container',()=>{
- for(const host of ['sls.de','www.sls.de','localhost','other.vercel.app']){const h=harness(host,true);h.consent(true);h.emit('sls:conversion',{event:'contact_request_success'});assert.equal(h.scripts.length,0);assert.equal(events(h).length,0);assert.equal(h.cookies.length,0);}
+test('redirect-only www and unrelated hosts cannot load the new container',()=>{
+ for(const host of ['www.sls.de','sls.de.evil.example','slsXde','localhost','other.vercel.app']){const h=harness(host,true);h.consent(true);h.emit('sls:conversion',{event:'contact_request_success'});assert.equal(h.scripts.length,0);assert.equal(events(h).length,0);assert.equal(h.cookies.length,0);}
 });
 test('tracking listener bootstraps before forms on static and server-rendered pages',()=>{
  for(const raw of ['<head><title>x</title></head>','<head><script src="/assets/privacy-consent.js"></script></head>']){
@@ -68,4 +68,33 @@ test('release GTM is bounded to exact relaunch hosts and has no forced debug mod
   for(const host of [preview,'sls-website-eight.vercel.app'])assert.ok(regex.test(host));
   for(const host of ['sls.de','www.sls.de','sls-website-eightXvercelXapp','sls-website-eight.vercel.app.evil.example','other.vercel.app'])assert.equal(regex.test(host),false);
  }
+});
+
+const cutoverHosts=['sls.de','sls-website-git-feat-domain-cutover-20261018-info-91172609.vercel.app'];
+test('prepared canonical and branch hosts require consent, minimize data and honor revocation',()=>{
+ for(const host of cutoverHosts){
+  const h=harness(host);assert.equal(h.scripts.length,0);
+  h.emit('sls:conversion',{event:'contact_request_success'});assert.equal(events(h).length,0);
+  h.consent(true);assert.equal(h.scripts.length,1);
+  h.emit('sls:conversion',{event:'contact_request_success',email:'private@example.com'});
+  assert.equal(events(h).filter(e=>e.event==='contact_request_success').length,1);
+  assert.ok(events(h).filter(e=>e.sls_page_location).every(e=>e.sls_page_location==='https://'+host+'/kontakt/'));
+  assert.doesNotMatch(JSON.stringify(events(h)),/private|secret/);
+  h.consent(false);h.emit('sls:conversion',{event:'contact_request_success'});
+  assert.equal(events(h).filter(e=>e.event==='contact_request_success').length,1);
+  assert.ok(h.cookies.length>0);
+ }
+});
+test('unpublished cutover changes only hostname filters of the live snapshot',()=>{
+ const read=name=>JSON.parse(readFileSync(new URL('../docs/tracking/'+name,import.meta.url)));
+ const live=read('gtm-relaunch-production.json'),prepared=read('gtm-relaunch-cutover.json');
+ for(let i=0;i<prepared.containerVersion.trigger.length;i++){
+  const filter=prepared.containerVersion.trigger[i].filter[0];assert.equal(filter.type,'MATCH_REGEX');
+  const arg=filter.parameter.find(p=>p.key==='arg1'),regex=new RegExp(arg.value);
+  for(const host of [preview,'sls-website-eight.vercel.app',...cutoverHosts])assert.ok(regex.test(host));
+  for(const host of ['www.sls.de','slsXde','sls.de.evil.example','other.vercel.app'])assert.equal(regex.test(host),false);
+  prepared.containerVersion.trigger[i].filter=live.containerVersion.trigger[i].filter;
+ }
+ prepared.exportTime=live.exportTime;
+ assert.deepEqual(prepared,live);
 });

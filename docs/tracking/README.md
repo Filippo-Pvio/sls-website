@@ -123,3 +123,12 @@ Es wurden keine Provider-Konten verändert und keine Nachrichten an Anbieter ver
 
 
 Datenschutz-Überarbeitung vom 18.10.2026: vollständige Arbeitsfassung in /datenschutz/ und ergänzender Bewerbungsdatenschutz; Quellen, frühere Nutzerfestlegungen und konkrete rechtliche Restpunkte in `docs/privacy-consent.md`. Die in diesem Bericht beschriebenen isolierten Tracking-Tests bleiben gültig. Der Nutzer hat reale CRM-Ankunft bestätigt; weitere Wiederholung ist nicht Teil des nächsten Schritts.
+
+
+## Domainwechsel vorbereitet am 18.10.2026, noch nicht veröffentlicht
+
+`gtm-relaunch-production.json` bleibt der unveränderte veröffentlichte Version-3-Stand. `gtm-relaunch-cutover.json` ergänzt ausschließlich die exakten Hostfilter um `sls.de` und `sls-website-git-feat-domain-cutover-20261018-info-91172609.vercel.app`. Die Tracking-Datei dieses Entwicklungsbranches erlaubt dieselben vier Hosts. `www.sls.de` leitet vor der Seitenauslieferung auf sls.de um und bleibt ausgeschlossen; Fremdhosts und ähnliche Domainnamen bleiben gesperrt. Das alte WordPress lädt diese neue Datei nicht.
+
+Die neue Hostfreigabe verlangt weiterhin vorherige Statistik-Einwilligung. Keine Werbeeinwilligung, keine neuen Ereignisse oder Formularfelder, kein Debug-Modus und keine nachträgliche Wiederholung abgelehnter Ereignisse. Die GTM-Datei wurde im separaten Arbeitsbereich **SLS Domainwechsel – Vorbereitung 18.10.2026** (ID 5) zusammengeführt: **2 Trigger geändert, 0 hinzugefügt, 0 gelöscht**, Tags und Variablen unverändert. Der Default Workspace wurde nicht überschrieben. Live bleibt Version 3. Der Entwurf wurde nicht veröffentlicht. Veröffentlichung, Merge und Domainwechsel benötigen eine gesonderte finale Freigabe. Bis zur Veröffentlichung wird die neue Branch-Vorschau von den Live-GTM-Hostfiltern weiterhin abgewiesen; das ist kein nachgewiesener neuer GA4-Eingang. Die vorhandene Abnahme der Formular- und CRM-Wege wird nicht wiederholt.
+
+Prüfung dieser Vorbereitung: 24 gezielte Tracking-/Consent-/SEO-/Medienbrücken-Tests bestanden; öffentlicher Website-Build und Diff-Prüfung erfolgreich. Keine echten Formular- oder CRM-Anfragen.
