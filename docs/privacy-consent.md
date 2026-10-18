@@ -112,7 +112,7 @@ Es wurden ausschließlich bestehende Einstellungen und Vertragsansichten gelesen
 | Propstack | Bestehendes SLS-Konto; DSGVO-Einstellungen vorhanden. | Öffentliche AVV enthält eine kundenspezifische Anlage. Ein für SLS geltender Abschluss wurde noch nicht gefunden. Eine begrenzte Postfachsuche nach Ogulo AVV ergab keinen Treffer; daraus folgt kein allgemeiner Nachweis fehlender Verträge. Keine CRM-Konfiguration ändern. |
 | Ogulo | Firmenprofil SLS Immobilienpartner GmbH. Feld Google-Analytics-Tracking-ID leer; kontoweite Analytics-Option eingeschaltet. | Dies belegt keine tatsächliche Analytics-Übertragung einzelner Touren. Öffentlicher Abschlussweg öffnet ein Adobe-Sign-Dokument mit 17 Seiten. Nichts ausgefüllt, signiert oder durch Weiter angenommen. Vor neuem Abschluss Vertragsinhalt prüfen und ausdrückliche Freigabe einholen. |
 | PriceHubble | Eingebettetes Produkt und Anbieter bekannt; kein zugeordneter Kontovertrag belegt. | Die öffentlich gefundene DPA auf https://www.pricehubble.com/privacy/dpa nennt eine US-Gesellschaft. Sie wird deshalb nicht ungeprüft als SLS-Vertrag der deutschen/schweizerischen Leistung übernommen. |
-| Justhome | Partner-Anmeldung erforderlich; keine Anmeldungsmail ausgelöst. | Öffentliche Verbraucher-AGB auf https://justhome.com/agb ersetzen keinen zugeordneten Partnervertrag und entscheiden nicht die Rolle des konkret eingebetteten Produkts. |
+| Justhome | Öffentliche Datenschutzhinweise liefern Anbieteridentität und allgemeine Verarbeitungshinweise; vorhandene Einbettung im Code belegt. | Für den Anbieterabschnitt kein pauschaler Partner-Login erforderlich. Nutzer bestätigt Rückmeldungen in Propstack und nach seiner Kenntnis keine gesonderte Vereinbarung. Umfang, Rechtsgrundlage und Rollen dieses Austauschs bleiben rechtlich zuzuordnen. Keine pauschale AVV-Pflicht aus einer Einbettung ableiten. |
 | OpenAI / SIA | Nutzer benennt Workspace SLS Immobilienpartner; sichtbare API-Organisation heißt Personal. | Keine Gleichsetzung beider Konten. Passende API-Organisation und deren Vertrags-/Datenoptionen müssen noch zugeordnet werden. Keine Schlüssel ausgelesen. |
 
 Microsoft ist damit als aktueller Mailanbieter und SLS-Vertragskonto belegt. Die historische IONOS-Zuordnung wird für den Relaunch nicht weiterverwendet. Betriebsinterne Löschprüftermine bleiben von technisch eingerichteten Aufbewahrungsrichtlinien getrennt.
@@ -154,7 +154,7 @@ Daher kein vorsorglicher Neuabschluss über Adobe Sign. Die bisher offene Signat
 
 #### Verbleibende Zugänge
 
-Für Justhome ist eine Partner-Anmeldung erforderlich. Für OpenAI/SIA wurde zunächst eine andere Anmeldung angefragt. Der Nutzer korrigiert anschließend, dass offenbar doch das Personal-Konto genutzt wird. Dieses vorhandene Konto wurde daraufhin geprüft; siehe Nachtrag unten. Ein anderer OpenAI-Login ist derzeit nicht erforderlich. Keine Passwörter oder API-Schlüssel angefordert. Vercel/Upstash und PriceHubble behalten den oben dokumentierten Nachweisstand; keine zusätzlich belegte Vertragsfassung behaupten.
+Für Justhome ist eine Partner-Anmeldung nur für nicht öffentlich belegte Kontofunktionen/Vertragsdetails relevant; sie ist keine pauschale Voraussetzung für den öffentlichen Anbieterabschnitt. Für OpenAI/SIA wurde zunächst eine andere Anmeldung angefragt. Der Nutzer korrigiert anschließend, dass offenbar doch das Personal-Konto genutzt wird. Dieses vorhandene Konto wurde daraufhin geprüft; siehe Nachtrag unten. Ein anderer OpenAI-Login ist derzeit nicht erforderlich. Keine Passwörter oder API-Schlüssel angefordert. Vercel/Upstash und PriceHubble behalten den oben dokumentierten Nachweisstand; keine zusätzlich belegte Vertragsfassung behaupten.
 
 
 #### Nutzerkorrektur und OpenAI-Kontoprüfung im selben Vorgang
@@ -170,3 +170,17 @@ Read-only im vorhandenen API-Konto festgestellt:
 - Keine Zahlungsdaten oder Schlüssel geöffnet, keine Rechnungs-/Datenschutzeinstellung gespeichert, kein zusätzlicher API-Aufruf erzeugt. Der hinterlegte API-Schlüssel wurde nicht ausgelesen oder abgeglichen. Deshalb ist die technische Zuordnung des tatsächlich eingesetzten Deployment-Schlüssels zum sichtbaren Projekt noch nicht unabhängig bestätigt.
 
 Folge: Kein Kontoumzug allein wegen des Organisationsnamens. Vor Endfreigabe die vollständige SLS-Vertrags-/Kundenzuordnung und die geltende OpenAI-DPA festhalten. Die bisherigen Aussagen im öffentlichen Entwurf zu verbleibenden Anbieterprotokollen und fehlender ausschließlicher EU-Verarbeitung bleiben zutreffende Grenzen; keine ausschließliche EU-Verarbeitung oder Nullspeicherung aus Global/Standard retention ableiten.
+
+
+### Präzisierung Justhome nach Nutzerhinweis – 18.10.2026
+
+https://justhome.com/datenschutz wurde erneut gelesen (angegebener Stand 07.06.2024). Anbieteridentität, Datenarten, Vermittlung und allgemeine Speicherhinweise sind öffentlich beschrieben. Die Informationen werden für den SLS-Anbieterabschnitt verwendet; keine vollständige Übernahme aller Dienste oder Fristen. https://justhome.com/partner beschreibt mögliche Finanzierungsstatus-Rückmeldungen über ein Partner-Dashboard. Ob SLS diese konkret nutzt, ist damit nicht belegt. Für diese begrenzte offene Frage können Partnerschaftsunterlagen nötig sein; ein Login ist kein pauschaler Freigabeblocker. Eine AVV wird nicht automatisch aus der Einbettung verlangt; die Rolle ist nach dem tatsächlichen Verarbeitungsvorgang zuzuordnen. Die frühere allgemeine Login-Forderung ist insoweit korrigiert.
+
+
+### Bestätigter Justhome-Rückfluss nach Propstack – 18.10.2026
+
+Der Nutzer bestätigt anschließend ausdrücklich: Rückmeldungen von Justhome kommen in Propstack an; dazu besteht nach seiner Kenntnis keine Vereinbarung. Die zuvor offene Tatsachenfrage zum Rückfluss ist damit beantwortet. Der frühere Hinweis, dass die konkrete Nutzung nicht belegt sei, ist insoweit überholt. Kein erneuter Funktions-/Anfragetest und kein Partner-Login hierfür erforderlich.
+
+Der öffentliche Relaunch-Entwurf beschreibt jetzt den Rückfluss in Propstack. Er behauptet weder eine vorhandene SLS-AVV noch eine bereits abschließend bestimmte Rechtsgrundlage für diesen Austausch. Kein Rückschluss, dass sämtliche Finanzierungsunterlagen oder Beträge an SLS gelangen. Der genaue Umfang und die Rollen sind vor der rechtlichen Endfreigabe zu klären; fehlende separat bekannte Vereinbarung beweist allein weder eine bestimmte Rollenverteilung noch, dass überhaupt keine wirksam einbezogenen Bedingungen bestehen.
+
+Zusätzliche einschlägige Primärquelle: https://justhome.com/partner-propstack beschreibt die Propstack-Partnerschaft und mögliche Statusinformationen. Die öffentliche Datenschutzerklärung beschreibt Justhomes allgemeine Verarbeitung; sie ersetzt keine konkrete Zuordnung des Datenrückflusses. Die öffentliche Information reicht als Quelle für den Anbieterabschnitt, macht die begrenzte Rollenprüfung aber nicht entbehrlich. Der veraltete Datenschutzlink in der Objektansicht wurde auf https://justhome.com/datenschutz vereinheitlicht. Keine Anfrage versendet und kein Vertragsabschluss ausgelöst.
