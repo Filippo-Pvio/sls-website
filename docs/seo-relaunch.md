@@ -1,5 +1,25 @@
 # SEO-Relaunch: technische Umsetzung
 
+## Domainvorbereitung vom 18. Oktober 2026 – ausschließlich Entwicklung/Preview
+
+Dieser Entwicklungsstand bereitet den späteren Domainwechsel vor. Kein Merge, Produktionsdeployment, Domainanschluss, DNS-/Nameserverwechsel oder Eingriff in die alte Website ist damit freigegeben. Google-Tracking, Google Ads, Meta und E-Mail-Konfiguration werden nicht geändert. Ein vollständiges wiederherstellbares Backup der alten WordPress-Installation einschließlich Datenbank und Konfiguration ist weiterhin nicht nachgewiesen.
+
+Die bekannten Alt-URLs werden als Vereinigung des Bestands vom 11.10. und der aktuellen öffentlichen Sitemaps erhalten: **650 URLs**, davon 112 unverändert, 501 dauerhafte Weiterleitungen und 37 entfernte Seiten. Die acht inzwischen aus Sitemaps verschwundenen URLs werden nicht aus dem historischen Inventar gelöscht. Die 14 zusätzlichen Immobilien-URLs wurden anhand identischer öffentlich sichtbarer SLS-Objektkennungen zugeordnet. Zwei identisch betitelte Ascheberg-Angebote behalten unterschiedliche Ziele (SLS 9698 / 9699). Fünf bisherige Ziele werden anhand derselben Objekt-ID unmittelbar auf ihren aktuellen Pfad aktualisiert; darunter ein inzwischen öffentliches Referenzobjekt. Neun weitere Ziele fehlen in beiden aktuellen öffentlichen Immobilien-Sitemaps und liefern 404/410. Ihre früheren URLs führen auf die bestehende informative 410-Seite, ohne einen privaten Verkaufsstatus zu behaupten. Die Entscheidungen stehen in `content/seo/relaunch-decisions.json` und werden von `scripts/build-migration.mjs` reproduzierbar angewendet. Alte Redirects dürfen die neuen 410-Regeln nicht überdecken; Prozentkodierungsvarianten werden ebenfalls aktualisiert.
+
+### Alte öffentliche Medienadressen
+
+`api/legacy-media.js` erhält `/wp-content/uploads/…` als vorläufige Brücke zum bisherigen Hosting. Zugelassen sind ausschließlich **24.102 erfolgreich lokal archivierte öffentliche Bild-/PDF-Pfade** aus `content/seo/legacy-media-paths.json`. Die 53 bereits am alten Ursprung mit 404 antwortenden Dateiadressen sind nicht freigeschaltet. Die Dateipfadliste bleibt im Funktionspaket und wird nicht als statische Website veröffentlicht. Bereits vorhandene statische Dateien bleiben erhalten. Die rund 2,86 GB große lokale Sicherung wird nicht ins Repository oder Preview hochgeladen; diese Brücke ist kein Ersatz für einen dauerhaften Medienumzug oder ein WordPress-Backup.
+
+Der serverseitige HTTPS-Leser verbindet den Host/SNI-Namen `sls.de` durch eine eigene DNS-Auflösung ausschließlich mit der dokumentierten bisherigen IPv4 `185.175.196.36`. Dadurch führt ein späterer öffentlicher DNS-Wechsel nicht zu einer Schleife zurück zur neuen Website. Die normalen CA-/Hostname-Prüfungen bleiben aktiv. Es werden ausschließlich GET-Abrufe an bekannte Upload-Pfade ausgeführt; keine Redirects verfolgt und keine Browser-Cookies, Autorisierungsheader, IP-Adressen oder Referrer an den Altserver weitergereicht. Nur GET/HEAD werden angeboten. Pfadmanipulation, andere CMS-Routen, nicht gelistete Dateien, aktive Dokumenttypen und fremde Ziele werden vor dem Zugriff abgewiesen. Antworttypen, Zeit und Größe sind begrenzt. Fehler bleiben ohne Cache, erfolgreiche Medien können im CDN zwischengespeichert werden.
+
+**Betriebsvoraussetzung:** Altes Hosting, alte Medien und ein gültiges Zertifikat für sls.de müssen bis zu einem gesonderten dauerhaften Medienumzug weiterbestehen. Diese Abhängigkeit ist ein Punkt vor jeder Kündigung des bisherigen Hostings. Es werden keine Sicherheitsprüfungen abgeschaltet, um einen ausgefallenen Ursprung zu umgehen. Die Übergangslösung schafft weder einen neuen Speichervertrag noch eine automatische Wiederherstellung aus der nur lokal vorhandenen Sicherung.
+
+Prüfung: 14 gezielte automatisierte Tests einschließlich bestehender SEO-/Status-/Sitemap-Prüfungen bestanden; öffentlicher Build erfolgreich. Die Migration lässt sich ohne weitere Änderungen erneut erzeugen. Echte Abrufe über den fest aufgelösten HTTPS-Ursprung lieferten ein Bild und die Broschüre mit HTTP 200; ihre SHA-256-Prüfsummen stimmen mit der lokalen Sicherung überein. Zusätzliche Preview-Abnahme wird im zugehörigen PR dokumentiert. Keine echten Formular-/CRM-Transaktionen.
+
+Technische Primärquellen: [Node.js HTTPS](https://nodejs.org/api/https.html), [Node.js TLS](https://nodejs.org/api/tls.html), [Vercel Functions-Grenzen](https://vercel.com/docs/functions/limitations). Vor dem tatsächlichen Domainwechsel sind die projektspezifischen Vercel-DNS-Vorgaben und HTTPS-Funktion erneut abzugleichen. IONOS-Mail-, Verifizierungs- und Subdomain-Einträge sowie Domain Guard/DNSSEC bleiben in dieser Änderung unangetastet.
+
+## Historischer Implementierungsstand vom 11. Oktober 2026
+
 Stand: 11. Oktober 2026. Ausgangspunkt: main 97b1e3391405f5ca549b27b7f822081d5e9abd73. Freigabe zur Umsetzung im Projektchat erteilt.
 
 ## Verhalten

@@ -1,0 +1,196 @@
+{
+  "checkedAt": "2026-10-18",
+  "decisions": [
+    {
+      "source": "/immobilie/711-rendite-attraktive-kapitalanlage/",
+      "state": "redirect",
+      "destination": "/immobilie/7-11-rendite-attraktive-kapitalanlage-monchengladbach-sls-1522-3835189/",
+      "publicReference": "SLS 1522",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/gepflegte-eigentumswohnung-mit-grossem-balkon-stellplatz-und-gartenmitnutzung/",
+      "state": "redirect",
+      "destination": "/immobilie/gepflegte-eigentumswohnung-mit-grossem-balkon-stellplatz-und-gartenmitnutzung-ludenscheid-sls-4117-4814186/",
+      "publicReference": "SLS 4117",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/grosszuegige-3-zimmer-eigentumswohnung-mit-ca-95-m%c2%b2-wohnflaeche-und-modernisierungspotenzial/",
+      "state": "redirect",
+      "destination": "/immobilie/grosszugige-3-zimmer-eigentumswohnung-mit-ca-95-m-wohnflache-und-modernisierungspotenzial-recklinghausen--5156011/",
+      "publicReference": "SLS 5531",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/kompakte-2-zimmer-eigentumswohnung-mit-ca-78-m%c2%b2-und-attraktiver-entwicklungsperspektive/",
+      "state": "redirect",
+      "destination": "/immobilie/kompakte-2-zimmer-eigentumswohnung-mit-ca-74-m-und-attraktiver-entwicklungsperspektive-recklinghausen-sls-6264649/",
+      "publicReference": "SLS 10969",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/leerstand-mit-potenzial-wohn-geschaeftshaus-mit-vielfaeltigen-moeglichkeiten/",
+      "state": "redirect",
+      "destination": "/immobilie/leerstand-mit-potenzial-wohn-geschaftshaus-mit-vielfaltigen-moglichkeiten-velbert-sls-10982-6272619/",
+      "publicReference": "SLS 10982",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/moderne-doppelhaushaelfte-mit-einliegerwohnung-wintergarten-und-garten/",
+      "state": "redirect",
+      "destination": "/immobilie/moderne-doppelhaushalfte-mit-einliegerwohnung-wintergarten-und-garten-grevenbroich-sls-9766-5927670/",
+      "publicReference": "SLS 9766",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/nur-fuer-kurze-zeit-wo-geschichte-zuhause-ist-historisches-anwesen-zum-wohnen-und-arbeiten-2/",
+      "state": "redirect",
+      "destination": "/immobilie/nur-fur-kurze-zeit-wo-geschichte-zuhause-ist-historisches-anwesen-zum-wohnen-und-arbeiten-ascheberg-sls-9-5917864/",
+      "publicReference": "SLS 9699",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/nur-fuer-kurze-zeit-wo-geschichte-zuhause-ist-historisches-anwesen-zum-wohnen-und-arbeiten/",
+      "state": "redirect",
+      "destination": "/immobilie/nur-fur-kurze-zeit-wo-geschichte-zuhause-ist-historisches-anwesen-zum-wohnen-und-arbeiten-ascheberg-sls-9-5917859/",
+      "publicReference": "SLS 9698",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/ready-fuer-2030-kernsanierte-dhh-mit-extra-grundstueck/",
+      "state": "redirect",
+      "destination": "/immobilie/ready-fur-2030-kernsanierte-dhh-mit-extra-grundstuck-niederkruchten-sls-8776-5779110/",
+      "publicReference": "SLS 8776",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/reiheneckhaus-mit-charakter-garten-und-vielseitigem-raumangebot/",
+      "state": "redirect",
+      "destination": "/immobilie/reiheneckhaus-mit-charakter-garten-und-vielseitigem-raumangebot-datteln-sls-9768-5927821/",
+      "publicReference": "SLS 9768",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/repraesentatives-wohnanwesen-mit-historischer-galerie-wellnessbereich-und-eigenem-waldgrundstueck/",
+      "state": "redirect",
+      "destination": "/immobilie/reprasentatives-wohnanwesen-mit-historischer-galerie-wellnessbereich-und-eigenem-waldgrundstuck-ennepetal-4744895/",
+      "publicReference": "SLS 3763",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/saniertes-wohn-und-geschaeftshaus-zentral-in-heiligenhaus/",
+      "state": "redirect",
+      "destination": "/immobilie/saniertes-wohn-und-geschaftshaus-zentral-in-heiligenhaus-heiligenhaus-sls-9736-5923628/",
+      "publicReference": "SLS 9736",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/solides-wohninvestment-gepflegtes-mehrfamilienhaus-mit-4-vermieteten-einheiten/",
+      "state": "redirect",
+      "destination": "/immobilie/solides-wohninvestment-gepflegtes-mehrfamilienhaus-mit-4-vermieteten-einheiten-herten-sls-9538-5898326/",
+      "publicReference": "SLS 9538",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/vermietete-eleganz-am-rosengarten-grosszuegige-3-zimmer-wohnung-mit-balkon-tiefgarage/",
+      "state": "redirect",
+      "destination": "/immobilie/vermietete-eleganz-am-rosengarten-grosszugige-3-zimmer-wohnung-mit-balkon-tiefgarage-recklinghausen-sls-7-5595075/",
+      "publicReference": "SLS 7730",
+      "reason": "Identical public SLS reference on old and new page; target HTTP 200."
+    },
+    {
+      "source": "/immobilie/doppeltes-potenzial-zwei-eigentumswohnungen-mit-stellplaetzen-und-ausbaureserve/",
+      "state": "redirect",
+      "destination": "/immobilie/grosszugige-3-zimmer-eigentumswohnung-mit-ca-95-m-wohnflache-und-modernisierungspotenzial-recklinghausen--5156011/",
+      "reason": "Identical public object ID in current sitemap and canonical target HTTP 200."
+    },
+    {
+      "source": "/immobilie/ein-zuhause-fuers-leben-in-bochum-reihenendhaus-mit-garten-und-entwicklungspotenzial/",
+      "state": "redirect",
+      "destination": "/immobilie/viel-raum-fur-ihre-wohnideen-gepflegtes-reihenendhaus-auf-ca-450-m-grundstuck-bochum-sls-8895-5786403/",
+      "reason": "Identical public object ID in current sitemap and canonical target HTTP 200."
+    },
+    {
+      "source": "/immobilie/investieren-in-wohnqualitaet-maisonettewohnung-mit-dachterrasse-und-stabiler-vermietung/",
+      "state": "redirect",
+      "destination": "/immobilie/reduziert-investieren-in-qualitat-maisonettewohnung-mit-dachterrasse-monchengladbach-sls-6962-5450418/",
+      "reason": "Identical public object ID in current sitemap and canonical target HTTP 200."
+    },
+    {
+      "source": "/immobilie/vermietet-verwaltet-werthaltig-ihr-investment-im-herzen-des-ruhrgebiets/",
+      "state": "redirect",
+      "destination": "/referenz/vermietet-verwaltet-werthaltig-ihr-investment-im-herzen-des-ruhrgebiets-herne-4131762/",
+      "reason": "Identical public object ID in current sitemap and canonical target HTTP 200."
+    },
+    {
+      "source": "/immobilie/wo-geschichte-zuhause-ist-historisches-anwesen-in-ascheberg/",
+      "state": "redirect",
+      "destination": "/immobilie/nur-fur-kurze-zeit-wo-geschichte-zuhause-ist-historisches-anwesen-zum-wohnen-und-arbeiten-ascheberg-sls-4-4827831/",
+      "reason": "Identical public object ID in current sitemap and canonical target HTTP 200."
+    },
+    {
+      "source": "/immobilie/barrierefrei-wohnen-ueber-den-daechern-der-stadt-3-zimmer-wohnung-mit-balkon/",
+      "state": "retired",
+      "previousDestination": "/immobilie/barrierefrei-wohnen-uber-den-dachern-der-stadt-3-zimmer-wohnung-mit-balkon-bergkamen-sls-6480-5372394/",
+      "observedStatus": 410,
+      "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    },
+    {
+      "source": "/immobilie/exklusives-wohnportfolio-mit-30-einheiten-kapitalanlage-mit-sofortigem-mietsteigerungspotenzial/",
+      "state": "retired",
+      "previousDestination": "/referenz/exklusives-wohnportfolio-mit-30-einheiten-kapitalanlage-mit-sofortigem-mietsteigerungspotenzial-oer-erken-2711210/",
+      "observedStatus": 404,
+      "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    },
+    {
+      "source": "/immobilie/familienfreundliches-reihenhaus-mit-garten-in-ruhiger-spielstrasse-viel-platz-zum-wohlfuehlen/",
+      "state": "retired",
+      "previousDestination": "/immobilie/familienfreundliches-reihenhaus-mit-garten-in-ruhiger-spielstrasse-viel-platz-zum-wohlfuhlen-lunen-sls-97-5922646/",
+      "observedStatus": 410,
+      "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    },
+    {
+      "source": "/immobilie/freistehendes-einfamilienhaus-auf-neubau-niveau-in-meerbusch-mit-optionalem-baugrundstueck/",
+      "state": "retired",
+      "previousDestination": "/immobilie/kernsaniertes-einfamilienhaus-mit-140-qm-wohn-und-nutzflache-in-meerbusch-mit-optionalem-baugrundstuck-me-5486088/",
+      "observedStatus": 410,
+      "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    },
+    {
+      "source": "/immobilie/historischer-charme-trifft-luxus-maisonette-mit-ausblick-dachterrasse-neubaukomfort/",
+      "state": "retired",
+      "previousDestination": "/immobilie/grosszugige-maisonette-wohnung-mit-dachterrasse-und-naturblick-in-meerbusch-meerbusch-sls-6819-5437911/",
+      "observedStatus": 410,
+      "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    },
+    {
+      "source": "/immobilie/ihr-neues-zuhause-mit-charakter-einfamilienhaus-in-begehrter-wohnlage/",
+      "state": "retired",
+      "previousDestination": "/immobilie/ihr-neues-zuhause-mit-charakter-einfamilienhaus-in-begehrter-wohnlage-dortmund-sls-6682-5414617/",
+      "observedStatus": 410,
+      "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    },
+    {
+      "source": "/immobilie/sanierungsobjekt-mit-potential-komplett-leerstehendes-wohn-geschaeftshaus-mit-terrasse/",
+      "state": "retired",
+      "previousDestination": "/immobilie/leerstand-mit-potenzial-wohn-geschaftshaus-mit-vielfaltigen-moglichkeiten-velbert-sls-6433-5367495/",
+      "observedStatus": 404,
+      "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    },
+    {
+      "source": "/immobilie/vermietetes-1-zimmer-apartment-mit-einbaukueche-tiefgarage-in-gruener-wohnlage-von-vohwinkel/",
+      "state": "retired",
+      "previousDestination": "/immobilie/vermietetes-1-zimmer-apartment-mit-einbaukuche-tiefgarage-in-gruner-wohnlage-von-vohwinkel-wuppertal-sls--5511287/",
+      "observedStatus": 410,
+      "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    },
+    {
+      "source": "/immobilie/wohnen-auf-einer-ebene-gepflegter-bungalow-mit-vollkeller-garage-und-sonnigem-garten/",
+      "state": "retired",
+      "previousDestination": "/immobilie/wohnen-auf-einer-ebene-gepflegter-bungalow-mit-vollkeller-garage-und-sonnigem-garten-dorsten-sls-8509-5739216/",
+      "observedStatus": 410,
+      "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    }
+  ]
+}

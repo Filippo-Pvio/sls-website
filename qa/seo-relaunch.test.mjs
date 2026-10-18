@@ -94,7 +94,8 @@ test('all generated public HTML has one H1, complete canonical/entity data and s
 });
 test('every historic URL has an explicit migration decision; redirects never loop or chain through another redirect',async()=>{
  const report=JSON.parse(await readFile(new URL('../content/seo/migration-status.json',import.meta.url),'utf8'));
- assert.equal(report.urls.length,636);assert.ok(report.urls.every(x=>['retained','redirect','retired'].includes(x.state)));
+ const legacy=JSON.parse(await readFile(new URL('../content/seo/legacy-urls.json',import.meta.url),'utf8'));
+ assert.equal(report.urls.length,legacy.urls.length);assert.ok(report.urls.every(x=>['retained','redirect','retired'].includes(x.state)));
  const config=JSON.parse(await readFile(new URL('../vercel.json',import.meta.url),'utf8'));
  const redirects=new Map(config.redirects.map(r=>[r.source,r.destination]));
  for(const rule of config.redirects.filter(r=>/%[0-9a-f]{2}/.test(r.source))){const upper=rule.source.replace(/%[0-9a-f]{2}/g,m=>m.toUpperCase());assert.equal(redirects.get(upper),rule.destination);}
