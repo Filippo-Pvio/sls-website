@@ -22,3 +22,6 @@ const routes=JSON.parse(await readFile(path.join(root,'vercel.json'),'utf8'));
 for(const route of routes.rewrites||[])if(/^\/api\/(?:catalog-page|city-page)(?:\?|$)/.test(route.destination)){
  await rm(path.join(output,route.source,'index.html'),{force:true});
 }
+
+const {buildTrackingQa}=await import('./build-tracking-qa.mjs');
+await buildTrackingQa({root,output});

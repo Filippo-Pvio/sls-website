@@ -93,6 +93,7 @@
         });
         const data=await response.json().catch(()=>({}));
         if(!response.ok)throw new Error(data.error||'Der Suchauftrag konnte nicht gespeichert werden.');
+        if(data.ok === true && !data.duplicate) window.dispatchEvent(new CustomEvent('sls:conversion',{detail:{event:'search_profile_success'}}));
         status.textContent=data.duplicate?'Dieser Suchauftrag ist bereits für Sie gespeichert.':'Vielen Dank. Ihr Suchauftrag wurde in Propstack gespeichert.';
         activeRoot.classList.add('is-saved');
         activeRoot.querySelector('[data-search-profile-note]').textContent='Ihr Suchauftrag ist gespeichert. Wir melden uns bei passenden Immobilien.';

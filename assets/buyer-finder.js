@@ -83,7 +83,7 @@
     if(!available()){sync();return;}
     const body=Object.fromEntries(new FormData(form));Object.assign(body,{topic:'buyerfinder',rooms:body.rooms||'0',privacy:form.elements.privacy.checked,privacyVersion:'2026-10-07',token});
     busy=true;sync();submit.textContent='Wird gesendet …';notify('Ihre Anfrage wird übermittelt.');
-    try{const {response,result}=await sendRequest(body);if(!response.ok||!result.ok)throw new Error(result.error||'Ihre Anfrage konnte nicht bestätigt werden.');complete=true;form.querySelectorAll('input,select,textarea').forEach(x=>x.disabled=true);notify('Vielen Dank! Ihre Anfrage ist eingegangen. Unser Team prüft Ihre Angaben und meldet sich bei Ihnen.');submit.textContent='Anfrage eingegangen';back.hidden=true;status.focus();}
+    try{const {response,result}=await sendRequest(body);if(!response.ok||!result.ok)throw new Error(result.error||'Ihre Anfrage konnte nicht bestätigt werden.');window.dispatchEvent(new CustomEvent('sls:conversion',{detail:{event:'buyerfinder_request_success'}}));complete=true;form.querySelectorAll('input,select,textarea').forEach(x=>x.disabled=true);notify('Vielen Dank! Ihre Anfrage ist eingegangen. Unser Team prüft Ihre Angaben und meldet sich bei Ihnen.');submit.textContent='Anfrage eingegangen';back.hidden=true;status.focus();}
     catch(error){notify(error.message||'Ihre Anfrage konnte nicht bestätigt werden. Bitte kontaktieren Sie uns direkt.',true);submit.textContent='Nachfragecheck anfragen';status.focus();}
     finally{busy=false;submit.disabled=complete||!available();}
   });categories();sync();initialise();
