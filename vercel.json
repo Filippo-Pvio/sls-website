@@ -2946,10 +2946,6 @@
   ],
   "rewrites": [
     {
-      "source": "/wp-content/uploads/:path*",
-      "destination": "/api/legacy-media?path=:path*"
-    },
-    {
       "source": "/danke-termin/",
       "destination": "/api/retired-page"
     },
@@ -3084,6 +3080,46 @@
     {
       "source": "/immobilie_location/689/",
       "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/barrierefrei-wohnen-ueber-den-daechern-der-stadt-3-zimmer-wohnung-mit-balkon/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/exklusives-wohnportfolio-mit-30-einheiten-kapitalanlage-mit-sofortigem-mietsteigerungspotenzial/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/familienfreundliches-reihenhaus-mit-garten-in-ruhiger-spielstrasse-viel-platz-zum-wohlfuehlen/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/freistehendes-einfamilienhaus-auf-neubau-niveau-in-meerbusch-mit-optionalem-baugrundstueck/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/historischer-charme-trifft-luxus-maisonette-mit-ausblick-dachterrasse-neubaukomfort/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/ihr-neues-zuhause-mit-charakter-einfamilienhaus-in-begehrter-wohnlage/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/sanierungsobjekt-mit-potential-komplett-leerstehendes-wohn-geschaeftshaus-mit-terrasse/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/vermietetes-1-zimmer-apartment-mit-einbaukueche-tiefgarage-in-gruener-wohnlage-von-vohwinkel/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/immobilie/wohnen-auf-einer-ebene-gepflegter-bungalow-mit-vollkeller-garage-und-sonnigem-garten/",
+      "destination": "/api/retired-page"
+    },
+    {
+      "source": "/wp-content/uploads/:path*",
+      "destination": "/api/legacy-media?path=:path*"
     },
     {
       "source": "/immobilie/:slug/",
@@ -3232,42 +3268,6 @@
     {
       "source": "/immobilienmakler-wegberg/",
       "destination": "/api/city-page?city=immobilienmakler-wegberg"
-    },
-    {
-      "source": "/immobilie/barrierefrei-wohnen-ueber-den-daechern-der-stadt-3-zimmer-wohnung-mit-balkon/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/exklusives-wohnportfolio-mit-30-einheiten-kapitalanlage-mit-sofortigem-mietsteigerungspotenzial/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/familienfreundliches-reihenhaus-mit-garten-in-ruhiger-spielstrasse-viel-platz-zum-wohlfuehlen/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/freistehendes-einfamilienhaus-auf-neubau-niveau-in-meerbusch-mit-optionalem-baugrundstueck/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/historischer-charme-trifft-luxus-maisonette-mit-ausblick-dachterrasse-neubaukomfort/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/ihr-neues-zuhause-mit-charakter-einfamilienhaus-in-begehrter-wohnlage/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/sanierungsobjekt-mit-potential-komplett-leerstehendes-wohn-geschaeftshaus-mit-terrasse/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/vermietetes-1-zimmer-apartment-mit-einbaukueche-tiefgarage-in-gruener-wohnlage-von-vohwinkel/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/wohnen-auf-einer-ebene-gepflegter-bungalow-mit-vollkeller-garage-und-sonnigem-garten/",
-      "destination": "/api/retired-page"
     }
   ],
   "headers": [

@@ -69,6 +69,9 @@ function mergeRules(existing,updates,removed=new Set()){
 }
 config.redirects=mergeRules(config.redirects,generated,removedSources);
 config.rewrites=mergeRules(config.rewrites,report.filter(row=>row.state==='retired').map(row=>({source:row.source,destination:'/api/retired-page'})));
+// Vercel evaluates rewrites in order. Specific retired URLs must precede the
+// generic property slug route, including newly retired entries appended above.
+config.rewrites=[...config.rewrites.filter(rule=>rule.destination==='/api/retired-page'),...config.rewrites.filter(rule=>rule.destination!=='/api/retired-page')];
 // Percent escapes are equivalent regardless of hex letter casing, while Vercel
 // matches route sources literally. Preserve crawler/browser variants as aliases.
 function percentVariants(source){

@@ -19,6 +19,7 @@ test('new property aliases distinguish identical titles by public identity and u
   }else{
    assert.ok(!config.redirects.some(r=>r.source===row.source),'retirement must not be shadowed by a stale redirect');
    assert.ok(config.rewrites.some(r=>r.source===row.source&&r.destination==='/api/retired-page'));
+   if(row.source.startsWith('/immobilie/'))assert.ok(config.rewrites.findIndex(r=>r.source===row.source)<config.rewrites.findIndex(r=>r.source==='/immobilie/:slug/'),'retirement must precede generic slug routing');
   }
  }
  const twins=decisions.decisions.filter(r=>r.source.startsWith('/immobilie/nur-fuer-kurze-zeit-wo-geschichte'));
