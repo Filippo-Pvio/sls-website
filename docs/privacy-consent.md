@@ -6,9 +6,9 @@ Ziel: Besucher entscheiden vor Anbieterzugriff; gespeicherte Freigaben erlauben 
 
 Filippo Livera hat im Chat nach ausdrücklicher Klärung mit „ja“ die **SLS-interne Freigabe des aktuellen Datenschutzentwurfs** bestätigt. Bezug: Inhaltsstand von PR #244, Commit `664addd42c24f3328c90fa13cf9c8833951b24ec`, insbesondere `/datenschutz/`, `/karriere/datenschutz/` und das vorbereitete Aufbewahrungs-/Bewerberpool-Konzept. Die Freigabe gilt für diesen Entwurf, nicht pauschal für spätere inhaltliche Änderungen.
 
-Dies ist keine Bestätigung einer unabhängigen juristischen Prüfung oder einer Freigabe durch den bestellten Datenschutzbeauftragten. Die dokumentierten offenen Anbieter-/Vertragsfragen und der notwendige betriebliche Vollzug der Löschung werden durch die interne Freigabe nicht als erledigt ausgegeben. Es wurden keine tatsächlichen Bewerberdaten gelöscht oder in einen Pool aufgenommen.
+Die zunächst erteilte interne Freigabe wurde anschließend durch die ausdrückliche Nutzermitteilung „unabhängige Rechtsprüfung bestätigt“ ergänzt. Damit ist die Durchführung einer unabhängigen Rechtsprüfung des zuvor bezeichneten Entwurfs durch den Nutzer bestätigt. Codex hat diese unabhängige Prüfung nicht selbst durchgeführt. Prüfperson, Datum der Prüfung, Prüfbericht und etwaige Einzelauflagen wurden nicht mitgeteilt; sie werden nicht erfunden. Eine gesonderte Erklärung des bestellten Datenschutzbeauftragten wird daraus nicht abgeleitet. Der notwendige betriebliche Vollzug der Löschung und die tatsächliche Vertrags-/Kontokonfiguration werden durch diese Bestätigung nicht technisch verändert. Es wurden keine tatsächlichen Bewerberdaten gelöscht oder in einen Pool aufgenommen.
 
-**Merge, Produktiv-Rollout, Domainwechsel und Änderungen an der alten Website bleiben ausdrücklich nicht freigegeben.** Die sichtbare Kennzeichnung als Arbeitsfassung bleibt bestehen. Eine spätere Veröffentlichung erfordert eine gesonderte ausdrückliche Entscheidung des Nutzers.
+**Merge, Produktiv-Rollout, Domainwechsel und Änderungen an der alten Website bleiben ausdrücklich nicht freigegeben.** Die Website wurde durch diesen Dokumentationseintrag nicht geändert; die sichtbare Kennzeichnung als Arbeitsfassung bleibt vorerst bestehen. Eine spätere Veröffentlichung erfordert eine gesonderte ausdrückliche Entscheidung des Nutzers.
 
 ## Bestand und technische Steuerung
 
