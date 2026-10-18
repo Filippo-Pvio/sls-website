@@ -57,7 +57,7 @@ Arbeitsfassung in `/datenschutz/`, ergänzend `/karriere/datenschutz/`. Ausschli
 | OpenAI | API-Aufrufe, Websuche und store:false belegt | Vertragspartner, DPA, Anbieterfristen/Ausnahmen und tatsächliche Konto-Datenschutzoptionen nachweisen; DSGVO-Rechtsgrundlage und Risikobewertung der freiwilligen Auskunft freigeben |
 | Google | Neue GA4/GTM-Ressourcen und Datenminimierung geprüft | Geltende Analytics/GTM-Verträge, konkrete Transferkette/aktuelle DPF-Zertifizierung oder SCC samt Ergänzungen dokumentieren |
 | PriceHubble/Justhome | Einbettungen und offizielle Anbieterhinweise | Konkreten SLS-Vertragspartner, Auftragsverarbeitung/eigene Verantwortung, Datenempfänger und Fristen des eingebetteten Produkts rechtlich zuordnen. Keine erneuten echten Anfragen nötig. |
-| Touranbieter | Touradresse tour.sls.de und Exposé-Einbindung | Tatsächlichen Betreiber und Subdienstleister identifizieren, Datenschutzlink und Fristen einsetzen. Eine eigene Subdomain benennt noch keinen Hostinganbieter. |
+| Ogulo / 360°-Touren | Nutzer bestätigt Ogulo am 18.10.2026; Anbieteridentität und Datenschutzlinks ergänzt | Für SLS geltende AVV, aktivierte Tourfunktionen und dienstbezogene Fristen belegen. Keine Änderung am Anbieter-Konto. |
 | Externe Medien/Karten/Badges | Anbieter und Einwilligungssteuerung | Konkrete Speichertechniken/Fristen und Drittlandgarantien der tatsächlich geladenen Produkte final prüfen; Anbieter-Erklärung für dessen ganze Website nicht ungeprüft übernehmen |
 | Löschung/Bewerbungen | Vorhandenes freigegebenes Prüfkonzept; Bewerbungsseite nennt sechs Monate | Betrieblichen Vollzug/Kopien/Backups und Bewerbungsfrist fachlich bestätigen; keine neue automatisierte Löschung eingerichtet |
 
@@ -83,3 +83,12 @@ Die Hauptseite nennt verbleibende Unklarheiten sichtbar als Arbeitsfassung. Sie 
 - ImmoScout24: https://www.immobilienscout24.de/agb/datenschutz.html
 - Immowelt: https://www.immowelt.de/immoweltag/datenschutz
 - Zuständige Aufsicht: https://www.ldi.nrw.de/kontakt
+
+
+### Nachtrag Ogulo und öffentlich zugängliche Vertragsunterlagen – 18.10.2026
+
+Der Nutzer bestätigt Ogulo als 360°-Anbieter. Die öffentliche Erklärung nennt jetzt Ogulo GmbH, Im Mediapark 5b, 50670 Köln, die Einwilligungskategorie und offizielle Links. Die bisherige Unklarheit über den Touranbieter ist erledigt.
+
+Öffentliche Unterlagen sind die Ausgangsbasis. Eine separat handschriftlich unterschriebene AVV ist nicht pauschal erforderlich; auch wirksam einbezogene elektronische Vertragsbedingungen sind zu berücksichtigen. Nicht allein aus dem Vorhandensein einer Hersteller-Webseite auf einen nachgewiesenen SLS-Vertrag schließen. Konto-/Tarif-/Bestellzuordnung genügt gegebenenfalls zur Begründung der Vertragsgeltung; nur verbleibende Lücken gezielt bestätigen lassen.
+
+Ogulo beschreibt einen ausdrücklichen Abschlussweg über „Jetzt AVV abschließen“ auf https://ogulo.com/sicherheit-datenschutz/ und erläutert diesen unter https://support.ogulo.com/auftragsverarbeitungsvertrag-avv-dsgvo . Das öffentliche Angebot eines Abschlusses belegt nicht, dass SLS ihn bereits vorgenommen hat. Kein Formular abgesendet und kein Vertrag angenommen. Die Sicherheitsseite enthält zudem ältere Verweise auf Privacy Shield; diese werden nicht als aktuelle Übermittlungsgrundlage in die SLS-Erklärung übernommen. Ein europäischer AWS-Hostingstandort allein belegt keine vollständige Abwesenheit internationaler Zugriffe. https://ogulo.com/impressum/ und https://ogulo.com/datenschutz/ sind weitere Primärquellen.
