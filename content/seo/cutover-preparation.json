@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-18",
+  "status": "prepared_only_not_executed",
+  "full_wordpress_backup": {
+    "available": false,
+    "prerequisite_waived_by_user": true,
+    "scope": "User waives full WordPress/database/configuration backup as cutover prerequisite. Existing local public-media archive is not a full backup."
+  },
+  "requires_final_approval": [
+    "merge_and_production_rollout",
+    "publish_GTM_cutover_workspace",
+    "attach_sls.de_and_www_to_Vercel",
+    "change_IONOS_DNS"
+  ],
+  "canonical": "https://sls.de",
+  "www_redirect": {
+    "target": "https://sls.de",
+    "status": 308
+  },
+  "dns": {
+    "provider": "IONOS",
+    "ttl": 3600,
+    "observed_origin_ipv4": "185.175.196.36",
+    "observed_origin_ipv6": "2a00:1c98:60:1050:0:1:a718:7a0a",
+    "operations": [
+      {
+        "operation": "replace",
+        "name": "sls.de",
+        "type": "A",
+        "old": "185.175.196.36",
+        "new": "216.150.1.1"
+      },
+      {
+        "operation": "remove",
+        "name": "sls.de",
+        "type": "AAAA",
+        "old": "2a00:1c98:60:1050:0:1:a718:7a0a"
+      },
+      {
+        "operation": "remove",
+        "name": "www.sls.de",
+        "type": "A",
+        "old": "185.175.196.36"
+      },
+      {
+        "operation": "remove",
+        "name": "www.sls.de",
+        "type": "AAAA",
+        "old": "2a00:1c98:60:1050:0:1:a718:7a0a"
+      },
+      {
+        "operation": "add",
+        "name": "www.sls.de",
+        "type": "CNAME",
+        "new": "ce245609cd2655e6.vercel-dns-016.com."
+      }
+    ],
+    "source": "Vercel project-specific domain configuration, 2026-10-18; refresh before execution",
+    "untouched": "All other 37 observed records, nameservers, mail, verification, subdomains, Domain Guard and DNSSEC",
+    "rollback": "Remove www CNAME; restore both original A and AAAA records, TTL 3600. DNS caches delay effective rollback. Keep old hosting operational."
+  },
+  "media_bridge_requires": [
+    "old hosting running",
+    "existing files retained",
+    "valid TLS certificate for sls.de on old origin; renewal after DNS switch must be ensured"
+  ],
+  "execution_order": [
+    "Refresh project-specific domain requirements and confirm old-origin TLS renewal can continue after DNS cutover",
+    "After separate final approval: merge/release reviewed commit, publish prepared GTM workspace, attach canonical/www domains to Vercel and satisfy any ownership verification",
+    "Change only five listed web DNS operations; preserve all other records",
+    "Verify HTTPS, canonical/www redirect, SEO status, media bridge and consent without submitting real forms",
+    "If needed restore saved original web DNS; retain old hosting throughout"
+  ]
+}
