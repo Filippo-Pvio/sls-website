@@ -1,6 +1,6 @@
 # SLS: Aufbewahrung, Prüfung und Löschung
 
-Stand: 18. Oktober 2026. Verantwortlicher für die Entscheidungen: Filippo Livera, gemäß seiner Zuständigkeitsbestätigung. Der endgültige Onlinegang bleibt zurückgestellt.
+Stand: 18. Oktober 2026. Verantwortlicher für die Entscheidungen: Filippo Livera, gemäß seiner Zuständigkeitsbestätigung. Der Nutzer hat die unabhängige Rechtsprüfung bestätigt und die Veröffentlichung im neuen Vercel-Projekt am 18.10.2026 freigegeben. Dieses Dokument beschreibt organisatorische Abläufe; automatische Löschjobs oder eine tatsächliche Aufnahme in den Bewerberpool werden dadurch nicht eingerichtet.
 
 ## Freigegebene Browserfrist
 

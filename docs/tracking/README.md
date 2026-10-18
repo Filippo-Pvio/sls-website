@@ -1,6 +1,8 @@
 # SLS Relaunch: Google-Tracking – Stand 18.10.2026
 
-Status: im Entwicklungsbranch und in der Vercel-Vorschau umgesetzt; **keine Freigabe für Merge oder Produktivbetrieb**. Die rechtliche Freigabe bleibt ausstehend. SLS hat am 18.10.2026 bestätigt, dass die CRM-/Versandwege bereits getestet sind; diese Tests werden nicht wiederholt. Die Fremdanbieter-Funktionalität wird auf Nutzerwunsch ebenfalls nicht erneut geprüft. Eigene GA4-Abschlüsse der Fremdrechner werden weiterhin nicht behauptet.
+Status: SLS hat die interne Freigabe, die unabhängige Rechtsprüfung und am 18.10.2026 mit „freigabe“ den Merge von PR #244 und die Veröffentlichung bestätigt. Ziel ist ausschließlich das bestehende neue Vercel-Projekt unter **sls-website-eight.vercel.app**. Kein Domainwechsel und keine Änderung der alten Website. Die Veröffentlichung wird über den Git-Deploymentprozess nach dem Merge ausgeführt und anschließend am tatsächlichen Produktionsdeployment kontrolliert. SLS bestätigt die CRM-/Versandwege; reale Formular- und Fremdanbietertests werden nicht wiederholt. Eigene GA4-Abschlüsse der Fremdrechner werden weiterhin nicht behauptet.
+
+Rechtlicher Nachweis: Die Bestätigung stammt vom Nutzer; ein Prüfbericht oder ergänzende Vertragskopien wurden nicht bereitgestellt. Bestehende Hinweise auf fehlende Anbieterbelege werden dadurch nicht als erledigt ausgegeben.
 
 ## Neue Ressourcen und Abgrenzung
 
@@ -9,11 +11,12 @@ Status: im Entwicklungsbranch und in der Vercel-Vorschau umgesetzt; **keine Frei
 | Google-Anmeldung | f.livera@sls.de |
 | GTM-Konto | SLS Immobilienpartner GmbH, Deutschland, 6383125220 |
 | Web-Container | SLS Website Relaunch, GTM-PSH7R4R8, Container 267423433 |
-| GTM-Version | 2, „SLS Relaunch – Preview only – Google Basic Consent v2“ |
+| GTM-Version | 3, „SLS Relaunch – Vercel production – Basic Consent v2“ |
 | Analytics-Konto | Vorhandenes Konto 324255696 (Anzeigename „Google Ads-Konto“) |
 | Separate GA4-Property | SLS Immobilienpartner – Website Relaunch, 559391964 |
 | Webstream | SLS Relaunch – Preview, 16149454463 |
 | Mess-ID | G-CPX5L89D4H |
+| Produktionshost | sls-website-eight.vercel.app |
 | Preview-Host | sls-website-git-feat-consent-tracking-phas-a6ca65-info-91172609.vercel.app |
 | PR | https://github.com/Filippo-Pvio/sls-website/pull/244 |
 | Branch | feat/consent-tracking-phase1-20261016 |
@@ -22,7 +25,7 @@ Der Zugriff von f.livera@sls.de wurde in der Analytics-Konto-Zugriffsverwaltung 
 
 Die alte Property 453121213 / G-CT9QN2WGXG wurde lediglich beim Öffnen von Analytics angezeigt und nicht verändert. Die alte Website, ihre Tags, Google Ads und Meta wurden nicht bearbeitet. Es wurde keine Ads-Verknüpfung angelegt; die neue Property zeigt null abgeschlossene Ads-Verknüpfungen.
 
-Der neue GTM-Container ist bereitgestellt, seine beiden Trigger sind jedoch auf den exakten Preview-Host beschränkt. Zusätzlich startet der Website-Code den Container ausschließlich auf diesem Host. Weder sls.de noch www.sls.de, localhost, andere Vercel-Previews oder die unveränderliche Deployment-URL können damit die neuen Tags starten. Diese Sperre muss bei einer später freigegebenen Veröffentlichung ausdrücklich angepasst und erneut geprüft werden.
+Der Website-Code und beide GTM-Trigger erlauben ausschließlich den exakten Produktionshost und den oben genannten Branch-Preview-Host. Die GTM-Filter verwenden eine vollständig verankerte Regex. sls.de, www.sls.de, localhost, andere Previews, unveränderliche Deployment-URLs und ähnlich benannte Hosts bleiben ausgeschlossen. Ein späterer Domainwechsel erfordert eine eigene Entscheidung und Prüfung.
 
 ## Consent und Datensparsamkeit
 
@@ -30,11 +33,11 @@ Basic Consent Mode v2: analytics_storage, ad_storage, ad_user_data und ad_person
 
 Die Statistik-Kategorie enthält die Anbieter und Zwecke. Die Marketing-Tracking-Kategorie und der Meta-Pixel-Loader aus dem ursprünglichen PR sind entfernt. Newsletter-Einwilligungen, Social-Media-Links und bereits vorhandene externe Medien sind davon unabhängig.
 
-Bei Widerruf sperrt die Brücke weitere Abschlussereignisse, aktualisiert den Consent-Zustand und entfernt erreichbare Analytics-Cookies des Preview-Hosts. Der Consent-Manager lädt die Seite neu, wodurch SDKs beendet werden. Ein Zustandswechsel kann noch die Widerrufsinformation an ein bereits geladenes Google-Tag übermitteln; nach dem Neuladen lädt kein Messtag mehr.
+Bei Widerruf sperrt die Brücke weitere Abschlussereignisse, aktualisiert den Consent-Zustand und entfernt erreichbare Analytics-Cookies des jeweils freigegebenen Hosts. Der Consent-Manager lädt die Seite neu, wodurch SDKs beendet werden. Ein Zustandswechsel kann noch die Widerrufsinformation an ein bereits geladenes Google-Tag übermitteln; nach dem Neuladen lädt kein Messtag mehr.
 
 Nur erlaubte Ereignisnamen werden weitergereicht. Keine Formularfelder, Texte, Kontakt-/Objektkennungen oder Suchkriterien werden in den Ereignis-Payload übernommen. page_location enthält Origin und Pfad; Query und Fragment werden entfernt. page_referrer ist leer, page_title fest vorgegeben. Automatische Zusatzmessungen des GA4-Webstreams sind deaktiviert. Google verarbeitet für die Verbindung dennoch technische Informationen und eine pseudonyme Browserkennung: Die Messung ist nicht anonym.
 
-GTM-Konfiguration: [gtm-relaunch-preview.json](gtm-relaunch-preview.json). Ausschließlich native Google-Tags, keine Custom-HTML-Tags und keine Custom-JavaScript-Variablen. Statistik-Cookies sind auf 180 Tage ohne Aktualisierung pro Besuch konfiguriert. GA4-Nutzer- und Ereignisdaten: jeweils zwei Monate; Zurücksetzen bei neuer Aktivität aus. Google Signals und Erhebung bereitgestellter Nutzerdaten bleiben aus; detaillierte Standort-/Gerätedaten sind abgeschaltet. Werbepersonalisierung wurde für alle Regionen der neuen Property deaktiviert. Debug-Modus ist für die Preview-Prüfung eingeschaltet und muss vor einem späteren Produktivbetrieb entfernt werden.
+GTM-Konfiguration: [gtm-relaunch-production.json](gtm-relaunch-production.json) (aktuell); [gtm-relaunch-preview.json](gtm-relaunch-preview.json) dokumentiert den früheren Teststand. Ausschließlich native Google-Tags, keine Custom-HTML-Tags und keine Custom-JavaScript-Variablen. Statistik-Cookies sind auf 180 Tage ohne Aktualisierung pro Besuch konfiguriert. GA4-Nutzer- und Ereignisdaten: jeweils zwei Monate; Zurücksetzen bei neuer Aktivität aus. Google Signals und Erhebung bereitgestellter Nutzerdaten bleiben aus; detaillierte Standort-/Gerätedaten sind abgeschaltet. Werbepersonalisierung wurde für alle Regionen der neuen Property deaktiviert. Der zuvor für die Preview-Prüfung erzwungene Debug-Modus ist im Release aus beiden Tags entfernt.
 
 ## Abschlussereignisse
 
@@ -100,12 +103,14 @@ Benötigt wird eine vom Anbieter unterstützte Nachricht oder ein Callback aussc
 
 Es wurden keine Provider-Konten verändert und keine Nachrichten an Anbieter verschickt.
 
-## Vor einer späteren Freigabe
+## Veröffentlichung vom 18.10.2026
 
-1. SLS prüft den konkreten Statistik-Text und den neuen Abschnitt in /datenschutz/ rechtlich, einschließlich Auftragsverarbeitung, Datenübermittlungsgrundlagen und Cookie-/Aufbewahrungsangaben. Die Vorschau ist ein prüfbarer Entwurf, keine bestätigte Rechtsfreigabe.
-2. Unterstützte Abschluss-Schnittstellen für PriceHubble und Justhome klären und anschließend gezielt integrieren/testen.
-3. Die isolierten Browser-Tests aller sechs Formulare sind bestanden, einschließlich realem GA4-Eingang. Für die fachliche Backend-Abnahme bleiben kontrollierte echte Testtransaktionen nötig: Annahme im CRM, Versand und Zustellung getrennt prüfen. Keine echten Kundendaten verwenden; vorhandene Produktivsysteme nicht unkontrolliert mit Testanfragen belasten.
-4. Erst nach ausdrücklicher Veröffentlichungsentscheidung: Domain-Freigaben in Code und GTM anpassen, Debug-Modus entfernen, alte/neue Tags am geplanten Domainwechsel auf Doppelungen prüfen und erneut testen. Bis dahin bleiben PR und Deployment ausschließlich im Entwicklungs-/Preview-Betrieb.
+- Freigegeben: Merge von PR #244 und bestehender Vercel-Produktionsprozess für das neue Projekt. Die Projekt-Domainliste enthält sls-website-eight.vercel.app; sls.de ist dort nicht angebunden.
+- GTM-Import ersetzt den unveränderten Default Workspace des neuen Containers: zwei Tags und zwei Trigger, keine zusätzlichen Preview-Duplikate. Version 3 veröffentlicht.
+- Releaseprüfung: 12 automatisierte Tracking-/Consent-Tests bestanden, einschließlich Produktionshost, Zustimmung, URL-Minimierung, Widerruf und Ablehnung von Legacy-/Fremdhosts; öffentlicher Build und Diff-Prüfung bestanden. Die oben dokumentierten Browser- und Formularprüfungen sind historische Abnahmen und werden nicht als neue Produktionstests ausgegeben.
+- Rückfallstand vor Merge: Produktionsdeployment dpl_9Cf1xmB43umxtrHvqzxybSBxvjfw, main 9f2df88f2438a1d8c16d95973a3008c10e1224db. Bei einem Fehler am neuen Deployment zunächst diesen Stand wiederherstellen; DNS bleibt unverändert.
+- Nach dem Merge werden Git-SHA, Produktionsstatus, Alias und Consent-/Tag-Laden am neuen Produktionshost geprüft. Keine realen Formulare, E-Mails oder Fremdrechner-Abschlüsse auslösen.
+- Unterstützte Abschluss-Schnittstellen für PriceHubble/Justhome bleiben eine gesonderte Erweiterung. Die durch SLS bestätigte CRM-Funktion ersetzt keinen bestätigten Google-Conversion-Callback dieser Anbieter.
 
 ## Primärquellen
 

@@ -1,10 +1,11 @@
-// Basic Consent Mode v2. Only this dedicated preview can load the new container.
+// Basic Consent Mode v2. Explicit relaunch hosts only; the legacy domain stays excluded.
 (() => {
   'use strict';
   if (window.SLSTracking) return;
   const container = 'GTM-PSH7R4R8';
   const previewHost = 'sls-website-git-feat-consent-tracking-phas-a6ca65-info-91172609.vercel.app';
-  const enabled = location.hostname === previewHost;
+  const productionHost = 'sls-website-eight.vercel.app';
+  const enabled = [previewHost, productionHost].includes(location.hostname);
   const events = new Set(['contact_request_success', 'buyerfinder_request_success',
     'guide_request_success', 'search_profile_success', 'property_inquiry_success',
     'sales_report_success']);

@@ -8,7 +8,7 @@ Filippo Livera hat im Chat nach ausdrücklicher Klärung mit „ja“ die **SLS-
 
 Die zunächst erteilte interne Freigabe wurde anschließend durch die ausdrückliche Nutzermitteilung „unabhängige Rechtsprüfung bestätigt“ ergänzt. Damit ist die Durchführung einer unabhängigen Rechtsprüfung des zuvor bezeichneten Entwurfs durch den Nutzer bestätigt. Codex hat diese unabhängige Prüfung nicht selbst durchgeführt. Prüfperson, Datum der Prüfung, Prüfbericht und etwaige Einzelauflagen wurden nicht mitgeteilt; sie werden nicht erfunden. Eine gesonderte Erklärung des bestellten Datenschutzbeauftragten wird daraus nicht abgeleitet. Der notwendige betriebliche Vollzug der Löschung und die tatsächliche Vertrags-/Kontokonfiguration werden durch diese Bestätigung nicht technisch verändert. Es wurden keine tatsächlichen Bewerberdaten gelöscht oder in einen Pool aufgenommen.
 
-**Merge, Produktiv-Rollout, Domainwechsel und Änderungen an der alten Website bleiben ausdrücklich nicht freigegeben.** Die Website wurde durch diesen Dokumentationseintrag nicht geändert; die sichtbare Kennzeichnung als Arbeitsfassung bleibt vorerst bestehen. Eine spätere Veröffentlichung erfordert eine gesonderte ausdrückliche Entscheidung des Nutzers.
+**Nachfolgende Veröffentlichungsfreigabe:** Der Nutzer hat am 18.10.2026 auf die gesonderte Frage zur Veröffentlichung mit „freigabe“ zugestimmt. Damit sind Merge von PR #244 und Veröffentlichung im neuen Vercel-Projekt unter sls-website-eight.vercel.app autorisiert. Dies ersetzt die frühere Merge-/Produktionssperre. Domainwechsel, Änderungen der alten Website und ihrer Tracking-/Ads-/Meta-Konfiguration bleiben ausgeschlossen. Der sichtbare Entwurfsbanner wird durch einen Hinweis zum Geltungsbereich ersetzt. Die nachfolgenden Prüfnotizen dokumentieren den jeweiligen historischen Erkenntnisstand; fehlende Vertragskopien, Anbieterfristen und der notwendige betriebliche Löschvollzug werden durch die Freigabe nicht als erledigt ausgegeben.
 
 ## Bestand und technische Steuerung
 
@@ -35,7 +35,7 @@ Vor Onlinegang: tatsächliche Providerbedingungen/Speichertechniken, Einwilligun
 
 ## Überarbeitung der Datenschutzhinweise – 18. Oktober 2026
 
-Arbeitsfassung in `/datenschutz/`, ergänzend `/karriere/datenschutz/`. Ausschließlich im Entwicklungsbranch von PR #244; keine Produktivfreigabe und keine Veränderung der alten Website. Maßstab ist zutreffende und verständliche Information zu den tatsächlichen Verarbeitungen; Textumfang ersetzt weder Rechtsgrundlage noch Vertrag oder technische Einwilligung.
+Geprüfter Entwurf in `/datenschutz/`, ergänzend `/karriere/datenschutz/`. Die nachfolgend dokumentierte Überarbeitung erfolgte im Entwicklungsbranch von PR #244. Aktuelle Veröffentlichungsfreigabe siehe oben; keine Veränderung der alten Website. Maßstab ist zutreffende und verständliche Information zu den tatsächlichen Verarbeitungen; Textumfang ersetzt weder Rechtsgrundlage noch Vertrag oder technische Einwilligung.
 
 ### Bereits bestätigte Festlegungen aus anderen Chats
 

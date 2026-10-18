@@ -38,7 +38,7 @@ test('revocation blocks events immediately and removes only analytics cookies',(
  const h=harness(preview,true);h.consent(false);h.emit('sls:conversion',{event:'contact_request_success'});
  assert.equal(events(h).length,2);assert.ok(h.cookies.some(x=>x.startsWith('_ga=')));assert.ok(h.cookies.some(x=>x.startsWith('_ga_TEST=')));assert.ok(h.cookies.every(x=>!x.includes('necessary')));
 });
-test('legacy, production and unrelated previews cannot load the new container',()=>{
+test('legacy and unrelated previews cannot load the new container',()=>{
  for(const host of ['sls.de','www.sls.de','localhost','other.vercel.app']){const h=harness(host,true);h.consent(true);h.emit('sls:conversion',{event:'contact_request_success'});assert.equal(h.scripts.length,0);assert.equal(events(h).length,0);assert.equal(h.cookies.length,0);}
 });
 test('tracking listener bootstraps before forms on static and server-rendered pages',()=>{
@@ -47,7 +47,25 @@ test('tracking listener bootstraps before forms on static and server-rendered pa
  }
 });
 test('container sends only to new GA4 property with safe URLs and consent checks',()=>{
- const cfg=JSON.parse(readFileSync(new URL('../docs/tracking/gtm-relaunch-preview.json',import.meta.url)));
+ const cfg=JSON.parse(readFileSync(new URL('../docs/tracking/gtm-relaunch-production.json',import.meta.url)));
  const str=JSON.stringify(cfg);assert.match(str,/G-CPX5L89D4H/);assert.doesNotMatch(str,/G-CT9QN2WGXG|facebook|fbevents|AW-/);
  for(const tag of cfg.containerVersion.tag){assert.equal(tag.consentSettings.consentStatus,'NEEDED');assert.ok(JSON.stringify(tag).includes('analytics_storage'));}
+});
+
+test('approved production host requires consent and strips URL data',()=>{
+ const h=harness('sls-website-eight.vercel.app');assert.equal(h.scripts.length,0);
+ h.consent(true);assert.equal(h.scripts.length,1);
+ h.emit('sls:conversion',{event:'contact_request_success',email:'private@example.com'});
+ assert.ok(events(h).filter(e=>e.sls_page_location).every(e=>e.sls_page_location==='https://sls-website-eight.vercel.app/kontakt/'));
+ assert.doesNotMatch(JSON.stringify(events(h)),/private|secret/);
+});
+test('release GTM is bounded to exact relaunch hosts and has no forced debug mode',()=>{
+ const cfg=JSON.parse(readFileSync(new URL('../docs/tracking/gtm-relaunch-production.json',import.meta.url)));
+ assert.doesNotMatch(JSON.stringify(cfg),/debug_mode/);
+ for(const trigger of cfg.containerVersion.trigger){
+  const filter=trigger.filter[0];assert.equal(filter.type,'MATCH_REGEX');
+  const pattern=filter.parameter.find(p=>p.key==='arg1').value, regex=new RegExp(pattern);
+  for(const host of [preview,'sls-website-eight.vercel.app'])assert.ok(regex.test(host));
+  for(const host of ['sls.de','www.sls.de','sls-website-eightXvercelXapp','sls-website-eight.vercel.app.evil.example','other.vercel.app'])assert.equal(regex.test(host),false);
+ }
 });
