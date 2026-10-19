@@ -1,3 +1,4 @@
+import {readPublicPropstack,withPublicReadBudget} from '../lib/public-propstack-read.mjs';
 import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {propertyCard,queryProperties,cachedCatalog,propertyFilters} from '../lib/property-catalog.mjs';
 import {similarProperties} from '../assets/property-similarity.mjs';
@@ -7,32 +8,8 @@ import {publicPropertyFacts,publicPropertySourceFields} from '../lib/public-prop
 const LIST_PAGE_SIZE=9;
 const PUBLIC_STATUS_NAME='vermarktung';
 
-async function read(path,key){
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),10000);
-  try{
-    const response=await fetch(`https://api.propstack.de/v1/${path}`,{
-      headers:{'X-API-KEY':key},
-      signal:controller.signal
-    });
-    if(!response.ok)throw new Error(`Propstack returned ${response.status}`);
-    return await response.json();
-  }finally{clearTimeout(timer);}
-}
-
-async function readMaybe(path,key){
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),10000);
-  try{
-    const response=await fetch(`https://api.propstack.de/v1/${path}`,{
-      headers:{'X-API-KEY':key},
-      signal:controller.signal
-    });
-    if(response.status===404)return null;
-    if(!response.ok)throw new Error(`Propstack returned ${response.status}`);
-    return await response.json();
-  }finally{clearTimeout(timer);}
-}
+const read=(path,key)=>readPublicPropstack(path,key);
+const readMaybe=(path,key)=>readPublicPropstack(path,key,{allowMissing:true});
 
 async function unavailableResponse(id,key,res){
   const raw=await readMaybe(`units/${encodeURIComponent(id)}?new=1`,key);
@@ -142,7 +119,8 @@ function mergeDetail(summary,detail){
   return combined;
 }
 
-export default async function handler(req,res){
+export default function handler(req,res){return withPublicReadBudget(()=>handle(req,res));}
+async function handle(req,res){
   res.setHeader('Cache-Control','no-store');
   res.setHeader('X-Robots-Tag','noindex, nofollow');
   if(req.method!=='GET')return res.status(405).json({error:'Methode nicht erlaubt'});
@@ -240,7 +218,8 @@ async function detailResponse(id,key,status,res){
 
 }
 
-export async function propertyDetailResult(id){
+export function propertyDetailResult(id){return withPublicReadBudget(()=>detailWithinBudget(id));}
+async function detailWithinBudget(id){
   const result={status:200,body:null};
   const res={status(code){result.status=code;return this},json(body){result.body=body;return result}};
   if(!/^\d+$/.test(String(id)))return res.status(404).json({code:'PROPERTY_NOT_FOUND'});
@@ -250,7 +229,8 @@ export async function propertyDetailResult(id){
   catch(error){logOperationalFailure('property_html_failed',error);return res.status(502).json({code:'PROPERTY_SERVICE_UNAVAILABLE'})}
 }
 
-export async function publicCatalogResult(){
+export function publicCatalogResult(){return withPublicReadBudget(publicCatalogWithinBudget);}
+async function publicCatalogWithinBudget(){
   const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
   if(!key)return {status:503,items:[]};
   try{return {status:200,items:await getCatalog(key,(await resolvePublicStatus(key)).id)}}

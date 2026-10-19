@@ -1,20 +1,13 @@
+import {readPublicPropstack,withPublicReadBudget} from '../lib/public-propstack-read.mjs';
 import {referenceParticipants,hasReferenceRoles} from '../lib/profile-reference-roles.mjs';
 import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {cachedCatalog} from '../lib/property-catalog.mjs';
-const API_BASE = 'https://api.propstack.de/v1/';
 const PAGE_SIZE = 100;
 const MAX_PAGES = 40;
 // Match completed sales only. Never interpret "in Vermarktung" or "reserviert" as sold.
 const SOLD_NAMES = new Set(['verkauft', 'erfolgreich vermarktet']);
 
-async function propstack(path, key) {
-  const response = await fetch(new URL(path, API_BASE), {
-    headers: { 'X-API-KEY': key },
-    signal: AbortSignal.timeout(15000),
-  });
-  if (!response.ok) throw new Error(`Propstack HTTP ${response.status}`);
-  return response.json();
-}
+const propstack=(path,key,options)=>readPublicPropstack(path,key,options);
 
 function safeImage(images) {
   for (const item of Array.isArray(images) ? images : []) {
@@ -110,7 +103,8 @@ async function galleryPage(key, statusIds, cursor) {
   return {references, nextCursor:`${page}:0`};
 }
 
-export default async function handler(req, res) {
+export default function handler(req,res){return withPublicReadBudget(()=>handle(req,res));}
+async function handle(req, res) {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
@@ -163,9 +157,10 @@ export default async function handler(req, res) {
     }
 
     const listings = await soldListings(key, soldStatusIds);
+    const enrichmentDeadline = Date.now() + 12000;
     let brokersById = new Map();
     try {
-      const brokerResult = await propstack('brokers', key);
+      const brokerResult = await propstack('brokers', key, {timeoutMs:3000,deadline:enrichmentDeadline});
       const brokers = Array.isArray(brokerResult) ? brokerResult : Array.isArray(brokerResult.data) ? brokerResult.data : [];
       brokersById = new Map(brokers.map(broker => [String(broker.id), broker]));
     } catch (error) {
@@ -177,9 +172,9 @@ export default async function handler(req, res) {
       const batch = await Promise.all(listings.slice(i, i + 8).map(async unit => {
         if (!publicReference(unit,soldStatusIds)) return null;
         let source = unit;
-        if (!hasReferenceRoles(unit) || (!unit.broker_id && !unit.broker?.id && !unit.broker?.name)) {
+        if (Date.now() < enrichmentDeadline && (!hasReferenceRoles(unit) || (!unit.broker_id && !unit.broker?.id && !unit.broker?.name))) {
           try {
-            const detail = await propstack('units/' + encodeURIComponent(unit.id) + '?new=1', key);
+            const detail = await propstack('units/' + encodeURIComponent(unit.id) + '?new=1', key, {timeoutMs:3000,deadline:enrichmentDeadline});
             if (String(detail?.id) === String(unit.id)) source = { ...unit, ...detail, status: unit.status, images: detail.images?.length ? detail.images : unit.images };
           } catch (error) {
             logOperationalFailure('reference_broker_details_failed',error,'warn');
@@ -217,7 +212,8 @@ const getReferenceCatalog=cachedCatalog(async(key)=>{
   return (await soldListings(key,ids,true)).map(unit=>publicReference(unit,ids)).filter(Boolean)
     .map(({id,title,city,zip,image})=>({id,title,city,zip,image}));
 },60000);
-export async function publicReferenceCatalogResult(){
+export function publicReferenceCatalogResult(){return withPublicReadBudget(referenceCatalogWithinBudget);}
+async function referenceCatalogWithinBudget(){
   const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
   if(!key)return {status:503,items:[]};
   try{return {status:200,items:await getReferenceCatalog(key,'sold')}}
