@@ -1,7 +1,7 @@
 // Public activation is restricted to the hostname explicitly approved by the owner.
 import { quotaConfigured, DAILY_LIMIT } from './lib/sia-quota.js';
 export function siaEnabled(req) {
-  if (process.env.VERCEL_ENV === 'production') return req?.headers?.host?.toLowerCase() === 'sls-website-eight.vercel.app';
+  if (process.env.VERCEL_ENV === 'production') return ['sls.de', 'sls-website-eight.vercel.app'].includes(req?.headers?.host?.toLowerCase());
   return process.env.VERCEL_ENV === 'preview' || (!process.env.VERCEL_ENV && process.env.SIA_LOCAL_PREVIEW === '1');
 }
 export default async function handler(req, res) {

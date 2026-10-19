@@ -16,10 +16,17 @@ test('preview proxy boundaries',async t=>{
  await t.test('production disabled even if local flag set',async()=>{process.env.VERCEL_ENV='production';process.env.SIA_LOCAL_PREVIEW='1';assert.equal((await call()).statusCode,404);const r=response();await config({method:'GET'},r);assert.equal(r.data.enabled,false);process.env.VERCEL_ENV='preview';});
  await t.test('approved public hostname enabled, other aliases disabled',async()=>{
   process.env.VERCEL_ENV='production';global.fetch=async()=>Response.json(fixture);
-  const headers={'content-type':'application/json',host:'sls-website-eight.vercel.app',origin:'https://sls-website-eight.vercel.app'};
-  assert.equal((await call({headers})).statusCode,200);
-  const r=response();await config({method:'GET',headers},r);assert.equal(r.data.enabled,true);
-  assert.equal((await call({headers:{...headers,host:'sls.de'}})).statusCode,404);
+  for(const host of ['sls.de','sls-website-eight.vercel.app']){
+   const headers={'content-type':'application/json',host,origin:'https://'+host};
+   assert.equal((await call({headers})).statusCode,200);
+   const r=response();await config({method:'GET',headers},r);assert.equal(r.data.enabled,true);
+   assert.equal((await call({headers:{...headers,origin:'https://foreign.example'}})).statusCode,403);
+  }
+  for(const host of ['other.vercel.app','sls.de.evil.example','www.sls.de']){
+   const headers={'content-type':'application/json',host,origin:'https://'+host,'x-forwarded-host':'sls.de'};
+   assert.equal((await call({headers})).statusCode,404);
+   const r=response();await config({method:'GET',headers},r);assert.equal(r.data.enabled,false);
+  }
   process.env.VERCEL_ENV='preview';
  });
  await t.test('rejects methods, media types and foreign origins',async()=>{assert.equal((await call({method:'GET'})).statusCode,405);assert.equal((await call({headers:{'content-type':'text/plain'}})).statusCode,415);assert.equal((await call({headers:{'content-type':'application/json',host:'preview.example',origin:'https://foreign.example'}})).statusCode,403);});
