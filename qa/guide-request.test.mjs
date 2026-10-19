@@ -278,7 +278,7 @@ test('approved public hostname supports readiness and requests while other produ
  process.env.VERCEL_ENV='production';
  const allowed={host:'sls-website-eight.vercel.app',origin:'https://sls-website-eight.vercel.app'};
  assert.equal((await request('GET',{},allowed)).code,200);
- for(const hostname of ['sls.de','www.sls.de','unrelated.vercel.app']) {
+ for(const hostname of ['sls.de.evil.example','www.sls.de.evil.example','unrelated.vercel.app']) {
   assert.equal((await request('GET',{}, {host:hostname})).code,403);
   assert.equal((await request('POST',payload,{host:hostname,origin:`https://${hostname}`})).code,403);
  }
@@ -317,9 +317,9 @@ test('review and deduplication remain separate for each selected guide',()=>fixt
  assert.deepEqual(writes.map(w=>w.payload.task.title),GUIDE_CATALOG.slice(0,2).map(g=>g.review));
 },{allGuides:true}));
 
-for (const hostname of ['sls.de','www.sls.de']) test(`launch opt-in allows only exact ${hostname} with matching origin and records its privacy URL`,()=>fixture(async({request,payload,writes})=>{
+for (const hostname of ['sls.de','www.sls.de']) test(`canonical launch host ${hostname} works without a preview flag with matching origin and records its privacy URL`,()=>fixture(async({request,payload,writes})=>{
  process.env.VERCEL_ENV='production';
- process.env.SLS_PUBLIC_DOMAIN_ACTIVE='true';
+ delete process.env.SLS_PUBLIC_DOMAIN_ACTIVE;
  const headers={host:hostname,origin:`https://${hostname}`};
  assert.equal((await request('GET',{},headers)).code,200);
  assert.equal((await request('POST',payload,{...headers,origin:'https://foreign.example'})).code,403);
@@ -328,7 +328,7 @@ for (const hostname of ['sls.de','www.sls.de']) test(`launch opt-in allows only 
  assert.ok(writes.find(w=>w.path==='tasks').payload.task.body.includes(`Datenschutzerklärung: https://${hostname}/datenschutz/`));
  assert.equal((await request('GET',{}, {host:'unrelated.vercel.app'})).code,403);
 }));
-for (const flag of ['false','1','TRUE','']) test(`launch opt-in rejects non-exact flag ${JSON.stringify(flag)}`,()=>fixture(async({request,writes})=>{
- process.env.VERCEL_ENV='production';process.env.SLS_PUBLIC_DOMAIN_ACTIVE=flag;
- assert.equal((await request('GET',{}, {host:'sls.de'})).code,403);assert.equal(writes.length,0);
+test('retired launch flag cannot disable published canonical guide readiness',()=>fixture(async({request,writes})=>{
+ process.env.VERCEL_ENV='production';process.env.SLS_PUBLIC_DOMAIN_ACTIVE='false';
+ assert.equal((await request('GET',{}, {host:'sls.de'})).code,200);assert.equal(writes.length,0);
 }));

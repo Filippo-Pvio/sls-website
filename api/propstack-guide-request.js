@@ -188,7 +188,7 @@ export async function handler(req, res) {
     return res.status(405).json({error:'Methode nicht erlaubt.'});
   }
   const host = String(req.headers?.host || '').toLowerCase();
-  // sls.de remains closed until the explicit launch flag is enabled.
+  // Exact production hosts only; sls.de is the published canonical domain.
   const local = process.env.NODE_ENV !== 'production' && /^localhost(?::\d+)?$/.test(host);
   if (!guideHostAllowed(host)) return res.status(403).json({error:'Ratgeberanforderungen sind hier noch nicht freigeschaltet.'});
   const key = scopedPropstackKey('PROPSTACK_GUIDES_API_KEY');
