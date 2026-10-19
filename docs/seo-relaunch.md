@@ -1,6 +1,12 @@
 # SEO-Relaunch: technische Umsetzung
 
-## Domainvorbereitung vom 18. Oktober 2026 – ausschließlich Entwicklung/Preview
+## Aktueller Medienbetrieb vom 19. Oktober 2026
+
+Auf ausdrücklichen Nutzerwunsch entfällt die Medienbrücke zum alten Server. Die neue Website verwendet die bereits in PR #247 übernommenen 23 Bilddateien und zwei Presse-PDFs unter `/assets/imported/`. Vorhandene statische Dateien unter alten Upload-Pfaden bleiben ebenfalls im neuen Hosting erreichbar. Nicht übernommene historische Datei-Adressen werden nicht mehr ausgeliefert (404 oder vorgelagerte 403-Sicherheitssperre); die Erhaltung sämtlicher alter Direktlinks ist ausdrücklich nicht mehr gewünscht.
+
+Entfernt sind die Upload-Proxy-Rewrite, die zugehörige Function-Konfiguration, der Serverhandler, der HTTPS-Ursprungsleser und dessen Pfadmanifest. Es gibt darüber keine Verbindung mehr zum alten Medienursprung. Die lokale historische Mediensicherung bleibt unverändert erhalten. Das alte Hosting und andere dort gegebenenfalls betriebene Dienste werden durch diese Änderung weder geändert noch gekündigt. Die folgenden Abschnitte dokumentieren den früheren Implementierungsstand und begründen keine aktuelle Zertifikatserneuerungspflicht mehr für diese entfernte Brücke.
+
+## Historischer Stand: Domainvorbereitung vom 18. Oktober 2026 – Entwicklung/Preview
 
 Dieser Entwicklungsstand bereitet den späteren Domainwechsel vor. Kein Merge, Produktionsdeployment, Domainanschluss, DNS-/Nameserverwechsel oder Eingriff in die alte Website ist damit freigegeben. Die Google-Hostfreigabe für sls.de und diesen Preview-Branch wird ausschließlich vorbereitet; der veröffentlichte GTM-Stand bleibt unverändert. Google Ads, Meta und E-Mail-Konfiguration werden nicht geändert. Ein vollständiges wiederherstellbares Backup der alten WordPress-Installation einschließlich Datenbank und Konfiguration liegt nicht vor. Der Nutzer hat am 18.10.2026 ausdrücklich auf dieses Backup als Voraussetzung verzichtet; die lokale Mediensicherung ist kein Ersatz dafür. Die Wiederherstellung des vollständigen alten CMS ist damit nicht zugesichert.
 

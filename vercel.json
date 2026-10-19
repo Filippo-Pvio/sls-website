@@ -3123,10 +3123,6 @@
       "destination": "/api/retired-page"
     },
     {
-      "source": "/wp-content/uploads/:path*",
-      "destination": "/api/legacy-media?path=:path*"
-    },
-    {
       "source": "/immobilie/:slug/",
       "destination": "/api/property-page?slug=:slug"
     },
@@ -3425,13 +3421,6 @@
     "api/propstack-sold-references.js": {
       "maxDuration": 60,
       "includeFiles": "content/team/profiles.json"
-    },
-    "api/legacy-media.js": {
-      "maxDuration": 15,
-      "regions": [
-        "fra1"
-      ],
-      "includeFiles": "content/seo/legacy-media-paths.json"
     }
   },
   "buildCommand": "node scripts/build-magazine.mjs && node scripts/build-sia-company.mjs && node scripts/build-public-site.mjs",
