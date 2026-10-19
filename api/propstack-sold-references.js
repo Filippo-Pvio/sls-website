@@ -160,7 +160,7 @@ async function handle(req, res) {
     const enrichmentDeadline = Date.now() + 12000;
     let brokersById = new Map();
     try {
-      const brokerResult = await propstack('brokers', key, {timeoutMs:3000});
+      const brokerResult = await propstack('brokers', key, {timeoutMs:3000,deadline:enrichmentDeadline});
       const brokers = Array.isArray(brokerResult) ? brokerResult : Array.isArray(brokerResult.data) ? brokerResult.data : [];
       brokersById = new Map(brokers.map(broker => [String(broker.id), broker]));
     } catch (error) {
@@ -174,7 +174,7 @@ async function handle(req, res) {
         let source = unit;
         if (Date.now() < enrichmentDeadline && (!hasReferenceRoles(unit) || (!unit.broker_id && !unit.broker?.id && !unit.broker?.name))) {
           try {
-            const detail = await propstack('units/' + encodeURIComponent(unit.id) + '?new=1', key, {timeoutMs:Math.min(3000, Math.max(1,enrichmentDeadline-Date.now()))});
+            const detail = await propstack('units/' + encodeURIComponent(unit.id) + '?new=1', key, {timeoutMs:3000,deadline:enrichmentDeadline});
             if (String(detail?.id) === String(unit.id)) source = { ...unit, ...detail, status: unit.status, images: detail.images?.length ? detail.images : unit.images };
           } catch (error) {
             logOperationalFailure('reference_broker_details_failed',error,'warn');
