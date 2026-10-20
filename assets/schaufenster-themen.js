@@ -3,6 +3,10 @@
  var kind=document.documentElement.getAttribute('data-signage-topic'),slides=[],index=0,started=Date.now(),generation=0,front=0,player=null,apiPromise=null,activated=false;
  var duration=kind==='videos'?40000:20000;
  function el(id){return document.getElementById(id)}
+ function shuffleTeam(previous){
+  for(var i=slides.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),temp=slides[i];slides[i]=slides[j];slides[j]=temp}
+  if(slides.length>1&&slides[0].target===previous){var first=slides[0];slides[0]=slides[1];slides[1]=first}
+ }
  function qr(target,label){
   var url=new URL(target,'https://sls.de');
   if(!['sls.de','www.youtube.com',location.hostname].includes(url.hostname)||!['https:','http:'].includes(url.protocol))return;
@@ -39,6 +43,7 @@
  }
  function show(at){
   if(!slides.length)return;
+  if(kind==='team'&&at>=slides.length)shuffleTeam(slides[index].target);
   index=(at+slides.length)%slides.length;started=Date.now();var token=++generation,s=slides[index];stopVideo();
   el('display').classList.toggle('team-mode',kind==='team');el('display').classList.toggle('quote-mode',kind==='kundenstimmen');el('display').classList.toggle('video-mode',kind==='videos');
   el('valuation-title').textContent=s.title;el('valuation-accent').textContent=s.accent;el('valuation-copy').textContent=s.copy;
@@ -54,7 +59,15 @@
  async function load(){
   var controller=new AbortController(),timer=setTimeout(function(){controller.abort()},12000);
   try{var response=await fetch('/assets/schaufenster-content.json',{cache:'no-store',signal:controller.signal});if(!response.ok)throw Error('content unavailable');var data=await response.json();if(!Array.isArray(data.topics?.[kind])||!data.topics[kind].length)throw Error('empty topic');
-   slides=data.topics[kind].slice();if(!slides.length)return;if(started===0||index>=slides.length)index=0;show(index);
+   var fresh=data.topics[kind].slice();
+   if(kind==='team'){
+    if(!slides.length){slides=fresh;shuffleTeam(null)}
+    else{var current=slides[index].target,byTarget=new Map(fresh.map(function(s){return [s.target,s]}));
+     slides=slides.filter(function(s){return byTarget.has(s.target)}).map(function(s){var updated=byTarget.get(s.target);byTarget.delete(s.target);return updated}).concat(Array.from(byTarget.values()));
+     index=Math.max(0,slides.findIndex(function(s){return s.target===current}));
+    }
+   }else slides=fresh;
+   if(started===0||index>=slides.length)index=0;show(index);
   }catch(_){/* Static first message and its QR target remain available. */}finally{clearTimeout(timer)}
  }
  setInterval(function(){if(window.SLSSignagePaused||document.hidden)return;var elapsed=Date.now()-started;if(elapsed>=duration){show(index+1);return}el('progress-fill').style.width=Math.min(100,elapsed/duration*100)+'%'},250);
