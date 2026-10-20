@@ -62,3 +62,7 @@ Online-Rechner im rechten Einstiegsbereich; mobil nach Überschrift und kurzem N
 ## Kundenstimmen und Geschäftsführer-Zuordnung
 
 Der Verkäuferauszug erscheint ausschließlich im gemeinsamen Kundenstimmenbereich mit Sternen, Kontext „Immobilienverkauf“, Autor, Datum und Quelle. Keine Rezension direkt unter dem Geschäftsführer im Einstieg. Pro Landingpage wird ein Geschäftsführer gezeigt, im kompakten Einstieg und im persönlichen Abschnitt: Verkauf Filippo Livera, persönliche Bewertung Mischa Stratmann, Online-Bewertung Dennis Sahlmen. Das Team stimmt den tatsächlich betreuenden Ansprechpartner weiterhin persönlich ab.
+
+## Eigentümerfragen und Erwartung nach dem Einstieg
+
+Alle drei Varianten ergänzen thematisch eigene Eigentümerfragen mit konkreter Hilfestellung und CTA. Verkauf behandelt Preis, Unterlagen und Käufer; persönliche Bewertung Besonderheiten, Termin und offene Verkaufsentscheidung; Online-Bewertung Angebotspreise, Grenzen und Nutzung einer Indikation. Ein dezenter Link neben dem Geschäftsführer führt zu „Erfahrungen mit SLS“ (keine unzutreffende Behauptung, alle drei Rezensionen seien Verkäuferstimmen). Beim Formular bzw. Rechner steht der jeweils passende nächste Schritt. FAQ ergänzen Kosten, Kontakt, Entscheidungsfreiheit und Datenverwendung anhand des bestehenden Angebots. Keine neuen Reaktionszeit-, Gratis- oder Ergebnisversandversprechen; keine Änderungen an Formularübermittlung, Rechnerkonfiguration oder Anzeigenmessung.
