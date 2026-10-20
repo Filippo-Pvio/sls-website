@@ -1,4 +1,5 @@
 import {logOperationalFailure} from '../lib/operational-log.mjs';
+import {claimContactSubmission,claimContactNote,clearContactNote} from '../lib/contact-shared-guard.mjs';
 import {withFormSecurity} from '../lib/form-security.mjs';
 import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
@@ -64,12 +65,14 @@ async function record(key,request,id,categories,privacyUrl) {
     const exists=activities.some(x=>{const task=x.activatable || x.task || x;return Number(x.category_id ?? task.note_type_id)===category && String(task.body || x.body || '').includes(marker);});
     if(exists){uncertain.delete(writeKey);continue;}
     if(uncertain.has(writeKey))throw new Error('Unconfirmed note needs reconciliation');
+    if(!await claimContactNote(writeKey))throw new Error('Unconfirmed note needs reconciliation');
     uncertain.set(writeKey,Date.now());
     let result;
     try{result=await propstack('tasks',key,{task:{title,note_type_id:category,client_ids:[contactId],body}});}
-    catch(error){if(error.writeRejected)uncertain.delete(writeKey);throw error;}
+    catch(error){if(error.writeRejected){uncertain.delete(writeKey);await clearContactNote(writeKey);}throw error;}
     if(!validId(result?.id || result?.activity_id))throw new Error('Note confirmation missing');
     uncertain.delete(writeKey);
+    await clearContactNote(writeKey);
   }
   return {status:200,ok:true};
 }
@@ -105,6 +108,13 @@ export async function handler(req,res) {
   const fingerprint=sign(JSON.stringify(request),key);
   const previous=pending.get(id);
   if(previous&&previous.fingerprint!==fingerprint)return res.status(409).json({error:'Bitte laden Sie das Formular für eine neue Anfrage erneut.'});
+  try {
+    const claim=await claimContactSubmission(id,fingerprint);
+    if(claim==='conflict')return res.status(409).json({error:'Bitte laden Sie das Formular für eine neue Anfrage erneut.'});
+  } catch(error) {
+    logOperationalFailure('contact_shared_guard_failed',error);
+    return res.status(503).json({error:'Die Anfrage konnte gerade nicht sicher verarbeitet werden. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt.'});
+  }
   for(const [k,v] of pending)if(v.until<now)pending.delete(k);
   try{
     const promise=previous?.promise || (async()=>record(key,request,id,await noteCategories(key),privacyPolicyUrl(req)))();
