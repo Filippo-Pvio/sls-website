@@ -21,6 +21,12 @@ test('all six topics use published evidence, valid local assets and matching QR 
    else assert.ok(url.pathname.startsWith('/videos/'));
   }
  }
+ for(const voice of topics.kundenstimmen){
+  const profile=profiles.find(p=>voice.target==='/team/'+p.slug+'/');
+  assert.ok(profile.heroScenes.some(scene=>voice.image==='/assets/images/'+scene+'-1536.webp'));
+  assert.ok(!topics.verkaufsablauf.some(step=>step.image===voice.image));
+  assert.equal(voice.note,'SLS-Team im Bild: '+profile.name+'.');
+ }
  assert.doesNotMatch(JSON.stringify(topics.kaeuferfinder),/garantiert|\d+ Käufer|\d+ Familien/);
  assert.equal(new Set(mixedProgramme.map(p=>p.path)).size,9);
 });
