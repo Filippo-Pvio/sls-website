@@ -5,7 +5,8 @@ const read=async file=>JSON.parse(await readFile(new URL(file,root),'utf8'));
 const profiles=await read('content/team/profiles.json');
 // Same extra published profile used by the website's team and reference pages.
 if(!profiles.some(p=>p.slug==='filippo-livera'))profiles.splice(1,0,{slug:'filippo-livera',name:'Filippo Livera',role:'Geschäftsführer · Immobilienmakler',portrait:'/assets/imported/Filippo-Livera-768x768.jpg',heading:'Persönlich für Ihre Immobilie da.'});
-const data=buildSignageContent(profiles,await read('content/team/reviews.json'),await read('content/videos/property-tours.generated.json'));
+const data=buildSignageContent(profiles,await read('content/team/reviews.json'),await read('content/videos/property-tours.generated.json'),await read('content/seo/video-source-metadata.json'));
+for(const video of data.videos)if(video.media){await readFile(new URL(video.media.slice(1),root));await readFile(new URL(video.image.slice(1),root));}
 await writeFile(new URL('assets/schaufenster-content.json',root),JSON.stringify({topics:data,programme:mixedProgramme},null,2)+'\n');
 const base=await readFile(new URL('schaufenster/immobilienbewertung/index.html',root),'utf8');
 for(const [key,title] of Object.entries(signageTopics)){
