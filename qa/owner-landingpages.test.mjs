@@ -46,7 +46,9 @@ test('focused entries expose seller evidence, optional timing and the calculator
  for(const path of [...Object.values(LANDING_PAGES),'/lp/immobilienwert-online/']){
   const html=await read(path.slice(1)+'index.html');
   assert.match(html,/Verkauf unserer Immobilie/);assert.doesNotMatch(html,/Torsten Schöneborn|beim Hauskauf/);
-  assert.match(html,/lp-contact-proof/);
+  assert.match(html,/lp-contact-proof/);assert.doesNotMatch(html,/lp-hero-review|lp-people/);
+  const director=path.includes('immobilienwert-online')?'Dennis Sahlmen':path.includes('immobilie-verkaufen')?'Filippo Livera':'Mischa Stratmann';
+  assert.ok(html.includes('alt="'+director+'"'));assert.match(html,/class="lp-review-context">Immobilienverkauf/);
   if(path.includes('immobilienwert-online'))assert.ok(html.indexOf('id="fisher-widget"')<html.indexOf('class="lp-section lp-strip"'));
   else {assert.match(html,/name="timeline">/);assert.doesNotMatch(html,/name="timeline" required/);assert.match(html,/Weiter zum Kontakt/);}
  }
