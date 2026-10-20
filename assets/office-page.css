@@ -22,7 +22,6 @@ body.office-page #main>.office-final{background:#345b6e!important;text-align:cen
 .office-team-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid #c7d4d9;padding-top:16px;margin-bottom:16px}
 .office-team-heading .office-team-group-title{border:0;padding:0;margin:0}
 .office-team-navigation:not([hidden]){display:flex;align-items:center;gap:10px;flex-shrink:0}
-.office-team-count{font-size:14px;color:#345b6e;white-space:nowrap;margin-right:4px;font-variant-numeric:tabular-nums}
 .office-team-arrow{width:44px;height:44px;border:1px solid #345b6e;border-radius:50%;background:transparent;color:#345b6e;font:24px/1 Arial,sans-serif;cursor:pointer;display:grid;place-items:center;padding:0}
 .office-team-arrow:hover:not(:disabled){background:#345b6e;color:#fff}
 .office-team-arrow:disabled{opacity:.35;cursor:default}
