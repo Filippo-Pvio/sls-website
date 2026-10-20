@@ -1,0 +1,28 @@
+{
+  "status": "draft-not-activated",
+  "region": null,
+  "monthlyBudget": null,
+  "conversionSetup": "Pending Google Ads account review and consent-compatible attribution design. Existing website analytics only.",
+  "campaigns": [
+    {
+      "name": "SLS Eigentümer | Verkauf | Pilot",
+      "finalUrl": "https://sls.de/lp/immobilie-verkaufen/",
+      "headlines": ["Immobilie verkaufen mit SLS", "Ihr Verkauf. Persönlich.", "Ein klarer Plan für Ihr Haus", "Immobilienverkauf in NRW", "Begleitung bis zur Übergabe", "Verkaufsgespräch anfragen"],
+      "descriptions": ["Verkaufen mit einem klaren Plan. Sprechen Sie mit SLS Immobilienpartner über Ihr Vorhaben.", "Bewertung, Präsentation und persönliche Begleitung. Fragen Sie Ihr Erstgespräch an.", "Für Eigentümer im Ruhrgebiet und Rheinland. Sie entscheiden über den nächsten Schritt."],
+      "keywordIntents": ["immobilie verkaufen [Region]", "haus verkaufen [Region]", "wohnung verkaufen [Region]", "makler immobilie verkaufen [Region]"],
+      "negativeIntentsToReview": ["mieten", "mietwohnung gesucht", "jobs", "ausbildung", "gehalt", "praktikum", "haus kaufen"],
+      "primaryGoal": "Confirmed owner inquiry initially; qualified CRM owner lead after sufficient verified data and approved attribution.",
+      "urlExpansion": false
+    },
+    {
+      "name": "SLS Eigentümer | Persönliche Bewertung | Pilot",
+      "finalUrl": "https://sls.de/lp/immobilienbewertung/",
+      "headlines": ["Was ist Ihre Immobilie wert?", "Persönliche Werteinschätzung", "Immobilienbewertung mit SLS", "Bewertungsgespräch anfragen", "Ihr Zuhause genauer einordnen", "Wir schauen genauer hin"],
+      "descriptions": ["Lage, Zustand und Besonderheiten persönlich einordnen. Fragen Sie ein Gespräch an.", "Sie planen einen Verkauf? Besprechen Sie den Wert Ihrer Immobilie mit SLS.", "Persönliche Einschätzung statt Sofortwert: Wir stimmen das weitere Vorgehen mit Ihnen ab."],
+      "keywordIntents": ["immobilienbewertung makler [Region]", "haus bewerten vor verkauf [Region]", "persönliche immobilienbewertung [Region]"],
+      "negativeIntentsToReview": ["gutachten muster", "ausbildung", "gehalt", "rechner ohne daten", "sofort ohne anmeldung", "grundsteuer"],
+      "primaryGoal": "Confirmed valuation conversation inquiry; assess sale intent and subsequent CRM qualification separately.",
+      "urlExpansion": false
+    }
+  ]
+}

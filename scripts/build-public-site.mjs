@@ -5,6 +5,7 @@ const root=path.resolve(import.meta.dirname,'..'),output=path.join(root,'.site-o
 await import('./build-restored-cities.mjs');
 await import('./build-videos.mjs');
 await import('./build-signage.mjs');
+await import('./build-owner-landingpages.mjs');
 const excluded=new Set(['output','api','lib','config','docs','qa','scripts','services','integrations','node_modules','content','qa-artifacts','test-results','playwright-report']);
 await rm(output,{recursive:true,force:true});await mkdir(output,{recursive:true});
 for(const entry of await readdir(root,{withFileTypes:true})){
