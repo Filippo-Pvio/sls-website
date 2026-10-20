@@ -5,6 +5,7 @@ on:
       - 'lib/property-catalog.mjs'
       - 'api/propstack-sold-references.js'
       - 'qa/reference-cache.test.mjs'
+      - 'qa/shared-reference-cache.test.mjs'
       - 'lib/shared-reference-cache.mjs'
       - '.github/workflows/reference-cache-regression.yml'
   workflow_dispatch:
@@ -18,4 +19,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test qa/reference-cache.test.mjs
+      - run: node --test qa/reference-cache.test.mjs qa/shared-reference-cache.test.mjs
