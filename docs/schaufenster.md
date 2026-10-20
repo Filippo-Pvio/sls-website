@@ -18,3 +18,7 @@ Validierung: bestehende Katalog-/Datenschutztests plus Browserprüfungen für Ro
 Die obere Logo-/Navigationsleiste entfällt. Rechts unten steht für jede Immobilie ein eigener schwarz-weißer QR-Code mit vier Modulen weißem Rand. Er enthält `https://sls.de/immobilien/?objekt=<ID>`; die bestehende Website leitet diese stabile Objektadresse auf das aktuelle Exposé weiter. Der Code wird synchron mit dem Angebot gewechselt und bei leerem oder veraltetem Datenbestand vollständig ausgeblendet.
 
 Lokale Erzeugung mit `assets/vendor/qrcode-generator-1.4.4.js` (Kazuhiko Arase, MIT; Lizenz daneben), Fehlerkorrektur Q. Quelle: offizielles npm-Paket `qrcode-generator@1.4.4`. Kein QR-Dienst, Drittanbieterabruf oder Tracking. Automatischer Test: `node --test qa/schaufenster-qr.test.mjs`. Scannbarkeit durch die reale Schaufensterscheibe weiterhin am Gerät prüfen.
+
+## Zufällige Reihenfolge
+
+Beim Start wird die gesamte Auswahl zufällig gemischt. Jede Immobilie erscheint pro Durchlauf einmal. Anschließend wird neu gemischt; bei mindestens zwei Angeboten wird eine direkte Wiederholung an der Durchlaufgrenze vermieden. Der Datenabgleich erhält die laufende Reihenfolge und die bereits verstrichene Anzeigezeit. Entfernte Angebote entfallen, neue Angebote werden für den laufenden Durchlauf ergänzt und untereinander zufällig sortiert. Prüfung: `node --test qa/schaufenster-order.test.mjs qa/schaufenster-qr.test.mjs`.

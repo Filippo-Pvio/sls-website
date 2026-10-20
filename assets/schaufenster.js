@@ -9,6 +9,19 @@
   var el = function (id) { return document.getElementById(id); };
   var positive = function (n) { return n != null && Number.isFinite(Number(n)) && Number(n) > 0; };
   function text(id, value) { el(id).textContent = value || ''; }
+  function shuffled(rows, previousId) {
+    var result = rows.slice();
+    for (var i = result.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1)), swap = result[i];
+      result[i] = result[j]; result[j] = swap;
+    }
+    // Do not repeat the last property immediately at the start of a new round.
+    if (result.length > 1 && result[0].id === previousId) {
+      var next = 1 + Math.floor(Math.random() * (result.length - 1)), first = result[0];
+      result[0] = result[next]; result[next] = first;
+    }
+    return result;
+  }
   function safeImage(value) {
     try { var url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch (_) { return ''; }
   }
@@ -135,6 +148,9 @@
   }
   function show(at) {
     if (!items.length) return;
+    if (at >= items.length) {
+      items = shuffled(items, items[index] && items[index].id); at = 0;
+    }
     index = (at + items.length) % items.length; started = Date.now(); resetImages();
     var p = items[index], token = generation;
     el('property-content').hidden = false; el('standby').hidden = true;
@@ -169,11 +185,19 @@
       });
       // A partial or malformed response must never masquerade as a complete removal.
       if (updated.length !== data.items.length) throw new Error('Incomplete catalog');
-      var current = items[index] && items[index].id, previousIndex = index;
-      items = updated; lastSuccess = Date.now(); detailCache.clear(); imagesFailed.clear();
+      var current = items[index] && items[index].id, previousStarted = started;
+      var byId = new Map(updated.map(function (p) { return [p.id, p]; }));
+      var knownIds = new Set(items.map(function (p) { return p.id; }));
+      var remainingBefore = items.slice(0, Math.max(0, index)).filter(function (p) { return byId.has(p.id); }).length;
+      // Refresh facts without restoring server order or replaying already shown properties.
+      var retained = items.filter(function (p) { return byId.has(p.id); }).map(function (p) { return byId.get(p.id); });
+      var added = updated.filter(function (p) { return !knownIds.has(p.id); });
+      items = current ? retained.concat(shuffled(added)) : shuffled(updated);
+      lastSuccess = Date.now(); detailCache.clear(); imagesFailed.clear();
       if (!items.length) { standby('Neue Immobilienangebote finden Sie auf sls.de. Wir beraten Sie gerne persönlich.'); return; }
       var found = items.findIndex(function (p) { return p.id === current; });
-      show(found >= 0 ? found : Math.max(0, Math.min(previousIndex, items.length - 1)));
+      show(found >= 0 ? found : current ? remainingBefore : 0);
+      if (found >= 0) started = previousStarted;
     }).catch(function () {
       if (!lastSuccess || Date.now() - lastSuccess > MAX_AGE_MS) {
         items = []; detailCache.clear(); standby('Entdecken Sie unsere Immobilien auf sls.de. Wir sind persönlich für Sie da.');
