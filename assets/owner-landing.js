@@ -16,9 +16,9 @@
   next.disabled=busy||completed;previous.disabled=busy||completed;
   if(readiness&&!available()&&!busy&&!completed)message('Diese Kontaktmöglichkeit ist gerade nicht verfügbar. Bitte wählen Sie E-Mail oder kontaktieren Sie uns direkt.','error');
  }
- function show(at,focus=true){index=at;steps.forEach((step,i)=>step.hidden=i!==at);progress.forEach((item,i)=>i===at?item.setAttribute('aria-current','step'):item.removeAttribute('aria-current'));previous.hidden=at===0||completed;next.hidden=at===2||completed;submit.hidden=at!==2;next.textContent=at===0?'Weiter zum Vorhaben →':'Weiter zum Kontakt →';if(focus){steps[at].scrollIntoView({block:'start',behavior:'auto'});steps[at].focus({preventScroll:true});}}
+ function show(at,focus=true){index=at;steps.forEach((step,i)=>step.hidden=i!==at);progress.forEach((item,i)=>i===at?item.setAttribute('aria-current','step'):item.removeAttribute('aria-current'));previous.hidden=at===0||completed;next.hidden=at===steps.length-1||completed;submit.hidden=at!==steps.length-1;next.textContent='Weiter zum Kontakt →';if(focus){steps[at].scrollIntoView({block:'start',behavior:'auto'});steps[at].focus({preventScroll:true});}}
  function invalidWithin(step){return Array.from(step.querySelectorAll('input,select,textarea')).find(field=>!field.disabled&&!field.checkValidity());}
- next.addEventListener('click',()=>{const invalid=invalidWithin(steps[index]);if(invalid){invalid.reportValidity();return;}show(Math.min(index+1,2));});
+ next.addEventListener('click',()=>{const invalid=invalidWithin(steps[index]);if(invalid){invalid.reportValidity();return;}show(Math.min(index+1,steps.length-1));});
  previous.addEventListener('click',()=>show(Math.max(index-1,0)));
  form.addEventListener('change',event=>{if(event.target.name==='method'){if(!busy&&!completed)status.hidden=true;sync();}});
  if('IntersectionObserver' in window)new IntersectionObserver(entries=>document.body.classList.toggle('lp-form-visible',entries[0].isIntersecting),{rootMargin:'-80px 0px -100px 0px'}).observe(document.getElementById('anfrage'));
@@ -33,7 +33,7 @@
  retry.addEventListener('click',()=>{if(!busy&&!completed)initialise();});
  form.addEventListener('submit',async event=>{
   event.preventDefault();if(busy||completed)return;
-  if(index<2){const invalid=invalidWithin(steps[index]);if(invalid){invalid.reportValidity();return;}show(index+1);return;}
+  if(index<steps.length-1){const invalid=invalidWithin(steps[index]);if(invalid){invalid.reportValidity();return;}show(index+1);return;}
   const invalidStep=steps.findIndex(step=>invalidWithin(step));if(invalidStep>=0){show(invalidStep);invalidWithin(steps[invalidStep]).reportValidity();return;}
   if(!available()){message('Das Formular ist gerade nicht verfügbar. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.','error');retry.hidden=false;return;}
   const fields=Object.fromEntries(new FormData(form));

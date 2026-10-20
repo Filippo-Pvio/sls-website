@@ -9,7 +9,7 @@ test('campaign pages keep a native consent-independent form, canonical URL and n
   const html=await read(path.slice(1)+'index.html'),prepared=prepareConsentHtml(html);
   assert.match(html,/<meta name="robots" content="noindex,follow">/);
   assert.ok(html.includes('href="https://sls.de'+path+'"'));assert.match(html,new RegExp('data-landing="'+kind+'"'));
-  assert.equal((html.match(/<h1>/g)||[]).length,1);assert.equal((html.match(/data-step="[012]"/g)||[]).length,3);
+  assert.equal((html.match(/<h1>/g)||[]).length,1);assert.equal((html.match(/data-step="[012]"/g)||[]).length,2);
   assert.match(html,/name="privacy" type="checkbox" required/);assert.doesNotMatch(html,/<iframe|data-site-header|data-site-footer|gtag\(|fbq\(/);
   assert.match(prepared,/privacy-consent\.js/);assert.match(prepared,/sls-tracking\.js/);
   for(const match of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g))await access(new URL(match[1].slice(1),root));
@@ -40,4 +40,14 @@ test('online valuation campaign reuses the existing gated provider without a par
  assert.doesNotMatch(await read('assets/online-valuation-landing.js'),/contact_request_success|postMessage|dataLayer/);
  const prepared=prepareConsentHtml(html);assert.match(prepared,/privacy-consent\.js/);
  for(const match of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g))await access(new URL(match[1].slice(1),root));
+});
+
+test('focused entries expose seller evidence, optional timing and the calculator in the hero',async()=>{
+ for(const path of [...Object.values(LANDING_PAGES),'/lp/immobilienwert-online/']){
+  const html=await read(path.slice(1)+'index.html');
+  assert.match(html,/Verkauf unserer Immobilie/);assert.doesNotMatch(html,/Torsten Schöneborn|beim Hauskauf/);
+  assert.match(html,/lp-contact-proof/);
+  if(path.includes('immobilienwert-online'))assert.ok(html.indexOf('id="fisher-widget"')<html.indexOf('class="lp-section lp-strip"'));
+  else {assert.match(html,/name="timeline">/);assert.doesNotMatch(html,/name="timeline" required/);assert.match(html,/Weiter zum Kontakt/);}
+ }
 });

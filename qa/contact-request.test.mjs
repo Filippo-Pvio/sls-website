@@ -129,7 +129,7 @@ for(const page of ['sale','valuation'])test(`owner landing ${page} preserves exa
 }));
 test('owner landing rejects arbitrary source identifiers, qualification and acknowledgement before CRM writes',()=>fixture(async({request,payload,writes})=>{
  const body={...payload,place:'Dorsten',privacyVersion:LANDING_PRIVACY_VERSION,landing:{page:'sale',propertyType:'house',ownership:'owner',timeline:'soon'}};
- for(const patch of [{landing:null},{landing:{...body.landing,page:'other'}},{topic:'valuation'},{landing:{...body.landing,propertyType:'unknown'}},{landing:{...body.landing,propertyType:['house']}},{landing:{...body.landing,ownership:'buyer'}},{landing:{...body.landing,timeline:'arbitrary'}},{place:''},{privacyVersion:CONTACT_PRIVACY_VERSION},{privacy:false}])assert.equal((await request('POST',{...body,...patch})).code,400);
+ for(const patch of [{landing:null},{landing:{...body.landing,page:'other'}},{topic:'valuation'},{landing:{...body.landing,propertyType:'unknown'}},{landing:{...body.landing,propertyType:['house']}},{landing:{...body.landing,ownership:'buyer'}},{landing:{...body.landing,timeline:'arbitrary'}},{landing:{...body.landing,timeline:[]}},{landing:{...body.landing,timeline:null}},{place:''},{privacyVersion:CONTACT_PRIVACY_VERSION},{privacy:false}])assert.equal((await request('POST',{...body,...patch})).code,400);
  assert.equal(writes.length,0);
 }));
 test('owner callback keeps its original callback workflow',()=>fixture(async({request,payload,notes})=>{
@@ -140,4 +140,9 @@ test('owner callback keeps its original callback workflow',()=>fixture(async({re
 test('email owner landing discards a phone number without a callback request',()=>fixture(async({request,payload,notes})=>{
  const body={...payload,place:'Dorsten',privacyVersion:LANDING_PRIVACY_VERSION,landing:{page:'sale',propertyType:'house',ownership:'owner',timeline:'later'}};
  assert.equal((await request('POST',body)).code,200);assert.ok(notes[0].activatable.body.includes('Telefon: Nicht angegeben'));assert.ok(!notes[0].activatable.body.includes(payload.phone));
+}));
+
+for(const timeline of [undefined,''])test(`owner landing accepts voluntary omitted timeline: ${String(timeline)}`,()=>fixture(async({request,payload,notes})=>{
+ const body={...payload,place:'Dorsten',privacyVersion:LANDING_PRIVACY_VERSION,landing:{page:'sale',propertyType:'house',ownership:'owner',timeline}};
+ assert.equal((await request('POST',body)).code,200);assert.ok(notes[0].activatable.body.includes('Verkaufszeitplan: Nicht angegeben'));
 }));
