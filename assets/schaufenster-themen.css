@@ -1,0 +1,16 @@
+.valuation-display.quote-mode h1{font-size:2.35vw;line-height:1.25;max-width:55vw}
+.valuation-display.team-mode h1{font-size:3.7vw}.valuation-display.team-mode .valuation-accent{font-size:1.7vw}
+#spotlight{position:absolute;right:5vw;top:4vh;width:31vw;height:45vh;object-fit:cover;object-position:top center;border-radius:8px}
+#spotlight.book{object-fit:contain;right:7vw;width:25vw;top:10vh;height:34vh;background:transparent}
+.team-mode #spotlight{height:76vh;width:34vw;right:3.8vw;top:4vh}
+.team-mode .property-qr{width:13vw;padding:.55vw;bottom:14vh;right:3.8vw}.team-mode .property-qr strong{font-size:.9vw}
+.team-mode .photo{background-image:none!important}
+.team-mode .visual-shade{background:linear-gradient(90deg,#3b535e 45%,rgba(59,83,94,.1))}
+#video-stage{position:absolute;right:3.8vw;top:13vh;width:44vw;height:24.75vw;z-index:2;background:#0b1112;border-radius:6px;overflow:hidden}
+#video-stage iframe{width:100%;height:100%;border:0}
+.valuation-display.video-mode .information{width:44vw}.valuation-display.video-mode h1{font-size:2.6vw;max-width:44vw}
+.video-mode .valuation-copy{max-width:41vw;font-size:1.2vw}.video-mode .property-qr{width:12vw;bottom:14vh}.video-mode .property-qr strong{font-size:.8vw}
+.video-mode .photo-bottom{right:19vw;font-size:.8vw}
+.video-mode .valuation-note{max-width:38vw}
+
+.quote-mode .photo{background-image:none!important}.quote-mode .visual-shade{background:var(--hero)}

@@ -16,6 +16,7 @@
  const marketingConsent = form.elements.marketingConsent;
  const marketingAvailability = document.getElementById('guide-marketing-availability');
  const endpoint = '/api/propstack-guide-request';
+ const requestedGuide=new URLSearchParams(location.search).get('ratgeber');
  let token = null;
  let sending = false;
  let completed = false;
@@ -36,6 +37,7 @@
    if (!response.ok || !Array.isArray(data.availableGuides) || !data.availableGuides.length || !data.token) throw new Error(data.error || 'Die Ratgeberanforderung ist gerade nicht verfügbar. Bitte versuchen Sie es später erneut.');
    token = data.token;
    for (const option of select.options) option.disabled = !data.availableGuides.includes(option.value);
+   if(!correction && data.availableGuides.includes(requestedGuide))select.value=requestedGuide;
    if (![...select.options].some(option => option.value === select.value && !option.disabled)) select.value = [...select.options].find(option => !option.disabled)?.value || '';
    document.querySelectorAll('[data-guide]').forEach(link => {
     const available = data.availableGuides.includes(link.dataset.guide);

@@ -38,3 +38,21 @@ Eigener fester TV-Link: `https://sls.de/schaufenster/immobilienbewertung/`. Men�
 Der lokal erzeugte QR-Code bleibt auf allen Motiven unverändert und führt zu `https://sls.de/immobilienbewertung/`. Der Bewertungsrechner wird erst dort auf dem Smartphone aufgerufen. Die TV-Seite selbst lädt keine externen Widgets, Formulare oder Trackingdienste. Textgrundlage ist die bestehende Bewertungsseite: erste digitale Wertindikation, ergänzt um die persönliche Einordnung vor Ort. Keine erfundenen Preise, Erfolgsgarantien oder Kostenversprechen.
 
 Dateien: `schaufenster/immobilienbewertung/index.html`, `assets/schaufenster-bewertung.js`, `assets/schaufenster-bewertung.css`; gemeinsame Farben, Schriften und Grundgestaltung aus `assets/schaufenster.css`. Test: `node --test qa/schaufenster-bewertung.test.mjs`.
+
+## Gesamtprogramm und weitere Themen
+
+Empfohlener Link für iiSignage²: `https://sls.de/schaufenster/programm/`.
+
+Die Mischung läuft in einer vierminütigen Schleife: aktuelle Angebote 60 Sekunden, Käuferfinder 20, Referenzen 20, Bewertung 20, Team 20, Ratgeber 20, Verkaufsablauf 20, Kundenstimmen 20, Immobilienvideos 40. Jede Seite bleibt auch einzeln erreichbar unter `/schaufenster/kaeuferfinder/`, `/team/`, `/ratgeber/`, `/verkaufsablauf/`, `/kundenstimmen/`, `/videos/` (jeweils mit Präfix `/schaufenster`).
+
+Das Programm hält pro Thema einen begrenzten iframe im Speicher, lädt den nächsten vor und pausiert unsichtbare Inhalte. Videos werden beim Themenwechsel gestoppt und zerstört. Die Nachrichtensteuerung akzeptiert ausschließlich den eigenen gleichursprünglichen Programmrahmen. Fremde Einbettungen wie iiSignage² werden dadurch nicht pausiert. Längere Unterbrechungen und Ladefehler blockieren die Schleife nicht; ersatzweise erscheint eine SLS-Kontaktanzeige.
+
+Die sechs Themen werden bei jedem Website-Build aus den vorhandenen veröffentlichten Teamprofilen, belegten Google-Rezensionsauszügen, Ratgeberinhalten und YouTube-Roomtouren erzeugt (`scripts/build-signage.mjs`). Es werden nur abgeschlossene Rezensionssätze verwendet und Auszüge/Prüfdatum/Quelle gekennzeichnet. QR-Codes für Kundenstimmen führen zum passenden Teamprofil mit Originalquellenlink. Keine erfundenen Käufergesuche, Nachfragezahlen oder Kundenstimmen. Käuferfinder-QR führt zum bestehenden Nachfragecheck.
+
+Ratgeber-QRs enthalten `?ratgeber=<Code>` und wählen den angefragten Ratgeber nur vor, wenn der bestehende Server ihn als verfügbar meldet. Kein Versand, keine Kontaktanlage und keine Formularübermittlung ohne Eingabe und Absenden durch die Person am Smartphone.
+
+Die Videoseite spielt die beiden bereits veröffentlichten YouTube-Roomtouren über die offizielle IFrame-API stumm ab. Deutsche Untertitel werden angefordert, soweit das jeweilige Video diese anbietet. Bei Plattform-/Playerfehlern oder blockiertem Autoplay bleiben Titel, Original-Vorschaubild (wenn abrufbar) und QR zur vollständigen Roomtour erhalten. Die Verfügbarkeit als aktuelles Angebot wird nicht behauptet. Keine Instagram-Player oder extrahierten YouTube-Videodateien. Die echte automatische Wiedergabe auf dem iiyama-Player muss am Gerät geprüft werden.
+
+Nur die öffentliche Schaufenster-CSP erlaubt nun zusätzlich gleichursprüngliche Programmrahmen und das offizielle YouTube-API-Skript. Schutzregeln der übrigen Website bleiben unverändert. Themen laden keine Analyse-/Trackingprogramme. Die Videoseite nimmt bei aktiver Wiedergabe Verbindung zu YouTube auf.
+
+Prüfung: `node --test qa/signage-programme.test.mjs` prüft Inhalte, Originalbelege, QR-Ziele, alle neun Programmteile über mehrere Runden, Pause/Resume, Ursprungskontrolle und Videostummschaltung/-stopp. Bestehende Angebots-, Referenz-, Bewertungs- und Datenschutzprüfungen ergänzen die Tests.

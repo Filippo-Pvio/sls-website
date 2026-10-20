@@ -29,10 +29,13 @@
     el('qr-symbol').innerHTML = qr.createSvgTag({cellSize:4,margin:16,scalable:true});
   } catch (_) { /* The written destination remains visible and usable. */ }
   setInterval(function () {
+    if(window.SLSSignagePaused)return;
     var elapsed = Date.now() - started;
     if(elapsed >= duration){show(index + 1);return;}
     el('progress-fill').style.width = Math.min(100,elapsed / duration * 100) + '%';
   },250);
   document.addEventListener('visibilitychange',function () { if(!document.hidden)show(index); });
+  var programmeActivated=false;
+  window.addEventListener('sls-signage-activation',function(event){if(event.detail.active){if(programmeActivated)show(index+1);else started=Date.now();programmeActivated=true;}});
   show(0);
 })();

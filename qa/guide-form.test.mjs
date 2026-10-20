@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const code=await readFile(new URL('../assets/guides-page.js',import.meta.url),'utf8');
-async function fixture(result={ok:true,message:'Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.'},ready=true,marketingReady=true,availableGuides=['VERKAUF']){
+async function fixture(result={ok:true,message:'Vielen Dank! Sie erhalten Ihren Ratgeber in Kürze per E-Mail.'},ready=true,marketingReady=true,availableGuides=['VERKAUF'],search=''){
  const callbacks={},requests=[],timers=[],events=[];
  const marketingAvailability={textContent:''};
  const status={textContent:'',classList:{toggle(){}},focus(){}};
@@ -11,7 +11,7 @@ async function fixture(result={ok:true,message:'Vielen Dank! Sie erhalten Ihren 
  const button={disabled:true,textContent:''},fields={disabled:true};
  const select={value:'VERKAUF',disabled:false,options:['VERKAUF','BEWERTUNG','ERBSCHAFT','WOHNEN_IM_ALTER','TRENNUNG','UNTERLAGEN'].map(value=>({value,disabled:value!=='VERKAUF'}))};
  const form={elements:{salutation:{value:'ms'},firstName:{value:'Anna',focus(){}},lastName:{value:'Muster'},email:{value:'service@example.org',focus(){}},website:{value:''},privacyAcknowledged:{checked:true,dataset:{privacyVersion:'2026-10-07-v1'},focus(){}},marketingConsent:{checked:false,dataset:{consentVersion:'2026-10-02-v2'}}},querySelector:s=>s==='fieldset'?fields:button,addEventListener:(event,fn)=>callbacks[event]=fn,reportValidity:()=>true,setAttribute(){},removeAttribute(){}};
- runInNewContext(code.replace(/const secureFormFetch=.*?;\n/, "").replaceAll("secureFormFetch(","fetch("),{document:{getElementById:id=>({'guide-form':form,'guide-select':select,'guide-availability':status,'guide-review-actions':reviewActions,'guide-correct':correctButton,'guide-marketing-availability':marketingAvailability})[id],querySelectorAll:()=>[]},CustomEvent:class {constructor(type,options){this.type=type;this.detail=options.detail}},window:{setTimeout:fn=>timers.push(fn),dispatchEvent:event=>events.push(event)},fetch:async(url,init={})=>{
+ runInNewContext(code.replace(/const secureFormFetch=.*?;\n/, "").replaceAll("secureFormFetch(","fetch("),{URLSearchParams,location:{search},document:{getElementById:id=>({'guide-form':form,'guide-select':select,'guide-availability':status,'guide-review-actions':reviewActions,'guide-correct':correctButton,'guide-marketing-availability':marketingAvailability})[id],querySelectorAll:()=>[]},CustomEvent:class {constructor(type,options){this.type=type;this.detail=options.detail}},window:{setTimeout:fn=>timers.push(fn),dispatchEvent:event=>events.push(event)},fetch:async(url,init={})=>{
   requests.push({url,...init});return {ok:init.method==='POST'?result.ok:ready,json:async()=>init.method==='POST'?result:ready?{availableGuides,token:'signed-token',marketingAvailable:marketingReady,consentVersion:'2026-10-02-v2'}:{error:'Nicht verfügbar'}};
  }});
  await new Promise(resolve=>setImmediate(resolve));timers.splice(0).forEach(fn=>fn());
@@ -113,4 +113,12 @@ test('another available guide works when sale is temporarily unavailable',async(
  const f=await fixture(undefined,true,false,['UNTERLAGEN']);
  assert.equal(f.fields.disabled,false); assert.equal(f.select.value,'UNTERLAGEN');
  await f.submit(); assert.equal(JSON.parse(f.requests[1].body).guide,'UNTERLAGEN');
+});
+
+
+test('QR deep link selects only an available guide and never sends a request automatically',async()=>{
+ const available=await fixture(undefined,true,false,['VERKAUF','ERBSCHAFT'],'?ratgeber=ERBSCHAFT');
+ assert.equal(available.select.value,'ERBSCHAFT');assert.equal(available.requests.filter(r=>r.method==='POST').length,0);
+ const unavailable=await fixture(undefined,true,false,['VERKAUF'],'?ratgeber=ERBSCHAFT');assert.equal(unavailable.select.value,'VERKAUF');
+ const invalid=await fixture(undefined,true,false,['VERKAUF'],'?ratgeber=INVALID');assert.equal(invalid.select.value,'VERKAUF');
 });
