@@ -13,7 +13,7 @@ test('QR encodes the displayed property, follows rotation and disappears on empt
  const el=id=>{if(!nodes.has(id))nodes.set(id,new Element());return nodes.get(id)};
  const rows=[{id:'6236933',title:'Wohnung',city:'Düsseldorf',reference:'SLS 10672',images:[]},{id:'4584479',title:'Haus',city:'Dorsten',reference:'SLS 3062',images:[]}];
  class Clock extends Date{static now(){return now}}
- const context=vm.createContext({console,URL,Intl,Date:Clock,Map,Set,AbortController,Image:class{},setTimeout:()=>1,clearTimeout(){},setInterval:(fn,ms)=>intervals.push({fn,ms}),
+ const context=vm.createContext({console,URL,Intl,Math:Object.assign(Object.create(Math),{random:()=>.99}),Date:Clock,Map,Set,AbortController,Image:class{},setTimeout:()=>1,clearTimeout(){},setInterval:(fn,ms)=>intervals.push({fn,ms}),
   window:{addEventListener:(name,fn)=>events[name]=fn},
   document:{hidden:false,getElementById:el,createElement:()=>new Element(),createElementNS:()=>new Element(),addEventListener(){}},
   fetch:async input=>{if(mode==='offline')return {ok:false,status:502};const u=new URL(input,'https://sls.de');return {ok:true,json:async()=>({items:mode==='empty'?[]:u.searchParams.has('id')?rows.filter(p=>p.id===u.searchParams.get('id')):rows})}}});
