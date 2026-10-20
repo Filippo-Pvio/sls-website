@@ -211,7 +211,7 @@ const getReferenceCatalog=cachedCatalog(async(key)=>{
   if(!ids.size)throw new Error('No sold status');
   return (await soldListings(key,ids,true)).map(unit=>publicReference(unit,ids)).filter(Boolean)
     .map(({id,title,city,zip,image})=>({id,title,city,zip,image}));
-},60000);
+},15*60*1000,{staleOnError:true});
 export function publicReferenceCatalogResult(){return withPublicReadBudget(referenceCatalogWithinBudget);}
 async function referenceCatalogWithinBudget(){
   const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
