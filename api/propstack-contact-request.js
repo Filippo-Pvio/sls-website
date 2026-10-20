@@ -72,7 +72,7 @@ async function record(key,request,id,categories,privacyUrl) {
     catch(error){if(error.writeRejected){uncertain.delete(writeKey);await clearContactNote(writeKey);}throw error;}
     if(!validId(result?.id || result?.activity_id))throw new Error('Note confirmation missing');
     uncertain.delete(writeKey);
-    await clearContactNote(writeKey);
+    // Keep the shared guard until expiry: provider note listings can lag a successful write.
   }
   return {status:200,ok:true};
 }
