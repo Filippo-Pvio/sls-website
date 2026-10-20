@@ -2,6 +2,8 @@
 
 Fester Produktionslink: `https://sls.de/schaufenster/` (nach Veröffentlichung).
 
+Angebotsansicht: 63 % freie Fotofläche links, 37 % cremefarbene Informationsspalte rechts. Preis, Eckdaten und QR-Code liegen vollständig in der Spalte; kein dunkler Verlauf über den Objektfotos. Schriftgrößen berücksichtigen Bildschirmbreite und -höhe. Eigenes, auf `.property-display` begrenztes Stylesheet `assets/schaufenster-angebote.css`; die Angebotsansicht wird auch im Gesamtprogramm verwendet.
+
 In iiSignage² ein Programm im Querformat 16:9 erstellen, den Link als Webinhalt über die gesamte Fläche einfügen, dem Display zuweisen und den gewünschten täglichen Zeitplan veröffentlichen. Der Immobilienwechsel läuft innerhalb der Webseite: keine separate Folie je Objekt anlegen. Wenn iiSignage² eine Dauer pro Webinhalt verlangt, eine lange Dauer wählen; kurze Playlist-Schleifen würden die Seite laufend neu starten. Auf dem tatsächlichen Display die vollständige Liste, Lesbarkeit und Fortsetzung nach Neustart/Netzunterbrechung prüfen. Browser-/Player-Version und Firmware sind noch unbekannt.
 
 - Alle öffentlich freigegebenen Kaufangebote exakt aus dem bestehenden Websitekatalog: `/api/propstack-properties/?display=1`. Der Modus nutzt dieselbe Status-, Archiv- und Feldfilterung sowie denselben serverseitigen Lesezugang. Kein neuer API-Schlüssel erforderlich.
