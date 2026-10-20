@@ -3362,7 +3362,7 @@
       ]
     },
     {
-      "source": "/schaufenster/:path*",
+      "source": "/schaufenster(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
