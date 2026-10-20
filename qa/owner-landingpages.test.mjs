@@ -26,3 +26,18 @@ test('campaign ad drafts stay unactivated, match actual offers and respect text 
   assert.doesNotMatch(JSON.stringify(campaign),/garantiert|höchstpreis|sofortiger Immobilienwert/i);
  }
 });
+
+test('online valuation campaign reuses the existing gated provider without a parallel enquiry or false conversion',async()=>{
+ const html=await read('lp/immobilienwert-online/index.html');
+ assert.match(html,/<meta name="robots" content="noindex,follow">/);
+ assert.match(html,/https:\/\/sls.de\/lp\/immobilienwert-online\//);
+ assert.match(html,/<iframe id="fisher-widget"[^>]*><\/iframe>/);
+ assert.doesNotMatch(html,/<iframe[^>]*\ssrc=|owner-form|owner-landing\.js/);
+ assert.match(html,/src="\/assets\/pricehubble-widget.js"/);
+ assert.match(html,/href="\/lp\/immobilienbewertung\/"/);
+ const loader=await read('assets/pricehubble-widget.js');
+ assert.match(loader,/SLSConsent\?\.mount\('tools'/);assert.match(loader,/consentGranted: false/);
+ assert.doesNotMatch(await read('assets/online-valuation-landing.js'),/contact_request_success|postMessage|dataLayer/);
+ const prepared=prepareConsentHtml(html);assert.match(prepared,/privacy-consent\.js/);
+ for(const match of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g))await access(new URL(match[1].slice(1),root));
+});
