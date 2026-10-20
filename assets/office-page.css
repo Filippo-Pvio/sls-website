@@ -19,6 +19,16 @@ body.office-page #main>.office-final{background:#345b6e!important;text-align:cen
 .office-team-group-title{font:600 18px/1.4 Raleway,Arial,sans-serif;color:#345b6e;margin:0 0 16px;padding-top:16px;border-top:1px solid #c7d4d9}
 .office-team-group .office-person{flex:0 0 calc((100% - 72px)/4);max-width:280px;min-width:210px}
 .office-team-group .office-person h4{font:500 23px/1.2 "Playfair Display",Georgia,serif;margin:14px 0 6px;color:#345b6e}
+.office-team-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid #c7d4d9;padding-top:16px;margin-bottom:16px}
+.office-team-heading .office-team-group-title{border:0;padding:0;margin:0}
+.office-team-navigation:not([hidden]){display:flex;align-items:center;gap:10px;flex-shrink:0}
+.office-team-count{font-size:14px;color:#345b6e;white-space:nowrap;margin-right:4px;font-variant-numeric:tabular-nums}
+.office-team-arrow{width:44px;height:44px;border:1px solid #345b6e;border-radius:50%;background:transparent;color:#345b6e;font:24px/1 Arial,sans-serif;cursor:pointer;display:grid;place-items:center;padding:0}
+.office-team-arrow:hover:not(:disabled){background:#345b6e;color:#fff}
+.office-team-arrow:disabled{opacity:.35;cursor:default}
+.office-team-arrow:focus-visible{outline:2px solid #345b6e;outline-offset:3px}
+@media(min-width:851px){.office-team-group.is-scrollable .office-person{flex-basis:calc((100% - 96px)/4.2)}}
+@media(max-width:540px){.office-team-heading{align-items:flex-start;flex-wrap:wrap;gap:12px}.office-team-heading .office-team-group-title{margin:0}.office-team-navigation:not([hidden]){margin-left:auto}}
 @media(max-width:850px){.office-team-group .office-person{flex-basis:calc((100% - 40px)/3);min-width:210px}}
 @media(max-width:540px){.office-team-group+.office-team-group{margin-top:26px}.office-team-group .office-person{flex-basis:68%;min-width:0}.office-team-group-title{font-size:16px;margin-bottom:16px}.office-team-group .office-person h4{font-size:22px}}
 
