@@ -2,6 +2,7 @@ import {readPublicPropstack,withPublicReadBudget} from '../lib/public-propstack-
 import {referenceParticipants,hasReferenceRoles} from '../lib/profile-reference-roles.mjs';
 import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {cachedCatalog} from '../lib/property-catalog.mjs';
+import {readSharedReferences,writeSharedReferences} from '../lib/shared-reference-cache.mjs';
 const PAGE_SIZE = 100;
 const MAX_PAGES = 40;
 // Match completed sales only. Never interpret "in Vermarktung" or "reserviert" as sold.
@@ -205,13 +206,31 @@ async function handle(req, res) {
 
 // Reuse only the already public gallery projection. No CRM descriptions, prices or contact data.
 const getReferenceCatalog=cachedCatalog(async(key)=>{
-  const result=await propstack('property_statuses',key);
-  const statuses=Array.isArray(result.data)?result.data:Array.isArray(result)?result:[];
-  const ids=new Set(statuses.filter(s=>SOLD_NAMES.has(String(s.name||'').trim().toLocaleLowerCase('de-DE'))).map(s=>String(s.id)));
-  if(!ids.size)throw new Error('No sold status');
-  return (await soldListings(key,ids,true)).map(unit=>publicReference(unit,ids)).filter(Boolean)
-    .map(({id,title,city,zip,image})=>({id,title,city,zip,image}));
-},60000);
+  let shared=null;
+  try { shared=await readSharedReferences(key); }
+  catch(error) { logOperationalFailure('reference_shared_cache_read_failed',error,'warn'); }
+  if(shared?.fresh)return shared.items;
+  try {
+    const result=await propstack('property_statuses',key);
+    const statuses=Array.isArray(result.data)?result.data:Array.isArray(result)?result:[];
+    const ids=new Set(statuses.filter(s=>SOLD_NAMES.has(String(s.name||'').trim().toLocaleLowerCase('de-DE'))).map(s=>String(s.id)));
+    if(!ids.size)throw new Error('No sold status');
+    const items=(await soldListings(key,ids,true)).map(unit=>publicReference(unit,ids)).filter(Boolean)
+      .map(({id,title,city,zip,image})=>({id,title,city,zip,image}));
+    // Do not persist empty or incomplete snapshots.
+    if(items.length) {
+      try { await writeSharedReferences(key,items); }
+      catch(error) { logOperationalFailure('reference_shared_cache_write_failed',error,'warn'); }
+    }
+    return items;
+  } catch(error) {
+    if(shared) {
+      logOperationalFailure('reference_shared_cache_stale_served',error,'warn');
+      return shared.items;
+    }
+    throw error;
+  }
+},15*60*1000,{staleOnError:true});
 export function publicReferenceCatalogResult(){return withPublicReadBudget(referenceCatalogWithinBudget);}
 async function referenceCatalogWithinBudget(){
   const key=process.env.PROPSTACK_PUBLIC_API_KEY||process.env.PROPSTACK_API_KEY;
