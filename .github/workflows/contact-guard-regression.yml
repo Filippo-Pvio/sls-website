@@ -1,0 +1,25 @@
+name: Contact write guard regression
+on:
+  pull_request:
+    paths:
+      - 'api/propstack-contact-request.js'
+      - 'lib/contact-shared-guard.mjs'
+      - 'qa/contact-shared-guard.test.mjs'
+      - '.github/workflows/contact-guard-regression.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'api/propstack-contact-request.js'
+      - 'lib/contact-shared-guard.mjs'
+      - 'qa/contact-shared-guard.test.mjs'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test qa/contact-shared-guard.test.mjs
+      - run: node --check api/propstack-contact-request.js

@@ -1,4 +1,5 @@
 import {logOperationalFailure} from '../lib/operational-log.mjs';
+import {claimContactSubmission,claimContactNote,clearContactNote} from '../lib/contact-shared-guard.mjs';
 import {withFormSecurity} from '../lib/form-security.mjs';
 import {scopedPropstackKey} from '../lib/propstack-access.mjs';
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
@@ -44,6 +45,9 @@ async function record(key,request,id,categories,privacyUrl) {
     if(contacts.length!==1 || normalise(contacts[0].email)!==request.email || normalise(contacts[0].first_name)!==normalise(request.firstName) || normalise(contacts[0].last_name)!==normalise(request.lastName))return {status:409,error:'Ihre Angaben konnten nicht eindeutig zugeordnet werden. Bitte prüfen Sie Ihren Namen und Ihre E-Mail-Adresse oder kontaktieren Sie uns direkt.'};
     contactId=Number(contacts[0].id);
   } else {
+    // A provider timeout during contact creation is ambiguous: do not issue
+    // another create before a later reconciliation confirms the first result.
+    if(!await claimContactNote(`${id}:contact-create`))throw new Error('Unconfirmed contact creation needs reconciliation');
     const contact=await propstack('contacts',key,{client:{first_name:request.firstName,last_name:request.lastName,email:request.email,...(request.salutation?{salutation:request.salutation}:{}),...(request.phone?{phone:request.phone}:{})}});contactId=Number(contact.id);
   }
   if(!validId(contactId))throw new Error('Contact confirmation missing');
@@ -64,12 +68,14 @@ async function record(key,request,id,categories,privacyUrl) {
     const exists=activities.some(x=>{const task=x.activatable || x.task || x;return Number(x.category_id ?? task.note_type_id)===category && String(task.body || x.body || '').includes(marker);});
     if(exists){uncertain.delete(writeKey);continue;}
     if(uncertain.has(writeKey))throw new Error('Unconfirmed note needs reconciliation');
+    if(!await claimContactNote(writeKey))throw new Error('Unconfirmed note needs reconciliation');
     uncertain.set(writeKey,Date.now());
     let result;
     try{result=await propstack('tasks',key,{task:{title,note_type_id:category,client_ids:[contactId],body}});}
-    catch(error){if(error.writeRejected)uncertain.delete(writeKey);throw error;}
+    catch(error){if(error.writeRejected){uncertain.delete(writeKey);await clearContactNote(writeKey);}throw error;}
     if(!validId(result?.id || result?.activity_id))throw new Error('Note confirmation missing');
     uncertain.delete(writeKey);
+    // Keep the shared guard until expiry: provider note listings can lag a successful write.
   }
   return {status:200,ok:true};
 }
@@ -105,6 +111,13 @@ export async function handler(req,res) {
   const fingerprint=sign(JSON.stringify(request),key);
   const previous=pending.get(id);
   if(previous&&previous.fingerprint!==fingerprint)return res.status(409).json({error:'Bitte laden Sie das Formular für eine neue Anfrage erneut.'});
+  try {
+    const claim=await claimContactSubmission(id,fingerprint);
+    if(claim==='conflict')return res.status(409).json({error:'Bitte laden Sie das Formular für eine neue Anfrage erneut.'});
+  } catch(error) {
+    logOperationalFailure('contact_shared_guard_failed',error);
+    return res.status(503).json({error:'Die Anfrage konnte gerade nicht sicher verarbeitet werden. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt.'});
+  }
   for(const [k,v] of pending)if(v.until<now)pending.delete(k);
   try{
     const promise=previous?.promise || (async()=>record(key,request,id,await noteCategories(key),privacyPolicyUrl(req)))();
