@@ -65,23 +65,25 @@ test('topic renderer rotates real content, keeps canonical QR links and silences
   class Clock extends Date{static now(){return now}}
   const YT={Player:class{constructor(mount,opts){this.opts=opts;this.muted=false;players.push(this);opts.events.onReady({target:this})}mute(){this.muted=true}playVideo(){this.opts.events.onStateChange({data:1})}destroy(){this.destroyed=true}}};
   const window={SLSSignagePaused:false,YT,addEventListener:(n,f)=>listeners[n]=f};
-  const math=Object.create(Math);math.random=()=>0;const expected=kind==='team'?data.topics[kind].slice(1).concat(data.topics[kind][0]):data.topics[kind];
+  const math=Object.create(Math);math.random=()=>0;const expected=['team','videos'].includes(kind)?data.topics[kind].slice(1).concat(data.topics[kind][0]):data.topics[kind];
   vm.runInNewContext(code,{window,YT,Math:math,location:{origin:'https://preview.example',hostname:'preview.example'},URL,Date:Clock,AbortController,Image:class{set src(v){this.onload?.()}},setTimeout:()=>1,clearTimeout(){},setInterval:(fn,ms)=>intervals.push({fn,ms}),document:{hidden:false,documentElement:{getAttribute:()=>kind},head:{appendChild(){}},getElementById:el,createElement:()=>new Element(),addEventListener:(n,f)=>listeners[n]=f},qrcode:()=>({addData(){},make(){},createSvgTag:()=>'<svg/>'}),fetch:async()=>({ok:true,json:async()=>data})});
   await new Promise(resolve=>setImmediate(resolve));assert.equal(el('valuation-title').textContent,expected[0].title);
   const destination=new URL(expected[0].target,'https://sls.de').href;assert.equal(el('valuation-qr').getAttribute('href'),destination);assert.doesNotMatch(destination,/preview/);
   window.SLSSignagePaused=true;now+=50000;intervals.find(t=>t.ms===250).fn();assert.equal(el('valuation-title').textContent,expected[0].title);
   window.SLSSignagePaused=false;now+=40001;intervals.find(t=>t.ms===250).fn();await new Promise(resolve=>setImmediate(resolve));assert.equal(el('valuation-title').textContent,expected[1].title);
-  if(kind==='team'){
-   const advance=()=>{now+=20001;intervals.find(t=>t.ms===250).fn();return el('valuation-title').textContent};
+  if(['team','videos'].includes(kind)){
+   const advance=()=>{now+=(kind==='videos'?40001:20001);intervals.find(t=>t.ms===250).fn();return el('valuation-title').textContent};
    const seen=[expected[0].title,expected[1].title];
    await intervals.find(t=>t.ms===900000).fn();assert.equal(el('valuation-title').textContent,expected[1].title);
    for(let i=2;i<expected.length;i++)seen.push(advance());
    assert.equal(new Set(seen).size,expected.length);
-   const next=advance();assert.notEqual(next,seen.at(-1));const nextRound=[next];
+   const next=advance();if(kind==='team')assert.notEqual(next,seen.at(-1));const nextRound=[next];
    for(let i=1;i<expected.length;i++)nextRound.push(advance());
    assert.equal(new Set(nextRound).size,expected.length);assert.notDeepEqual(nextRound,seen);
+   await new Promise(resolve=>setImmediate(resolve));
    listeners['sls-signage-activation']({detail:{active:true}});
-   const previous=el('valuation-title').textContent;listeners['sls-signage-activation']({detail:{active:false}});listeners['sls-signage-activation']({detail:{active:true}});assert.notEqual(el('valuation-title').textContent,previous);
+   const previous=el('valuation-title').textContent;listeners['sls-signage-activation']({detail:{active:false}});listeners['sls-signage-activation']({detail:{active:true}});if(kind==='team')assert.notEqual(el('valuation-title').textContent,previous);
+   await new Promise(resolve=>setImmediate(resolve));
   }
   if(kind==='videos'){assert.ok(players.every(p=>p.muted));assert.equal(el('video-stage').hidden,false);listeners['sls-signage-activation']({detail:{active:false}});assert.equal(el('video-stage').hidden,true);assert.ok(players.at(-1).destroyed)}
  }

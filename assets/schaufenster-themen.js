@@ -1,11 +1,11 @@
 (function(){
  'use strict';
  var kind=document.documentElement.getAttribute('data-signage-topic'),slides=[],index=0,started=Date.now(),generation=0,front=0,player=null,apiPromise=null,activated=false;
- var duration=kind==='videos'?40000:20000;
+ var duration=kind==='videos'?40000:20000,randomOrder=kind==='team'||kind==='videos';
  function el(id){return document.getElementById(id)}
- function shuffleTeam(previous){
+ function shuffleSlides(previous){
   for(var i=slides.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),temp=slides[i];slides[i]=slides[j];slides[j]=temp}
-  if(slides.length>1&&slides[0].target===previous){var first=slides[0];slides[0]=slides[1];slides[1]=first}
+  if(kind==='team'&&slides.length>1&&slides[0].target===previous){var first=slides[0];slides[0]=slides[1];slides[1]=first}
  }
  function qr(target,label){
   var url=new URL(target,'https://sls.de');
@@ -43,7 +43,7 @@
  }
  function show(at){
   if(!slides.length)return;
-  if(kind==='team'&&at>=slides.length)shuffleTeam(slides[index].target);
+  if(randomOrder&&at>=slides.length)shuffleSlides(slides[index].target);
   index=(at+slides.length)%slides.length;started=Date.now();var token=++generation,s=slides[index];stopVideo();
   el('display').classList.toggle('team-mode',kind==='team');el('display').classList.toggle('quote-mode',kind==='kundenstimmen');el('display').classList.toggle('video-mode',kind==='videos');
   el('valuation-title').textContent=s.title;el('valuation-accent').textContent=s.accent;el('valuation-copy').textContent=s.copy;
@@ -60,8 +60,8 @@
   var controller=new AbortController(),timer=setTimeout(function(){controller.abort()},12000);
   try{var response=await fetch('/assets/schaufenster-content.json',{cache:'no-store',signal:controller.signal});if(!response.ok)throw Error('content unavailable');var data=await response.json();if(!Array.isArray(data.topics?.[kind])||!data.topics[kind].length)throw Error('empty topic');
    var fresh=data.topics[kind].slice();
-   if(kind==='team'){
-    if(!slides.length){slides=fresh;shuffleTeam(null)}
+   if(randomOrder){
+    if(!slides.length){slides=fresh;shuffleSlides(null)}
     else{var current=slides[index].target,byTarget=new Map(fresh.map(function(s){return [s.target,s]}));
      slides=slides.filter(function(s){return byTarget.has(s.target)}).map(function(s){var updated=byTarget.get(s.target);byTarget.delete(s.target);return updated}).concat(Array.from(byTarget.values()));
      index=Math.max(0,slides.findIndex(function(s){return s.target===current}));
