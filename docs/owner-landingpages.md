@@ -58,3 +58,7 @@ Die Ergebnisdarstellung, ein eventueller Ergebnisversand und eine angefragte Kon
 Kürzere Überschriften und Nutzenversprechen, kompakter Kontakt mit Geschäftsführerportrait (ohne Zusage eines festen persönlichen Betreuers), belegter Verkäuferauszug von Ralph H. direkt im Einstieg sowie konkrete bestehende Verkaufsleistungen. Die Käuferrezension wurde durch die belegte Verkäuferrezension ersetzt. Persönliche Anfragen verwenden zwei Schritte: Immobilie und Kontakt. Zeitplan und Zusatznachricht sind freiwillig und einklappbar; bei fehlendem Zeitplan steht in der CRM-Notiz ausdrücklich „Nicht angegeben“. Vorherige Drei-Schritt-Seiten bleiben serverseitig kompatibel.
 
 Online-Rechner im rechten Einstiegsbereich; mobil nach Überschrift und kurzem Nutzen, vor Kontakt- und Rezensionsbelegen. Bestehende Einwilligung und unveränderte Anbieter-Konfiguration gelten weiter. Keine zusätzliche Anzeigenmessung oder Aktivierung; regionale Varianten und belastbare Conversion-Vergleiche folgen erst nach Kampagnenfestlegung.
+
+## Kundenstimmen und Geschäftsführer-Zuordnung
+
+Der Verkäuferauszug erscheint ausschließlich im gemeinsamen Kundenstimmenbereich mit Sternen, Kontext „Immobilienverkauf“, Autor, Datum und Quelle. Keine Rezension direkt unter dem Geschäftsführer im Einstieg. Pro Landingpage wird ein Geschäftsführer gezeigt, im kompakten Einstieg und im persönlichen Abschnitt: Verkauf Filippo Livera, persönliche Bewertung Mischa Stratmann, Online-Bewertung Dennis Sahlmen. Das Team stimmt den tatsächlich betreuenden Ansprechpartner weiterhin persönlich ab.
