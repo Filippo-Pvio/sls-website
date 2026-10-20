@@ -3,6 +3,7 @@ import {referenceParticipants,hasReferenceRoles} from '../lib/profile-reference-
 import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {cachedCatalog} from '../lib/property-catalog.mjs';
 import {readSharedReferences,writeSharedReferences} from '../lib/shared-reference-cache.mjs';
+import {referenceDisplayItem} from '../lib/reference-display.mjs';
 const PAGE_SIZE = 100;
 const MAX_PAGES = 40;
 // Match completed sales only. Never interpret "in Vermarktung" or "reserviert" as sold.
@@ -71,6 +72,13 @@ async function soldListings(key, statusIds, ordered = false) {
 // The gallery reads only the requested slice; other consumers keep the complete feed.
 const GALLERY_SIZE = 12;
 const GALLERY_MAX_PAGE = Math.ceil(PAGE_SIZE * MAX_PAGES / GALLERY_SIZE);
+const displayCatalog=cachedCatalog(async(key,status)=>{
+  const ids=new Set(status.split(','));
+  return (await soldListings(key,ids,true)).map(unit=>{
+    const item=publicReference(unit,ids);
+    return item?referenceDisplayItem(unit,item):null;
+  }).filter(Boolean);
+});
 async function galleryPage(key, statusIds, cursor) {
   let [page, offset] = cursor.split(':').map(Number);
   const references = [], seen = new Set();
@@ -139,6 +147,12 @@ async function handle(req, res) {
     if (!soldStatusIds.size) {
       res.setHeader('Cache-Control', 'no-store');
       return res.status(503).json({ error: 'Verkaufsstatus in Propstack nicht gefunden' });
+    }
+
+    if(req.query?.display==='1'){
+      const items=await displayCatalog(key,[...soldStatusIds].sort().join(','));
+      res.setHeader('Cache-Control','public, s-maxage=60');
+      return res.status(200).json({items,total:items.length});
     }
 
     if (gallery === '1' && requestedPage !== undefined) {
