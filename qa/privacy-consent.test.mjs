@@ -18,7 +18,7 @@ test('HTML cannot start external iframe/thumbnail requests before the manager ex
 test('every public HTML page has the manager and no parser-active external frames',async()=>{
  const output=new URL('../.site-output/',import.meta.url);
  const pages=(await readdir(output,{recursive:true})).filter(name=>name.endsWith('.html'));assert.ok(pages.length>100);
- for(const page of pages){const html=await readFile(new URL(page,output),'utf8');assert.match(html,/src="\/assets\/privacy-consent.js"/,page);assert.doesNotMatch(html,/<iframe\b[^>]*\ssrc=["']https?:/i,page);assert.doesNotMatch(html,/<img\b[^>]*\ssrc=["']https?:\/\/i\.ytimg\.com/i,page);}
+ for(const page of pages){const html=await readFile(new URL(page,output),'utf8');if(page==='schaufenster/index.html'){assert.match(html,/data-sls-signage/);assert.doesNotMatch(html,/privacy-consent\.js|sls-tracking\.js|<iframe/i);continue;}assert.match(html,/src="\/assets\/privacy-consent.js"/,page);assert.doesNotMatch(html,/<iframe\b[^>]*\ssrc=["']https?:/i,page);assert.doesNotMatch(html,/<img\b[^>]*\ssrc=["']https?:\/\/i\.ytimg\.com/i,page);}
 });
 
 test('all optional tab-storage callers use the consent-controlled facade',async()=>{

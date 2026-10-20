@@ -143,6 +143,13 @@ async function handle(req,res){
 
     if(id)return await detailResponse(id,key,status,res);
 
+    // Complete public website selection for unattended displays, never a partial page.
+    if(req.query.display==='1'){
+      const items=await getCatalog(key,status.id);
+      res.setHeader('Cache-Control','public, s-maxage=60');
+      return res.status(200).json({items,total:items.length});
+    }
+
     const page=Math.max(1,Number.parseInt(req.query.page||'1',10)||1);
     const requestedPer=Number.parseInt(req.query.per||String(LIST_PAGE_SIZE),10)||LIST_PAGE_SIZE;
     const per=Math.min(LIST_PAGE_SIZE,Math.max(1,requestedPer));

@@ -1,0 +1,178 @@
+(function () {
+  'use strict';
+  var SLIDE_MS = 20000, REFRESH_MS = 300000, MAX_AGE_MS = 1800000;
+  var items = [], index = -1, started = 0, lastSuccess = 0, refreshPending = false;
+  var generation = 0, photos = [], photoIndex = -1, front = 0, imagePending = false;
+  var detailCache = new Map(), imagesFailed = new Set(), lastTick = Date.now();
+  var number = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
+  var euros = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  var el = function (id) { return document.getElementById(id); };
+  var positive = function (n) { return n != null && Number.isFinite(Number(n)) && Number(n) > 0; };
+  function text(id, value) { el(id).textContent = value || ''; }
+  function safeImage(value) {
+    try { var url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch (_) { return ''; }
+  }
+  function request(url) {
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, 18000);
+    return fetch(url, { cache: 'no-store', signal: controller.signal }).then(function (response) {
+      if (!response.ok) { var error = new Error('HTTP ' + response.status); error.status = response.status; throw error; }
+      return response.json();
+    }).finally(function () { clearTimeout(timer); });
+  }
+  function resetImages() {
+    generation++; imagePending = false; photos = []; photoIndex = -1;
+    ['photo-a', 'photo-b'].forEach(function (id) { el(id).classList.remove('visible'); el(id).style.backgroundImage = ''; });
+    el('photo-dots').replaceChildren();
+  }
+  function standby(message) {
+    index = -1; resetImages();
+    el('property-content').hidden = true; el('standby').hidden = false;
+    text('standby', message); text('location', 'SLS Immobilienpartner');
+    text('title', 'Ihr nächstes Kapitel beginnt hier.');
+    el('title').classList.remove('long');
+    text('offer-type', 'Persönlich für Sie da'); text('photo-caption', 'Wir finden den Raum für Ihre Pläne.'); text('counter', '');
+    el('progress-fill').style.width = '0%';
+  }
+  function energyLine(p) {
+    var e = p.energy || {};
+    if (/^(?:wird\s+)?nicht\s+benötigt[.!]?$/i.test(String(e.availability || '').trim())) return 'Energieausweis wird nicht benötigt';
+    var parts = [e.kind];
+    if (e.value != null && Number.isFinite(Number(e.value))) parts.push(number.format(e.value) + ' kWh/(m²·a)');
+    if (e.fuel) parts.push(e.fuel);
+    if (e.buildingYear) parts.push('Baujahr ' + e.buildingYear);
+    if (e.rating) parts.push('Klasse ' + e.rating);
+    return parts.filter(Boolean).join(' · ') || 'Energieangaben auf Anfrage';
+  }
+  function renderFacts(p) {
+    var facts = [];
+    if (positive(p.area)) facts.push([number.format(p.area) + ' m²', 'Fläche']);
+    if (positive(p.rooms)) facts.push([number.format(p.rooms), 'Zimmer']);
+    if (positive(p.plot)) facts.push([number.format(p.plot) + ' m²', 'Grundstück']);
+    if (facts.length < 3 && positive(p.year)) facts.push([String(p.year), 'Baujahr']);
+    el('facts').replaceChildren();
+    facts.slice(0, 3).forEach(function (fact) {
+      var node = document.createElement('div'), value = document.createElement('strong'), label = document.createElement('span');
+      node.className = 'fact'; value.textContent = fact[0]; label.textContent = fact[1]; node.append(value, label); el('facts').appendChild(node);
+    });
+  }
+  function renderData(p) {
+    text('location', [p.zip, p.city].filter(Boolean).join(' ')); text('title', p.title);
+    el('title').classList.toggle('long', p.title.length > 100);
+    text('offer-type', (p.type || 'Immobilie') + ' · Kauf');
+    text('price', positive(p.price) ? euros.format(p.price) : 'Preis auf Anfrage');
+    el('price').classList.toggle('on-request', !positive(p.price));
+    var commission = String(p.courtage || '').trim();
+    if (/^\d+(?:[.,]\d+)?$/.test(commission)) commission += ' %';
+    text('commission', commission ? 'Käuferprovision: ' + commission : '');
+    text('energy', energyLine(p)); text('reference', 'Objekt ' + (p.reference || p.id));
+    text('counter', (index + 1) + ' / ' + items.length); renderFacts(p);
+  }
+  function showPhoto(next) {
+    if (imagePending || !photos.length) return;
+    var url = photos[next]; if (!url || imagesFailed.has(url)) return;
+    var token = generation, img = new Image(), settled = false;
+    imagePending = true;
+    var timer = setTimeout(function () { finish(false); }, 8000);
+    function finish(ok) {
+      if (settled) return; settled = true; clearTimeout(timer); img.onload = img.onerror = null;
+      if (token !== generation) return;
+      imagePending = false;
+      if (!ok) { imagesFailed.add(url); return; }
+      front = 1 - front;
+      var target = el(front ? 'photo-b' : 'photo-a'), old = el(front ? 'photo-a' : 'photo-b');
+      target.style.backgroundImage = 'url(' + JSON.stringify(url) + ')'; target.classList.add('visible'); old.classList.remove('visible');
+      photoIndex = next;
+      Array.from(el('photo-dots').children).forEach(function (dot, i) { dot.classList.toggle('active', i === next); });
+    }
+    img.onload = function () { finish(true); }; img.onerror = function () { finish(false); }; img.src = url;
+  }
+  function setPhotos(p) {
+    photos = (p.images || []).map(safeImage).filter(Boolean).filter(function (url) { return !imagesFailed.has(url); }).slice(0, 3);
+    el('photo-dots').replaceChildren();
+    photos.forEach(function () { var dot = document.createElement('span'); el('photo-dots').appendChild(dot); });
+    photoIndex = -1; showPhoto(0);
+  }
+  function getDetail(p) {
+    var hit = detailCache.get(p.id);
+    if (hit && Date.now() - hit.time < REFRESH_MS) return Promise.resolve(hit.data);
+    return request('/api/propstack-properties/?id=' + encodeURIComponent(p.id)).then(function (data) {
+      var result = data.items && data.items[0];
+      if (!result || String(result.id) !== p.id) throw new Error('Invalid detail');
+      // Keep only the current and next few objects; never accumulate an entire gallery catalog.
+      if (detailCache.size >= 4) detailCache.delete(detailCache.keys().next().value);
+      detailCache.set(p.id, { data: result, time: Date.now() });
+      return result;
+    });
+  }
+  function show(at) {
+    if (!items.length) return;
+    index = (at + items.length) % items.length; started = Date.now(); resetImages();
+    var p = items[index], token = generation;
+    el('property-content').hidden = false; el('standby').hidden = true;
+    renderData(p); text('photo-caption', p.type || 'Ihre neue Immobilie'); setPhotos(p);
+    getDetail(p).then(function (detail) {
+      if (token !== generation) return;
+      renderData(Object.assign({}, p, detail));
+      // Invalidate pending low-resolution image loads before switching to the gallery.
+      generation++; imagePending = false; setPhotos(detail);
+    }).catch(function (error) {
+      if (token !== generation) return;
+      if (error.status === 404 || error.status === 410) {
+        items = items.filter(function (item) { return item.id !== p.id; }); detailCache.delete(p.id);
+        if (items.length) show(index); else standby('Neue Immobilienangebote finden Sie auf sls.de.');
+      }
+    });
+    // Warm the next object's first high-resolution photograph, with a bounded cache.
+    if (items.length > 1) {
+      var next = items[(index + 1) % items.length];
+      getDetail(next).then(function (detail) { var url = safeImage((detail.images || [])[0]); if (url) { var img = new Image(); img.src = url; } }).catch(function () {});
+    }
+  }
+  function refresh() {
+    if (refreshPending) return;
+    refreshPending = true;
+    request('/api/propstack-properties/?display=1').then(function (data) {
+      if (!Array.isArray(data.items)) throw new Error('Invalid catalog');
+      var seen = new Set();
+      var updated = data.items.filter(function (p) {
+        if (!p || !/^\d+$/.test(String(p.id)) || typeof p.title !== 'string' || seen.has(String(p.id))) return false;
+        p.id = String(p.id); seen.add(p.id); return true;
+      });
+      // A partial or malformed response must never masquerade as a complete removal.
+      if (updated.length !== data.items.length) throw new Error('Incomplete catalog');
+      var current = items[index] && items[index].id, previousIndex = index;
+      items = updated; lastSuccess = Date.now(); detailCache.clear(); imagesFailed.clear();
+      if (!items.length) { standby('Neue Immobilienangebote finden Sie auf sls.de. Wir beraten Sie gerne persönlich.'); return; }
+      var found = items.findIndex(function (p) { return p.id === current; });
+      show(found >= 0 ? found : Math.max(0, Math.min(previousIndex, items.length - 1)));
+    }).catch(function () {
+      if (!lastSuccess || Date.now() - lastSuccess > MAX_AGE_MS) {
+        items = []; detailCache.clear(); standby('Entdecken Sie unsere Immobilien auf sls.de. Wir sind persönlich für Sie da.');
+      }
+    }).finally(function () { refreshPending = false; });
+  }
+  function tick() {
+    var now = Date.now();
+    // Reconnect after sleep or a suspended Android WebView.
+    if (now - lastTick > 60000) refresh(); lastTick = now;
+    if (lastSuccess && now - lastSuccess > MAX_AGE_MS && index >= 0) {
+      items = []; detailCache.clear(); standby('Entdecken Sie unsere Immobilien auf sls.de. Wir sind persönlich für Sie da.'); return;
+    }
+    if (index < 0) return;
+    var elapsed = now - started;
+    if (elapsed >= SLIDE_MS) { show(index + 1); return; }
+    el('progress-fill').style.width = Math.min(100, elapsed / SLIDE_MS * 100) + '%';
+    var usable = photos.filter(function (url) { return !imagesFailed.has(url); });
+    if (usable.length && !imagePending) {
+      var desired = photos.indexOf(usable[Math.min(usable.length - 1, Math.floor(elapsed / (SLIDE_MS / usable.length)))]);
+      if (desired !== photoIndex) showPhoto(desired);
+    }
+  }
+  window.addEventListener('online', refresh);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) refresh(); });
+  setInterval(tick, 250); setInterval(refresh, REFRESH_MS);
+  // Faster retries during initial startup, empty results, and extended outages.
+  setInterval(function () { if (index < 0) refresh(); }, 30000);
+  refresh();
+})();

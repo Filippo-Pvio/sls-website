@@ -37,6 +37,8 @@ test('feed pages, slim map, full catalog search and recommendations use bounded 
   const map=await run({map:'1'});assert.equal(map.items.length,135);assert.deepEqual(Object.keys(map.items[0]),['id','zip','city','price']);assert.equal(calls.length,5);
   const found=await run({query:'Objekt 135',per:'9'});assert.equal(found.items.length,1);assert.equal(String(found.items[0].id),'135');assert.equal(calls.length,6);
   const similar=await run({similarTo:'1'});assert.ok(similar.items.length<=3);assert.ok(similar.items.every(p=>p.id!=='1'));
+  const display=await run({display:'1'});assert.equal(display.items.length,135);assert.equal(display.total,135);
+  assert.equal(display.items.at(-1).id,'135');assert.equal(display.items[0].broker,undefined);
  }finally{global.fetch=previousFetch;if(previousKey===undefined)delete process.env.PROPSTACK_API_KEY;else process.env.PROPSTACK_API_KEY=previousKey}
 });
 test('list thumbnails prefer medium images while details retain large images and privacy filtering',async()=>{
