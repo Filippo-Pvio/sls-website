@@ -3280,20 +3280,12 @@
           "value": "nosniff"
         },
         {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
         },
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=()"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.10/iframeResizer.min.js https://maps.googleapis.com https://maps.gstatic.com https://fisher.pricehubble.com https://*.propstack.de; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.googleapis.com https://*.gstatic.com https://*.pricehubble.com https://*.propstack.de; frame-src https://www.instagram.com https://widget.immobilienscout24.de https://homepagemodul.immowelt.de https://tour.sls.de https://www.google.com https://www.youtube-nocookie.com https://www.youtube.com https://budget-check.justhome.com https://calculator.justhome.com https://*.pricehubble.com https://*.propstack.de; media-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
         }
       ]
     },
@@ -3353,6 +3345,36 @@
         {
           "key": "Cache-Control",
           "value": "private, no-store"
+        }
+      ]
+    },
+    {
+      "source": "/((?!schaufenster(?:/|$)).*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.10/iframeResizer.min.js https://maps.googleapis.com https://maps.gstatic.com https://fisher.pricehubble.com https://*.propstack.de; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.googleapis.com https://*.gstatic.com https://*.pricehubble.com https://*.propstack.de; frame-src https://www.instagram.com https://widget.immobilienscout24.de https://homepagemodul.immowelt.de https://tour.sls.de https://www.google.com https://www.youtube-nocookie.com https://www.youtube.com https://budget-check.justhome.com https://calculator.justhome.com https://*.pricehubble.com https://*.propstack.de; media-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+        }
+      ]
+    },
+    {
+      "source": "/schaufenster/:path*",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.10/iframeResizer.min.js https://maps.googleapis.com https://maps.gstatic.com https://fisher.pricehubble.com https://*.propstack.de; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.googleapis.com https://*.gstatic.com https://*.pricehubble.com https://*.propstack.de; frame-src https://www.instagram.com https://widget.immobilienscout24.de https://homepagemodul.immowelt.de https://tour.sls.de https://www.google.com https://www.youtube-nocookie.com https://www.youtube.com https://budget-check.justhome.com https://calculator.justhome.com https://*.pricehubble.com https://*.propstack.de; media-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors https:; upgrade-insecure-requests"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
         }
       ]
     }
@@ -3421,6 +3443,9 @@
     "api/propstack-sold-references.js": {
       "maxDuration": 60,
       "includeFiles": "content/team/profiles.json"
+    },
+    "api/propstack-properties.js": {
+      "maxDuration": 60
     }
   },
   "buildCommand": "node scripts/build-magazine.mjs && node scripts/build-sia-company.mjs && node scripts/build-public-site.mjs",
