@@ -1,0 +1,32 @@
+/* Dedicated offer layout: the image and the information panel never overlap. */
+.property-display{--signage-unit:min(1vw,1.77778vh);background:var(--paper)}
+.property-display .visual{right:37%;background:var(--hero)}
+.property-display .visual-shade{display:none}
+.property-display .offer-badge{top:3.2vh;right:2.4vw;font-size:calc(1.05 * var(--signage-unit));box-shadow:0 2px 12px #0b111220}
+.property-display .photo-bottom{left:2.4vw;right:2.4vw;bottom:2.8vh;justify-content:space-between;font-size:calc(1.05 * var(--signage-unit))}
+.property-display #photo-caption,.property-display .photo-dots{padding:.65em .9em;border-radius:6px;background:#3b535e;color:var(--paper)}
+.property-display .photo-dots:empty{display:none}
+.property-display .information{left:63%;right:0;top:0;bottom:10vh;width:auto;padding:3.2vh 2.4vw 2.8vh;color:var(--hero);background:var(--paper)}
+.property-display .eyebrow{font-size:calc(.85 * var(--signage-unit));margin-bottom:1.3vh;color:var(--hero)}
+.property-display .location{font-size:calc(1.25 * var(--signage-unit));margin-bottom:1.2vh}
+.property-display h1{font-size:calc(1.85 * var(--signage-unit));line-height:1.13;margin-bottom:1.6vh}
+.property-display h1.long{font-size:calc(1.6 * var(--signage-unit))}
+.property-display #property-content{flex:0 0 auto}
+.property-display .price-label{font-size:calc(.75 * var(--signage-unit));color:var(--hero)}
+.property-display .price{font-size:calc(3.2 * var(--signage-unit))}
+.property-display .price.on-request{font-size:calc(2 * var(--signage-unit))}
+.property-display .facts{gap:1.25vw;border-color:#3b535e33;margin-top:1.2vh;padding-top:1.2vh}
+.property-display .fact strong{font-size:calc(1.5 * var(--signage-unit))}
+.property-display .fact span{font-size:calc(.85 * var(--signage-unit));color:var(--hero)}
+.property-display .commission,.property-display .energy{font-size:calc(.85 * var(--signage-unit));margin-top:.9vh;color:var(--hero)}
+.property-display .reference{font-size:calc(.67 * var(--signage-unit));margin-top:.8vh;color:var(--hero)}
+.property-display .standby{font-size:calc(1.25 * var(--signage-unit))}
+.property-display .panel-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:1.2vw;margin-top:auto;padding-top:1.6vh}
+.property-display .invitation{min-width:0;margin:0;padding:0;gap:.5vh}
+.property-display .invitation span{font-size:calc(.8 * var(--signage-unit));line-height:1.5}
+.property-display .invitation strong{font-size:calc(.9 * var(--signage-unit))}
+.property-display .property-qr{position:static;flex:0 0 auto;width:calc(11.5 * var(--signage-unit));padding:calc(.55 * var(--signage-unit));box-shadow:none;border:1px solid #3b535e22}
+.property-display .property-qr strong{font-size:calc(.8 * var(--signage-unit))}
+.property-display .property-qr>span{font-size:calc(.65 * var(--signage-unit))}
+.property-display footer{border-top:1px solid #3b535e22}
+@media(max-aspect-ratio:4/3){.property-display .information{bottom:5.625vw;padding-top:1.8vw;padding-bottom:1.6vw}.property-display .offer-badge{top:1.8vw}.property-display .photo-bottom{bottom:1.6vw}}

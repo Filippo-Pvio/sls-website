@@ -7,12 +7,13 @@
   <meta name="theme-color" content="#3b535e">
   <title>Immobilien im Schaufenster · SLS Immobilienpartner</title>
   <link rel="stylesheet" href="/assets/schaufenster.css">
+  <link rel="stylesheet" href="/assets/schaufenster-angebote.css">
   <script src="/assets/schaufenster-bridge.js" defer></script>
   <script src="/assets/vendor/qrcode-generator-1.4.4.js" defer></script>
   <script src="/assets/schaufenster.js" defer></script>
 </head>
 <body>
-  <main id="display" class="display" aria-label="Aktuelle Immobilien von SLS">
+  <main id="display" class="display property-display" aria-label="Aktuelle Immobilien von SLS">
     <section class="visual" aria-label="Immobilienbilder">
       <div class="photo" id="photo-a"></div><div class="photo" id="photo-b"></div>
       <div class="visual-shade"></div>
@@ -30,13 +31,15 @@
         <div class="reference" id="reference"></div>
       </div>
       <p id="standby" class="standby" role="status">Aktuelle Angebote werden geladen …</p>
+      <div class="panel-bottom">
       <div class="invitation"><span>Alle Bilder &amp; Exposés entdecken</span><strong>sls.de/immobilien</strong></div>
-    </section>
     <a id="property-qr" class="property-qr" hidden aria-label="Exposé auf dem Smartphone öffnen">
       <div id="qr-symbol" aria-hidden="true"></div>
       <strong>Exposé auf dem<br>Smartphone öffnen</strong>
       <span id="qr-reference"></span>
     </a>
+      </div>
+    </section>
     <footer><div><span class="contact-label">Persönlich für Sie da</span><strong>02369 742 80 20</strong></div><div class="footer-center">SLS Immobilienpartner <span>·</span> service@sls.de</div><div class="website">sls.de <span id="counter"></span></div></footer>
     <div class="progress" aria-hidden="true"><div id="progress-fill"></div></div>
   </main>
