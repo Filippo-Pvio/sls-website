@@ -7,7 +7,7 @@ test('valuation presentation loops through four messages, keeps one QR target an
  const nodes=new Map(),listeners={},intervals=[],images=[];let now=100000,encoded;
  const el=id=>{if(!nodes.has(id))nodes.set(id,{textContent:'',style:{},innerHTML:'',classList:{add(){},remove(){}}});return nodes.get(id)};
  class Clock extends Date{static now(){return now}}
- const context=vm.createContext({Date:Clock,console,Image:class{set src(v){images.push(v);this.onload?.()}},
+ const context=vm.createContext({Date:Clock,console,window:{addEventListener(){}},Image:class{set src(v){images.push(v);this.onload?.()}},
   document:{hidden:false,getElementById:el,addEventListener:(name,fn)=>listeners[name]=fn},
   qrcode:()=>({addData(v){encoded=v},make(){},createSvgTag:()=>'<svg></svg>'}),
   setInterval:(fn,ms)=>intervals.push({fn,ms})});

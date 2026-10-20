@@ -1,0 +1,634 @@
+{
+  "topics": {
+    "kaeuferfinder": [
+      {
+        "title": "Wer sucht eine Immobilie wie Ihre?",
+        "accent": "Vielleicht passt Ihr Zuhause.",
+        "copy": "Lassen Sie uns prüfen, welche aktuellen Suchwünsche zu Ihrer Immobilie passen.",
+        "target": "/kaeuferfinder/",
+        "image": "/assets/images/search-hero/besichtigung-1536.webp",
+        "tags": [
+          "Persönlicher Nachfragecheck",
+          "Für Eigentümer"
+        ],
+        "qrLabel": "Nachfrage für Ihre Immobilie prüfen"
+      },
+      {
+        "title": "Ihre Immobilie. Wer könnte passen?",
+        "accent": "Digital beginnen. Persönlich besprechen.",
+        "copy": "Beschreiben Sie Ihre Immobilie. Der Nachfragecheck zeigt eine erste Auswertung passender Suchprofile. Konkretes Kaufinteresse und Bonität werden anschließend persönlich geprüft.",
+        "target": "/kaeuferfinder/",
+        "image": "/assets/images/valuation-hero/beratung-1536.webp",
+        "qrLabel": "Käuferfinder auf dem Smartphone öffnen"
+      }
+    ],
+    "team": [
+      {
+        "title": "Dennis Sahlmen",
+        "accent": "Geschäftsführer · Immobilienmakler (IHK)",
+        "copy": "Marktverständnis trifft gute Präsentation.",
+        "target": "/team/dennis-sahlmen/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Dennis-Sahlmen-768x768.jpg",
+        "tags": [
+          "Marktwert einordnen",
+          "Immobilien präsentieren",
+          "Eigentümer begleiten"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Filippo Livera",
+        "accent": "Geschäftsführer · Immobilienmakler",
+        "copy": "Persönlich für Ihre Immobilie da.",
+        "target": "/team/filippo-livera/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Filippo-Livera-768x768.jpg",
+        "tags": [],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Mischa Stratmann",
+        "accent": "Geschäftsführer · Immobilienkaufmann & Sachverständiger",
+        "copy": "Ein klarer Blick auf Immobilienwerte.",
+        "target": "/team/mischa-stratmann/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Mischa-Stratmann-768x768.jpg",
+        "tags": [
+          "Werte nachvollziehen",
+          "Objekte differenziert betrachten",
+          "Verkaufswege planen"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Andreas Busch",
+        "accent": "Regionalleiter Düsseldorf",
+        "copy": "Erfahrung im Rheinland. Nähe im Gespräch.",
+        "target": "/team/andreas-busch/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Andreas-Busch-768x768.jpg",
+        "tags": [
+          "Das Rheinland kennen",
+          "Wirtschaftlich einordnen",
+          "Interessen zusammenführen"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Cüneyt Demirli",
+        "accent": "Immobilienmakler",
+        "copy": "Immobilien und Finanzierung zusammen denken.",
+        "target": "/team/cueneyt-demirli/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Cueneyt-Demirli-768x768.jpg",
+        "tags": [
+          "Finanzielle Zusammenhänge",
+          "Rheinland und Ruhrgebiet",
+          "Persönliche Beratung"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Tanja Wawrosch",
+        "accent": "Immobilienmaklerin",
+        "copy": "Regional verwurzelt. Persönlich engagiert.",
+        "target": "/team/tanja-wawrosch/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Tanja-Wawrosch-768x768.jpg",
+        "tags": [
+          "Regionale Marktkenntnis",
+          "Wohnimmobilien vermitteln",
+          "Verhandlungen begleiten"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Daniel Allamezade",
+        "accent": "Immobilienmakler",
+        "copy": "Vertriebserfahrung mit Blick für Menschen.",
+        "target": "/team/daniel-allamezade/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Daniel-Allamezade-768x768.jpg",
+        "tags": [
+          "Ziele konkret besprechen",
+          "Verhandlungen strukturieren",
+          "Absprachen verlässlich halten"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Nico Hryn",
+        "accent": "Immobilienmakler",
+        "copy": "Finanzwissen trifft Immobilienberatung.",
+        "target": "/team/nico-hryn/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Nico-Hryn-768x768.jpg",
+        "tags": [
+          "Wirtschaftliche Grundlagen",
+          "Struktur im Verkaufsprozess",
+          "Individuelle Möglichkeiten"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Maximilian Werner",
+        "accent": "Immobilienmakler",
+        "copy": "Zuhören. Einordnen. Gemeinsam entscheiden.",
+        "target": "/team/maximilian-werner/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Maximilian-Werner-768x768.jpg",
+        "tags": [
+          "Anliegen verstehen",
+          "Entscheidungen erklären",
+          "Bis zur Übergabe begleiten"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Dustin Offermann",
+        "accent": "Immobilienmakler",
+        "copy": "Fachwissen verständlich machen.",
+        "target": "/team/dustin-offermann/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Dustin-Offermann-768x767.jpg",
+        "tags": [
+          "Wohnimmobilien bewerten",
+          "Zusammenhänge erklären",
+          "Interessen abgleichen"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Heiko Hofmann",
+        "accent": "Immobilienmakler",
+        "copy": "Bodenständig beraten. Klar begleiten.",
+        "target": "/team/heiko-hofmann/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Heiko-Hofmann-768x768.jpg",
+        "tags": [
+          "Den Markt analysieren",
+          "Persönliche Ziele verstehen",
+          "Klare Schritte vereinbaren"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Manuela Landripet",
+        "accent": "Immobilienmaklerin",
+        "copy": "Internationale Erfahrung. Persönliche Nähe.",
+        "target": "/team/manuela-landripet/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Manuela-Landripet-768x768.png",
+        "tags": [
+          "Erfahrung aus zwei Ländern",
+          "Lebenssituationen berücksichtigen",
+          "Persönlich begleiten"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Gina Künnecke",
+        "accent": "Immobilienmaklerin",
+        "copy": "Fachwissen mit Gespür für Wohnwünsche.",
+        "target": "/team/gina-kuennecke/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Gina-Kuennecke.jpg",
+        "tags": [
+          "Wohnwünsche aufnehmen",
+          "Möglichkeiten einordnen",
+          "Sorgfältig organisieren"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Jacqueline Flöter",
+        "accent": "Immobilienmaklerin",
+        "copy": "Erfahrung, die Klarheit schafft.",
+        "target": "/team/jacqueline-floeter/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/images/team/jacqueline-floeter-portrait-v2.jpg",
+        "tags": [
+          "Komplexität ordnen",
+          "Offen beraten",
+          "Pragmatische Lösungen finden"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Uwe Braun",
+        "accent": "Immobilienmakler",
+        "copy": "Ein Zuhause mit Herz und Verstand.",
+        "target": "/team/uwe-braun/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Uwe-Braun-1-768x768.jpg",
+        "tags": [
+          "Finanzierung verstehen",
+          "Räume erlebbar machen",
+          "Persönliche Wünsche einordnen"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Kristina Kruschinski",
+        "accent": "Operations & Office Managerin",
+        "copy": "Organisation, die Menschen verbindet.",
+        "target": "/team/kristina-kruschinski/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Kristina-Kruschinski-768x768.jpg",
+        "tags": [
+          "Abläufe koordinieren",
+          "Kommunikation verbinden",
+          "Struktur im Tagesgeschäft"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Svea Bruns",
+        "accent": "Volljuristin | Legal & Controlling",
+        "copy": "Rechtliche Klarheit. Praktischer Blick.",
+        "target": "/team/svea-bruns/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Svea-Bruns-768x768.jpg",
+        "tags": [
+          "Rechtliche Zusammenhänge",
+          "Praktische Abläufe",
+          "Digitale Prozesse"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Daniela Sahlmen",
+        "accent": "Pressesprecherin & Public Relations",
+        "copy": "Kommunikation mit einer klaren Haltung.",
+        "target": "/team/daniela-sahlmen/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Daniela-Sahlmen-768x769.jpg",
+        "tags": [
+          "Presseanfragen begleiten",
+          "Inhalte verständlich aufbereiten",
+          "Die Marke konsistent vermitteln"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Sophia Peter",
+        "accent": "Social Media Managerin & Back Office",
+        "copy": "Sichtbarkeit und Organisation verbinden.",
+        "target": "/team/sophia-peter/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Sophia-Peter-768x777.jpg",
+        "tags": [
+          "Social Media gestalten",
+          "Das Team unterstützen",
+          "Abläufe koordinieren"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Arne Wilke",
+        "accent": "Head of Telesales",
+        "copy": "Gute Gespräche brauchen klare Strukturen.",
+        "target": "/team/arne-wilke/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Portrait-768x768.jpeg",
+        "tags": [
+          "Telefonischen Kontakt gestalten",
+          "Das Team entwickeln",
+          "Prozesse verbessern"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      },
+      {
+        "title": "Samy El-Munayer",
+        "accent": "Telesales Manager",
+        "copy": "Der erste Kontakt zählt.",
+        "target": "/team/samy-el-munayer/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "portrait": "/assets/imported/Samy-El-Munayer-768x768.png",
+        "tags": [
+          "Anliegen aufnehmen",
+          "Termine koordinieren",
+          "Den nächsten Schritt klären"
+        ],
+        "qrLabel": "Ihr Team persönlich kennenlernen"
+      }
+    ],
+    "ratgeber": [
+      {
+        "title": "Immobilie geerbt?",
+        "accent": "Klarheit für Ihre nächsten Schritte.",
+        "copy": "Orientierung zu einer geerbten Immobilie – mit Fragen für Ihre persönliche Beratung.",
+        "target": "/downloads/?ratgeber=ERBSCHAFT#ratgeber-anfragen",
+        "image": "/assets/images/guides-hero/beratung-1536.webp",
+        "portrait": "/assets/images/guides/2026-10-15/erbschaft.webp",
+        "book": true,
+        "qrLabel": "Passenden Ratgeber auswählen"
+      },
+      {
+        "title": "Verkaufen beginnt mit guter Vorbereitung.",
+        "accent": "Ihr Ratgeber zum Immobilienverkauf.",
+        "copy": "Von den ersten Überlegungen bis zur Übergabe: verständliche Orientierung für Eigentümer.",
+        "target": "/downloads/?ratgeber=VERKAUF#ratgeber-anfragen",
+        "image": "/assets/images/guides-hero/beratung-1536.webp",
+        "portrait": "/assets/images/guides/2026-10-15/verkauf.webp",
+        "book": true,
+        "qrLabel": "Passenden Ratgeber auswählen"
+      },
+      {
+        "title": "Passt Ihr Zuhause noch zu Ihrem Leben?",
+        "accent": "Wohnen im Alter.",
+        "copy": "Den nächsten Lebensabschnitt planen und Möglichkeiten für Ihre Immobilie kennenlernen.",
+        "target": "/downloads/?ratgeber=WOHNEN_IM_ALTER#ratgeber-anfragen",
+        "image": "/assets/images/guides-hero/beratung-1536.webp",
+        "portrait": "/assets/images/guides/2026-10-15/wohnen_im_alter.webp",
+        "book": true,
+        "qrLabel": "Passenden Ratgeber auswählen"
+      },
+      {
+        "title": "Gemeinsame Immobilie. Neue Wege.",
+        "accent": "Orientierung in einer Trennung.",
+        "copy": "Fragen zur Immobilie sammeln und die nächsten Schritte mit persönlicher Unterstützung klären.",
+        "target": "/downloads/?ratgeber=TRENNUNG#ratgeber-anfragen",
+        "image": "/assets/images/guides-hero/beratung-1536.webp",
+        "portrait": "/assets/images/guides/2026-10-15/trennung.webp",
+        "book": true,
+        "qrLabel": "Passenden Ratgeber auswählen"
+      },
+      {
+        "title": "Gut vorbereitet in den Verkauf.",
+        "accent": "Ihre Unterlagen im Überblick.",
+        "copy": "Mit der Unterlagen-Checkliste Dokumente sammeln und den Verkauf strukturiert vorbereiten.",
+        "target": "/downloads/?ratgeber=UNTERLAGEN#ratgeber-anfragen",
+        "image": "/assets/images/guides-hero/beratung-1536.webp",
+        "portrait": "/assets/images/guides/2026-10-15/unterlagen.webp",
+        "book": true,
+        "qrLabel": "Passenden Ratgeber auswählen"
+      },
+      {
+        "title": "Welcher Preis passt zu Ihrer Immobilie?",
+        "accent": "Der richtige Immobilienpreis.",
+        "copy": "Erfahren Sie, welche Grundlagen bei der Preisfindung eine Rolle spielen.",
+        "target": "/downloads/?ratgeber=BEWERTUNG#ratgeber-anfragen",
+        "image": "/assets/images/guides-hero/beratung-1536.webp",
+        "portrait": "/assets/images/guides/2026-10-15/bewertung.webp",
+        "book": true,
+        "qrLabel": "Passenden Ratgeber auswählen"
+      }
+    ],
+    "verkaufsablauf": [
+      {
+        "title": "Was ist Ihre Immobilie wert?",
+        "accent": "01 · Kennenlernen & bewerten",
+        "copy": "Wir besprechen Ihre Ziele und ordnen den Wert Ihrer Immobilie ein.",
+        "target": "/immobilienbewertung/",
+        "image": "/assets/images/sell-hero/beratung-1536.webp"
+      },
+      {
+        "title": "Ihre Immobilie verdient gute Bilder.",
+        "accent": "02 · Vorbereiten & präsentieren",
+        "copy": "Unterlagen, Fotos und Exposé: Gemeinsam bereiten wir Ihre Immobilie auf die Vermarktung vor.",
+        "target": "/verkaufen/",
+        "image": "/assets/images/sell-hero/besichtigung-1536.webp"
+      },
+      {
+        "title": "Die passenden Menschen erreichen.",
+        "accent": "03 · Käufer finden & begleiten",
+        "copy": "Wir präsentieren Ihre Immobilie, sprechen Interessenten an und begleiten Besichtigungen und Gespräche.",
+        "target": "/verkaufen/",
+        "image": "/assets/images/hero-scenes/viewing-1536.webp"
+      },
+      {
+        "title": "Bis zum nächsten Kapitel an Ihrer Seite.",
+        "accent": "04 · Notar & Übergabe",
+        "copy": "Wir begleiten die Abstimmung bis zum Notartermin und die dokumentierte Übergabe.",
+        "target": "/verkaufen/",
+        "image": "/assets/images/hero-scenes/handshake-1536.webp"
+      }
+    ],
+    "kundenstimmen": [
+      {
+        "title": "„Herr Busch war stets äußerst freundlich, kompetent und jederzeit für Fragen und Anliegen erreichbar. …“",
+        "accent": "Maria P. · 5 von 5 Sternen",
+        "copy": "Google-Rezension · Auszug · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/andreas-busch/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Andreas Busch",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2tGTWRGRmxUMDAyVEhOcVp6aEZieTFDWlZadmJVRRAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOkFMdFFlT002THNqZzhFby1CZVZvbUE%7C0dEQaz8UDvL%7C?hl=en"
+      },
+      {
+        "title": "„Herr Demirli hat uns während des gesamten Prozesses äußerst kompetent, zuverlässig und engagiert begleitet. …“",
+        "accent": "Martyna K. · 5 von 5 Sternen",
+        "copy": "Google-Rezension · Auszug · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/cueneyt-demirli/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Cüneyt Demirli",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT25CSmNYUXlRbHBUV2s5eFFWVkpaMUUzTWtGbVVtYxAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOnBJcXQyQlpTWk9xQVVJZ1E3MkFmUmc%7C%7C?hl=en-US"
+      },
+      {
+        "title": "„Beratung, Kommunikation, Erreichbarkeit bzw. die ganze Abwicklung beim Hauskauf war mit Frau Wawrosch hervorragend. Ebenso die fachliche Kompetenz. …“",
+        "accent": "Torsten Schöneborn · 5 von 5 Sternen",
+        "copy": "Google-Rezension · Auszug · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/tanja-wawrosch/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Tanja Wawrosch",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25OMExWZE1jMmxaWW1ndFgyZDRjbDlvT1daeWIxRRAB!2m1!1s0x8a1a616dc32ad483:0xdf996794c2ce85eb"
+      },
+      {
+        "title": "„Herr Allamezade von der SLS Immobilien Partner GmbH betreute und begleitete den Verkauf unserer Immobilie in hervorragender Weise. …“",
+        "accent": "Ralph H. · 5 von 5 Sternen",
+        "copy": "Google-Rezension · Auszug · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/daniel-allamezade/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Daniel Allamezade",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT21OaVRFaFJPQzFUTld4MWFuTkxZMDlRTkdGaWFFRRAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOmNiTEhROC1TNWx1anNLY09QNGFiaEE%7C0d3OYWAfgyO%7C?hl=en"
+      },
+      {
+        "title": "„Herr Werner war sehr zuvorkommend und freundlich. Er hat mir alles Notwendige erklärt, wofür ich ihm danke.“",
+        "accent": "Mustafa D. · 5 von 5 Sternen",
+        "copy": "Google-Rezension · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/maximilian-werner/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Maximilian Werner",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2xSNVoyNVpVR3gyVVV4WkxVOUthakU0YTBnMWRYYxAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOlR5Z25ZUGx2UUxZLU9KajE4a0g1dXc%7C%7C?hl=en-US"
+      },
+      {
+        "title": "„Wir möchten uns herzlich bei Herrn Dustin Offermann für die hervorragende Betreuung bedanken. …“",
+        "accent": "Turan · 5 von 5 Sternen",
+        "copy": "Google-Rezension · Auszug · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/dustin-offermann/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Dustin Offermann",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2s5TFNuaGpXVVJCYkUxWlJGRkJkSEo1U1haNGIyYxAB!2m1!1s0x8a1a616dc32ad483:0xdf996794c2ce85eb"
+      },
+      {
+        "title": "„Sehr netter Kontakt mit Herrn Hofmann. Er hat mir umfangreich meine Fragen beantwortet und mir mögliches weitere Procedere geschildert. …“",
+        "accent": "Aggi B. · 5 von 5 Sternen",
+        "copy": "Google-Rezension · Auszug · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/heiko-hofmann/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Heiko Hofmann",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT21sWk5GVTVWbWcxTUdOMU9VUm9URnByTTA1aFZXYxAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOmlZNFU5Vmg1MGN1OURoTFprM05hVWc%7C%7C?hl=en-US"
+      },
+      {
+        "title": "„Frau Landripet war sehr gut vorbereitet, freundlich und kompetent. …“",
+        "accent": "Rous K. · 5 von 5 Sternen",
+        "copy": "Google-Rezension · Auszug · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/manuela-landripet/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Manuela Landripet",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2paTFJuZE5MWEJxZDFWVVpqUjBaa2xJTUdZNWRVRRAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOjZLRndNLXBqd1VUZjR0ZklIMGY5dUE%7C%7C?hl=en-US"
+      },
+      {
+        "title": "„Herzlichen Dank an Frau Gina Künnecke für die gute und schnelle Betreuung. …“",
+        "accent": "Wolfgang B. · 5 von 5 Sternen",
+        "copy": "Google-Rezension · Auszug · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/gina-kuennecke/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Gina Künnecke",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2taaGJreGlUVzl0TTA1c04zRlJkRVZXWlZkRFJuYxAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOkZhbkxiTW9tM05sN3FRdEVWZVdDRnc%7C%7C?hl=en-US"
+      },
+      {
+        "title": "„Ich bin von Ihrer Mitarbeiterin Frau Flöter sehr kompetent, ausführlich und freundlich beraten worden. …“",
+        "accent": "Clemens K. · 5 von 5 Sternen",
+        "copy": "Google-Rezension · Auszug · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/jacqueline-floeter/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Jacqueline Flöter",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2pNeWFIZFpVa2hLVWpCVlgyVXRRM0ZzY1d0U01YYxAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOjMyaHdZUkhKUjBVX2UtQ3FscWtSMXc%7C%7C?hl=en-US"
+      },
+      {
+        "title": "„Herr Braun war sehr kompetent und freundlich. Die Immobilie hat mir sehr gut gefallen.“",
+        "accent": "Birgit G. · 5 von 5 Sternen",
+        "copy": "Google-Rezension · geprüft am 3.10.2026\nDie Bewertung und ihren Quellenlink finden Sie im Profil.",
+        "target": "/team/uwe-braun/",
+        "image": "/assets/images/hero-scenes/consultation-1536.webp",
+        "quote": true,
+        "tags": [
+          "Uwe Braun",
+          "Quelle: Google"
+        ],
+        "qrLabel": "Kundenstimme & Quelle ansehen",
+        "source": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT25OS2VWRlNWbmgzVTA5cVVsbGpWSFJUYldaUU9IYxAB!2m1!1s0x0:0xdf996794c2ce85eb!3m1!1s2@1:CAIQACodChtycF9oOnNKeVFSVnh3U09qUlljVHRTbWZQOHc%7C%7C?hl=en"
+      }
+    ],
+    "videos": [
+      {
+        "title": "Roomtour: Historisches Fachwerkhaus mit Charakter",
+        "accent": "Roomtour · Uwe Braun",
+        "copy": "Roomtour: Historisches Fachwerkhaus mit Charakter.",
+        "target": "https://www.youtube.com/watch?v=guoSI4VrK8E",
+        "image": "/api/youtube-thumbnail?video=guoSI4VrK8E",
+        "video": "guoSI4VrK8E",
+        "qrLabel": "Roomtour auf YouTube ansehen",
+        "tags": [
+          "Stumm · Untertitel sofern verfügbar",
+          "Immobilienpräsentation"
+        ],
+        "note": "Gezeigtes Objekt kann bereits vermittelt sein. Aktuelle Angebote finden Sie auf sls.de."
+      },
+      {
+        "title": "Roomtour: Viel Raum im Reihenmittelhaus",
+        "accent": "Roomtour · Maximilian Werner",
+        "copy": "Roomtour: Viel Raum im Reihenmittelhaus.",
+        "target": "https://www.youtube.com/watch?v=maZwZ6Rzwpk",
+        "image": "/api/youtube-thumbnail?video=maZwZ6Rzwpk",
+        "video": "maZwZ6Rzwpk",
+        "qrLabel": "Roomtour auf YouTube ansehen",
+        "tags": [
+          "Stumm · Untertitel sofern verfügbar",
+          "Immobilienpräsentation"
+        ],
+        "note": "Gezeigtes Objekt kann bereits vermittelt sein. Aktuelle Angebote finden Sie auf sls.de."
+      }
+    ]
+  },
+  "programme": [
+    {
+      "path": "/schaufenster/",
+      "seconds": 60
+    },
+    {
+      "path": "/schaufenster/kaeuferfinder/",
+      "seconds": 20
+    },
+    {
+      "path": "/schaufenster/referenzen/",
+      "seconds": 20
+    },
+    {
+      "path": "/schaufenster/immobilienbewertung/",
+      "seconds": 20
+    },
+    {
+      "path": "/schaufenster/team/",
+      "seconds": 20
+    },
+    {
+      "path": "/schaufenster/ratgeber/",
+      "seconds": 20
+    },
+    {
+      "path": "/schaufenster/verkaufsablauf/",
+      "seconds": 20
+    },
+    {
+      "path": "/schaufenster/kundenstimmen/",
+      "seconds": 20
+    },
+    {
+      "path": "/schaufenster/videos/",
+      "seconds": 40
+    }
+  ]
+}

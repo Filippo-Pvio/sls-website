@@ -212,6 +212,7 @@
     }).finally(function () { refreshPending = false; });
   }
   function tick() {
+    if(window.SLSSignagePaused)return;
     var now = Date.now();
     // Reconnect after sleep or a suspended Android WebView.
     if (now - lastTick > 60000) refresh(); lastTick = now;
@@ -228,6 +229,8 @@
       if (desired !== photoIndex) showPhoto(desired);
     }
   }
+  var programmeActivated=false;
+  window.addEventListener('sls-signage-activation',function(event){if(event.detail.active){if(programmeActivated&&index>=0)show(index+1);else started=Date.now();programmeActivated=true;}});
   window.addEventListener('online', refresh);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) refresh(); });
   setInterval(tick, 250); setInterval(refresh, REFRESH_MS);
