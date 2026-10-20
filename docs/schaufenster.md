@@ -30,3 +30,11 @@ Eigener fester Link: `https://sls.de/schaufenster/referenzen/`. Gleiche Gestaltu
 Quelle: `/api/propstack-sold-references/?display=1`, vollständige öffentliche Referenzauswahl der Website (Status Verkauft / Erfolgreich vermarktet, Kaufobjekte, öffentliche Fotos, vorhandener Titel und Ort). Derselbe Lesezugang und dieselbe Auswahlprüfung wie bei der Referenzgalerie; keine Tagesauswahl oder manuelle Objektliste. Nur öffentliche Fotos ohne Grundrisse (bis zu drei, große Variante bevorzugt), Ort, Objekttyp und vorhandene Wohnfläche/Grundstück/Zimmer/Baujahr. Keine Kaufpreise, Verkaufspreise, Provisionen oder Kontaktdaten aus CRM-Objekten. Statt Preis wird „Erfolgreich vermittelt“ angezeigt. Nur Arbeitsspeicher-/CDN-Cache von je maximal 60 Sekunden; fehlgeschlagene Abrufe werden als Fehler zurückgegeben, ohne alte Daten als neuen Erfolg auszugeben.
 
 QR-Ziel: `https://sls.de/referenz/objekt-<ID>/`; die bestehende Referenzroute leitet auf die aktuelle kanonische Referenzseite weiter. Referenzbilder und Eckdaten kommen mit dem vollständigen Katalog, ohne zusätzliche Detailabfragen je Folie. Prüfungen: `qa/reference-display.test.mjs`, `qa/schaufenster-order.test.mjs`, bestehende Galerie-/QR-Tests.
+
+## Schaufenster Immobilienbewertung
+
+Eigener fester TV-Link: `https://sls.de/schaufenster/immobilienbewertung/`. Menüfreie 16:9-Präsentation mit vier Botschaften, wechselnden bestehenden Bewertungsmotiven und 20 Sekunden Anzeigezeit je Motiv. Fortlaufender Durchlauf in inhaltlicher Reihenfolge. Bildfehler blockieren den Textwechsel nicht; nach ausgesetzter Wiedergabe wird die aktuelle Botschaft fortgesetzt.
+
+Der lokal erzeugte QR-Code bleibt auf allen Motiven unverändert und führt zu `https://sls.de/immobilienbewertung/`. Der Bewertungsrechner wird erst dort auf dem Smartphone aufgerufen. Die TV-Seite selbst lädt keine externen Widgets, Formulare oder Trackingdienste. Textgrundlage ist die bestehende Bewertungsseite: erste digitale Wertindikation, ergänzt um die persönliche Einordnung vor Ort. Keine erfundenen Preise, Erfolgsgarantien oder Kostenversprechen.
+
+Dateien: `schaufenster/immobilienbewertung/index.html`, `assets/schaufenster-bewertung.js`, `assets/schaufenster-bewertung.css`; gemeinsame Farben, Schriften und Grundgestaltung aus `assets/schaufenster.css`. Test: `node --test qa/schaufenster-bewertung.test.mjs`.
