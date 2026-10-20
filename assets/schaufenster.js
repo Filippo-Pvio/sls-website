@@ -1,5 +1,8 @@
 (function () {
   'use strict';
+  var references = Boolean(document.documentElement && document.documentElement.getAttribute('data-display-kind') === 'references');
+  var failureMessage = references ? 'Unsere Verkaufserfolge finden Sie auf sls.de/referenzen. Wir sind persönlich für Sie da.' : 'Entdecken Sie unsere Immobilien auf sls.de. Wir sind persönlich für Sie da.';
+  var emptyMessage = references ? 'Entdecken Sie unsere erfolgreich vermittelten Immobilien auf sls.de/referenzen.' : 'Neue Immobilienangebote finden Sie auf sls.de. Wir beraten Sie gerne persönlich.';
   var SLIDE_MS = 20000, REFRESH_MS = 300000, MAX_AGE_MS = 1800000;
   var items = [], index = -1, started = 0, lastSuccess = 0, refreshPending = false;
   var generation = 0, photos = [], photoIndex = -1, front = 0, imagePending = false;
@@ -27,7 +30,7 @@
   }
   function request(url) {
     var controller = new AbortController();
-    var timer = setTimeout(function () { controller.abort(); }, 18000);
+    var timer = setTimeout(function () { controller.abort(); }, references ? 45000 : 18000);
     return fetch(url, { cache: 'no-store', signal: controller.signal }).then(function (response) {
       if (!response.ok) { var error = new Error('HTTP ' + response.status); error.status = response.status; throw error; }
       return response.json();
@@ -44,7 +47,7 @@
     el('qr-symbol').replaceChildren(); text('qr-reference', '');
     el('property-content').hidden = true; el('standby').hidden = false;
     text('standby', message); text('location', 'SLS Immobilienpartner');
-    text('title', 'Ihr nächstes Kapitel beginnt hier.');
+    text('title', references ? 'Erfolgreich vermittelt. Persönlich begleitet.' : 'Ihr nächstes Kapitel beginnt hier.');
     el('title').classList.remove('long');
     text('offer-type', 'Persönlich für Sie da'); text('photo-caption', 'Wir finden den Raum für Ihre Pläne.'); text('counter', '');
     el('progress-fill').style.width = '0%';
@@ -61,10 +64,13 @@
   }
   function renderFacts(p) {
     var facts = [];
-    if (positive(p.area)) facts.push([number.format(p.area) + ' m²', 'Fläche']);
-    if (positive(p.rooms)) facts.push([number.format(p.rooms), 'Zimmer']);
-    if (positive(p.plot)) facts.push([number.format(p.plot) + ' m²', 'Grundstück']);
-    if (facts.length < 3 && positive(p.year)) facts.push([String(p.year), 'Baujahr']);
+    if(references){
+      facts=(p.facts||[]).filter(function(fact){return Array.isArray(fact)&&fact.length===2;}).map(function(fact){return [fact[1],fact[0]];});
+    }
+    if (!references && positive(p.area)) facts.push([number.format(p.area) + ' m²', 'Fläche']);
+    if (!references && positive(p.rooms)) facts.push([number.format(p.rooms), 'Zimmer']);
+    if (!references && positive(p.plot)) facts.push([number.format(p.plot) + ' m²', 'Grundstück']);
+    if (!references && facts.length < 3 && positive(p.year)) facts.push([String(p.year), 'Baujahr']);
     el('facts').replaceChildren();
     facts.slice(0, 3).forEach(function (fact) {
       var node = document.createElement('div'), value = document.createElement('strong'), label = document.createElement('span');
@@ -74,13 +80,13 @@
   function renderData(p) {
     text('location', [p.zip, p.city].filter(Boolean).join(' ')); text('title', p.title);
     el('title').classList.toggle('long', p.title.length > 100);
-    text('offer-type', (p.type || 'Immobilie') + ' · Kauf');
-    text('price', positive(p.price) ? euros.format(p.price) : 'Preis auf Anfrage');
-    el('price').classList.toggle('on-request', !positive(p.price));
+    text('offer-type', references ? (p.type || 'Immobilie') + ' · Verkauft' : (p.type || 'Immobilie') + ' · Kauf');
+    text('price', references ? 'Erfolgreich vermittelt' : positive(p.price) ? euros.format(p.price) : 'Preis auf Anfrage');
+    el('price').classList.toggle('on-request', references || !positive(p.price));
     var commission = String(p.courtage || '').trim();
     if (/^\d+(?:[.,]\d+)?$/.test(commission)) commission += ' %';
-    text('commission', commission ? 'Käuferprovision: ' + commission : '');
-    text('energy', energyLine(p)); text('reference', 'Objekt ' + (p.reference || p.id));
+    text('commission', !references && commission ? 'Käuferprovision: ' + commission : '');
+    text('energy', references ? '' : energyLine(p)); text('reference', (references ? 'Referenz ' : 'Objekt ') + (p.reference || p.id));
     text('counter', (index + 1) + ' / ' + items.length); renderFacts(p);
     renderQr(p);
   }
@@ -88,7 +94,7 @@
     var card = el('property-qr');
     if (!/^\d+$/.test(String(p.id))) { card.hidden = true; card.removeAttribute('href'); return; }
     // Existing stable object-ID route redirects to this property's current canonical exposé.
-    var href = 'https://sls.de/immobilien/?objekt=' + encodeURIComponent(p.id);
+    var href = references ? 'https://sls.de/referenz/objekt-' + encodeURIComponent(p.id) + '/' : 'https://sls.de/immobilien/?objekt=' + encodeURIComponent(p.id);
     if (card.getAttribute('href') !== href) {
       card.hidden = true;
       try {
@@ -107,7 +113,7 @@
         el('qr-symbol').replaceChildren(svg); card.setAttribute('href', href);
       } catch (_) { card.removeAttribute('href'); el('qr-symbol').replaceChildren(); return; }
     }
-    text('qr-reference', 'Objekt ' + (p.reference || p.id)); card.hidden = false;
+    text('qr-reference', (references ? 'Referenz ' : 'Objekt ') + (p.reference || p.id)); card.hidden = false;
   }
   function showPhoto(next) {
     if (imagePending || !photos.length) return;
@@ -135,6 +141,7 @@
     photoIndex = -1; showPhoto(0);
   }
   function getDetail(p) {
+    if(references)return Promise.resolve(p);
     var hit = detailCache.get(p.id);
     if (hit && Date.now() - hit.time < REFRESH_MS) return Promise.resolve(hit.data);
     return request('/api/propstack-properties/?id=' + encodeURIComponent(p.id)).then(function (data) {
@@ -154,7 +161,7 @@
     index = (at + items.length) % items.length; started = Date.now(); resetImages();
     var p = items[index], token = generation;
     el('property-content').hidden = false; el('standby').hidden = true;
-    renderData(p); text('photo-caption', p.type || 'Ihre neue Immobilie'); setPhotos(p);
+    renderData(p); text('photo-caption', p.type || (references ? 'Erfolgreich vermittelt' : 'Ihre neue Immobilie')); setPhotos(p);
     getDetail(p).then(function (detail) {
       if (token !== generation) return;
       renderData(Object.assign({}, p, detail));
@@ -164,7 +171,7 @@
       if (token !== generation) return;
       if (error.status === 404 || error.status === 410) {
         items = items.filter(function (item) { return item.id !== p.id; }); detailCache.delete(p.id);
-        if (items.length) show(index); else standby('Neue Immobilienangebote finden Sie auf sls.de.');
+        if (items.length) show(index); else standby(emptyMessage);
       }
     });
     // Warm the next object's first high-resolution photograph, with a bounded cache.
@@ -176,7 +183,7 @@
   function refresh() {
     if (refreshPending) return;
     refreshPending = true;
-    request('/api/propstack-properties/?display=1').then(function (data) {
+    request(references ? '/api/propstack-sold-references/?display=1' : '/api/propstack-properties/?display=1').then(function (data) {
       if (!Array.isArray(data.items)) throw new Error('Invalid catalog');
       var seen = new Set();
       var updated = data.items.filter(function (p) {
@@ -194,13 +201,13 @@
       var added = updated.filter(function (p) { return !knownIds.has(p.id); });
       items = current ? retained.concat(shuffled(added)) : shuffled(updated);
       lastSuccess = Date.now(); detailCache.clear(); imagesFailed.clear();
-      if (!items.length) { standby('Neue Immobilienangebote finden Sie auf sls.de. Wir beraten Sie gerne persönlich.'); return; }
+      if (!items.length) { standby(emptyMessage); return; }
       var found = items.findIndex(function (p) { return p.id === current; });
       show(found >= 0 ? found : current ? remainingBefore : 0);
       if (found >= 0) started = previousStarted;
     }).catch(function () {
       if (!lastSuccess || Date.now() - lastSuccess > MAX_AGE_MS) {
-        items = []; detailCache.clear(); standby('Entdecken Sie unsere Immobilien auf sls.de. Wir sind persönlich für Sie da.');
+        items = []; detailCache.clear(); standby(failureMessage);
       }
     }).finally(function () { refreshPending = false; });
   }
@@ -209,7 +216,7 @@
     // Reconnect after sleep or a suspended Android WebView.
     if (now - lastTick > 60000) refresh(); lastTick = now;
     if (lastSuccess && now - lastSuccess > MAX_AGE_MS && index >= 0) {
-      items = []; detailCache.clear(); standby('Entdecken Sie unsere Immobilien auf sls.de. Wir sind persönlich für Sie da.'); return;
+      items = []; detailCache.clear(); standby(failureMessage); return;
     }
     if (index < 0) return;
     var elapsed = now - started;
