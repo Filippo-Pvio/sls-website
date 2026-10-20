@@ -9,13 +9,13 @@
  }
  function qr(target,label){
   var url=new URL(target,'https://sls.de');
-  if(!['sls.de','www.youtube.com',location.hostname].includes(url.hostname)||!['https:','http:'].includes(url.protocol))return;
+  if(!['sls.de','www.youtube.com','www.instagram.com',location.hostname].includes(url.hostname)||!['https:','http:'].includes(url.protocol))return;
   var card=el('valuation-qr');
   if(card.getAttribute('href')!==url.href||!el('qr-symbol').children.length){
    try{var code=qrcode(0,'Q');code.addData(url.href,'Byte');code.make();el('qr-symbol').innerHTML=code.createSvgTag({cellSize:4,margin:16,scalable:true});card.href=url.href}catch(_){el('qr-symbol').replaceChildren()}
   }
   el('topic-qr-label').textContent=label||'Mehr erfahren · Jetzt QR-Code scannen';
-  el('topic-destination').textContent=url.hostname==='www.youtube.com'?'Roomtour auf YouTube':url.hostname+url.pathname;
+  el('topic-destination').textContent=url.hostname==='www.youtube.com'?'Video auf YouTube':url.hostname==='www.instagram.com'?'Reel auf Instagram':url.hostname+url.pathname;
  }
  function stopVideo(){if(player){try{player.destroy()}catch(_){}player=null}el('video-stage').hidden=true;el('video-stage').replaceChildren()}
  function youtube(){
@@ -29,6 +29,15 @@
  }
  function play(slide,token){
   if(!slide.video||window.SLSSignagePaused||document.hidden)return;
+  if(slide.media){
+   var video=document.createElement('video');video.muted=true;video.defaultMuted=true;video.autoplay=true;video.playsInline=true;video.loop=true;video.preload='auto';video.poster=slide.image;
+   video.setAttribute('muted','');video.setAttribute('playsinline','');video.setAttribute('aria-label',slide.title);
+   video.onplaying=function(){if(token===generation&&!window.SLSSignagePaused&&!document.hidden)el('video-stage').hidden=false};
+   video.onerror=function(){if(token===generation)stopVideo()};
+   player={destroy:function(){video.pause();video.removeAttribute('src');video.load()}};
+   el('video-stage').appendChild(video);video.src=slide.media;
+   var playback=video.play();if(playback&&playback.catch)playback.catch(function(){if(token===generation)stopVideo()});return;
+  }
   youtube().then(function(){
    if(token!==generation||window.SLSSignagePaused||document.hidden)return;
    var mount=document.createElement('div');mount.id='topic-youtube-player';el('video-stage').appendChild(mount);
