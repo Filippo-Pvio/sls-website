@@ -12,3 +12,9 @@ In iiSignage² ein Programm im Querformat 16:9 erstellen, den Link als Webinhalt
 - Einbettung der öffentlichen Schaufensterseite in HTTPS-Oberflächen ist erlaubt (`frame-ancestors https:`), damit der Signage-Player sie darstellen kann. X-Frame-Options und bisherige CSP bleiben auf allen anderen Websitepfaden unverändert. Keine Freigabe von CRM-Oberflächen oder privaten Daten.
 
 Validierung: bestehende Katalog-/Datenschutztests plus Browserprüfungen für Rotation, vollständige Auswahl, Aktualisierung/Entfernung, leere Auswahl, Datenstörung und Wiederaufnahme. Ein bestandener Browserlauf ersetzt keinen Dauertest auf dem iiyama-Gerät.
+
+## QR-Code zum Exposé
+
+Die obere Logo-/Navigationsleiste entfällt. Rechts unten steht für jede Immobilie ein eigener schwarz-weißer QR-Code mit vier Modulen weißem Rand. Er enthält `https://sls.de/immobilien/?objekt=<ID>`; die bestehende Website leitet diese stabile Objektadresse auf das aktuelle Exposé weiter. Der Code wird synchron mit dem Angebot gewechselt und bei leerem oder veraltetem Datenbestand vollständig ausgeblendet.
+
+Lokale Erzeugung mit `assets/vendor/qrcode-generator-1.4.4.js` (Kazuhiko Arase, MIT; Lizenz daneben), Fehlerkorrektur Q. Quelle: offizielles npm-Paket `qrcode-generator@1.4.4`. Kein QR-Dienst, Drittanbieterabruf oder Tracking. Automatischer Test: `node --test qa/schaufenster-qr.test.mjs`. Scannbarkeit durch die reale Schaufensterscheibe weiterhin am Gerät prüfen.

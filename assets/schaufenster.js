@@ -27,6 +27,8 @@
   }
   function standby(message) {
     index = -1; resetImages();
+    el('property-qr').hidden = true; el('property-qr').removeAttribute('href');
+    el('qr-symbol').replaceChildren(); text('qr-reference', '');
     el('property-content').hidden = true; el('standby').hidden = false;
     text('standby', message); text('location', 'SLS Immobilienpartner');
     text('title', 'Ihr nächstes Kapitel beginnt hier.');
@@ -67,6 +69,32 @@
     text('commission', commission ? 'Käuferprovision: ' + commission : '');
     text('energy', energyLine(p)); text('reference', 'Objekt ' + (p.reference || p.id));
     text('counter', (index + 1) + ' / ' + items.length); renderFacts(p);
+    renderQr(p);
+  }
+  function renderQr(p) {
+    var card = el('property-qr');
+    if (!/^\d+$/.test(String(p.id))) { card.hidden = true; card.removeAttribute('href'); return; }
+    // Existing stable object-ID route redirects to this property's current canonical exposé.
+    var href = 'https://sls.de/immobilien/?objekt=' + encodeURIComponent(p.id);
+    if (card.getAttribute('href') !== href) {
+      card.hidden = true;
+      try {
+        var qr = qrcode(0, 'Q'); qr.addData(href, 'Byte'); qr.make();
+        var count = qr.getModuleCount(), quiet = 4;
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 ' + (count + quiet * 2) + ' ' + (count + quiet * 2));
+        svg.setAttribute('shape-rendering', 'crispEdges');
+        var background = document.createElementNS(svg.namespaceURI, 'rect');
+        background.setAttribute('width', '100%'); background.setAttribute('height', '100%'); background.setAttribute('fill', '#ffffff'); svg.appendChild(background);
+        var path = document.createElementNS(svg.namespaceURI, 'path'), segments = [];
+        for (var row = 0; row < count; row++) for (var col = 0; col < count; col++) {
+          if (qr.isDark(row, col)) segments.push('M' + (col + quiet) + ',' + (row + quiet) + 'h1v1h-1z');
+        }
+        path.setAttribute('d', segments.join('')); path.setAttribute('fill', '#000000'); svg.appendChild(path);
+        el('qr-symbol').replaceChildren(svg); card.setAttribute('href', href);
+      } catch (_) { card.removeAttribute('href'); el('qr-symbol').replaceChildren(); return; }
+    }
+    text('qr-reference', 'Objekt ' + (p.reference || p.id)); card.hidden = false;
   }
   function showPhoto(next) {
     if (imagePending || !photos.length) return;
