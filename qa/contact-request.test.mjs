@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {handler as handler} from '../api/propstack-contact-request.js';
-import {CONTACT_TOPICS,CALLBACK_TITLE,CONTACT_WINDOWS,CONTACT_PRIVACY_VERSION} from '../lib/contact-request.mjs';
+import {CONTACT_TOPICS,CALLBACK_TITLE,CONTACT_WINDOWS,CONTACT_PRIVACY_VERSION,LANDING_PRIVACY_VERSION} from '../lib/contact-request.mjs';
 const titles=[...Object.values(CONTACT_TOPICS).map(x=>x.title),CALLBACK_TITLE];
 async function fixture(run,options={}) {
  const vars=['NODE_ENV','VERCEL_ENV','PROPSTACK_API_KEY','PROPSTACK_CONTACT_API_KEY','PROPSTACK_INQUIRY_API_KEY'];
@@ -115,4 +115,29 @@ for (const hostname of ['sls.de','www.sls.de']) test(`contact evidence uses the 
  assert.equal((await request('POST',payload,{host:hostname,origin:`https://${hostname}`})).code,200);
  assert.ok(notes[0].activatable.body.includes(`Datenschutzerklärung: https://${hostname}/datenschutz/`));
  assert.ok(!notes[0].activatable.body.includes('sls-website-eight.vercel.app/datenschutz/'));
+}));
+
+for(const page of ['sale','valuation'])test(`owner landing ${page} preserves exact source and qualifications without marketing writes`,()=>fixture(async({request,payload,notes,writes})=>{
+ const body={...payload,topic:page,place:'46286 Dorsten',privacyVersion:LANDING_PRIVACY_VERSION,landing:{page,propertyType:'house',ownership:'coowner',timeline:'orientation'},gclid:'never-store-this',utm_campaign:'never-store-this',source:'https://untrusted.example/'};
+ assert.equal((await request('POST',body)).code,200);
+ const note=notes[0].activatable.body;
+ assert.ok(note.includes(`Quelle: /lp/${page==='sale'?'immobilie-verkaufen':'immobilienbewertung'}/`));
+ assert.ok(note.includes('Miteigentümer/in')&&note.includes('Zunächst Orientierung')&&note.includes('Immobilienart: Haus'));
+ assert.ok(note.includes('zur Kenntnis genommen'));assert.ok(!note.includes('never-store-this')&&!note.includes('untrusted.example'));
+ assert.equal(notes[0].activatable.title,CONTACT_TOPICS[page].title);assert.equal(writes.length,1);
+ assert.equal((await request('POST',body)).code,200);assert.equal(writes.length,1);
+}));
+test('owner landing rejects arbitrary source identifiers, qualification and acknowledgement before CRM writes',()=>fixture(async({request,payload,writes})=>{
+ const body={...payload,place:'Dorsten',privacyVersion:LANDING_PRIVACY_VERSION,landing:{page:'sale',propertyType:'house',ownership:'owner',timeline:'soon'}};
+ for(const patch of [{landing:null},{landing:{...body.landing,page:'other'}},{topic:'valuation'},{landing:{...body.landing,propertyType:'unknown'}},{landing:{...body.landing,propertyType:['house']}},{landing:{...body.landing,ownership:'buyer'}},{landing:{...body.landing,timeline:'arbitrary'}},{place:''},{privacyVersion:CONTACT_PRIVACY_VERSION},{privacy:false}])assert.equal((await request('POST',{...body,...patch})).code,400);
+ assert.equal(writes.length,0);
+}));
+test('owner callback keeps its original callback workflow',()=>fixture(async({request,payload,notes})=>{
+ const body={...payload,place:'Dorsten',privacyVersion:LANDING_PRIVACY_VERSION,method:'callback',window:'flexible',landing:{page:'sale',propertyType:'apartment',ownership:'authorized',timeline:'year'}};
+ assert.equal((await request('POST',body)).code,200);assert.equal(notes.length,2);assert.ok(notes.every(n=>n.activatable.body.includes('Bevollmächtigt')&&n.activatable.body.includes('Rückruf')));
+}));
+
+test('email owner landing discards a phone number without a callback request',()=>fixture(async({request,payload,notes})=>{
+ const body={...payload,place:'Dorsten',privacyVersion:LANDING_PRIVACY_VERSION,landing:{page:'sale',propertyType:'house',ownership:'owner',timeline:'later'}};
+ assert.equal((await request('POST',body)).code,200);assert.ok(notes[0].activatable.body.includes('Telefon: Nicht angegeben'));assert.ok(!notes[0].activatable.body.includes(payload.phone));
 }));
