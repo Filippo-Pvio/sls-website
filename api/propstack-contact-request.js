@@ -45,6 +45,9 @@ async function record(key,request,id,categories,privacyUrl) {
     if(contacts.length!==1 || normalise(contacts[0].email)!==request.email || normalise(contacts[0].first_name)!==normalise(request.firstName) || normalise(contacts[0].last_name)!==normalise(request.lastName))return {status:409,error:'Ihre Angaben konnten nicht eindeutig zugeordnet werden. Bitte prüfen Sie Ihren Namen und Ihre E-Mail-Adresse oder kontaktieren Sie uns direkt.'};
     contactId=Number(contacts[0].id);
   } else {
+    // A provider timeout during contact creation is ambiguous: do not issue
+    // another create before a later reconciliation confirms the first result.
+    if(!await claimContactNote(`${id}:contact-create`))throw new Error('Unconfirmed contact creation needs reconciliation');
     const contact=await propstack('contacts',key,{client:{first_name:request.firstName,last_name:request.lastName,email:request.email,...(request.salutation?{salutation:request.salutation}:{}),...(request.phone?{phone:request.phone}:{})}});contactId=Number(contact.id);
   }
   if(!validId(contactId))throw new Error('Contact confirmation missing');
