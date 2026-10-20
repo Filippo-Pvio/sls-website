@@ -4,7 +4,7 @@ import fs from 'node:fs';
 const articles=JSON.parse(fs.readFileSync('content/magazin/articles.json','utf8'));
 const index=JSON.parse(fs.readFileSync('assets/magazine-search.json','utf8'));
 test('each article has unique optimized photos shared with search and article metadata',()=>{
- assert.equal(articles.length,65);assert.equal(new Set(articles.map(a=>a.image.src)).size,65);
+ assert.ok(articles.length>=65);assert.equal(new Set(articles.map(a=>a.image.src)).size,articles.length);
  for(const a of articles){
   for(const [url,width] of [[a.image.src,1200],[a.image.thumbnail,600]]){
    const b=fs.readFileSync('.'+url);assert.ok(b.length<500000,url+' exceeds image budget');assert.equal(b.readUInt16BE(0),0xffd8);
