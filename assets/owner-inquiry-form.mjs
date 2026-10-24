@@ -10,7 +10,7 @@ export const ownerAddressFields = `<fieldset class="pp-owner-address" id="pp-own
       <option value="">Bitte auswählen</option><option value="HOUSE">Haus</option><option value="APARTMENT">Wohnung</option><option value="TRADE_SITE">Grundstück</option>
     </select></label>
     <label class="pp-full" data-owner-unit hidden><span>Wohnung / Lage im Haus *</span><input name="ownerUnit" maxlength="100" disabled placeholder="z. B. 2. Obergeschoss links, Wohnung 5"></label>
-  </div><p class="form-required-note">Für Immobilien in Deutschland. * Pflichtfelder.</p>
+  </div>
 </fieldset>`;
 
 export function setupOwnerAddress(form) {
