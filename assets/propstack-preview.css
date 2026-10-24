@@ -438,3 +438,10 @@ body.property-preview.pp-plan-is-open{overflow:hidden}
 .property-preview .pp-search select:disabled{color:#687d83;background:#f7f9fa}
 
 .seo-pagination{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:28px auto;padding:0 20px}.seo-pagination a,.seo-pagination span{padding:10px 14px;border:1px solid #6c97ab;border-radius:4px}.seo-pagination [aria-current="page"]{background:#345b6e;color:#fff}
+
+/* Own-property details reuse the established inquiry form design. */
+.property-preview.pp-is-detail .pp-owner-address{min-width:0;border:1px solid #e0e8ea;border-radius:4px;padding:16px;margin:16px 0 20px}
+.property-preview.pp-is-detail .pp-owner-address[hidden]{display:none}
+.property-preview.pp-is-detail .pp-owner-address legend{font-weight:600;padding:0 6px;color:#4e6878}
+.property-preview.pp-is-detail .pp-owner-address p{font-size:13px;line-height:1.5;margin:0 0 14px}
+.property-preview.pp-is-detail .pp-owner-address select{box-sizing:border-box;width:100%;min-height:44px;padding:10px;border:1px solid #cbd5db;border-radius:4px;background:#fff;color:inherit;font:inherit}
