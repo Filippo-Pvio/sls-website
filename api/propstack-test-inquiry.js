@@ -1,3 +1,6 @@
+import {parseOwnerAddress} from '../lib/owner-address.mjs';
+import {createWebsiteOwnerServiceFlow} from '../lib/owner-service.mjs';
+import {ownerInquiryOrigin} from '../lib/owner-origin.mjs';
 import {logOperationalFailure} from '../lib/operational-log.mjs';
 import {withFormSecurity} from '../lib/form-security.mjs';
 import {scopedPropstackKey} from '../lib/propstack-access.mjs';
@@ -139,33 +142,6 @@ async function resolveWebsiteInquiryNoteType(key){
 }
 
 
-async function createOwnerInterestNote(key,{contactId,propertyId,brokerId,firstName,lastName,email,phone,reference}){
-  const noteTypeId=739259;
-  const task={
-    title:'Interessent ist auch Eigentümer – Kontakt gewünscht',
-    note_type_id:noteTypeId,
-    client_ids:[contactId],
-    property_ids:[Number(propertyId)],
-    broker_id:brokerId||undefined,
-    body:[
-      '<strong>Eigentümer-Kontaktwunsch über sls.de</strong>',
-      'Der Interessent möchte wissen, was die eigene Immobilie aktuell wert ist, und wünscht eine kostenlose und unverbindliche Kontaktaufnahme.',
-      `Angefragtes Objekt: ${html(reference||propertyId)}`,
-      `Name: ${html(firstName)} ${html(lastName)}`,
-      `E-Mail: ${html(email)}`,
-      `Telefon: ${html(phone)}`
-    ].join('<br>')
-  };
-  const result=await propstack('tasks',key,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({task})
-  });
-  const id=Number(result?.activity_id||result?.id);
-  if(!Number.isSafeInteger(id)||id<=0)throw new Error('Propstack owner interest note response missing ID');
-  return id;
-}
-
 async function dealsForContactAndProperty(key,clientId,propertyId){
   const q=new URLSearchParams({
     client_id:String(clientId),
@@ -187,7 +163,8 @@ async function waitForDeal(key,clientId,propertyId,attempts=4){
   return null;
 }
 
-export async function handler(req,res){
+export function createInquiryHandler({ownerFlow=null}={}) {
+return async function handler(req,res){
   res.setHeader('Cache-Control','no-store');
   res.setHeader('X-Robots-Tag','noindex, nofollow');
   if(req.method!=='POST')return res.status(405).json({error:'Methode nicht erlaubt'});
@@ -208,6 +185,13 @@ export async function handler(req,res){
   const email=text(body.email,254);
   const phone=text(body.phone,60);
   const ownerInterest=body.ownerInterest===true;
+  let ownerAddress=null;
+  try{ownerAddress=parseOwnerAddress(body)}catch(error){return res.status(400).json({error:error.message,code:'OWNER_ADDRESS_REQUIRED'})}
+  if(ownerInterest){
+    // Owner transport is released separately; buyer-only requests never need it.
+    if(!ownerFlow)return res.status(503).json({error:'Die zusätzliche Bewertungsanfrage ist noch nicht freigeschaltet. Bitte kontaktieren Sie SLS direkt oder senden Sie nur die Kaufanfrage.',code:'OWNER_FLOW_NOT_RELEASED'});
+    try{await ownerFlow.prepare()}catch{return res.status(503).json({error:'Die zusätzliche Bewertungsanfrage ist noch nicht verfügbar. Bitte kontaktieren Sie SLS direkt.',code:'OWNER_FLOW_NOT_RELEASED'})}
+  }
   if(!/^\d+$/.test(id)||!firstName||!lastName||!/^\S+@\S+\.\S+$/.test(email)||!phone||body.privacy!==true)
     return res.status(400).json({error:'Bitte alle Pflichtfelder und die Datenschutzeinwilligung prüfen.'});
 
@@ -281,18 +265,16 @@ export async function handler(req,res){
 
     const inquiryId=Number(inquiry?.activity_id||inquiry?.id);
 
-    let ownerInterestNoteId=null;
+    let ownerInquiryStatus=null;
     if(ownerInterest){
-      ownerInterestNoteId=await createOwnerInterestNote(writeKey,{
-        contactId,
-        propertyId:Number(id),
-        brokerId:unit.broker_id||unit.broker?.id,
-        firstName,
-        lastName,
-        email,
-        phone,
-        reference
-      });
+      try{
+        const origin=ownerInquiryOrigin({id:Number(id),reference,title:unit.title?.value??unit.title,city:unit.city?.value??unit.city});
+        const result=await ownerFlow.run({contactId,buyerPropertyId:Number(id),address:ownerAddress,contact:{firstName,lastName,email,phone},origin});
+        ownerInquiryStatus=result.status;
+      }catch{
+        ownerInquiryStatus='review_required';
+        logOperationalFailure('owner_inquiry_needs_review',new Error('Owner flow incomplete'));
+      }
     }
 
     let activityVerified=false;
@@ -324,7 +306,7 @@ export async function handler(req,res){
       contactId,
       inquiryId:Number.isSafeInteger(inquiryId)&&inquiryId>0?inquiryId:null,
       ownerInterest,
-      ownerInterestNoteId,
+      ownerInquiryStatus,
       sourceId,
       noteTypeId,
       activityVerified,
@@ -344,4 +326,6 @@ export async function handler(req,res){
   }
 }
 
+}
+export const handler=createInquiryHandler({ownerFlow:createWebsiteOwnerServiceFlow()});
 export default withFormSecurity('propstack-test-inquiry',handler,{});
