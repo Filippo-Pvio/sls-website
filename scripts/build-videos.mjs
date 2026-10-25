@@ -22,9 +22,6 @@ for(const [index,video] of videos.entries()){
  const hero=`<section class="buy-intro"><div class="wrap"><p class="eyebrow">Geschäftsführer im Gespräch · ${esc(video.person)}</p><h1>${esc(title)}</h1><p class="lead">${esc(video.summary)}</p><div class="page-actions"><a class="button button-light" href="#gespraech">Gespräch ansehen</a><a class="button button-ghost" href="/videos/">Alle Videos entdecken</a></div></div></section>`;
  const body=hero+`<section class="section videos-interview" id="gespraech"><div class="wrap videos-interview-layout"><div class="videos-interview-copy"><h2>${esc(video.person)} im Gespräch.</h2><p>${esc(video.summary)}</p><p class="videos-duration">Rund ${Math.round(Number(source.lengthSeconds)/60)} Minuten · Veröffentlicht am <time datetime="${esc(source.uploadDate)}">${new Intl.DateTimeFormat('de-DE',{timeZone:'Europe/Berlin'}).format(new Date(source.uploadDate))}</time></p><a class="text-link" href="/team/${video.profile}/">Mehr über ${esc(video.person)}</a></div><div>${player(video,title)}</div></div></section>`+final();
  const directory=new URL(url.slice(1),root);await mkdir(directory,{recursive:true});await writeFile(new URL('index.html',directory),shell(title,video.summary,body,[schema,breadcrumb([['Startseite','/'],['Videos','/videos/'],[title,url]])]));
- const profileFile=new URL(`team/${video.profile}/index.html`,root);let profile=await readFile(profileFile,'utf8');
- if(!profile.includes('data-video-watch-link'))profile=profile.replace('</main>',()=>`<section class="section" data-video-watch-link><div class="wrap"><h2>Das Gespräch als eigene Videoseite</h2><p><a href="${url}">${esc(title)} – mit ${esc(video.person)}</a></p></div></section></main>`);
- await writeFile(profileFile,profile);
 }
 const cards=tours.map(tour=>{
  if(!/^[A-Za-z0-9_-]{11}$/.test(tour.id)||!['instagram','youtube'].includes(tour.provider))throw Error('Invalid property video');
