@@ -1,0 +1,7 @@
+[data-ai-label-host]{position:relative}
+.ai-image-credit,.ai-image-note{font:500 10px/1.35 Raleway,Arial,sans-serif!important;letter-spacing:0!important;text-transform:none!important}
+.ai-image-credit{position:absolute!important;inset:auto 8px 8px auto!important;z-index:4!important;max-width:calc(100% - 16px);margin:0!important;padding:2px 5px!important;border:0!important;border-radius:2px!important;background:rgba(22,37,44,.82)!important;color:#fff!important;pointer-events:none}
+.ai-image-note{display:block;margin:4px 0 0!important;color:#52616a!important}
+.ai-image-credit[hidden]{display:none!important}
+[data-ai-label-host="image"]{isolation:isolate}
+@media print{.ai-image-credit{color:#000!important;background:#fff!important}}
