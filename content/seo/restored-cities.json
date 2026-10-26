@@ -5,15 +5,37 @@
     "regions": [
       "muensterland"
     ],
-    "localIntro": "Heiden liegt im westlichen Münsterland im Kreis Borken. Bei einem Verkauf verbinden wir die Lage Ihrer Immobilie mit den Eigenschaften von Haus und Grundstück.",
+    "localIntro": "Ortskern, Leblich und Nordick: Wir beschreiben Ihre Immobilie ausgehend von der tatsächlichen Adresse. Dazu gehören die Räume ebenso wie Zufahrt, Außenflächen und die Wege im Alltag.",
     "sections": [
       {
-        "heading": "Grundstück und Gebäude zusammen betrachten",
-        "text": "Bei einem Haus in Heiden beschreiben wir die Nutzungsmöglichkeiten des Grundstücks und dokumentierte Modernisierungen. Welche Angaben für Ihre Immobilie wichtig sind, klären wir im persönlichen Gespräch."
+        "heading": "Im Heidener Ortskern",
+        "text": "Bei einer Immobilie rund um den Ortskern betrachten wir neben den Wegen zu den örtlichen Angeboten auch das Gebäude selbst. Wie liegt die Wohnung im Haus, wie gelangt man zum Eingang und welche Abstell- oder Stellflächen gehören dazu? Ein klarer Grundriss und aussagekräftige Aufnahmen helfen Interessenten, diese Fragen vor einer Besichtigung einzuordnen.",
+        "takeaway": "Zentrale Lage durch konkrete Angaben zum Wohnen ergänzen."
+      },
+      {
+        "heading": "Leblich",
+        "text": "Bei einem Haus in Leblich nehmen wir Grundstück und Gebäude gemeinsam auf. Wir zeigen die Verbindung zwischen Wohnräumen, Garten, Zufahrt und vorhandenen Nebengebäuden. Dabei unterscheiden wir die dokumentierten Flächen und Nutzungen, damit Interessenten erkennen, was tatsächlich zum Angebot gehört.",
+        "takeaway": "Das Grundstück mit seinen einzelnen Bereichen verständlich zeigen."
+      },
+      {
+        "heading": "Nordick",
+        "text": "Für eine Immobilie in Nordick klären wir die konkrete Erreichbarkeit und den Zugang zum Haus. Daneben ordnen wir vorhandene Angaben zu Baujahr, Heizung, Fenstern und Dach. So bleibt die Beschreibung auf Ihr Objekt bezogen und verbindet die örtliche Lage mit dem heutigen Zustand.",
+        "takeaway": "Lagebeschreibung und Gebäudeunterlagen zusammenführen."
       }
     ],
     "migrationSource": "https://sls.de/immobilienmakler-heiden/",
-    "sourceChecked": "2026-10-11"
+    "sourceChecked": "2026-10-26",
+    "text": "Ein Haus im Heidener Ortskern stellt andere Fragen als eine Immobilie in Leblich oder Nordick. SLS Immobilienpartner verbindet die genaue Lage mit Grundriss, Grundstück und dokumentierten Modernisierungen, damit aus einzelnen Angaben eine verständliche Verkaufsunterlage wird.",
+    "districts": [
+      "Heiden",
+      "Leblich",
+      "Nordick"
+    ],
+    "aliases": [],
+    "sources": [
+      "https://www.heiden.de/portal/meldungen/picknickzeit-im-muensterland-heiden-ist-mit-dabei--900000581-28170.html?rubrik=900000003",
+      "https://www.heiden.de/downloads/datei/MTdjMzljNGI3YWQwZTAxYzFpUXdxbEFaZVNrRmxIY2Z2TmE3WE5tV1R6NlF6cVo2T29kOVV2M2UxbkhjWmtsTGpMR05RR3ZNZ0dvMnAyRTN1cmYrR2V1Q0o0OTlXMVV4L0Z0TVY0RmU5VFVMNHQ2anF6MjMxdDN3cnpSdFFqa2k0czZVdnFXekRMc1MycUk4SStLdlpSWXZLOXFwWjlLT2k2NytPZU1Ja1llK05RUlpyRFNIRWFRNVJQbz0"
+    ]
   },
   {
     "city": "Oer-Erkenschwick",
@@ -21,15 +43,39 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "localIntro": "Oer-Erkenschwick liegt im Kreis Recklinghausen am Südrand der Haard. Für Ihre Immobilie betrachten wir die konkrete Straße und das direkte Umfeld.",
+    "localIntro": "Oer, Groß-Erkenschwick, Klein-Erkenschwick und Rapen bilden den örtlichen Rahmen. Für die Vermarktung zeigen wir, wie Ihre Immobilie innerhalb dieses Umfelds liegt und welche Eigenschaften sie mitbringt.",
     "sections": [
       {
-        "heading": "Waldnähe konkret einordnen",
-        "text": "Eine Beschreibung wie „nah an der Haard“ ersetzt keine genaue Lagebeschreibung. Wir besprechen die tatsächlichen Wege, die Anbindung und den Zustand Ihrer Immobilie."
+        "heading": "Oer",
+        "text": "Für ein Haus in Oer stellen wir Wohnräume und Außenflächen in ihrem Zusammenhang vor. Die Anordnung von Garten, Terrasse und Zugängen wird ebenso aufgenommen wie bekannte Umbauten. Ein nachvollziehbarer Grundriss hilft dabei, die heutige Raumaufteilung mit den vorhandenen Unterlagen abzugleichen.",
+        "takeaway": "Die heutige Aufteilung nachvollziehbar darstellen."
+      },
+      {
+        "heading": "Groß-Erkenschwick und Klein-Erkenschwick",
+        "text": "Bei einer Wohnung in Groß-Erkenschwick oder Klein-Erkenschwick beschreiben wir Geschoss, Zugang und die zugehörigen Nebenflächen. Vorhandene Unterlagen zum Gebäude ergänzen die Angaben zur Wohnung. Bei einem Haus nehmen wir stattdessen auch Grundstück, Stellplätze und den dokumentierten Modernisierungsstand in die Vorbereitung auf.",
+        "takeaway": "Die Vorbereitung an Wohnung oder Haus ausrichten."
+      },
+      {
+        "heading": "Rapen und die Lage zur Haard",
+        "text": "Oer-Erkenschwick liegt am südlichen Rand der Haard. Ob und wie dieser Landschaftsraum von einer Immobilie in Rapen oder einem anderen Stadtteil erreichbar ist, beschreiben wir anhand der konkreten Adresse. Fotos des direkten Umfelds ergänzen die Räume und zeigen, was Interessenten vor Ort tatsächlich erwartet.",
+        "takeaway": "Naturbezug mit konkreter Lage und tatsächlichen Wegen erklären."
       }
     ],
     "migrationSource": "https://sls.de/immobilienmakler-oer-erkenschwick/",
-    "sourceChecked": "2026-10-11"
+    "sourceChecked": "2026-10-26",
+    "text": "Ein Haus in Oer, eine Wohnung in Rapen oder eine Immobilie nahe der Haard braucht eine Beschreibung, die über den Stadtnamen hinausgeht. SLS Immobilienpartner betrachtet die einzelne Adresse, den Zustand und die vorhandenen Unterlagen als Grundlage für Ihren Verkauf.",
+    "districts": [
+      "Oer",
+      "Groß-Erkenschwick",
+      "Klein-Erkenschwick",
+      "Rapen"
+    ],
+    "aliases": [
+      "Oer Erkenschwick"
+    ],
+    "sources": [
+      "https://www.oer-erkenschwick.de/sites/default/files/2025-01/IKSK_Oer-Erkenschwick.pdf"
+    ]
   },
   {
     "city": "Raesfeld",
@@ -37,15 +83,37 @@
     "regions": [
       "muensterland"
     ],
-    "localIntro": "Raesfeld liegt im Münsterland im Kreis Borken. Bei einem Haus oder einer Wohnung berücksichtigen wir den Ortsteil und die konkrete Umgebung.",
+    "localIntro": "Raesfeld, Erle und Homer sind die Ortsteile der Gemeinde. Wir verbinden diesen örtlichen Rahmen mit einer sorgfältigen Aufnahme Ihrer Immobilie und ihrer heutigen Nutzung.",
     "sections": [
       {
-        "heading": "Haus, Garten und Alltag zeigen",
-        "text": "Bei der Präsentation Ihrer Immobilie beziehen wir Außenflächen, Grundriss und dokumentierte Modernisierungen ein. Die genaue Lage und die Eigenschaften Ihres Objekts bestimmen die weitere Einordnung."
+        "heading": "Raesfeld",
+        "text": "Bei einem Verkauf im Ortsteil Raesfeld erfassen wir die konkrete Lage des Hauses oder der Wohnung. Dazu gehören die Ausrichtung der Räume, der Zugang und die zugehörigen Außenflächen. Die Nähe zum Schloss oder zum Ortskern beschreiben wir nur dort, wo sie für die tatsächliche Adresse zutrifft.",
+        "takeaway": "Ortsbezug durch genaue Angaben zur Immobilie greifbar machen."
+      },
+      {
+        "heading": "Erle",
+        "text": "Für ein Haus in Erle zeigen wir, wie Wohnbereich, Garten und mögliche Nebenräume zusammenhängen. Angaben zu Dach, Fenstern und Heizung ergänzen die Besichtigung. Vorhandene Rechnungen und Pläne helfen, Erneuerungen zeitlich einzuordnen und die Entwicklung des Hauses verständlich zu beschreiben.",
+        "takeaway": "Gebäudezustand und bekannte Erneuerungen nachvollziehbar aufbereiten."
+      },
+      {
+        "heading": "Homer",
+        "text": "Bei einer Immobilie in Homer betrachten wir die Grundstücksaufteilung ebenso aufmerksam wie das Gebäude. Wo verlaufen Zufahrt und Zugang, welche Flächen sind dem Haus zugeordnet und wie werden vorhandene Nebengebäude genutzt? Diese Angaben bilden die Grundlage für eine Präsentation, die das gesamte Angebot erkennen lässt.",
+        "takeaway": "Haus, Zufahrt und Nebenflächen als zusammenhängendes Angebot zeigen."
       }
     ],
     "migrationSource": "https://sls.de/immobilienmakler-raesfeld/",
-    "sourceChecked": "2026-10-11"
+    "sourceChecked": "2026-10-26",
+    "text": "Vom Haus in Erle bis zur Immobilie in Homer: Für einen Verkauf in Raesfeld zählen die genaue Lage und die Eigenschaften des einzelnen Objekts. SLS Immobilienpartner bereitet Grundriss, Außenflächen und bekannte Erneuerungen so auf, dass Interessenten das Angebot nachvollziehen können.",
+    "districts": [
+      "Raesfeld",
+      "Erle",
+      "Homer"
+    ],
+    "aliases": [],
+    "sources": [
+      "https://www.raesfeld.de/portal/seiten/bevoelkerungsentwicklung-900000022-28200.html",
+      "https://www.raesfeld.de/portal/seiten/gemeindechronik-900000021-28200.html"
+    ]
   },
   {
     "city": "Reken",
@@ -53,15 +121,41 @@
     "regions": [
       "muensterland"
     ],
-    "localIntro": "Reken liegt im westlichen Münsterland im Kreis Borken. Die Gemeinde umfasst mehrere Ortsteile; die konkrete Adresse ist deshalb ein wichtiger Ausgangspunkt für die Bewertung.",
+    "localIntro": "Groß Reken, Bahnhof Reken, Klein Reken, Maria Veen und Hülsten: Jede Adresse braucht eine eigene Beschreibung. Wir zeigen die Eigenschaften Ihrer Immobilie und erläutern ihr unmittelbares Umfeld.",
     "sections": [
       {
-        "heading": "Den Ortsteil und das einzelne Objekt betrachten",
-        "text": "Bei einem Verkauf in Reken besprechen wir Baujahr, Gebäudezustand, Grundstück und vorhandene Modernisierungen. So entsteht eine Beschreibung Ihrer Immobilie, die über den Namen der Gemeinde hinausgeht."
+        "heading": "Groß Reken",
+        "text": "Bei einem Haus oder einer Wohnung in Groß Reken beginnen wir mit der tatsächlichen Raumaufteilung. Grundriss, Geschoss und Zugang werden mit den vorhandenen Unterlagen abgeglichen. Außenflächen und Stellplätze ergänzen die Darstellung, damit Interessenten die Nutzung des Objekts bereits vor dem Besichtigungstermin verstehen.",
+        "takeaway": "Die Räume und ihre Verbindung zum Außenbereich erklären."
+      },
+      {
+        "heading": "Bahnhof Reken und Klein Reken",
+        "text": "Für Immobilien in Bahnhof Reken und Klein Reken beschreiben wir die konkreten Wege von der jeweiligen Adresse. Die Gemeinde weist auch einen Bahnhof im gleichnamigen Ortsteil aus; daraus ergibt sich jedoch keine pauschale Aussage über die Erreichbarkeit jedes Hauses. Daneben nehmen wir Zustand und dokumentierte Modernisierungen auf.",
+        "takeaway": "Anbindung immer von der einzelnen Adresse aus betrachten."
+      },
+      {
+        "heading": "Maria Veen und Hülsten",
+        "text": "Bei einem Verkauf in Maria Veen oder Hülsten arbeiten wir die Merkmale des jeweiligen Grundstücks heraus. Gartenaufteilung, Nebenflächen und der Zugang zum Wohngebäude gehören ebenso dazu wie die Räume selbst. Eine vollständige Aufnahme hilft, die tatsächlichen Eigenschaften des Angebots von allgemeinen Ortsbeschreibungen zu unterscheiden.",
+        "takeaway": "Grundstück und Gebäude mit ihren konkreten Merkmalen zeigen."
       }
     ],
     "migrationSource": "https://sls.de/immobilienmakler-reken/",
-    "sourceChecked": "2026-10-11"
+    "sourceChecked": "2026-10-26",
+    "text": "Reken umfasst fünf Ortsteile. Für Ihren Immobilienverkauf unterscheiden wir deshalb zwischen dem Namen der Gemeinde und der konkreten Lage Ihres Hauses oder Ihrer Wohnung. SLS Immobilienpartner verbindet diese Lage mit Gebäudezustand, Grundriss und vorhandenen Unterlagen.",
+    "districts": [
+      "Groß Reken",
+      "Bahnhof Reken",
+      "Klein Reken",
+      "Maria Veen",
+      "Hülsten"
+    ],
+    "aliases": [
+      "Gross Reken"
+    ],
+    "sources": [
+      "https://www.reken.de/Urlaub-Freizeit/Freizeit-und-Erholung/Nordic-Walking",
+      "https://www.reken.de/Urlaub-Freizeit/Wandern-Spazieren"
+    ]
   },
   {
     "city": "Remscheid",
@@ -69,15 +163,40 @@
     "regions": [
       "rheinland"
     ],
-    "localIntro": "Remscheid liegt im Bergischen Land und gehört mit Solingen und Wuppertal zum Bergischen Städtedreieck. Bei einem Verkauf berücksichtigen wir die genaue Lage Ihrer Immobilie.",
+    "localIntro": "Alt-Remscheid, Süd, Lennep und Lüttringhausen sind die vier Stadtbezirke. Innerhalb dieser Bereiche stellen wir die einzelne Straße und Ihre Immobilie in den Mittelpunkt der Verkaufsplanung.",
     "sections": [
       {
-        "heading": "Lage und Grundstück nachvollziehbar beschreiben",
-        "text": "In Remscheid können Gelände und Grundstückszugang für die Präsentation eines Hauses relevant sein. Wir betrachten diese Merkmale am konkreten Objekt und ergänzen sie um Zustand und dokumentierte Modernisierungen."
+        "heading": "Alt-Remscheid und Süd",
+        "text": "Für eine Eigentumswohnung in Alt-Remscheid oder Süd betrachten wir neben den Räumen auch ihre Lage im Gebäude. Geschoss, Treppen, Aufzug und zugehörige Nebenflächen können für Interessenten entscheidend sein. Die vorhandenen Unterlagen zum Haus ergänzen die Darstellung der Wohnung.",
+        "takeaway": "Die Wohnung mit Zugang und Gebäude verständlich vorstellen."
+      },
+      {
+        "heading": "Lennep",
+        "text": "Bei einem Haus in Lennep nehmen wir die heutige Aufteilung und bekannte Umbauten sorgfältig auf. Wir ordnen vorhandene Pläne, Flächenangaben und Modernisierungsnachweise. So können Kaufinteressenten erkennen, wie das Haus aktuell genutzt wird und welche Veränderungen dokumentiert sind.",
+        "takeaway": "Die Entwicklung des Hauses anhand vorhandener Unterlagen erklären."
+      },
+      {
+        "heading": "Lüttringhausen",
+        "text": "Bei einer Immobilie in Lüttringhausen zeigen wir auch den Weg von der Straße zum Haus und in den Garten. Falls das Grundstück Höhenunterschiede aufweist, machen Fotos und eine genaue Beschreibung diese nachvollziehbar. Zusammen mit Grundriss und Zustand entsteht ein vollständigeres Bild des Objekts.",
+        "takeaway": "Zugänge und Gelände am konkreten Grundstück sichtbar machen."
       }
     ],
     "migrationSource": "https://sls.de/immobilienmakler-remscheid/",
-    "sourceChecked": "2026-10-11"
+    "sourceChecked": "2026-10-26",
+    "text": "Eine Wohnung in Alt-Remscheid und ein Haus in Lennep oder Lüttringhausen benötigen unterschiedliche Unterlagen und eine eigene Präsentation. SLS Immobilienpartner betrachtet Ihre Immobilie mit ihrer genauen Lage, den Zugängen und dem dokumentierten Gebäudezustand.",
+    "districts": [
+      "Alt-Remscheid",
+      "Süd",
+      "Lennep",
+      "Lüttringhausen"
+    ],
+    "aliases": [
+      "Remscheid-Süd",
+      "Luettringhausen"
+    ],
+    "sources": [
+      "https://www.remscheid.de/politik-verwaltung/rat-der-stadt/bezirksvertretungen/index.php"
+    ]
   },
   {
     "city": "Waltrop",
@@ -85,15 +204,41 @@
     "regions": [
       "ruhrgebiet"
     ],
-    "localIntro": "Waltrop liegt im Kreis Recklinghausen im nördlichen Ruhrgebiet. Die Lage zwischen Ruhrgebiet und Münsterland bildet den örtlichen Rahmen Ihrer Immobilie.",
+    "localIntro": "Vom Stadtkern über Oberwiese bis Leveringhausen und Elmenhorst: Wir beschreiben das direkte Umfeld Ihrer Immobilie und bereiten die vorhandenen Angaben zu Gebäude und Grundstück nachvollziehbar auf.",
     "sections": [
       {
-        "heading": "Wege und Umfeld konkret zeigen",
-        "text": "Bei Ihrer Immobilie in Waltrop beschreiben wir die tatsächlichen Wege und das direkte Umfeld. Für die Bewertung betrachten wir daneben Grundstück, Gebäudezustand und vorhandene Unterlagen."
+        "heading": "Der Waltroper Stadtkern",
+        "text": "Für eine Wohnung im Stadtkern ergänzen wir die Lagebeschreibung um Geschoss, Zugang und zugehörige Außenflächen. Bei einem Haus betrachten wir auch die Anordnung von Garten und Stellplätzen. Tatsächliche Wege zu örtlichen Angeboten werden von der konkreten Adresse aus beschrieben.",
+        "takeaway": "Die Lage mit den Eigenschaften der Wohnung oder des Hauses verbinden."
+      },
+      {
+        "heading": "Oberwiese und Holthausen",
+        "text": "Oberwiese liegt im Westen, Holthausen im Norden des Stadtgebiets. Für eine Immobilie in diesen Bereichen nehmen wir das unmittelbare Umfeld und die Grundstücksaufteilung auf. Dabei zeigen wir, wie Zufahrt, Gebäude und Außenflächen zusammenhängen, und ergänzen die Darstellung um bekannte Erneuerungen.",
+        "takeaway": "Das Grundstück und seine Erreichbarkeit klar darstellen."
+      },
+      {
+        "heading": "Leveringhausen, Elmenhorst und Brockenscheidt",
+        "text": "Die Stadt zählt Leveringhausen, Elmenhorst und Brockenscheidt zu den Bauerschaften Waltrops. Bei einem dortigen Verkauf bleiben die Angaben auf das einzelne Objekt bezogen. Vorhandene Nebenräume, Gartenbereiche und Zugänge werden ebenso erfasst wie Grundriss, Baujahr und dokumentierte Modernisierungen.",
+        "takeaway": "Die konkreten Flächen und den heutigen Zustand in den Mittelpunkt stellen."
       }
     ],
     "migrationSource": "https://sls.de/immobilienmakler-waltrop/",
-    "sourceChecked": "2026-10-11"
+    "sourceChecked": "2026-10-26",
+    "text": "Waltrop verbindet einen kompakten Stadtkern mit umliegenden Bauerschaften. Für den Verkauf Ihres Hauses oder Ihrer Wohnung erfasst SLS Immobilienpartner die konkrete Lage und die Eigenschaften des Objekts – von der Raumaufteilung bis zu Garten und Zufahrt.",
+    "districts": [
+      "Waltrop",
+      "Oberwiese",
+      "Holthausen",
+      "Leveringhausen",
+      "Elmenhorst",
+      "Brockenscheidt",
+      "Lippe"
+    ],
+    "aliases": [],
+    "sources": [
+      "https://www.waltrop.de/geschichte",
+      "https://www.waltrop.de/bauen-wohnen/umweltangelegenheiten"
+    ]
   },
   {
     "city": "Wegberg",
@@ -101,14 +246,45 @@
     "regions": [
       "rheinland"
     ],
-    "localIntro": "Wegberg liegt im Kreis Heinsberg im Westen Nordrhein-Westfalens. Die Stadt umfasst zahlreiche kleinere Ortsteile; die genaue Lage gehört deshalb zur Einordnung Ihrer Immobilie.",
+    "localIntro": "Wegberg-Kern, Beeck, Arsbeck, Dalheim und Wildenrath sind einige der örtlichen Bereiche. Für Ihre Immobilie schauen wir auf die genaue Adresse und zeigen, wie Gebäude, Außenflächen und Umfeld zusammenpassen.",
     "sections": [
       {
-        "heading": "Ortsteil, Anbindung und Gebäude verbinden",
-        "text": "Bei einem Haus in Wegberg besprechen wir Grundstück, Erreichbarkeit und bekannte Modernisierungen. Die Vermarktung richtet sich nach den Eigenschaften Ihrer Immobilie und Ihren Verkaufszielen."
+        "heading": "Wegberg-Kern und Beeck",
+        "text": "Für ein Haus oder eine Wohnung im Wegberger Kern oder in Beeck beschreiben wir die konkrete Einbindung in die Umgebung. Der Weg zum Eingang, die Ausrichtung der Räume und vorhandene Außenflächen ergänzen die Ortsangabe. Grundriss und aktuelle Fotos zeigen, was das Angebot im Alltag ausmacht.",
+        "takeaway": "Die genaue Lage durch ein klares Bild der Immobilie ergänzen."
+      },
+      {
+        "heading": "Arsbeck, Dalheim und Wildenrath",
+        "text": "Bei einer Immobilie in Arsbeck, Dalheim oder Wildenrath erfassen wir die tatsächlichen Wege und die Zugänge zum Grundstück. Statt aus dem Ortsteilnamen auf eine bestimmte Wohnsituation zu schließen, zeigen wir das direkte Umfeld. Zustand, Baujahr und nachgewiesene Erneuerungen ergänzen die Vorbereitung.",
+        "takeaway": "Umfeld und Erreichbarkeit anhand der Adresse beschreiben."
+      },
+      {
+        "heading": "Merbeck und Rath-Anhoven",
+        "text": "Für einen Hausverkauf in Merbeck oder Rath-Anhoven betrachten wir Wohnräume, Grundstück und mögliche Nebengebäude gemeinsam. Vorhandene Pläne helfen, Flächen und heutige Nutzung zuzuordnen. Dazu dokumentieren wir bekannte Modernisierungen, damit Interessenten das Gebäude über die reine Ortsbeschreibung hinaus einschätzen können.",
+        "takeaway": "Nutzung, Flächen und Erneuerungen verständlich zusammenführen."
       }
     ],
     "migrationSource": "https://sls.de/immobilienmakler-wegberg/",
-    "sourceChecked": "2026-10-11"
+    "sourceChecked": "2026-10-26",
+    "text": "Wegberg besteht aus zahlreichen Ortsteilen. Ein Haus in Beeck, eine Wohnung im Kern oder eine Immobilie in Arsbeck braucht deshalb eine genaue Lagebeschreibung. SLS Immobilienpartner verbindet diese mit Grundstück, Raumaufteilung und dokumentierten Modernisierungen für eine sorgfältige Verkaufsvorbereitung.",
+    "districts": [
+      "Wegberg-Kern",
+      "Beeck",
+      "Arsbeck",
+      "Dalheim",
+      "Wildenrath",
+      "Merbeck",
+      "Rath-Anhoven",
+      "Klinkum",
+      "Rickelrath",
+      "Tüschenbroich"
+    ],
+    "aliases": [
+      "Wegberg-Mitte"
+    ],
+    "sources": [
+      "https://www.wegberg.de/dateien/pdf/bevoelkerungsstatistik/einwohner-stadt-wegberg-stichtag-31.12.24.pdf",
+      "https://www.wegberg.de/news/2025/oktober/st-martinszuege-in-der-stadt/martinszuege-2025.pdf?cid=p7g"
+    ]
   }
 ]

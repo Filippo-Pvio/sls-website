@@ -1,0 +1,31 @@
+/* Complete the restored pages using the existing typography and city layout. */
+.restored-city-page .city-hero,.age-living-page .age-hero{position:relative;isolation:isolate}
+.editorial-image-credit{position:absolute;right:24px;bottom:16px;z-index:3;margin:0!important;padding:5px 9px;background:rgba(25,43,51,.7);border-radius:3px;color:#fff!important;font:500 11px/1.4 Raleway,Arial,sans-serif;letter-spacing:.015em}
+.restored-city-page .city-hero .hero-scene,.age-living-page .age-hero .hero-scene{object-position:65% center}
+.restored-city-page .city-hero .wrap,.age-living-page .age-hero .wrap{position:relative;z-index:2}
+.restored-city-page .city-hero .button-ghost,.age-living-page .age-hero .button-ghost{background:#fff8ee;color:#161616;border-color:#fff8ee}
+.restored-city-page .city-source{margin:32px auto 0;color:#526873}
+.age-living-page .age-hero{min-height:650px;display:flex;align-items:center}
+.age-living-page .age-hero .lead{max-width:620px}
+.age-living-page .age-feature,.age-living-page .age-guide{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.age-living-page .age-feature figure{margin:0}
+.age-living-page .age-feature img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:68% center;border-radius:3px}
+.age-living-page figcaption{font-size:11px;line-height:1.5;color:#526873;margin-top:9px}
+.age-living-page .age-feature h2,.age-living-page .age-guide h2{margin-top:0}
+.age-living-page .age-intro{max-width:700px;margin:0 auto 48px;text-align:center}
+.age-living-page .age-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.age-living-page .age-choices article{border-top:1px solid #b8cbd3;padding-top:26px}
+.age-living-page h3{font:500 27px/1.25 'Playfair Display',Georgia,serif;color:#345b6e;margin:0 0 16px}
+.age-living-page .age-checklist{padding-left:21px;line-height:1.7}
+.age-living-page .age-checklist li{margin-bottom:12px}
+.age-living-page .age-guide-cover{display:block;max-width:290px;width:65%;height:auto;margin:auto;box-shadow:0 16px 44px rgba(34,54,62,.15)}
+.age-living-page .age-guide{max-width:980px;margin:auto}
+.age-living-page .age-faq{max-width:870px;margin:auto}
+.age-living-page .age-faq details{border-top:1px solid #b8cbd3}
+.age-living-page .age-faq details:last-child{border-bottom:1px solid #b8cbd3}
+.age-living-page .age-faq summary{cursor:pointer;min-height:52px;padding:21px 28px 21px 0;font-weight:600}
+.age-living-page .age-faq details p{padding-bottom:22px;margin:0}
+.age-living-page .buy-final .lead{max-width:680px;margin:0 auto 28px;color:white}
+.age-living-page .buy-final .page-actions{justify-content:center}
+.age-living-page section[id]{scroll-margin-top:110px}
+@media(max-width:850px){.age-living-page .age-feature,.age-living-page .age-guide,.age-living-page .age-choices{grid-template-columns:1fr;gap:32px}.age-living-page .age-guide-cover{max-width:220px}.age-living-page .age-hero{min-height:620px}.age-living-page .age-hero h1{font-size:clamp(38px,8vw,60px)}.editorial-image-credit{right:16px;bottom:12px}.restored-city-page .city-hero .wrap,.age-living-page .age-hero .wrap{padding-bottom:26px}}

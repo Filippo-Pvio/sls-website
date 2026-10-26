@@ -3,6 +3,7 @@ import {readdir,cp,mkdir,rm,readFile,writeFile} from 'node:fs/promises';
 import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'..'),output=path.join(root,'.site-output');
 await import('./build-restored-cities.mjs');
+await import('./build-market-directory.mjs');
 await import('./build-videos.mjs');
 await import('./build-signage.mjs');
 await import('./build-owner-landingpages.mjs');
