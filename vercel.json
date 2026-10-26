@@ -2947,6 +2947,71 @@
       "source": "/immobilie/vermietete-eleganz-am-rosengarten-grosszuegige-3-zimmer-wohnung-mit-balkon-tiefgarage/",
       "destination": "/immobilie/vermietete-eleganz-am-rosengarten-grosszugige-3-zimmer-wohnung-mit-balkon-tiefgarage-recklinghausen-sls-7-5595075/",
       "permanent": true
+    },
+    {
+      "source": "/immobilie/gepflegte-erdgeschosswohnung-mit-grosszuegigem-wohnbereich-und-terrasse/",
+      "destination": "/immobilie/gepflegte-erdgeschosswohnung-mit-grosszugigem-wohnbereich-und-terrasse-oberhausen-sls-7878-5622501/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/doppelhaushaelfte-mit-garage-sonnigem-garten-und-ausbaureserve-im-dachgeschoss/",
+      "destination": "/referenz/doppelhaushalfte-mit-garage-sonnigem-garten-und-ausbaureserve-im-dachgeschoss-herten-5463689/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zwei-wohneinheiten-und-ein-grosszuegiges-grundstueck-vielseitige-immobilie-mit-entwicklungspotenzial/",
+      "destination": "/referenz/zwei-wohneinheiten-und-ein-grosszugiges-grundstuck-vielseitige-immobilie-mit-entwicklungspotenzial-lunen-5468697/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/grosszuegige-eigentumswohnung-mit-sonnigem-balkon-und-durchdachtem-grundriss/",
+      "destination": "/referenz/grosszugige-eigentumswohnung-mit-sonnigem-balkon-und-durchdachtem-grundriss-dorsten-5372908/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmante-doppelhaushaelfte-mit-viel-potenzial-fuer-individuelles-wohnen-ideal-als-mehrgenerationenhaus-mit-balkon-und-schoenem-garten-in-begehrter-wohnlage/",
+      "destination": "/immobilie/doppelhaushalfte-ideal-als-mehrgenerationenhaus-mit-balkon-und-garten-in-begehrter-wohnlage-essen-sls-260-4438112/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/attraktive-kapitalanlage-voll-vermietetes-3-fh-mit-historischem-charakter/",
+      "destination": "/referenz/attraktive-kapitalanlage-voll-vermietetes-3-fh-mit-historischem-charakter-viersen-4909969/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnkomfort-mit-hauscharakter-elegante-maisonette-mit-gartenanteil-und-garage/",
+      "destination": "/referenz/wohnkomfort-mit-hauscharakter-elegante-maisonette-mit-gartenanteil-und-garage-bottrop-4363100/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-in-der-ruhe-eines-drei-parteienhauses-dachgeschoss-mit-potenzial/",
+      "destination": "/referenz/wohnen-in-der-ruhe-eines-drei-parteienhauses-dachgeschoss-mit-potenzial-dorsten-3149296/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/zeitlosearchitektur-und-moderner-wohnkomfort/",
+      "destination": "/referenz/zeitlose-architektur-und-moderner-wohnkomfort-dortmund-4321379/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmante-dachgeschosswohnung-mitmodernisierungsspielraum-in-bahnhofsnaher-wohnlage/",
+      "destination": "/referenz/charmante-dachgeschosswohnung-mit-modernisierungsspielraum-in-bahnhofsnaher-wohnlage-emmerich-am-rhein-4353701/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/wohnen-mit-garten-in-herdecke-grosszuegige-3-zimmer-wohnung/",
+      "destination": "/referenz/wohnen-mit-garten-in-herdecke-grosszugige-3-zimmer-wohnung-herdecke-5046390/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/charmantes-reihenmittelhaus-mit-garten-und-vielseitigem-potenzial-in-ruhiger-wohnlage/",
+      "destination": "/referenz/charmantes-reihenmittelhaus-mit-garten-und-vielseitigem-potenzial-in-ruhiger-wohnlage-dorsten-5239437/",
+      "permanent": true
+    },
+    {
+      "source": "/immobilie/kapitalanlage-in-moenchengladbach-barrierefreie-wohnung-im-betreuten-wohnen/",
+      "destination": "/referenz/bezugsfreie-kapitalanlage-in-monchengladbach-barrierefreie-wohnung-im-betreuten-wohnen-monchengladbach-4091649/",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -2964,10 +3029,6 @@
     },
     {
       "source": "/immobilie/charmantes-fachwerkhaus-mit-historischem-charakter-und-vielseitigen-nutzungsmoeglichkeiten/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/doppelhaushaelfte-mit-garage-sonnigem-garten-und-ausbaureserve-im-dachgeschoss/",
       "destination": "/api/retired-page"
     },
     {
@@ -3064,10 +3125,6 @@
     },
     {
       "source": "/immobilie/wohnkomfort-mit-potenzial-balkon-aufzug-stellplatz-inklusive/",
-      "destination": "/api/retired-page"
-    },
-    {
-      "source": "/immobilie/zwei-wohneinheiten-und-ein-grosszuegiges-grundstueck-vielseitige-immobilie-mit-entwicklungspotenzial/",
       "destination": "/api/retired-page"
     },
     {

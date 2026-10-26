@@ -27,14 +27,15 @@ for(const profile of [...profiles,{slug:'filippo-livera'}]){
 for(const row of mapping)destinations.set(new URL(row.source).pathname,row.kind==='active'?objectPath(row):referencePath(row));
 // Explicit, reviewed relaunch decisions take precedence over historical snapshots.
 for(const row of decisions.decisions){
- if(row.state==='redirect')destinations.set(row.source,row.destination);
+ if(row.state==='redirect'){destinations.set(row.source,row.destination);retiredSources.delete(row.source);}
  else if(row.state==='retired'){destinations.delete(row.source);retiredSources.add(row.source);}
  else throw new Error('Unsupported migration decision');
 }
 const taxonomyNames={duesseldorf:'Düsseldorf',moenchengladbach:'Mönchengladbach',juechen:'Jüchen','juechen-holz':'Jüchen-Holz',wuelfrath:'Wülfrath',ruethen:'Rüthen',luedenscheid:'Lüdenscheid',sprockhoevel:'Sprockhövel',toenisvorst:'Tönisvorst',luenen:'Lünen','froendenberg-ruhr':'Fröndenberg/Ruhr',kuerten:'Kürten',roesrath:'Rösrath',boenen:'Bönen'};
 const report=[];
-for(const absolute of legacy.urls){
- const source=new URL(absolute).pathname;
+// Search Console can reveal older aliases absent from the original sitemap.
+const sources=[...new Set([...legacy.urls.map(url=>new URL(url).pathname),...decisions.decisions.map(row=>row.source)])];
+for(const source of sources){
  if(source.startsWith('/immobilienmakler-dortmund/')&&source!=='/immobilienmakler-dortmund/')destinations.set(source,'/immobilienmakler-dortmund/');
  const location=/^\/immobilie_location\/([^/]+)\/$/.exec(source)?.[1];
  if(location&&!/^\d+$/.test(location)){
@@ -68,7 +69,8 @@ function mergeRules(existing,updates,removed=new Set()){
  return result;
 }
 config.redirects=mergeRules(config.redirects,generated,removedSources);
-config.rewrites=mergeRules(config.rewrites,report.filter(row=>row.state==='retired').map(row=>({source:row.source,destination:'/api/retired-page'})));
+const restoredSources=new Set(report.filter(row=>row.state==='redirect').flatMap(row=>percentVariants(row.source)));
+config.rewrites=mergeRules(config.rewrites.filter(rule=>!(rule.destination==='/api/retired-page'&&restoredSources.has(rule.source))),report.filter(row=>row.state==='retired').map(row=>({source:row.source,destination:'/api/retired-page'})));
 // Vercel evaluates rewrites in order. Specific retired URLs must precede the
 // generic property slug route, including newly retired entries appended above.
 config.rewrites=[...config.rewrites.filter(rule=>rule.destination==='/api/retired-page'),...config.rewrites.filter(rule=>rule.destination!=='/api/retired-page')];

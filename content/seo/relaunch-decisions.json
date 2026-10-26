@@ -191,6 +191,124 @@
       "previousDestination": "/immobilie/wohnen-auf-einer-ebene-gepflegter-bungalow-mit-vollkeller-garage-und-sonnigem-garten-dorsten-sls-8509-5739216/",
       "observedStatus": 410,
       "reason": "Not in current public offer/reference sitemaps; former target returns 404 or 410. No claim about private sale status."
+    },
+    {
+      "source": "/immobilie/gepflegte-erdgeschosswohnung-mit-grosszuegigem-wohnbereich-und-terrasse/",
+      "state": "redirect",
+      "destination": "/immobilie/gepflegte-erdgeschosswohnung-mit-grosszugigem-wohnbereich-und-terrasse-oberhausen-sls-7878-5622501/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "5622501",
+      "publicTitle": "Gepflegte Erdgeschosswohnung mit großzügigem Wohnbereich und Terrasse in Oberhausen | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/doppelhaushaelfte-mit-garage-sonnigem-garten-und-ausbaureserve-im-dachgeschoss/",
+      "state": "redirect",
+      "destination": "/referenz/doppelhaushalfte-mit-garage-sonnigem-garten-und-ausbaureserve-im-dachgeschoss-herten-5463689/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "5463689",
+      "publicTitle": "Doppelhaushälfte mit Garage, sonnigem Garten und Ausbaureserve im Dachgeschoss – Referenz in Herten | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/zwei-wohneinheiten-und-ein-grosszuegiges-grundstueck-vielseitige-immobilie-mit-entwicklungspotenzial/",
+      "state": "redirect",
+      "destination": "/referenz/zwei-wohneinheiten-und-ein-grosszugiges-grundstuck-vielseitige-immobilie-mit-entwicklungspotenzial-lunen-5468697/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "5468697",
+      "publicTitle": "Zwei Wohneinheiten und ein großzügiges Grundstück – vielseitige Immobilie mit Entwicklungspotenzial – Referenz in Lünen | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/grosszuegige-eigentumswohnung-mit-sonnigem-balkon-und-durchdachtem-grundriss/",
+      "state": "redirect",
+      "destination": "/referenz/grosszugige-eigentumswohnung-mit-sonnigem-balkon-und-durchdachtem-grundriss-dorsten-5372908/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "5372908",
+      "publicTitle": "Großzügige Eigentumswohnung mit sonnigem Balkon und durchdachtem Grundriss – Referenz in Dorsten | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/charmante-doppelhaushaelfte-mit-viel-potenzial-fuer-individuelles-wohnen-ideal-als-mehrgenerationenhaus-mit-balkon-und-schoenem-garten-in-begehrter-wohnlage/",
+      "state": "redirect",
+      "destination": "/immobilie/doppelhaushalfte-ideal-als-mehrgenerationenhaus-mit-balkon-und-garten-in-begehrter-wohnlage-essen-sls-260-4438112/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "4438112",
+      "publicTitle": "Doppelhaushälfte – ideal als Mehrgenerationenhaus – mit Balkon und Garten in begehrter Wohnlage in Essen | SLS Immobilienpartner",
+      "reason": "Unique distinctive phrase \"ideal als Mehrgenerationenhaus, mit Balkon und Garten in begehrter Wohnlage\" retained in the current public offer; marketing title shortened. Canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/attraktive-kapitalanlage-voll-vermietetes-3-fh-mit-historischem-charakter/",
+      "state": "redirect",
+      "destination": "/referenz/attraktive-kapitalanlage-voll-vermietetes-3-fh-mit-historischem-charakter-viersen-4909969/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "4909969",
+      "publicTitle": "Attraktive Kapitalanlage: Voll vermietetes 3-FH mit historischem Charakter – Referenz in Viersen | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/wohnkomfort-mit-hauscharakter-elegante-maisonette-mit-gartenanteil-und-garage/",
+      "state": "redirect",
+      "destination": "/referenz/wohnkomfort-mit-hauscharakter-elegante-maisonette-mit-gartenanteil-und-garage-bottrop-4363100/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "4363100",
+      "publicTitle": "Wohnkomfort mit Hauscharakter – elegante Maisonette mit Gartenanteil und Garage – Referenz in Bottrop | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/wohnen-in-der-ruhe-eines-drei-parteienhauses-dachgeschoss-mit-potenzial/",
+      "state": "redirect",
+      "destination": "/referenz/wohnen-in-der-ruhe-eines-drei-parteienhauses-dachgeschoss-mit-potenzial-dorsten-3149296/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "3149296",
+      "publicTitle": "Wohnen in der Ruhe eines Drei-Parteienhauses – Dachgeschoss mit Potenzial – Referenz in Dorsten | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/zeitlosearchitektur-und-moderner-wohnkomfort/",
+      "state": "redirect",
+      "destination": "/referenz/zeitlose-architektur-und-moderner-wohnkomfort-dortmund-4321379/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "4321379",
+      "publicTitle": "Zeitlose Architektur und moderner Wohnkomfort – Referenz in Dortmund | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/charmante-dachgeschosswohnung-mitmodernisierungsspielraum-in-bahnhofsnaher-wohnlage/",
+      "state": "redirect",
+      "destination": "/referenz/charmante-dachgeschosswohnung-mit-modernisierungsspielraum-in-bahnhofsnaher-wohnlage-emmerich-am-rhein-4353701/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "4353701",
+      "publicTitle": "Charmante Dachgeschosswohnung mit Modernisierungsspielraum in bahnhofsnaher Wohnlage – Referenz in Emmerich am Rhein | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/wohnen-mit-garten-in-herdecke-grosszuegige-3-zimmer-wohnung/",
+      "state": "redirect",
+      "destination": "/referenz/wohnen-mit-garten-in-herdecke-grosszugige-3-zimmer-wohnung-herdecke-5046390/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "5046390",
+      "publicTitle": "Wohnen mit Garten in Herdecke – Großzügige 3-Zimmer-Wohnung – Referenz in Herdecke | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/charmantes-reihenmittelhaus-mit-garten-und-vielseitigem-potenzial-in-ruhiger-wohnlage/",
+      "state": "redirect",
+      "destination": "/referenz/charmantes-reihenmittelhaus-mit-garten-und-vielseitigem-potenzial-in-ruhiger-wohnlage-dorsten-5239437/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "5239437",
+      "publicTitle": "Charmantes Reihenmittelhaus mit Garten und vielseitigem Potenzial in ruhiger Wohnlage – Referenz in Dorsten | SLS Immobilienpartner",
+      "reason": "Distinctive title matches the unique current public listing/reference, allowing German transliteration and missing word separators; canonical target HTTP 200 and indexable."
+    },
+    {
+      "source": "/immobilie/kapitalanlage-in-moenchengladbach-barrierefreie-wohnung-im-betreuten-wohnen/",
+      "state": "redirect",
+      "destination": "/referenz/bezugsfreie-kapitalanlage-in-monchengladbach-barrierefreie-wohnung-im-betreuten-wohnen-monchengladbach-4091649/",
+      "checkedAt": "2026-10-26",
+      "publicObjectId": "4091649",
+      "publicTitle": "Bezugsfreie Kapitalanlage in Mönchengladbach – barrierefreie Wohnung im betreuten Wohnen – Referenz in Mönchengladbach | SLS Immobilienpartner",
+      "reason": "Unique public reference retains the complete distinctive title \"Kapitalanlage in Mönchengladbach – barrierefreie Wohnung im betreuten Wohnen\", prefixed with \"Bezugsfreie\". Canonical target HTTP 200 and indexable."
     }
-  ]
+  ],
+  "updatedAt": "2026-10-26"
 }

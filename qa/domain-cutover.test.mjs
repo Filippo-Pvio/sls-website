@@ -10,6 +10,7 @@ test('new property aliases distinguish identical titles by public identity and u
   if(row.state==='redirect'){
    assert.ok(config.redirects.some(r=>r.source===row.source&&r.destination===row.destination&&r.permanent));
    assert.ok(!config.redirects.some(r=>r.source===row.destination),'no intermediate redirect');
+   assert.ok(!config.rewrites.some(r=>r.source===row.source&&r.destination==='/api/retired-page'),'a restored alias must not retain a retirement rule');
   }else{
    assert.ok(!config.redirects.some(r=>r.source===row.source),'retirement must not be shadowed by a stale redirect');
    assert.ok(config.rewrites.some(r=>r.source===row.source&&r.destination==='/api/retired-page'));
@@ -20,5 +21,8 @@ test('new property aliases distinguish identical titles by public identity and u
  assert.equal(twins.length,2);assert.equal(new Set(twins.map(r=>r.destination)).size,2);
  const reference=decisions.decisions.find(r=>r.destination?.endsWith('-4131762/'));assert.match(reference.destination,/^\/referenz\//);
  const legacy=await read('content/seo/legacy-urls.json'),report=await read('content/seo/migration-status.json');
- assert.equal(new Set(legacy.urls).size,650);assert.equal(report.urls.length,650);
+ assert.equal(new Set(legacy.urls).size,650);
+ const sources=new Set([...legacy.urls.map(url=>new URL(url).pathname),...decisions.decisions.map(row=>row.source)]);
+ assert.deepEqual(new Set(report.urls.map(row=>row.source)),sources);
+ for(const row of decisions.decisions)assert.equal(report.urls.find(item=>item.source===row.source)?.state,row.state);
 });

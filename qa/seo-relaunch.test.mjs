@@ -95,7 +95,9 @@ test('all generated public HTML has one H1, complete canonical/entity data and s
 test('every historic URL has an explicit migration decision; redirects never loop or chain through another redirect',async()=>{
  const report=JSON.parse(await readFile(new URL('../content/seo/migration-status.json',import.meta.url),'utf8'));
  const legacy=JSON.parse(await readFile(new URL('../content/seo/legacy-urls.json',import.meta.url),'utf8'));
- assert.equal(report.urls.length,legacy.urls.length);assert.ok(report.urls.every(x=>['retained','redirect','retired'].includes(x.state)));
+ const decisions=JSON.parse(await readFile(new URL('../content/seo/relaunch-decisions.json',import.meta.url),'utf8'));
+ const sources=new Set([...legacy.urls.map(url=>new URL(url).pathname),...decisions.decisions.map(row=>row.source)]);
+ assert.deepEqual(new Set(report.urls.map(row=>row.source)),sources);assert.ok(report.urls.every(x=>['retained','redirect','retired'].includes(x.state)));
  const config=JSON.parse(await readFile(new URL('../vercel.json',import.meta.url),'utf8'));
  const redirects=new Map(config.redirects.map(r=>[r.source,r.destination]));
  for(const rule of config.redirects.filter(r=>/%[0-9a-f]{2}/.test(r.source))){const upper=rule.source.replace(/%[0-9a-f]{2}/g,m=>m.toUpperCase());assert.equal(redirects.get(upper),rule.destination);}
