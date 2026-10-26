@@ -5,6 +5,8 @@
 .restored-city-page .city-hero .wrap,.age-living-page .age-hero .wrap{position:relative;z-index:2}
 .restored-city-page .city-hero .button-ghost,.age-living-page .age-hero .button-ghost{background:#fff8ee;color:#161616;border-color:#fff8ee}
 .restored-city-page .city-source{margin:32px auto 0;color:#526873}
+.restored-city-page .team-editorial-image{position:relative}
+.restored-city-page .team-editorial-image img{object-position:65% center}
 .age-living-page .age-hero{min-height:650px;display:flex;align-items:center}
 .age-living-page .age-hero .lead{max-width:620px}
 .age-living-page .age-feature,.age-living-page .age-guide{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}

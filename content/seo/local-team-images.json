@@ -1,0 +1,98 @@
+{
+  "/immobilienmakler-heiden/": {
+    "hero": {
+      "scene": "team-local-20261026/heiden-hero",
+      "person": "Cüneyt Demirli",
+      "portrait": "/assets/imported/Cueneyt-Demirli-768x768.jpg"
+    },
+    "beratung": {
+      "scene": "team-local-20261026/heiden-beratung",
+      "person": "Maximilian Werner",
+      "portrait": "/assets/imported/Maximilian-Werner-768x768.jpg"
+    }
+  },
+  "/immobilienmakler-oer-erkenschwick/": {
+    "hero": {
+      "scene": "team-local-20261026/oer-erkenschwick-hero",
+      "person": "Tanja Wawrosch",
+      "portrait": "/assets/imported/Tanja-Wawrosch-768x768.jpg"
+    },
+    "beratung": {
+      "scene": "team-local-20261026/oer-erkenschwick-beratung",
+      "person": "Jacqueline Flöter",
+      "portrait": "/assets/images/team/jacqueline-floeter-portrait-v2.jpg"
+    }
+  },
+  "/immobilienmakler-raesfeld/": {
+    "hero": {
+      "scene": "team-local-20261026/raesfeld-hero",
+      "person": "Daniel Allamezade",
+      "portrait": "/assets/imported/Daniel-Allamezade-768x768.jpg"
+    },
+    "beratung": {
+      "scene": "team-local-20261026/raesfeld-beratung",
+      "person": "Uwe Braun",
+      "portrait": "/assets/imported/Uwe-Braun-1-768x768.jpg"
+    }
+  },
+  "/immobilienmakler-reken/": {
+    "hero": {
+      "scene": "team-local-20261026/reken-hero",
+      "person": "Nico Hryn",
+      "portrait": "/assets/imported/Nico-Hryn-768x768.jpg"
+    },
+    "beratung": {
+      "scene": "team-local-20261026/reken-beratung",
+      "person": "Dennis Sahlmen",
+      "portrait": "/assets/imported/Dennis-Sahlmen-768x768.jpg"
+    }
+  },
+  "/immobilienmakler-remscheid/": {
+    "hero": {
+      "scene": "team-local-20261026/remscheid-hero",
+      "person": "Dustin Offermann",
+      "portrait": "/assets/imported/Dustin-Offermann-768x767.jpg"
+    },
+    "beratung": {
+      "scene": "team-local-20261026/remscheid-beratung",
+      "person": "Mischa Stratmann",
+      "portrait": "/assets/imported/Mischa-Stratmann-768x768.jpg"
+    }
+  },
+  "/immobilienmakler-waltrop/": {
+    "hero": {
+      "scene": "team-local-20261026/waltrop-hero",
+      "person": "Heiko Hofmann",
+      "portrait": "/assets/imported/Heiko-Hofmann-768x768.jpg"
+    },
+    "beratung": {
+      "scene": "team-local-20261026/waltrop-beratung",
+      "person": "Andreas Busch",
+      "portrait": "/assets/imported/Andreas-Busch-768x768.jpg"
+    }
+  },
+  "/immobilienmakler-wegberg/": {
+    "hero": {
+      "scene": "team-local-20261026/wegberg-hero",
+      "person": "Manuela Landripet",
+      "portrait": "/assets/imported/Manuela-Landripet-768x768.png"
+    },
+    "beratung": {
+      "scene": "team-local-20261026/wegberg-beratung",
+      "person": "Gina Künnecke",
+      "portrait": "/assets/imported/Gina-Kuennecke.jpg"
+    }
+  },
+  "/wohnen-im-alter/": {
+    "hero": {
+      "scene": "team-local-20261026/wohnen-im-alter-hero",
+      "person": "Tanja Wawrosch",
+      "portrait": "/assets/imported/Tanja-Wawrosch-768x768.jpg"
+    },
+    "beratung": {
+      "scene": "team-local-20261026/wohnen-im-alter-beratung",
+      "person": "Jacqueline Flöter",
+      "portrait": "/assets/images/team/jacqueline-floeter-portrait-v2.jpg"
+    }
+  }
+}

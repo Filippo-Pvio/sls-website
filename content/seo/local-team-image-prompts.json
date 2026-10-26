@@ -1,0 +1,215 @@
+{
+  "generator": "Built-in imagegen",
+  "date": "2026-10-26",
+  "styleReference": "/assets/images/header-unique/008-immobilienmakler-bochum-1-heiko-hofmann-1536.webp",
+  "images": [
+    {
+      "key": "heiden-hero",
+      "page": "heiden",
+      "type": "hero",
+      "person": "Cüneyt Demirli",
+      "portrait": "assets/imported/Cueneyt-Demirli-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Cüneyt Demirli; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: standing beside a dining table holding a closed property folder in a bright comfortable family home. Composition: person mainly in right 55–80% of frame; left 45% remains calm softly blurred interior for a white headline; eye-level medium shot, face safely inside central-right crop. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "54d82732eb39decc868ca213f7ef40e502c750d4152c8ddd55de8d47531a1a57",
+      "assets": [
+        "/assets/images/team-local-20261026/heiden-hero-900.webp",
+        "/assets/images/team-local-20261026/heiden-hero-1536.webp"
+      ]
+    },
+    {
+      "key": "wegberg-beratung",
+      "page": "wegberg",
+      "type": "beratung",
+      "person": "Gina Künnecke",
+      "portrait": "assets/imported/Gina-Kuennecke.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Gina Künnecke; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: reviewing a clear unmarked floorplan at a dining table, looking down with a natural friendly expression. Composition: medium environmental portrait with person in central-right frame, face and hands safely within central 70% so 3:2 crops work. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "a1293c9d274448d30e2b6af3bc4bda80ff370aae58c9d08308957c9760717e13",
+      "assets": [
+        "/assets/images/team-local-20261026/wegberg-beratung-900.webp",
+        "/assets/images/team-local-20261026/wegberg-beratung-1536.webp"
+      ]
+    },
+    {
+      "key": "oer-erkenschwick-hero",
+      "page": "oer-erkenschwick",
+      "type": "hero",
+      "person": "Tanja Wawrosch",
+      "portrait": "assets/imported/Tanja-Wawrosch-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Tanja Wawrosch; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: seated at a light oak table with neatly arranged floorplans, warmly attentive. Composition: person mainly in right 55–80% of frame; left 45% remains calm softly blurred interior for a white headline; eye-level medium shot, face safely inside central-right crop. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "a40b5929ed47803b4ac765d23426620a2987c74011f7d3999e93aebdfcbe1a02",
+      "assets": [
+        "/assets/images/team-local-20261026/oer-erkenschwick-hero-900.webp",
+        "/assets/images/team-local-20261026/oer-erkenschwick-hero-1536.webp"
+      ]
+    },
+    {
+      "key": "oer-erkenschwick-beratung",
+      "page": "oer-erkenschwick",
+      "type": "beratung",
+      "person": "Jacqueline Flöter",
+      "portrait": "assets/images/team/jacqueline-floeter-portrait-v2.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Jacqueline Flöter; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: explaining a plain property folder to an adult client seen only from behind at left edge. Composition: medium environmental portrait with person in central-right frame, face and hands safely within central 70% so 3:2 crops work. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "ce0d5a3cdf1a97dc674667eff9feee89ef8d9916a42f696ac806f9e86b5c2bee",
+      "assets": [
+        "/assets/images/team-local-20261026/oer-erkenschwick-beratung-900.webp",
+        "/assets/images/team-local-20261026/oer-erkenschwick-beratung-1536.webp"
+      ]
+    },
+    {
+      "key": "raesfeld-hero",
+      "page": "raesfeld",
+      "type": "hero",
+      "person": "Daniel Allamezade",
+      "portrait": "assets/imported/Daniel-Allamezade-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Daniel Allamezade; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: standing beside a wide garden doorway holding a slim tablet, relaxed and approachable. Composition: person mainly in right 55–80% of frame; left 45% remains calm softly blurred interior for a white headline; eye-level medium shot, face safely inside central-right crop. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "758de28adafe5558cb81b86f7ce1c5f252d917123536961cb0976f13cfb1f433",
+      "assets": [
+        "/assets/images/team-local-20261026/raesfeld-hero-900.webp",
+        "/assets/images/team-local-20261026/raesfeld-hero-1536.webp"
+      ]
+    },
+    {
+      "key": "raesfeld-beratung",
+      "page": "raesfeld",
+      "type": "beratung",
+      "person": "Uwe Braun",
+      "portrait": "assets/imported/Uwe-Braun-1-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Uwe Braun; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: standing beside a bright window discussing room layout, an open folder in hand. Composition: medium environmental portrait with person in central-right frame, face and hands safely within central 70% so 3:2 crops work. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "7c261a74cd65e98135a1a6451a93b2a61e8b412772d95f56cf0e6102fd560e30",
+      "assets": [
+        "/assets/images/team-local-20261026/raesfeld-beratung-900.webp",
+        "/assets/images/team-local-20261026/raesfeld-beratung-1536.webp"
+      ]
+    },
+    {
+      "key": "reken-hero",
+      "page": "reken",
+      "type": "hero",
+      "person": "Nico Hryn",
+      "portrait": "assets/imported/Nico-Hryn-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Nico Hryn; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: beside a kitchen island with a property folder, friendly natural half-smile. Composition: person mainly in right 55–80% of frame; left 45% remains calm softly blurred interior for a white headline; eye-level medium shot, face safely inside central-right crop. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "09ded7678720090bcef6e954db5ec74a1b736dfc1e146144cffb6de0a877eb74",
+      "assets": [
+        "/assets/images/team-local-20261026/reken-hero-900.webp",
+        "/assets/images/team-local-20261026/reken-hero-1536.webp"
+      ]
+    },
+    {
+      "key": "reken-beratung",
+      "page": "reken",
+      "type": "beratung",
+      "person": "Dennis Sahlmen",
+      "portrait": "assets/imported/Dennis-Sahlmen-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Dennis Sahlmen; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: reviewing a property's documents at an oak table, unposed thoughtful expression. Composition: medium environmental portrait with person in central-right frame, face and hands safely within central 70% so 3:2 crops work. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "669f846b07aa9af236338a9fa0a1fb9595d776e9731d8fce1f6695072f3a26ee",
+      "assets": [
+        "/assets/images/team-local-20261026/reken-beratung-900.webp",
+        "/assets/images/team-local-20261026/reken-beratung-1536.webp"
+      ]
+    },
+    {
+      "key": "remscheid-hero",
+      "page": "remscheid",
+      "type": "hero",
+      "person": "Dustin Offermann",
+      "portrait": "assets/imported/Dustin-Offermann-768x767.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Dustin Offermann; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: standing at a bright window in a well-kept home, holding simple property documents. Composition: person mainly in right 55–80% of frame; left 45% remains calm softly blurred interior for a white headline; eye-level medium shot, face safely inside central-right crop. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "e9c5163a6be0df1c450769c59012cd148ef2bff85af5bcfc3c3bd9209849e959",
+      "assets": [
+        "/assets/images/team-local-20261026/remscheid-hero-900.webp",
+        "/assets/images/team-local-20261026/remscheid-hero-1536.webp"
+      ]
+    },
+    {
+      "key": "remscheid-beratung",
+      "page": "remscheid",
+      "type": "beratung",
+      "person": "Mischa Stratmann",
+      "portrait": "assets/imported/Mischa-Stratmann-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Mischa Stratmann; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: listening to an adult client in a bright home, simple notebook on the table. Composition: medium environmental portrait with person in central-right frame, face and hands safely within central 70% so 3:2 crops work. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "5246d89137867f99d5bed5a02f34d1baebb6901efe9c5ca7e5646d08e8ce230a",
+      "assets": [
+        "/assets/images/team-local-20261026/remscheid-beratung-900.webp",
+        "/assets/images/team-local-20261026/remscheid-beratung-1536.webp"
+      ]
+    },
+    {
+      "key": "waltrop-hero",
+      "page": "waltrop",
+      "type": "hero",
+      "person": "Heiko Hofmann",
+      "portrait": "assets/imported/Heiko-Hofmann-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Heiko Hofmann; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: seated at a comfortable dining table beside a neutral floorplan, naturally welcoming. Composition: person mainly in right 55–80% of frame; left 45% remains calm softly blurred interior for a white headline; eye-level medium shot, face safely inside central-right crop. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "87dc6d7c8aea21b61b4c9f30b4a9bd1a63bdb17ef2d7e6eff163cd8a5226cc9c",
+      "assets": [
+        "/assets/images/team-local-20261026/waltrop-hero-900.webp",
+        "/assets/images/team-local-20261026/waltrop-hero-1536.webp"
+      ]
+    },
+    {
+      "key": "waltrop-beratung",
+      "page": "waltrop",
+      "type": "beratung",
+      "person": "Andreas Busch",
+      "portrait": "assets/imported/Andreas-Busch-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Andreas Busch; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: pointing with one natural hand to an unmarked floorplan on a dining table. Composition: medium environmental portrait with person in central-right frame, face and hands safely within central 70% so 3:2 crops work. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "9a3ec54eeaecd218c85fb25db7269df12c18a2c6b0fb5e3fdc0f93a42c68310e",
+      "assets": [
+        "/assets/images/team-local-20261026/waltrop-beratung-900.webp",
+        "/assets/images/team-local-20261026/waltrop-beratung-1536.webp"
+      ]
+    },
+    {
+      "key": "wegberg-hero",
+      "page": "wegberg",
+      "type": "hero",
+      "person": "Manuela Landripet",
+      "portrait": "assets/imported/Manuela-Landripet-768x768.png",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Manuela Landripet; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: standing in a bright living room with a large green garden window, holding a closed folder. Composition: person mainly in right 55–80% of frame; left 45% remains calm softly blurred interior for a white headline; eye-level medium shot, face safely inside central-right crop. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "a0f2d0eaed86e3b8082c396449a37109382e4694726843027bc2a710dbcb4310",
+      "assets": [
+        "/assets/images/team-local-20261026/wegberg-hero-900.webp",
+        "/assets/images/team-local-20261026/wegberg-hero-1536.webp"
+      ]
+    },
+    {
+      "key": "heiden-beratung",
+      "page": "heiden",
+      "type": "beratung",
+      "person": "Maximilian Werner",
+      "portrait": "assets/imported/Maximilian-Werner-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Maximilian Werner; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: preparing property particulars on a slim laptop at a bright table. Composition: medium environmental portrait with person in central-right frame, face and hands safely within central 70% so 3:2 crops work. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "487ec2eecff1068b6113973d8e02050f9ed838bd575ff4733619785bb4d3d509",
+      "assets": [
+        "/assets/images/team-local-20261026/heiden-beratung-900.webp",
+        "/assets/images/team-local-20261026/heiden-beratung-1536.webp"
+      ]
+    },
+    {
+      "key": "wohnen-im-alter-hero",
+      "page": "wohnen-im-alter",
+      "type": "hero",
+      "person": "Tanja Wawrosch",
+      "portrait": "assets/imported/Tanja-Wawrosch-768x768.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Tanja Wawrosch; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: seated in a welcoming bright home at an oak table, preparing a calm housing-wishes conversation with a mature client subtly blurred at far right. Composition: person mainly in right 55–80% of frame; left 45% remains calm softly blurred interior for a white headline; eye-level medium shot, face safely inside central-right crop. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "a40b5929ed47803b4ac765d23426620a2987c74011f7d3999e93aebdfcbe1a02",
+      "assets": [
+        "/assets/images/team-local-20261026/wohnen-im-alter-hero-900.webp",
+        "/assets/images/team-local-20261026/wohnen-im-alter-hero-1536.webp"
+      ]
+    },
+    {
+      "key": "wohnen-im-alter-beratung",
+      "page": "wohnen-im-alter",
+      "type": "beratung",
+      "person": "Jacqueline Flöter",
+      "portrait": "assets/images/team/jacqueline-floeter-portrait-v2.jpg",
+      "prompt": "Use case: identity-preserve. Create one premium photorealistic SLS real-estate editorial website photograph, landscape 16:9. Image 1 is the identity reference for Jacqueline Flöter; image 2 is ONLY the established website style/composition reference, do not copy its man's identity. Preserve precisely the first person's facial structure, age, hair, hairline, skin tone, eyes, glasses if present, and natural body proportions. Keep the navy jacket and light shirt/blouse from their portrait. This must recognizably be the SAME real team member, not a generic model. Scene: discussing housing wishes with an independent older woman seated at a bright dining table, respectful eye contact and a plain floorplan. Composition: medium environmental portrait with person in central-right frame, face and hands safely within central 70% so 3:2 crops work. Match reference 2's restrained warm daylight, cream and muted blue-grey home interiors, wooden or stone surfaces, candid approachable professionalism, natural skin texture, subtly shallow depth of field. Keep the scene varied and plausible. It is an AI-staged scene using a real team portrait, no claim of an actual customer meeting or local office. No text, logos, signs, watermarks, badges, collage, floating objects, exaggerated smiles, beauty retouching or distorted hands.",
+      "sourceSha256": "ce0d5a3cdf1a97dc674667eff9feee89ef8d9916a42f696ac806f9e86b5c2bee",
+      "assets": [
+        "/assets/images/team-local-20261026/wohnen-im-alter-beratung-900.webp",
+        "/assets/images/team-local-20261026/wohnen-im-alter-beratung-1536.webp"
+      ]
+    }
+  ]
+}
