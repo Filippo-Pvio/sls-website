@@ -1,0 +1,79 @@
+{
+  "generator": "Built-in imagegen",
+  "date": "2026-10-26",
+  "sharedPrompt": "Photorealistic natural premium German real estate editorial photograph. Landscape 16:9. Main subject on right; quiet left for white headline. Authentic materials, restrained warm natural blue-grey-cream palette. Fictional illustrative scene; no actual landmark, listing or staff. No text, logos, watermarks, collage or luxury clichés.",
+  "images": [
+    {
+      "key": "heiden",
+      "prompt": "A well-kept red brick detached family house, generous lawn, mature hedges and a broad oak tree, quiet rural residential setting in western Germany, soft spring afternoon.",
+      "assets": [
+        "/assets/images/local-relaunch-20261026/heiden-900.webp",
+        "/assets/images/local-relaunch-20261026/heiden-1536.webp"
+      ]
+    },
+    {
+      "key": "oer-erkenschwick",
+      "prompt": "A modest attractive red brick semi-detached family house with a front garden, mature trees and the edge of woodland behind, northern Ruhr residential atmosphere, soft clear afternoon.",
+      "assets": [
+        "/assets/images/local-relaunch-20261026/oer-erkenschwick-900.webp",
+        "/assets/images/local-relaunch-20261026/oer-erkenschwick-1536.webp"
+      ]
+    },
+    {
+      "key": "raesfeld",
+      "prompt": "A warm brick family home with pitched roof, natural stone footpath, generous planted garden and mature trees, calm village-edge residential atmosphere in western Germany, soft warm morning.",
+      "assets": [
+        "/assets/images/local-relaunch-20261026/raesfeld-900.webp",
+        "/assets/images/local-relaunch-20261026/raesfeld-1536.webp"
+      ]
+    },
+    {
+      "key": "reken",
+      "prompt": "A tastefully modernized light brick detached home with dark pitched roof and generous garden, quiet green residential lane in western Germany, gentle morning sun.",
+      "assets": [
+        "/assets/images/local-relaunch-20261026/reken-900.webp",
+        "/assets/images/local-relaunch-20261026/reken-1536.webp"
+      ]
+    },
+    {
+      "key": "remscheid",
+      "prompt": "A characterful German house with grey slate accents and light plaster, pitched roof, sloping garden with mature trees, residential hillside atmosphere of Bergisches Land, clear soft daylight.",
+      "assets": [
+        "/assets/images/local-relaunch-20261026/remscheid-900.webp",
+        "/assets/images/local-relaunch-20261026/remscheid-1536.webp"
+      ]
+    },
+    {
+      "key": "waltrop",
+      "prompt": "A welcoming traditional brick semi-detached home with a lush garden and mature trees, quiet suburban street in northern Ruhr area, soft afternoon light.",
+      "assets": [
+        "/assets/images/local-relaunch-20261026/waltrop-900.webp",
+        "/assets/images/local-relaunch-20261026/waltrop-1536.webp"
+      ]
+    },
+    {
+      "key": "wegberg",
+      "prompt": "A spacious red brick family house with pitched roof and a generous garden, lush hedges, mature trees, quiet low-density residential atmosphere near Germany's western border, warm late afternoon.",
+      "assets": [
+        "/assets/images/local-relaunch-20261026/wegberg-900.webp",
+        "/assets/images/local-relaunch-20261026/wegberg-1536.webp"
+      ]
+    },
+    {
+      "key": "wohnen-im-alter",
+      "prompt": "A candid respectful scene of a German couple around 65 to 75, relaxed at the wide terrace doorway of their comfortable contemporary home, looking into a green garden and quietly discussing their next chapter. They look capable and independent, natural expressions, no posed sales handshake. People mainly on the right.",
+      "assets": [
+        "/assets/images/local-relaunch-20261026/wohnen-im-alter-900.webp",
+        "/assets/images/local-relaunch-20261026/wohnen-im-alter-1536.webp"
+      ]
+    },
+    {
+      "key": "wohnen-im-alter-beratung",
+      "prompt": "Respectful candid editorial interior: an independent German woman around 70 seated at an oak dining table with an adult daughter around 40, reviewing a simple unmarked floor plan and discussing housing wishes in a bright comfortable home with a green garden outside. Natural hands, calm conversation, no distress or medical framing, no identifiable real estate agent.",
+      "assets": [
+        "/assets/images/local-relaunch-20261026/wohnen-im-alter-beratung-900.webp",
+        "/assets/images/local-relaunch-20261026/wohnen-im-alter-beratung-1536.webp"
+      ]
+    }
+  ]
+}
