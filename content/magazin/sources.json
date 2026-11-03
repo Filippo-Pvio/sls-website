@@ -99,5 +99,30 @@
     "title": "§ 28 WEG: Wirtschaftsplan, Jahresabrechnung und Vermögensbericht",
     "url": "https://www.gesetze-im-internet.de/woeigg/__28.html",
     "checkedAt": "2026-10-20"
+  },
+  "bgb246e": {
+    "title": "§ 246e BauGB: Befristete Sonderregelung für den Wohnungsbau",
+    "url": "https://www.gesetze-im-internet.de/bbaug/__246e.html",
+    "checkedAt": "2026-11-03"
+  },
+  "bgb34": {
+    "title": "§ 34 BauGB: Vorhaben innerhalb im Zusammenhang bebauter Ortsteile",
+    "url": "https://www.gesetze-im-internet.de/bbaug/__34.html",
+    "checkedAt": "2026-11-03"
+  },
+  "nrwverfahren": {
+    "title": "Bauportal NRW: Informationen zum Baugenehmigungsverfahren",
+    "url": "https://bauportal.nrw/themenportal/informationen-zum-baugenehmigungsverfahren",
+    "checkedAt": "2026-11-03"
+  },
+  "duesseldorfvoranfrage": {
+    "title": "Stadt Düsseldorf: Bauvoranfrage",
+    "url": "https://www.duesseldorf.de/bauaufsichtsamt/baulexikon-a-z/bauvoranfrage",
+    "checkedAt": "2026-11-03"
+  },
+  "dorstenvorbescheid": {
+    "title": "Stadt Dorsten: Vorbescheid",
+    "url": "https://www.dorsten.de/rathaus-stadt/verwaltung/fachaemter/63-bauordnungsamt/vorbescheid",
+    "checkedAt": "2026-11-03"
   }
 }
