@@ -42,3 +42,20 @@ test('QA pages are generated only for the exact preview branch, never production
   const report=await readFile(path.join(output,'tracking-qa/report/index.html'),'utf8');assert.match(report,/data-sales-wizard[^>]*><div class="sales-report-request">/);
  }finally{await rm(output,{recursive:true,force:true})}
 });
+
+test('agency QA is bound to the actual preview deployment and existing measurement ID',async()=>{
+ const output=await mkdtemp(path.join(tmpdir(),'sls-agency-qa-'));await mkdir(path.join(output,'assets'));
+ try{
+  const env={VERCEL_ENV:'preview',VERCEL_GIT_COMMIT_REF:'fix/restore-agency-tracking-20261103',VERCEL_URL:'sls-website-test-fixture.vercel.app'};
+  assert.equal(await buildTrackingQa({output,env}),true);
+  const fixtureCode=await readFile(path.join(output,'assets/tracking-qa-fixture.js'),'utf8');
+  assert.match(fixtureCode,/sls-website-test-fixture\.vercel\.app/);assert.match(fixtureCode,/G-5CDDRCTXCM/);assert.doesNotMatch(fixtureCode,/G-CPX5L89D4H/);
+  await assert.rejects(buildTrackingQa({output,env:{...env,VERCEL_URL:'evil.example'}}));
+  assert.equal(await buildTrackingQa({output,env:{...env,VERCEL_ENV:'production'}}),false);
+  const external=[],window={fetch:async(...a)=>{external.push(a);return new Response('{}')},addEventListener(){}};
+  const host=env.VERCEL_URL,location={hostname:host,pathname:'/tracking-qa/contact/',href:'https://'+host+'/tracking-qa/contact/',origin:'https://'+host};
+  vm.runInNewContext(fixtureCode,{window,location,document:{addEventListener(){},querySelector(){}},URL,Response,Date,queueMicrotask});
+  await window.fetch('/api/propstack-contact-request',{method:'POST',body:'{}'});assert.equal(external.length,0);
+  await window.fetch('https://region1.google-analytics.com/g/collect?tid=G-5CDDRCTXCM',{method:'POST'});assert.equal(external.length,1);
+ }finally{await rm(output,{recursive:true,force:true})}
+});

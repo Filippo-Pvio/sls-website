@@ -41,6 +41,7 @@ export function prepareAgencyContainer(original,relaunch) {
   for(const tag of legacyTags)tag.blockingTriggerId=[...new Set([...(tag.blockingTriggerId||[]),block.triggerId])];
   const analytics=trigger('Statistics granted','^sls_analytics_ready$');
   const marketing=trigger('Marketing granted','^sls_marketing_ready$');
+  const googleReady=trigger('Google consent granted','^sls_(analytics|marketing)_ready$');
   const clarityReady=trigger('Clarity granted','^sls_clarity_ready$',[condition('EQUALS','{{SLS Relaunch | Clarity Consent}}','true')]);
   const complete=trigger('Confirmed request','^('+eventNames.join('|')+')$');
   const copy=(tag,name,ready,needed)=>{
@@ -54,7 +55,12 @@ export function prepareAgencyContainer(original,relaunch) {
   const request=relaunch.containerVersion.tag.find(t=>t.type==='gaawe');
   if(!base||!request)throw new Error('Missing native relaunch Google tag templates.');
   const remap=tag=>JSON.parse(JSON.stringify(tag).replaceAll('G-CPX5L89D4H','G-5CDDRCTXCM').replaceAll('{{SLS Page Location}}','{{'+page+'}}').replaceAll('{{Event}}','{{'+eventVariable+'}}'));
-  const config=copy(remap(base),'Google tag (existing Analytics)',analytics,['analytics_storage']);
+  const config=copy(remap(base),'Google tag (existing Analytics)',googleReady,[]);
+  // Its pre-existing Google tag also routes to Ads. Google's built-in consent checks
+  // honor the separately chosen storage/data/personalization states; a Google opt-in
+  // is required before this once-per-load tag can fire.
+  const settings=config.parameter.find(p=>p.key==='configSettingsTable');
+  settings.list=settings.list.filter(row=>!row.map?.some(p=>p.key==='parameter'&&p.value==='allow_ad_personalization_signals'));
   config.priority={type:'INTEGER',value:'10'};
   const completions=copy(remap(request),'Confirmed requests (existing Analytics)',complete,['analytics_storage']);
   // Built-in Event variable is available in every container; no obsolete event alias is retained.

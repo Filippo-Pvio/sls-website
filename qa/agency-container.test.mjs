@@ -26,7 +26,8 @@ test('new tags use only old asset IDs and separate consent; completions are reta
  assert.equal(tags.length,7);assert.doesNotMatch(JSON.stringify(tags),/G-CPX5L89D4H|GTM-PSH7R4R8/);
  const ga=tags.find(t=>t.type==='googtag');assert.ok(JSON.stringify(ga).includes('G-5CDDRCTXCM'));
  const clarity=tags.find(t=>t.type==='cvt_agency_template');assert.equal(clarity.parameter[0].value,'t3vffd89eo');assert.equal(clarity.consentSettings.consentStatus,'NOT_NEEDED');const ct=out.trigger.find(t=>t.triggerId===clarity.firingTriggerId[0]);assert.match(JSON.stringify(ct),/Clarity Consent/);assert.match(JSON.stringify(ct),/sls_clarity_ready/);
- for(const t of tags.filter(t=>t!==clarity))assert.equal(t.consentSettings.consentStatus,'NEEDED');
+ assert.equal(ga.consentSettings.consentStatus,'NOT_NEEDED');assert.equal(ga.tagFiringOption,'ONCE_PER_LOAD');const gt=out.trigger.find(t=>t.triggerId===ga.firingTriggerId[0]);assert.match(JSON.stringify(gt),/analytics\|marketing/);
+ for(const t of tags.filter(t=>t!==clarity&&t!==ga))assert.equal(t.consentSettings.consentStatus,'NEEDED');
  const complete=out.trigger.find(t=>t.name.includes('Confirmed request'));assert.match(JSON.stringify(complete),/sales_report_success/);assert.match(JSON.stringify(complete),/contact_request_success/);
  const eventTag=tags.find(t=>t.name.includes('Confirmed requests'));assert.equal(eventTag.parameter.find(p=>p.key==='eventName').value,'{{Event}}');
  for(const kind of ['tag','trigger','variable']){const ids=out[kind].map(x=>x[kind+'Id']);assert.equal(new Set(ids).size,ids.length);}
