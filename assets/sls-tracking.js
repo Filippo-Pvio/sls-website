@@ -22,8 +22,29 @@
   gtag('consent', 'default', consent({}));
   gtag('set', 'ads_data_redaction', true);
   gtag('set', 'url_passthrough', false);
-  const safePage = () => location.origin + location.pathname;
-  const payload = event => ({event, sls_page_location: safePage(), sls_page_referrer: '', sls_page_title: 'SLS Website'});
+  // Retain attribution, never arbitrary query strings, form values or URL fragments.
+  const campaignKeys = new Set(['utm_source','utm_medium','utm_campaign','utm_id',
+    'utm_term','utm_content','utm_source_platform','utm_creative_format','utm_marketing_tactic']);
+  const clickKeys = new Set(['gclid','gbraid','wbraid','fbclid']);
+  function safePage() {
+    const query = new URLSearchParams();
+    for (const [key,value] of new URLSearchParams(location.search)) {
+      if (query.has(key)) continue;
+      if (clickKeys.has(key) && /^[A-Za-z0-9_-]{1,512}$/.test(value)) query.set(key,value);
+      if (campaignKeys.has(key) && /^[\p{L}\p{N} ._~:/+\-]{1,200}$/u.test(value)) query.set(key,value);
+    }
+    return location.origin + location.pathname + (query.size ? '?' + query : '');
+  }
+  function safeReferrer() {
+    try {
+      const ref = new URL(document.referrer);
+      if (!['https:','http:'].includes(ref.protocol)) return '';
+      // External origin identifies search/referral sources without exposing their queries.
+      return ref.origin + (ref.origin === location.origin ? ref.pathname : '/');
+    } catch { return ''; }
+  }
+  const payload = event => ({event, sls_page_location: safePage(),
+    sls_page_referrer: safeReferrer(), sls_page_title: String(document.title || 'SLS Website').slice(0,300)});
   function clearCookies(categories) {
     const patterns = [];
     if (categories.analytics) patterns.push(/^_ga(?:_|$)|^_gid$|^_gat(?:_|$)/);
@@ -77,9 +98,12 @@
   window.SLSTracking = {enabled, container, disabled:false};
   window.addEventListener('sls:consent-change', sync);
   window.addEventListener('sls:conversion', ({detail = {}}) => {
-    if (!enabled || disabled || !allowed('analytics') || !released.has('analytics') || !events.has(detail.event)) return;
-    // Only fixed names and a minimized page path; never form or object data.
-    window.dataLayer.push(payload(detail.event));
+    if (!enabled || disabled || !events.has(detail.event)) return;
+    // Each destination has its own consent gate. No pre-consent outcomes are replayed.
+    if (allowed('analytics') && released.has('analytics')) window.dataLayer.push(payload(detail.event));
+    if (allowed('marketing') && released.has('marketing')) {
+      window.dataLayer.push({...payload('sls_marketing_conversion'), sls_conversion_name:detail.event});
+    }
   });
   sync();
 })();

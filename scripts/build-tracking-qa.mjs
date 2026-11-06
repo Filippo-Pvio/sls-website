@@ -3,11 +3,11 @@ import {readFile,writeFile,mkdir,copyFile} from 'node:fs/promises';
 import path from 'node:path';
 import {prepareConsentHtml} from '../lib/consent-html.mjs';
 export async function buildTrackingQa({root=path.resolve(import.meta.dirname,'..'),output=path.join(root,'.site-output'),env=process.env}={}) {
- const agency=env.VERCEL_GIT_COMMIT_REF==='fix/restore-agency-tracking-20261103';
+ const agency=['fix/restore-agency-tracking-20261103','fix/tracking-attribution-20261106'].includes(env.VERCEL_GIT_COMMIT_REF);
  if(env.VERCEL_ENV!=='preview'||(!agency&&env.VERCEL_GIT_COMMIT_REF!=='feat/consent-tracking-phase1-20261016'))return false;
  const agencyHost=env.VERCEL_URL;
  if(agency&&(!agencyHost||!/^sls-website-[a-z0-9-]+\.vercel\.app$/.test(agencyHost)))throw new Error('Exact agency QA deployment host required.');
- const pages={contact:'kontakt/index.html',buyer:'kaeuferfinder/index.html',guide:'downloads/index.html',search:'suchprofil/index.html',property:'immobilien/preview.html',report:'verkaufscheck/index.html'};
+ const pages={contact:'kontakt/index.html',buyer:'kaeuferfinder/index.html',guide:'downloads/index.html',search:'suchprofil/index.html',property:'immobilien/preview.html',report:'verkaufscheck/index.html',sale:'lp/immobilie-verkaufen/index.html',valuation:'lp/immobilienbewertung/index.html'};
  const links=Object.keys(pages).map(name=>`<a href="/tracking-qa/${name}/${name==='property'?'?objekt=17':''}">${name}</a>`).join(' · ');
  for(const [name,source] of Object.entries(pages)){
   let html=await readFile(path.join(root,source),'utf8');

@@ -5,7 +5,7 @@
  if(location.hostname!==host||!location.pathname.startsWith('/tracking-qa/')){window.fetch=()=>Promise.reject(new Error('QA fixture outside its permitted preview'));return;}
  const originalFetch=window.fetch.bind(window),scenario=new URL(location.href).searchParams.get('qa')||'success';
  const events=[],posts=[];
- const show=()=>{const out=document.querySelector('#tracking-qa-result');if(out)out.textContent=JSON.stringify({scenario,simulatedPosts:posts.length,localEvents:events,forwarded:(window.dataLayer||[]).filter(x=>x.event&&/_success$/.test(x.event)).map(x=>x.event)});};
+ const show=()=>{const out=document.querySelector('#tracking-qa-result');if(out)out.textContent=JSON.stringify({scenario,simulatedPosts:posts.length,localEvents:events,forwarded:(window.dataLayer||[]).filter(x=>x.event&&/_success$/.test(x.event)).map(x=>x.event),marketing:(window.dataLayer||[]).filter(x=>x.event==='sls_marketing_conversion').map(x=>x.sls_conversion_name)});};
  document.addEventListener('DOMContentLoaded',show);
  window.addEventListener('sls:conversion',e=>{events.push(e.detail?.event);queueMicrotask(show);});
  const response=(data,status=200)=>Promise.resolve(new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json'}}));

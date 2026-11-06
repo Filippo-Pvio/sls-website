@@ -4,12 +4,12 @@ import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 const source=readFileSync(new URL('../assets/sls-tracking.js',import.meta.url),'utf8');
 const consentSource=readFileSync(new URL('../assets/privacy-consent.js',import.meta.url),'utf8');
-function harness(initial={},host='sls.de') {
+function harness(initial={},host='sls.de',page={}) {
  let choice={...initial};const listeners={},scripts=[],deleted=[];
- const document={head:{append:s=>scripts.push(s)},createElement:()=>({})};
+ const document={title:page.title||'Kontakt | SLS Immobilienpartner',referrer:page.referrer||'',head:{append:s=>scripts.push(s)},createElement:()=>({})};
  Object.defineProperty(document,'cookie',{get:()=> '_ga=x; _ga_TEST=y; _clck=c; _clsk=d; _fbp=e; _fbc=f; _gcl_aw=g; necessary=keep',set:v=>deleted.push(v)});
  const window={SLSConsent:{allowed:category=>choice[category]===true},addEventListener:(n,fn)=>(listeners[n]??=[]).push(fn)};
- const context={window,document,location:{hostname:host,origin:'https://'+host,pathname:'/kontakt/',search:'?email=private@example.com',hash:'#private'},Date};
+ const context={window,document,location:{hostname:host,origin:'https://'+host,pathname:'/kontakt/',search:'?email=private@example.com',hash:'#private',...page.location},Date,URL,URLSearchParams};
  vm.runInNewContext(source,context);
  return {window,scripts,deleted,run:()=>vm.runInNewContext(source,context),set:next=>{choice={...next};listeners['sls:consent-change'].forEach(f=>f({}));},convert:event=>listeners['sls:conversion'].forEach(f=>f({detail:{event,email:'private@example.com',propertyId:123}}))};
 }
@@ -27,6 +27,7 @@ test('each combination releases only the chosen providers, in one container',()=
   assert.equal(typeof h.window.clarity,p.clarity?'function':'undefined');
   h.convert('contact_request_success');
   assert.equal(events(h).filter(e=>e.event==='contact_request_success').length,p.analytics?1:0);
+  assert.equal(events(h).filter(e=>e.event==='sls_marketing_conversion'&&e.sls_conversion_name==='contact_request_success').length,p.marketing?1:0);
  }
 });
 test('no replay of pre-consent requests, no duplicates when a category is added',()=>{
@@ -75,4 +76,30 @@ test('old choices do not silently authorize newly introduced services',()=>{
  vm.runInNewContext(consentSource,{window,document,localStorage:{getItem:()=>JSON.stringify(old),removeItem:()=>{removed=true}},Date,URL});
  assert.equal(removed,true);
  for(const category of ['analytics','clarity','marketing','media'])assert.equal(window.SLSConsent.allowed(category),false);
+});
+
+test('attribution retains only known campaign keys and valid click identifiers, with real title and safe referrer',()=>{
+ const h=harness({analytics:true,marketing:true},'sls.de',{title:'Kontakt | SLS Immobilienpartner',referrer:'https://www.google.com/search?q=private@example.com#secret',location:{search:'?utm_source=google&utm_medium=cpc&utm_campaign=Verkauf+NRW&gclid=Click_123&gbraid=braid-1&wbraid=braid-2&fbclid=Fb_123&email=private@example.com&objekt=123&token=secret&utm_email=private@example.com&utm_content=private%40example.com'}});
+ h.convert('contact_request_success');
+ for(const e of events(h).filter(e=>e.sls_page_location)){
+  const u=new URL(e.sls_page_location);assert.equal(u.searchParams.get('utm_source'),'google');assert.equal(u.searchParams.get('utm_campaign'),'Verkauf NRW');
+  for(const key of ['gclid','gbraid','wbraid','fbclid'])assert.ok(u.searchParams.get(key));
+  assert.equal(e.sls_page_referrer,'https://www.google.com/');assert.equal(e.sls_page_title,'Kontakt | SLS Immobilienpartner');
+ }
+ assert.doesNotMatch(JSON.stringify(events(h)),/private|secret|objekt|email/);
+});
+test('malformed attribution, external referrer queries and unknown events cannot inject payloads',()=>{
+ const h=harness({marketing:true},'sls.de',{referrer:'javascript:alert(1)',location:{search:'?gclid=bad%22id&utm_source=ok&utm_source=override&utm_campaign='+ 'x'.repeat(201)}});
+ h.convert('unknown_event');h.convert('guide_request_success');
+ const e=events(h).find(e=>e.event==='sls_marketing_conversion');assert.equal(e.sls_conversion_name,'guide_request_success');
+ assert.equal(e.sls_page_location,'https://sls.de/kontakt/?utm_source=ok');assert.equal(e.sls_page_referrer,'');
+ assert.equal(events(h).filter(e=>e.event==='guide_request_success').length,0);
+});
+test('marketing-only, analytics-only and joint choices route all six outcomes independently',()=>{
+ const names=['contact_request_success','buyerfinder_request_success','guide_request_success','search_profile_success','property_inquiry_success','sales_report_success'];
+ for(const p of [{analytics:true},{marketing:true},{analytics:true,marketing:true},{}]){
+  const h=harness(p);for(const n of names)h.convert(n);
+  assert.equal(events(h).filter(e=>e.event.endsWith('_success')).length,p.analytics?6:0);
+  assert.equal(events(h).filter(e=>e.event==='sls_marketing_conversion').length,p.marketing?6:0);
+ }
 });

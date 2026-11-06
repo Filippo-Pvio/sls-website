@@ -46,7 +46,7 @@ test('QA pages are generated only for the exact preview branch, never production
 test('agency QA is bound to the actual preview deployment and existing measurement ID',async()=>{
  const output=await mkdtemp(path.join(tmpdir(),'sls-agency-qa-'));await mkdir(path.join(output,'assets'));
  try{
-  const env={VERCEL_ENV:'preview',VERCEL_GIT_COMMIT_REF:'fix/restore-agency-tracking-20261103',VERCEL_URL:'sls-website-test-fixture.vercel.app'};
+  const env={VERCEL_ENV:'preview',VERCEL_GIT_COMMIT_REF:'fix/tracking-attribution-20261106',VERCEL_URL:'sls-website-test-fixture.vercel.app'};
   assert.equal(await buildTrackingQa({output,env}),true);
   const fixtureCode=await readFile(path.join(output,'assets/tracking-qa-fixture.js'),'utf8');
   assert.match(fixtureCode,/sls-website-test-fixture\.vercel\.app/);assert.match(fixtureCode,/G-5CDDRCTXCM/);assert.doesNotMatch(fixtureCode,/G-CPX5L89D4H/);
