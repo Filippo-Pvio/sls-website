@@ -10,7 +10,7 @@ function harness(host=preview,initial=false){
  const document={head:{append:s=>scripts.push(s)},createElement:()=>({})};
  Object.defineProperty(document,'cookie',{get:()=> '_ga=abc; _ga_TEST=xyz; necessary=keep',set:v=>cookies.push(v)});
  const window={SLSConsent:{allowed:category=>category==='analytics'&&granted},addEventListener:(n,fn)=>(listeners[n]??=[]).push(fn)};
- const context={window,document,location:{hostname:host,origin:'https://'+host,pathname:'/kontakt/',search:'?email=private@example.com',hash:'#secret'},Date};
+ const context={window,document,location:{hostname:host,origin:'https://'+host,pathname:'/kontakt/',search:'?email=private@example.com',hash:'#secret'},Date,URL,URLSearchParams};
  vm.runInNewContext(source,context);
  return {window,scripts,cookies,run:()=>vm.runInNewContext(source,context),emit:(name,detail)=>listeners[name]?.forEach(fn=>fn({detail})),consent:value=>{granted=value;listeners['sls:consent-change'].forEach(fn=>fn({}));}};
 }
