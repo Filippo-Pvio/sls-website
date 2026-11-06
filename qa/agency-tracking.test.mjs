@@ -5,16 +5,22 @@ import {readFileSync} from 'node:fs';
 const source=readFileSync(new URL('../assets/sls-tracking.js',import.meta.url),'utf8');
 const consentSource=readFileSync(new URL('../assets/privacy-consent.js',import.meta.url),'utf8');
 function harness(initial={},host='sls.de',page={}) {
- let choice={...initial};const listeners={},scripts=[],deleted=[];
- const document={title:page.title||'Kontakt | SLS Immobilienpartner',referrer:page.referrer||'',head:{append:s=>scripts.push(s)},createElement:()=>({})};
+ let choice={...initial};const listeners={},scripts=[],deleted=[],documentListeners={};
+ const document={title:page.title??'Kontakt | SLS Immobilienpartner',referrer:page.referrer||'',readyState:page.readyState,
+  addEventListener:(n,fn)=>(documentListeners[n]??=[]).push(fn),head:{append:s=>scripts.push(s)},createElement:()=>({})};
  Object.defineProperty(document,'cookie',{get:()=> '_ga=x; _ga_TEST=y; _clck=c; _clsk=d; _fbp=e; _fbc=f; _gcl_aw=g; necessary=keep',set:v=>deleted.push(v)});
  const window={SLSConsent:{allowed:category=>choice[category]===true},addEventListener:(n,fn)=>(listeners[n]??=[]).push(fn)};
  const context={window,document,location:{hostname:host,origin:'https://'+host,pathname:'/kontakt/',search:'?email=private@example.com',hash:'#private',...page.location},Date,URL,URLSearchParams};
  vm.runInNewContext(source,context);
- return {window,scripts,deleted,run:()=>vm.runInNewContext(source,context),set:next=>{choice={...next};listeners['sls:consent-change'].forEach(f=>f({}));},convert:event=>listeners['sls:conversion'].forEach(f=>f({detail:{event,email:'private@example.com',propertyId:123}}))};
+ return {window,scripts,deleted,ready:title=>{document.title=title;document.readyState='interactive';documentListeners.DOMContentLoaded?.forEach(f=>f());},run:()=>vm.runInNewContext(source,context),set:next=>{choice={...next};listeners['sls:consent-change'].forEach(f=>f({}));},convert:event=>listeners['sls:conversion'].forEach(f=>f({detail:{event,email:'private@example.com',propertyId:123}}))};
 }
 const events=h=>h.window.dataLayer.filter(x=>x.event);
 const lastState=h=>[...h.window.dataLayer].reverse().find(x=>x[0]==='consent')?.[2];
+test('a returning visitor receives the parsed document title, never the head-time fallback',()=>{
+ const h=harness({analytics:true},'sls.de',{readyState:'loading',title:''});
+ assert.equal(h.scripts.length,0);h.ready('Immobilie verkaufen | SLS Immobilienpartner');
+ assert.equal(h.scripts.length,1);assert.equal(events(h).find(e=>e.event==='sls_analytics_ready').sls_page_title,'Immobilie verkaufen | SLS Immobilienpartner');
+});
 test('each combination releases only the chosen providers, in one container',()=>{
  for(let mask=0;mask<8;mask++){
   const p={analytics:Boolean(mask&1),clarity:Boolean(mask&2),marketing:Boolean(mask&4)};const h=harness(p);

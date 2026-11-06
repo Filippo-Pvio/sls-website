@@ -105,5 +105,7 @@
       window.dataLayer.push({...payload('sls_marketing_conversion'), sls_conversion_name:detail.event});
     }
   });
-  sync();
+  // The bridge is injected at the start of <head>; wait until <title> is parsed.
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync, {once:true});
+  else sync();
 })();
