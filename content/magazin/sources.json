@@ -124,5 +124,30 @@
     "title": "Stadt Dorsten: Vorbescheid",
     "url": "https://www.dorsten.de/rathaus-stadt/verwaltung/fachaemter/63-bauordnungsamt/vorbescheid",
     "checkedAt": "2026-11-03"
+  },
+  "bnotk_kauf_abwicklung": {
+    "title": "Notar.de: Immobilienkauf – Ablauf nach der Unterzeichnung",
+    "url": "https://www.notar.de/aktuelles/details/immobilienkauf-nicht-ohne-notarin-oder-notar-komplikationen-beim-immobilienkauf-vermeiden",
+    "checkedAt": "2026-11-17"
+  },
+  "bnotk_gebrauchtkauf": {
+    "title": "Bundesnotarkammer: Infoblatt zum Kauf einer gebrauchten Immobilie",
+    "url": "https://www.notar.de/fileadmin/user_upload_notarde/dokumente/Info_Kauf-eines-gebrauchten-Hauses.pdf",
+    "checkedAt": "2026-11-17"
+  },
+  "bgb873": {
+    "title": "§ 873 BGB: Erwerb durch Einigung und Eintragung",
+    "url": "https://www.gesetze-im-internet.de/bgb/__873.html",
+    "checkedAt": "2026-11-17"
+  },
+  "grestg22": {
+    "title": "§ 22 GrEStG: Unbedenklichkeitsbescheinigung",
+    "url": "https://www.gesetze-im-internet.de/grestg_1983/__22.html",
+    "checkedAt": "2026-11-17"
+  },
+  "bnotk_enova2026": {
+    "title": "Bundesnotarkammer, Rundschreiben 6/2026: eNoVA – stufenweiser Beginn der Verpflichtungen",
+    "url": "https://www.bnotk.de/aufgaben-und-taetigkeiten/rundschreiben/details/elektronischer-notar-verwaltungs-austausch-enova-erste-verpflichtungen-ab-dem-1-oktober-2026",
+    "checkedAt": "2026-11-17"
   }
 }
