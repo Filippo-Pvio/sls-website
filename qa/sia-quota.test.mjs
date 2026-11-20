@@ -9,9 +9,11 @@ const cookie = res => res.headers['Set-Cookie'].split(';')[0];
 // Atomic store adapter exercises HTTP orchestration; production Lua is additionally reviewed.
 function store() {
  const used=new Map(), pending=new Map(), attempts=new Map(); let calls=0;
- return { get calls(){return calls;}, async fetch(url,options) {
+ const commands=[];
+ return { commands, get calls(){return calls;}, async fetch(url,options) {
   calls++; assert.equal(url, env.UPSTASH_REDIS_REST_URL); assert.equal(options.headers.Authorization, 'Bearer test-secret');
-  const [,script,count,...params]=JSON.parse(options.body), keys=params.slice(0,count), args=params.slice(count);
+  const command=JSON.parse(options.body); commands.push(command);
+  const [,script,count,...params]=command, keys=params.slice(0,count), args=params.slice(count);
   let result;
   if (script===reserveScript) {
    const [now,id,limit]=args; const reservations=pending.get(keys[1])||new Map(); pending.set(keys[1],reservations);
@@ -76,4 +78,179 @@ test('pure OpenAI clarification consumes no daily answer',async()=>{
  const original=global.fetch,db=store();Object.assign(process.env,env,{VERCEL_ENV:'preview',OPENAI_API_KEY:'test-key'});
  global.fetch=async(url,options)=>url===env.UPSTASH_REDIS_REST_URL?db.fetch(url,options):Response.json({provider:'OpenAI',kind:'clarification',reason:'clarification',answer:'Geht es um Kauf oder Verkauf?',sources:[]});
  try {const res=response();await handler({method:'POST',headers:{'content-type':'application/json'},body:{question:'Was muss ich beachten?'}},res);assert.equal(res.statusCode,200);assert.equal(res.data.kind,'clarification');assert.equal(res.data.quota.remaining,10);}finally{global.fetch=original;for(const key of [...Object.keys(env),'VERCEL_ENV','OPENAI_API_KEY'])delete process.env[key];}
+});
+
+// Exercise the real property loader and quota orchestration with synthetic HTTP responses.
+const propertyContext = { type: 'property', propertyId: '123' };
+const listing = { id:123, title:'Wohnung in Essen', city:'Essen', marketing_type:'BUY',
+ archived:false, status:{id:7,name:'Vermarktung'}, price:150000, living_space:80,
+ number_of_rooms:3, rs_type:'APARTMENT', images:[] };
+async function withProxy(run) {
+ const beforeFetch=global.fetch;
+ const settings={...env,VERCEL_ENV:'preview',PROPSTACK_PUBLIC_API_KEY:'fixture-only'};
+ const before=Object.fromEntries(Object.keys(settings).map(key=>[key,process.env[key]]));
+ Object.assign(process.env,settings);
+ const db=store();
+ const state={db,upstreamCalls:0,propertyMode:'active',quotaFetch:db.fetch,
+  upstream:()=>Response.json({provider:'OpenAI',answer:'Eine Antwort.',sources:[]})};
+ global.fetch=async(url,options)=>{
+  if(url===env.UPSTASH_REDIS_REST_URL) return state.quotaFetch(url,options);
+  const u=new URL(url);
+  if(u.origin==='https://api.propstack.de') {
+   if(state.propertyMode==='error') return new Response(null,{status:401});
+   if(u.pathname.endsWith('/property_statuses')) return Response.json([{id:7,name:'Vermarktung'}]);
+   if(u.pathname.endsWith('/units')) return Response.json({data:state.propertyMode==='active'?[listing]:[]});
+   if(u.pathname.endsWith('/units/123')) return Response.json(listing);
+   throw Error('Unexpected property URL');
+  }
+  assert.equal(url,'https://frag-sls.vercel.app/api/ask');
+  state.upstreamCalls++;
+  return state.upstream();
+ };
+ state.call=async(question='Wie läuft der Verkauf?',pageContext,identity)=>{
+  const res=response();
+  await handler({method:'POST',headers:{'content-type':'application/json',cookie:identity},
+   body:{question,...(pageContext?{pageContext}:{})}},res);
+  return res;
+ };
+ try { await run(state); }
+ finally {
+  global.fetch=beforeFetch;
+  for(const [key,value] of Object.entries(before)) {
+   if(value===undefined) delete process.env[key]; else process.env[key]=value;
+  }
+ }
+}
+const reservations = db => db.commands.filter(command=>command[1]===reserveScript);
+const settlements = db => db.commands.filter(command=>command[1]===settleScript);
+
+test('property answers and missing-information replies each reserve and charge exactly once',async()=>{
+ await withProxy(async({call,db})=>{
+  let identity;
+  const questions=['Was ist der Kaufpreis?','Wie groß ist die Wohnfläche?',
+   'Welche Ausstattung gibt es?','Was steht im Energieausweis?','Ist Glasfaser verfügbar?'];
+  for(const [i,question] of questions.entries()) {
+   const res=await call(question,propertyContext,identity); identity=cookie(res);
+   assert.equal(res.statusCode,200);
+   assert.equal(res.data.reason,i===4?'property_context_missing':'property_context');
+   assert.equal(res.data.quota.remaining,9-i);
+   assert.equal(reservations(db).length,i+1);
+   assert.equal(settlements(db).length,i+1);
+   assert.equal(settlements(db).at(-1)[6],'1');
+  }
+ });
+});
+
+test('property, general and mixed questions share the same ten-answer daily limit',async t=>{
+ for(const mode of ['property','general','mixed']) await t.test(mode,async()=>{
+  await withProxy(async(state)=>{
+   let identity;
+   for(let i=0;i<10;i++) {
+    const context=mode==='property'||(mode==='mixed'&&i%2===0)?propertyContext:undefined;
+    const res=await state.call(context?'Was ist der Kaufpreis?':undefined,context,identity);
+    identity=cookie(res); assert.equal(res.statusCode,200); assert.equal(res.data.quota.remaining,9-i);
+   }
+   for(const [question,context] of [['Was ist der Kaufpreis?',propertyContext],['Ist Glasfaser verfügbar?',propertyContext],[undefined,undefined]]) {
+    const res=await state.call(question,context,identity);
+    assert.equal(res.statusCode,429); assert.equal(res.data.code,'daily_limit');
+    assert.equal(res.data.quota.remaining,0); assert.ok(Number(res.headers['Retry-After'])>0);
+    assert.equal(res.data.answer,undefined);
+   }
+   assert.equal(settlements(state.db).length,10);
+   assert.equal(state.upstreamCalls,mode==='property'?0:mode==='general'?10:5);
+  });
+ });
+});
+
+test('invalid or unavailable property requests never reserve capacity',async()=>{
+ await withProxy(async(state)=>{
+  assert.equal((await state.call('a',propertyContext)).statusCode,400);
+  assert.equal((await state.call('Was ist der Preis?',{...propertyContext,propertyId:'invalid'})).statusCode,400);
+  state.propertyMode='missing'; assert.equal((await state.call('Was ist der Preis?',propertyContext)).statusCode,409);
+  state.propertyMode='error'; assert.equal((await state.call('Was ist der Preis?',propertyContext)).statusCode,409);
+  assert.equal(state.db.calls,0); assert.equal(state.upstreamCalls,0);
+ });
+});
+
+test('quota reservation failure blocks both property response paths',async()=>{
+ await withProxy(async(state)=>{
+  state.quotaFetch=async()=>{throw Error('private store diagnostic');};
+  for(const question of ['Was ist der Preis?','Ist Glasfaser verfügbar?']) {
+   const res=await state.call(question,propertyContext);
+   assert.equal(res.statusCode,503); assert.equal(res.data.answer,undefined);
+   assert.doesNotMatch(JSON.stringify(res.data),/private/);
+  }
+  assert.equal(state.upstreamCalls,0);
+ });
+});
+
+test('failed property settlement releases capacity; lost acknowledgement cannot double count',async t=>{
+ for(const applied of [false,true]) await t.test(applied?'acknowledgement lost':'write failed',async()=>{
+  await withProxy(async(state)=>{
+   const quotaFetch=state.quotaFetch; let failed=false;
+   state.quotaFetch=async(url,options)=>{
+    const command=JSON.parse(options.body);
+    if(command[1]===settleScript&&command[6]==='1'&&!failed) {
+     failed=true; if(applied) await quotaFetch(url,options);
+     throw Error('private settlement diagnostic');
+    }
+    return quotaFetch(url,options);
+   };
+   const res=await state.call('Was ist der Preis?',propertyContext);
+   assert.equal(res.statusCode,502); assert.equal(res.data.answer,undefined);
+   assert.doesNotMatch(JSON.stringify(res.data),/private/);
+   const next=await state.call('Ist Glasfaser verfügbar?',propertyContext,cookie(res));
+   assert.equal(next.statusCode,200); assert.equal(next.data.quota.remaining,applied?8:9);
+   assert.equal(settlements(state.db).filter(c=>c[6]==='0').length,1);
+  });
+ });
+});
+
+test('upstream errors, invalid responses and uncharged replies release the reservation',async()=>{
+ await withProxy(async(state)=>{
+  const first=await state.call('Was ist der Preis?',propertyContext),identity=cookie(first);
+  const failures=[()=>{throw Error('private timeout');},()=>new Response(null,{status:500}),
+   ()=>Response.json({provider:'OpenAI',answer:'',sources:[]})];
+  for(const upstream of failures) {
+   state.upstream=upstream; assert.equal((await state.call(undefined,undefined,identity)).statusCode,502);
+  }
+  for(const data of [
+   {provider:'OpenAI',kind:'clarification',answer:'Kauf oder Verkauf?',sources:[]},
+   {provider:'OpenAI',kind:'offtopic',answer:'Bitte fragen Sie nach Immobilien.',sources:[]},
+   {provider:'Wissensbasis von SLS Immobilienpartner',answer:'Keine Grundlage.',sources:[]}
+  ]) {
+   state.upstream=()=>Response.json(data);
+   const res=await state.call(undefined,undefined,identity);
+   assert.equal(res.statusCode,200); assert.equal(res.data.quota.remaining,9);
+  }
+  const last=await state.call('Ist Glasfaser verfügbar?',propertyContext,identity);
+  assert.equal(last.data.quota.remaining,8);
+  assert.equal(settlements(state.db).filter(c=>c[6]==='0').length,6);
+ });
+});
+
+test('concurrent property and general requests cannot exceed shared reserved capacity',async()=>{
+ await withProxy(async(state)=>{
+  const first=await state.call('Was ist der Preis?',propertyContext),identity=cookie(first);
+  const results=await Promise.all(Array.from({length:15},(_,i)=>
+   state.call(i%2?'Was ist der Preis?':undefined,i%2?propertyContext:undefined,identity)));
+  assert.equal(results.filter(r=>r.statusCode===200).length,9);
+  assert.equal(results.filter(r=>r.statusCode===429).length,6);
+  assert.ok(results.filter(r=>r.statusCode===429).every(r=>['daily_limit','pending_limit'].includes(r.data.code)));
+  assert.equal(settlements(state.db).length,10);
+  assert.equal((await state.call('Ist Glasfaser verfügbar?',propertyContext,identity)).data.code,'daily_limit');
+ });
+});
+
+test('property replies retain optional-quota behavior when no store is configured',async()=>{
+ await withProxy(async(state)=>{
+  const keys=['UPSTASH_REDIS_REST_URL','UPSTASH_REDIS_REST_TOKEN','KV_REST_API_URL','KV_REST_API_TOKEN'];
+  const before=Object.fromEntries(keys.map(key=>[key,process.env[key]]));
+  try {
+   for(const key of keys) delete process.env[key];
+   const res=await state.call('Was ist der Preis?',propertyContext);
+   assert.equal(res.statusCode,200); assert.match(res.data.answer,/150\.000/);
+   assert.equal(res.data.quota,undefined); assert.equal(state.db.calls,0);
+  } finally { for(const [key,value] of Object.entries(before)) if(value!==undefined) process.env[key]=value; }
+ });
 });

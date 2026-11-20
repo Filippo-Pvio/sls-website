@@ -274,29 +274,6 @@ export default async function handler(req, res) {
     return null;
   };
 
-  const directPropertyAnswer = propertyAnswer();
-  if (directPropertyAnswer) {
-    return send(res, 200, {
-      provider: 'Wissensbasis von SLS Immobilienpartner',
-      answer: directPropertyAnswer,
-      sources: [],
-      kind: 'answer',
-      reason: 'property_context'
-    });
-  }
-
-  // On a concrete property page, never fall through to the generic seller knowledge base.
-  // If the published listing does not contain the requested information, say so in property context.
-  if (context?.type === 'property') {
-    return send(res, 200, {
-      provider: 'Wissensbasis von SLS Immobilienpartner',
-      answer: 'Dazu finde ich in den aktuell veröffentlichten Angaben zu dieser Immobilie keine eindeutige Information. Bitte nutzen Sie bei Bedarf „Diese Immobilie anfragen“ – der zuständige SLS Immobilienpartner kann die Frage direkt zum Objekt beantworten.',
-      sources: [],
-      kind: 'answer',
-      reason: 'property_context_missing'
-    });
-  }
-
   let reservation;
   try {
     reservation = await reserveQuota(req, res);
@@ -310,6 +287,33 @@ export default async function handler(req, res) {
       : 'Bitte warten Sie einen Moment, bevor Sie die nächste Frage senden.' });
   }
   try {
+    const directPropertyAnswer = propertyAnswer();
+    if (directPropertyAnswer) {
+      const quota = await reservation?.settle(true);
+      return send(res, 200, {
+        provider: 'Wissensbasis von SLS Immobilienpartner',
+        answer: directPropertyAnswer,
+        sources: [],
+        kind: 'answer',
+        ...(quota ? { quota } : {}),
+        reason: 'property_context'
+      });
+    }
+
+    // On a concrete property page, never fall through to the generic seller knowledge base.
+    // If the published listing does not contain the requested information, say so in property context.
+    if (context?.type === 'property') {
+      const quota = await reservation?.settle(true);
+      return send(res, 200, {
+        provider: 'Wissensbasis von SLS Immobilienpartner',
+        answer: 'Dazu finde ich in den aktuell veröffentlichten Angaben zu dieser Immobilie keine eindeutige Information. Bitte nutzen Sie bei Bedarf „Diese Immobilie anfragen“ – der zuständige SLS Immobilienpartner kann die Frage direkt zum Objekt beantworten.',
+        sources: [],
+        kind: 'answer',
+        ...(quota ? { quota } : {}),
+        reason: 'property_context_missing'
+      });
+    }
+
     let upstreamQuestion = question;
     if (context?.type === 'property' && context.property) {
       const p = context.property;
